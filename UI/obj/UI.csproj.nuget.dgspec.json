@@ -1,24 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "D:\\TrongCV\\DEV\\Pos\\StakaPos\\UI\\UI.csproj": {}
+    "E:\\2025\\staka_pos\\UI\\UI.csproj": {}
   },
   "projects": {
-    "D:\\TrongCV\\DEV\\Pos\\StakaPos\\UI\\UI.csproj": {
+    "E:\\2025\\staka_pos\\UI\\UI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\UI\\UI.csproj",
+        "projectUniqueName": "E:\\2025\\staka_pos\\UI\\UI.csproj",
         "projectName": "UI",
-        "projectPath": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\UI\\UI.csproj",
-        "packagesPath": "C:\\Users\\PV\\.nuget\\packages\\",
-        "outputPath": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\UI\\obj\\",
+        "projectPath": "E:\\2025\\staka_pos\\UI\\UI.csproj",
+        "packagesPath": "C:\\Users\\chuva\\.nuget\\packages\\",
+        "outputPath": "E:\\2025\\staka_pos\\UI\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\DevExpress 24.2\\Components\\Offline Packages",
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\PV\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\chuva\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress 24.2.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
@@ -52,6 +52,16 @@
       "frameworks": {
         "net9.0-windows7.0": {
           "targetAlias": "net9.0-windows",
+          "dependencies": {
+            "DevExpress.Win.BonusSkins": {
+              "target": "Package",
+              "version": "[24.2.7, )"
+            },
+            "DevExpress.Win.Design": {
+              "target": "Package",
+              "version": "[24.2.7, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
@@ -67,7 +77,7 @@
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             },
-            "Microsoft.WindowsDesktop.App.WindowsForms": {
+            "Microsoft.WindowsDesktop.App": {
               "privateAssets": "none"
             }
           },

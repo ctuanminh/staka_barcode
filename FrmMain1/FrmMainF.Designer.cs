@@ -1,0 +1,106 @@
+﻿namespace FrmMain
+{
+    partial class FrmMainF
+    {
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
+
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        #region Windows Form Designer generated code
+
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
+            components = new System.ComponentModel.Container();
+            ribbonControl1 = new DevExpress.XtraBars.Ribbon.RibbonControl();
+            btnOrder = new DevExpress.XtraBars.BarButtonItem();
+            rbOrder = new DevExpress.XtraBars.Ribbon.RibbonPage();
+            ribbonPageGroup1 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
+            xtraTabbedMdiManager1 = new DevExpress.XtraTabbedMdi.XtraTabbedMdiManager(components);
+            ((System.ComponentModel.ISupportInitialize)ribbonControl1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)xtraTabbedMdiManager1).BeginInit();
+            SuspendLayout();
+            // 
+            // ribbonControl1
+            // 
+            ribbonControl1.EmptyAreaImageOptions.ImagePadding = new System.Windows.Forms.Padding(35, 32, 35, 32);
+            ribbonControl1.ExpandCollapseItem.Id = 0;
+            ribbonControl1.Items.AddRange(new DevExpress.XtraBars.BarItem[] { ribbonControl1.ExpandCollapseItem, btnOrder });
+            ribbonControl1.Location = new System.Drawing.Point(0, 0);
+            ribbonControl1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            ribbonControl1.MaxItemId = 2;
+            ribbonControl1.Name = "ribbonControl1";
+            ribbonControl1.OptionsMenuMinWidth = 385;
+            ribbonControl1.Pages.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPage[] { rbOrder });
+            ribbonControl1.RibbonStyle = DevExpress.XtraBars.Ribbon.RibbonControlStyle.OfficeUniversal;
+            ribbonControl1.Size = new System.Drawing.Size(1560, 86);
+            // 
+            // btnOrder
+            // 
+            btnOrder.Caption = "Đơn hàng";
+            btnOrder.Id = 1;
+            btnOrder.Name = "btnOrder";
+            btnOrder.ItemClick += barButtonItem1_ItemClick;
+            // 
+            // rbOrder
+            // 
+            rbOrder.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] { ribbonPageGroup1 });
+            rbOrder.Name = "rbOrder";
+            rbOrder.Text = "Home";
+            // 
+            // ribbonPageGroup1
+            // 
+            ribbonPageGroup1.ItemLinks.Add(btnOrder);
+            ribbonPageGroup1.Name = "ribbonPageGroup1";
+            ribbonPageGroup1.Text = "Đơn hàng";
+            // 
+            // xtraTabbedMdiManager1
+            // 
+            xtraTabbedMdiManager1.ClosePageButtonShowMode = DevExpress.XtraTab.ClosePageButtonShowMode.InActiveTabPageAndTabControlHeader;
+            xtraTabbedMdiManager1.MdiParent = this;
+            // 
+            // FrmMainF
+            // 
+            AllowFormGlass = DevExpress.Utils.DefaultBoolean.False;
+            AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            ClientSize = new System.Drawing.Size(1560, 726);
+            Controls.Add(ribbonControl1);
+            IsMdiContainer = true;
+            Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            Name = "FrmMainF";
+            Ribbon = ribbonControl1;
+            Text = "Staka 2025";
+            Load += FrmMainF_Load;
+            ((System.ComponentModel.ISupportInitialize)ribbonControl1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)xtraTabbedMdiManager1).EndInit();
+            ResumeLayout(false);
+            PerformLayout();
+        }
+
+        #endregion
+
+        private DevExpress.XtraBars.Ribbon.RibbonControl ribbonControl1;
+        private DevExpress.XtraBars.Ribbon.RibbonPage rbOrder;
+        private DevExpress.XtraBars.Ribbon.RibbonPageGroup ribbonPageGroup1;
+        private DevExpress.XtraBars.BarButtonItem btnOrder;
+        private DevExpress.XtraTabbedMdi.XtraTabbedMdiManager xtraTabbedMdiManager1;
+    }
+}

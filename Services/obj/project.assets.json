@@ -166,25 +166,25 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\PV\\.nuget\\packages\\": {},
+    "C:\\Users\\chuva\\.nuget\\packages\\": {},
     "C:\\Program Files\\DevExpress 24.2\\Components\\Offline Packages": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\Services\\Services.csproj",
+      "projectUniqueName": "E:\\2025\\staka_pos\\Services\\Services.csproj",
       "projectName": "Services",
-      "projectPath": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\Services\\Services.csproj",
-      "packagesPath": "C:\\Users\\PV\\.nuget\\packages\\",
-      "outputPath": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\Services\\obj\\",
+      "projectPath": "E:\\2025\\staka_pos\\Services\\Services.csproj",
+      "packagesPath": "C:\\Users\\chuva\\.nuget\\packages\\",
+      "outputPath": "E:\\2025\\staka_pos\\Services\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\DevExpress 24.2\\Components\\Offline Packages",
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\PV\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\chuva\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress 24.2.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"

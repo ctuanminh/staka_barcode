@@ -8,6 +8,7 @@
     ".NETCoreApp,Version=v9.0": {
       "FrmMain/1.0.0": {
         "dependencies": {
+          "DevExpress.Win.BonusSkins": "24.2.7",
           "DevExpress.Win.Design": "24.2.7",
           "Microsoft.Extensions.Configuration": "9.0.6",
           "Microsoft.Extensions.Configuration.Json": "9.0.6",
@@ -508,6 +509,17 @@
             "fileVersion": "24.2.7.0"
           },
           "lib/net8.0-windows/DevExpress.XtraWizard.v24.2.dll": {
+            "assemblyVersion": "24.2.7.0",
+            "fileVersion": "24.2.7.0"
+          }
+        }
+      },
+      "DevExpress.Win.BonusSkins/24.2.7": {
+        "dependencies": {
+          "DevExpress.Utils": "24.2.7"
+        },
+        "runtime": {
+          "lib/net8.0-windows/DevExpress.BonusSkins.v24.2.dll": {
             "assemblyVersion": "24.2.7.0",
             "fileVersion": "24.2.7.0"
           }
@@ -2898,6 +2910,13 @@
       "sha512": "sha512-/sNktMAwHV9YQj/L62QtFis4V5a6U+Ma0cLi/rv02YPG4HMSIAVlJSn3Yz4oexUXblZ7MAdED7Q1+OPsOlh21w==",
       "path": "devexpress.win/24.2.7",
       "hashPath": "devexpress.win.24.2.7.nupkg.sha512"
+    },
+    "DevExpress.Win.BonusSkins/24.2.7": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-AkHpY/6uNvJWsfvhe819XBmIqR9DuPE4AjpsWxLP/24yPcg9RLHImE14/RF2lkEw8nweVaFfNaMt5QTjWLiOsg==",
+      "path": "devexpress.win.bonusskins/24.2.7",
+      "hashPath": "devexpress.win.bonusskins.24.2.7.nupkg.sha512"
     },
     "DevExpress.Win.Charts/24.2.7": {
       "type": "package",

@@ -28,14 +28,10 @@ namespace FrmMain
                 .ConfigureServices((context, services) =>
                 {
                     services.AddHttpClient();
-                    services.AddSingleton<FrmMain>();
+                    services.AddSingleton<FrmMainF>();
                 })
                 .Build();
-            SkinManager.EnableFormSkins();
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            UserLookAndFeel.Default.SetSkinStyle("Visual Studio 2013 Blue");
-            var form = host.Services.GetRequiredService<FrmMain>();
+            var form = host.Services.GetRequiredService<FrmMainF>();
             Application.Run(form);
         }
     }

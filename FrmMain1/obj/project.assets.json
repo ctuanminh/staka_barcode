@@ -651,6 +651,18 @@
           }
         }
       },
+      "DevExpress.Win.BonusSkins/24.2.7": {
+        "type": "package",
+        "dependencies": {
+          "DevExpress.Utils": "[24.2.7]"
+        },
+        "compile": {
+          "lib/net8.0-windows/DevExpress.BonusSkins.v24.2.dll": {}
+        },
+        "runtime": {
+          "lib/net8.0-windows/DevExpress.BonusSkins.v24.2.dll": {}
+        }
+      },
       "DevExpress.Win.Charts/24.2.7": {
         "type": "package",
         "dependencies": {
@@ -4652,6 +4664,19 @@
         "lib/net8.0-windows/DevExpress.XtraWizard.v24.2.dll",
         "lib/net8.0-windows/DevExpress.XtraWizard.v24.2.xml",
         "tools/VisualStudioToolsManifest.xml"
+      ]
+    },
+    "DevExpress.Win.BonusSkins/24.2.7": {
+      "sha512": "AkHpY/6uNvJWsfvhe819XBmIqR9DuPE4AjpsWxLP/24yPcg9RLHImE14/RF2lkEw8nweVaFfNaMt5QTjWLiOsg==",
+      "type": "package",
+      "path": "devexpress.win.bonusskins/24.2.7",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "devexpress.win.bonusskins.24.2.7.nupkg.sha512",
+        "devexpress.win.bonusskins.nuspec",
+        "lib/net462/DevExpress.BonusSkins.v24.2.dll",
+        "lib/net8.0-windows/DevExpress.BonusSkins.v24.2.dll"
       ]
     },
     "DevExpress.Win.Charts/24.2.7": {
@@ -10754,6 +10779,7 @@
   },
   "projectFileDependencyGroups": {
     "net9.0-windows7.0": [
+      "DevExpress.Win.BonusSkins >= 24.2.7",
       "DevExpress.Win.Design >= 24.2.7",
       "Microsoft.Extensions.Configuration >= 9.0.6",
       "Microsoft.Extensions.Configuration.Json >= 9.0.6",
@@ -10766,25 +10792,25 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\PV\\.nuget\\packages\\": {},
+    "C:\\Users\\chuva\\.nuget\\packages\\": {},
     "C:\\Program Files\\DevExpress 24.2\\Components\\Offline Packages": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\FrmMain1\\FrmMain.csproj",
+      "projectUniqueName": "E:\\2025\\staka_pos\\FrmMain1\\FrmMain.csproj",
       "projectName": "FrmMain",
-      "projectPath": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\FrmMain1\\FrmMain.csproj",
-      "packagesPath": "C:\\Users\\PV\\.nuget\\packages\\",
-      "outputPath": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\FrmMain1\\obj\\",
+      "projectPath": "E:\\2025\\staka_pos\\FrmMain1\\FrmMain.csproj",
+      "packagesPath": "C:\\Users\\chuva\\.nuget\\packages\\",
+      "outputPath": "E:\\2025\\staka_pos\\FrmMain1\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\DevExpress 24.2\\Components\\Offline Packages",
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\PV\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\chuva\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress 24.2.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
@@ -10801,8 +10827,8 @@
         "net9.0-windows7.0": {
           "targetAlias": "net9.0-windows",
           "projectReferences": {
-            "D:\\TrongCV\\DEV\\Pos\\StakaPos\\Services\\Services.csproj": {
-              "projectPath": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\Services\\Services.csproj"
+            "E:\\2025\\staka_pos\\Services\\Services.csproj": {
+              "projectPath": "E:\\2025\\staka_pos\\Services\\Services.csproj"
             }
           }
         }
@@ -10823,6 +10849,10 @@
       "net9.0-windows7.0": {
         "targetAlias": "net9.0-windows",
         "dependencies": {
+          "DevExpress.Win.BonusSkins": {
+            "target": "Package",
+            "version": "[24.2.7, )"
+          },
           "DevExpress.Win.Design": {
             "target": "Package",
             "version": "[24.2.7, )"
