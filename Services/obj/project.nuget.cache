@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "dgSpecHash": "By/4hEYl9Fk=",
+  "success": true,
+  "projectFilePath": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\Services\\Services.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\PV\\.nuget\\packages\\microsoft.aspnetcore.webutilities\\9.0.6\\microsoft.aspnetcore.webutilities.9.0.6.nupkg.sha512",
+    "C:\\Users\\PV\\.nuget\\packages\\microsoft.extensions.configuration.abstractions\\9.0.6\\microsoft.extensions.configuration.abstractions.9.0.6.nupkg.sha512",
+    "C:\\Users\\PV\\.nuget\\packages\\microsoft.extensions.primitives\\9.0.6\\microsoft.extensions.primitives.9.0.6.nupkg.sha512",
+    "C:\\Users\\PV\\.nuget\\packages\\microsoft.net.http.headers\\9.0.6\\microsoft.net.http.headers.9.0.6.nupkg.sha512"
+  ],
+  "logs": []
+}
