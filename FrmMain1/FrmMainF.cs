@@ -9,6 +9,7 @@ namespace FrmMain
 {
     public partial class FrmMainF : RibbonForm
     {
+        private Timer _clockTimer;
         public IServiceProvider ServiceProvider { get; }
         public FrmMainF(IServiceProvider serviceProvider)
         {
@@ -84,11 +85,19 @@ namespace FrmMain
 
         private void FrmMainF_Load(object sender, EventArgs e)
         {
+            _clockTimer = new Timer();
+            _clockTimer.Interval = 1000; // 1 giây
+            _clockTimer.Tick += ClockTimer_Tick;
+            _clockTimer.Start();
             var isOrderFormOpened = this.MdiChildren.Any(f => f is FrmOrder);
             if (isOrderFormOpened) return;
             var frmOrder = ServiceProvider.GetRequiredService<FrmOrder>();
             frmOrder.MdiParent = this;
             frmOrder.Show();
+        }
+        private void ClockTimer_Tick(object sender, EventArgs e)
+        {
+            lblTimer.Caption = DateTime.Now.ToString("HH:mm:ss dd/MM/yyyy");
         }
     }
 }

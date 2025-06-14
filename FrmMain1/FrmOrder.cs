@@ -1,19 +1,17 @@
-﻿using DevExpress.Mvvm.POCO;
-using DevExpress.Utils;
+﻿using DevExpress.Utils.Extensions;
 using DevExpress.XtraEditors;
 using DevExpress.XtraGrid.Views.Grid;
-using DevExpress.XtraScheduler.Outlook.Interop;
+using DevExpress.XtraSplashScreen;
+using DevExpress.XtraWaitForm;
 using FrmMain.Dto.Request;
 using FrmMain.Dto.Response;
 using FrmMain.Utils;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using Services;
 using System;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Threading.Tasks;
+using System.Collections.Generic;
+using System.Drawing;
 using System.Windows.Forms;
 using static FrmMain.FrmMainF;
 using Exception = System.Exception;
@@ -25,7 +23,7 @@ namespace FrmMain
         private readonly FrmMainF _mainForm;
         private readonly IKiotVietService _kiotVietService;
         private const string OrderUrl = " https://public.kiotapi.com/orders/code/";
-
+        private List<int> OrderStatusList;
         public FrmOrder(FrmMainF mainForm, IKiotVietService kiotVietService)
         {
             _mainForm = mainForm;
@@ -35,13 +33,24 @@ namespace FrmMain
 
         private async void FrmOrder_Shown(object sender, EventArgs e)
         {
+            OrderStatusList = [1];
+            LoadData();
+        }
+
+        private async void LoadData()
+        {
             try
             {
+                SplashScreenManager.ShowForm(this, typeof(LoadingForm), true, true);
+                SplashScreenManager.Default.SetWaitFormCaption("Đang lấy Đơn hàng");
+                SplashScreenManager.Default.SetWaitFormDescription("Vui lòng đợi...");
+                layoutControlTop.Enabled = false;
+                grdControlOrders.Enabled = false;
                 const string orderUrl = $"https://public.kiotapi.com/orders";
                 var request = new SearchOrderRequest()
                 {
                     BranchIds = [631782, 635192],
-                    Status = [1],
+                    Status = OrderStatusList.ToArray(),
                     PageSize = 200,
                     OrderBy = "purchaseDate",
                     OrderDirection = "Desc"
@@ -58,7 +67,14 @@ namespace FrmMain
             }
             catch (Exception exception)
             {
-                MessageBox.Show("Lỗi gọi API: " + exception);
+                MessageHelper.MsgBox("Lỗi gọi API: " + exception, MsgType.Error_);
+            }
+            finally
+            {
+                // Ẩn màn hình chờ
+                SplashScreenManager.CloseForm();
+                layoutControlTop.Enabled = true;
+                grdControlOrders.Enabled = true;
             }
         }
 
@@ -88,8 +104,63 @@ namespace FrmMain
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Lỗi khi chuyển dữ liệu: " + ex);
+                MessageHelper.MsgBox("Lỗi khi chuyển dữ liệu", MsgType.Error_);
             }
+        }
+
+        private void SetTextEditHeight(Control control, int height)
+        {
+            foreach (Control c in control.Controls)
+            {
+                if (c is TextEdit textEdit)
+                {
+                    textEdit.Properties.AutoHeight = false;
+                    textEdit.MinimumSize = new Size(0, height);
+                    textEdit.MaximumSize = new Size(0, height);
+                }
+                else if (c.HasChildren)
+                {
+                    SetTextEditHeight(c, height); // Đệ quy
+                }
+            }
+        }
+
+        private void FrmOrder_Load(object sender, EventArgs e)
+        {
+            SetTextEditHeight(this, 25);
+        }
+
+        private void Handler_CheckedChanged(object sender, EventArgs e)
+        {
+            if (sender is not CheckEdit checkEdit) return;
+
+            var statusValue = checkEdit.Name switch
+            {
+                "chkDraft" => 1,
+                "chkFinish" => 3,
+                "chkCancel" => 4,
+                _ => 0
+            };
+
+            if (statusValue == 0) return;
+
+            if (checkEdit.Checked)
+            {
+                if (!OrderStatusList.Contains(statusValue))
+                    OrderStatusList.Add(statusValue);
+            }
+            else
+            {
+                OrderStatusList.Remove(statusValue);
+                if (OrderStatusList.Count == 0)
+                {
+                    chkDraft.CheckedChanged -= Handler_CheckedChanged;
+                    chkDraft.Checked = true;
+                    OrderStatusList.Add(1);
+                    chkDraft.CheckedChanged += Handler_CheckedChanged;
+                }
+            }
+            LoadData();
         }
     }
 }

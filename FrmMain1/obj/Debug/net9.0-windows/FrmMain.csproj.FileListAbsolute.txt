@@ -380,3 +380,4 @@ E:\2025\staka_pos\FrmMain1\obj\Debug\net9.0-windows\refint\FrmMain.dll
 E:\2025\staka_pos\FrmMain1\obj\Debug\net9.0-windows\FrmMain.pdb
 E:\2025\staka_pos\FrmMain1\obj\Debug\net9.0-windows\FrmMain.genruntimeconfig.cache
 E:\2025\staka_pos\FrmMain1\obj\Debug\net9.0-windows\ref\FrmMain.dll
+E:\2025\staka_pos\FrmMain1\obj\Debug\net9.0-windows\FrmMain.LoadingForm.resources
