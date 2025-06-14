@@ -67,6 +67,7 @@ namespace FrmMain
             labelControl1 = new DevExpress.XtraEditors.LabelControl();
             txtProductCode = new DevExpress.XtraEditors.TextEdit();
             txtOrderCode = new DevExpress.XtraEditors.TextEdit();
+            panelControl3 = new DevExpress.XtraEditors.PanelControl();
             ((System.ComponentModel.ISupportInitialize)ribbon).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pnlRight).BeginInit();
             pnlRight.SuspendLayout();
@@ -89,6 +90,7 @@ namespace FrmMain
             pnlControl.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)txtProductCode.Properties).BeginInit();
             ((System.ComponentModel.ISupportInitialize)txtOrderCode.Properties).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)panelControl3).BeginInit();
             SuspendLayout();
             // 
             // ribbon
@@ -102,7 +104,7 @@ namespace FrmMain
             ribbon.Name = "ribbon";
             ribbon.OptionsMenuMinWidth = 550;
             ribbon.Pages.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPage[] { ribbonPage1 });
-            ribbon.Size = new Size(1938, 158);
+            ribbon.Size = new Size(1932, 149);
             ribbon.StatusBar = ribbonStatusBar;
             // 
             // btnOrder
@@ -125,20 +127,21 @@ namespace FrmMain
             // 
             // ribbonStatusBar
             // 
-            ribbonStatusBar.Location = new Point(0, 1075);
+            ribbonStatusBar.Location = new Point(0, 1076);
             ribbonStatusBar.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             ribbonStatusBar.Name = "ribbonStatusBar";
             ribbonStatusBar.Ribbon = ribbon;
-            ribbonStatusBar.Size = new Size(1938, 24);
+            ribbonStatusBar.Size = new Size(1932, 23);
             // 
             // pnlRight
             // 
+            pnlRight.Controls.Add(panelControl3);
             pnlRight.Controls.Add(panelControl2);
             pnlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            pnlRight.Location = new Point(1438, 158);
+            pnlRight.Location = new Point(1432, 149);
             pnlRight.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             pnlRight.Name = "pnlRight";
-            pnlRight.Size = new Size(500, 917);
+            pnlRight.Size = new Size(500, 927);
             pnlRight.TabIndex = 5;
             // 
             // panelControl2
@@ -174,7 +177,7 @@ namespace FrmMain
             labelControl13.Location = new Point(414, 62);
             labelControl13.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             labelControl13.Name = "labelControl13";
-            labelControl13.Size = new Size(52, 13);
+            labelControl13.Size = new Size(58, 14);
             labelControl13.TabIndex = 14;
             labelControl13.Text = "Chi nhánh:";
             // 
@@ -183,7 +186,7 @@ namespace FrmMain
             lblBranchName.Location = new Point(510, 62);
             lblBranchName.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             lblBranchName.Name = "lblBranchName";
-            lblBranchName.Size = new Size(70, 13);
+            lblBranchName.Size = new Size(79, 14);
             lblBranchName.TabIndex = 14;
             lblBranchName.Text = "lblBranchName";
             // 
@@ -281,7 +284,7 @@ namespace FrmMain
             labelControl8.Location = new Point(179, 109);
             labelControl8.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             labelControl8.Name = "labelControl8";
-            labelControl8.Size = new Size(18, 13);
+            labelControl8.Size = new Size(20, 14);
             labelControl8.TabIndex = 14;
             labelControl8.Text = "lblSl";
             // 
@@ -341,7 +344,7 @@ namespace FrmMain
             labelControl4.Location = new Point(510, 19);
             labelControl4.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             labelControl4.Name = "labelControl4";
-            labelControl4.Size = new Size(28, 13);
+            labelControl4.Size = new Size(32, 14);
             labelControl4.TabIndex = 8;
             labelControl4.Text = "lblMut";
             // 
@@ -350,7 +353,7 @@ namespace FrmMain
             labelControl3.Location = new Point(414, 19);
             labelControl3.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             labelControl3.Name = "labelControl3";
-            labelControl3.Size = new Size(32, 13);
+            labelControl3.Size = new Size(38, 14);
             labelControl3.TabIndex = 7;
             labelControl3.Text = "lblTime";
             // 
@@ -359,10 +362,10 @@ namespace FrmMain
             pnlOrder.Controls.Add(panelControl1);
             pnlOrder.Controls.Add(pnlControl);
             pnlOrder.Dock = System.Windows.Forms.DockStyle.Fill;
-            pnlOrder.Location = new Point(0, 158);
+            pnlOrder.Location = new Point(0, 149);
             pnlOrder.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             pnlOrder.Name = "pnlOrder";
-            pnlOrder.Size = new Size(1438, 917);
+            pnlOrder.Size = new Size(1432, 927);
             pnlOrder.TabIndex = 6;
             // 
             // panelControl1
@@ -372,7 +375,7 @@ namespace FrmMain
             panelControl1.Location = new Point(2, 109);
             panelControl1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             panelControl1.Name = "panelControl1";
-            panelControl1.Size = new Size(1434, 806);
+            panelControl1.Size = new Size(1428, 816);
             panelControl1.TabIndex = 1;
             // 
             // grdOrder
@@ -385,7 +388,7 @@ namespace FrmMain
             grdOrder.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             grdOrder.MenuManager = ribbon;
             grdOrder.Name = "grdOrder";
-            grdOrder.Size = new Size(1430, 802);
+            grdOrder.Size = new Size(1424, 812);
             grdOrder.TabIndex = 0;
             grdOrder.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] { gridView1 });
             // 
@@ -409,7 +412,7 @@ namespace FrmMain
             pnlControl.Location = new Point(2, 2);
             pnlControl.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             pnlControl.Name = "pnlControl";
-            pnlControl.Size = new Size(1434, 107);
+            pnlControl.Size = new Size(1428, 107);
             pnlControl.TabIndex = 0;
             // 
             // drpOrders
@@ -474,13 +477,21 @@ namespace FrmMain
             txtOrderCode.Size = new Size(416, 30);
             txtOrderCode.TabIndex = 0;
             // 
+            // panelControl3
+            // 
+            panelControl3.Dock = System.Windows.Forms.DockStyle.Bottom;
+            panelControl3.Location = new Point(2, 845);
+            panelControl3.Name = "panelControl3";
+            panelControl3.Size = new Size(496, 80);
+            panelControl3.TabIndex = 10;
+            // 
             // FrmMain
             // 
             AllowFormGlass = DevExpress.Utils.DefaultBoolean.False;
             Appearance.Options.UseFont = true;
             AutoScaleDimensions = new SizeF(10F, 23F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new Size(1938, 1099);
+            ClientSize = new Size(1932, 1099);
             Controls.Add(pnlOrder);
             Controls.Add(pnlRight);
             Controls.Add(ribbonStatusBar);
@@ -517,6 +528,7 @@ namespace FrmMain
             pnlControl.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)txtProductCode.Properties).EndInit();
             ((System.ComponentModel.ISupportInitialize)txtOrderCode.Properties).EndInit();
+            ((System.ComponentModel.ISupportInitialize)panelControl3).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -561,5 +573,6 @@ namespace FrmMain
         private DevExpress.XtraEditors.LabelControl labelControl13;
         private DevExpress.XtraEditors.LabelControl lblBranchName;
         private DevExpress.XtraEditors.DropDownButton drpOrders;
+        private DevExpress.XtraEditors.PanelControl panelControl3;
     }
 }

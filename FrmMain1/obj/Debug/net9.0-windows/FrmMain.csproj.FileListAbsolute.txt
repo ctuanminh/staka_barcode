@@ -365,7 +365,6 @@ D:\TrongCV\DEV\Pos\StakaPos\FrmMain1\obj\Debug\net9.0-windows\FrmMain.csproj.Ass
 D:\TrongCV\DEV\Pos\StakaPos\FrmMain1\obj\Debug\net9.0-windows\FrmMain.FrmMain.resources
 D:\TrongCV\DEV\Pos\StakaPos\FrmMain1\obj\Debug\net9.0-windows\FrmMain.FrmMainF.resources
 D:\TrongCV\DEV\Pos\StakaPos\FrmMain1\obj\Debug\net9.0-windows\FrmMain.FrmOrder.resources
-D:\TrongCV\DEV\Pos\StakaPos\FrmMain1\obj\Debug\net9.0-windows\FrmMain.FrmOrderProccess.resources
 D:\TrongCV\DEV\Pos\StakaPos\FrmMain1\obj\Debug\net9.0-windows\FrmMain.csproj.GenerateResource.cache
 D:\TrongCV\DEV\Pos\StakaPos\FrmMain1\obj\Debug\net9.0-windows\FrmMain.GeneratedMSBuildEditorConfig.editorconfig
 D:\TrongCV\DEV\Pos\StakaPos\FrmMain1\obj\Debug\net9.0-windows\FrmMain.AssemblyInfoInputs.cache
@@ -378,3 +377,5 @@ D:\TrongCV\DEV\Pos\StakaPos\FrmMain1\obj\Debug\net9.0-windows\refint\FrmMain.dll
 D:\TrongCV\DEV\Pos\StakaPos\FrmMain1\obj\Debug\net9.0-windows\FrmMain.pdb
 D:\TrongCV\DEV\Pos\StakaPos\FrmMain1\obj\Debug\net9.0-windows\FrmMain.genruntimeconfig.cache
 D:\TrongCV\DEV\Pos\StakaPos\FrmMain1\obj\Debug\net9.0-windows\ref\FrmMain.dll
+D:\TrongCV\DEV\Pos\StakaPos\FrmMain1\obj\Debug\net9.0-windows\FrmMain.FrmOrderProcess.resources
+D:\TrongCV\DEV\Pos\StakaPos\FrmMain1\obj\Debug\net9.0-windows\FrmMain.Properties.Resources.resources

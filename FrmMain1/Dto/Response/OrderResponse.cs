@@ -35,12 +35,21 @@ namespace FrmMain.Dto.Response
         public string ProductCode { get; set; }
         public string ProductName { get; set; }
         public bool IsMaster { get; set; }
-        public int Quantity { get; set; }
+        public double Quantity { get; set; }
         public decimal Price { get; set; }
         public decimal Discount { get; set; }
         public int DiscountRatio { get; set; }
         public string Note { get; set; }
         public decimal ViewDiscount { get; set; }
+        public bool Checked { get; set; } = false;
+    }
+
+    public class OrderPagedResponse()
+    {
+        public ICollection<OrderResponse> Data { get; set; }
+        public int Total { get; set; }
+        public int PageSize { get; set; }
+        public int CurrentItem { get; set; }
     }
 
 }
