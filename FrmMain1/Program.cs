@@ -1,14 +1,8 @@
-﻿using DevExpress.LookAndFeel;
-using DevExpress.Skins;
-using DevExpress.UserSkins;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
+﻿using System;
 using System.Windows.Forms;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
+using Services;
 
 namespace FrmMain
 {
@@ -18,21 +12,29 @@ namespace FrmMain
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main()
+        private static void Main()
         {
-            var host = Host.CreateDefaultBuilder()
-                .ConfigureAppConfiguration((context, config) =>
-                {
-                    config.AddJsonFile("appsettings.json", optional: true);
-                })
-                .ConfigureServices((context, services) =>
-                {
-                    services.AddHttpClient();
-                    services.AddSingleton<FrmMainF>();
-                })
+            // Cấu hình DI
+            var services = new ServiceCollection();
+            // Thêm IConfiguration
+            var configuration = new ConfigurationBuilder()
+                .SetBasePath(Application.StartupPath)
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .Build();
-            var form = host.Services.GetRequiredService<FrmMainF>();
-            Application.Run(form);
+            services.AddSingleton<IConfiguration>(configuration);
+            services.AddHttpClient();
+            // Thêm các form
+            services.AddTransient<FrmOrder>();
+            services.AddTransient<FrmOrderProcess>();
+            services.AddSingleton<FrmMainF>(); // Singleton cho MDI Parent
+            services.AddSingleton<IKiotVietService, KiotVietServiceImp>();
+
+            // Xây dựng ServiceProvider
+            var serviceProvider = services.BuildServiceProvider();
+
+            // Khởi động ứng dụng với DI
+            var mainForm = serviceProvider.GetRequiredService<FrmMainF>();
+            Application.Run(mainForm);
         }
     }
 }

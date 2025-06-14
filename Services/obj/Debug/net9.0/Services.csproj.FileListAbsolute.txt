@@ -6,6 +6,7 @@ D:\TrongCV\DEV\Pos\StakaPos\Services\obj\Debug\net9.0\Services.GeneratedMSBuildE
 D:\TrongCV\DEV\Pos\StakaPos\Services\obj\Debug\net9.0\Services.AssemblyInfoInputs.cache
 D:\TrongCV\DEV\Pos\StakaPos\Services\obj\Debug\net9.0\Services.AssemblyInfo.cs
 D:\TrongCV\DEV\Pos\StakaPos\Services\obj\Debug\net9.0\Services.csproj.CoreCompileInputs.cache
+D:\TrongCV\DEV\Pos\StakaPos\Services\obj\Debug\net9.0\Services.sourcelink.json
 D:\TrongCV\DEV\Pos\StakaPos\Services\obj\Debug\net9.0\Services.dll
 D:\TrongCV\DEV\Pos\StakaPos\Services\obj\Debug\net9.0\refint\Services.dll
 D:\TrongCV\DEV\Pos\StakaPos\Services\obj\Debug\net9.0\Services.pdb

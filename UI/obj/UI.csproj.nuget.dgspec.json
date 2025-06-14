@@ -1,24 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "E:\\2025\\staka_pos\\UI\\UI.csproj": {}
+    "D:\\TrongCV\\DEV\\Pos\\StakaPos\\UI\\UI.csproj": {}
   },
   "projects": {
-    "E:\\2025\\staka_pos\\UI\\UI.csproj": {
+    "D:\\TrongCV\\DEV\\Pos\\StakaPos\\UI\\UI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\2025\\staka_pos\\UI\\UI.csproj",
+        "projectUniqueName": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\UI\\UI.csproj",
         "projectName": "UI",
-        "projectPath": "E:\\2025\\staka_pos\\UI\\UI.csproj",
-        "packagesPath": "C:\\Users\\chuva\\.nuget\\packages\\",
-        "outputPath": "E:\\2025\\staka_pos\\UI\\obj\\",
+        "projectPath": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\UI\\UI.csproj",
+        "packagesPath": "C:\\Users\\PV\\.nuget\\packages\\",
+        "outputPath": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\UI\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\DevExpress 24.2\\Components\\Offline Packages",
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\chuva\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\PV\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress 24.2.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
