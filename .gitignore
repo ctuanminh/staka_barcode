@@ -1,0 +1,69 @@
+## Build results
+bin/
+obj/
+[Bb]uild/
+[Ll]og/
+*.log
+
+## User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+## VS Code
+.vscode/
+
+## Rider
+.idea/
+
+## Visual Studio
+.vs/
+
+## Backup files
+*~ 
+*.bak
+
+## NuGet
+*.nupkg
+# NuGet Packages folder
+packages/
+# Exclude package-lock files
+project.lock.json
+project.assets.json
+*.deps.json
+
+## Publish files
+**/publish/
+*.publish.xml
+
+## ReSharper
+_ReSharper*/
+*.DotSettings.user
+
+## TFS
+$tf/
+
+## Test results
+TestResults/
+*.trx
+
+## Temporary files
+*.tmp
+*.temp
+*.TMP
+*.TEMP
+
+## Others
+*.cache
+*.dbmdl
+*.pdb
+*.mdb
+*.sqlite
+
+# Include dotenv if you use .env for config
+.env
+
+# Ignore generated designer files (optional, not usually)
+# *.Designer.cs
+
