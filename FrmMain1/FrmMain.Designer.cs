@@ -30,9 +30,7 @@ namespace FrmMain
         /// </summary>
         private void InitializeComponent()
         {
-            components = new System.ComponentModel.Container();
             ribbon = new DevExpress.XtraBars.Ribbon.RibbonControl();
-            applicationMenu1 = new DevExpress.XtraBars.Ribbon.ApplicationMenu(components);
             btnOrder = new DevExpress.XtraBars.BarSubItem();
             ribbonPage1 = new DevExpress.XtraBars.Ribbon.RibbonPage();
             ribbonPageGroup1 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
@@ -70,7 +68,6 @@ namespace FrmMain
             txtProductCode = new DevExpress.XtraEditors.TextEdit();
             txtOrderCode = new DevExpress.XtraEditors.TextEdit();
             ((System.ComponentModel.ISupportInitialize)ribbon).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)applicationMenu1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pnlRight).BeginInit();
             pnlRight.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)panelControl2).BeginInit();
@@ -96,7 +93,6 @@ namespace FrmMain
             // 
             // ribbon
             // 
-            ribbon.ApplicationButtonDropDownControl = applicationMenu1;
             ribbon.EmptyAreaImageOptions.ImagePadding = new System.Windows.Forms.Padding(50, 53, 50, 53);
             ribbon.ExpandCollapseItem.Id = 0;
             ribbon.Items.AddRange(new DevExpress.XtraBars.BarItem[] { ribbon.ExpandCollapseItem, btnOrder });
@@ -106,14 +102,8 @@ namespace FrmMain
             ribbon.Name = "ribbon";
             ribbon.OptionsMenuMinWidth = 550;
             ribbon.Pages.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPage[] { ribbonPage1 });
-            ribbon.RibbonStyle = DevExpress.XtraBars.Ribbon.RibbonControlStyle.OfficeUniversal;
-            ribbon.Size = new Size(1938, 89);
+            ribbon.Size = new Size(1938, 158);
             ribbon.StatusBar = ribbonStatusBar;
-            // 
-            // applicationMenu1
-            // 
-            applicationMenu1.Name = "applicationMenu1";
-            applicationMenu1.Ribbon = ribbon;
             // 
             // btnOrder
             // 
@@ -145,10 +135,10 @@ namespace FrmMain
             // 
             pnlRight.Controls.Add(panelControl2);
             pnlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            pnlRight.Location = new Point(1271, 89);
+            pnlRight.Location = new Point(1438, 158);
             pnlRight.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             pnlRight.Name = "pnlRight";
-            pnlRight.Size = new Size(667, 986);
+            pnlRight.Size = new Size(500, 917);
             pnlRight.TabIndex = 5;
             // 
             // panelControl2
@@ -176,7 +166,7 @@ namespace FrmMain
             panelControl2.Location = new Point(2, 2);
             panelControl2.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             panelControl2.Name = "panelControl2";
-            panelControl2.Size = new Size(663, 298);
+            panelControl2.Size = new Size(496, 298);
             panelControl2.TabIndex = 9;
             // 
             // labelControl13
@@ -369,10 +359,10 @@ namespace FrmMain
             pnlOrder.Controls.Add(panelControl1);
             pnlOrder.Controls.Add(pnlControl);
             pnlOrder.Dock = System.Windows.Forms.DockStyle.Fill;
-            pnlOrder.Location = new Point(0, 89);
+            pnlOrder.Location = new Point(0, 158);
             pnlOrder.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             pnlOrder.Name = "pnlOrder";
-            pnlOrder.Size = new Size(1271, 986);
+            pnlOrder.Size = new Size(1438, 917);
             pnlOrder.TabIndex = 6;
             // 
             // panelControl1
@@ -382,7 +372,7 @@ namespace FrmMain
             panelControl1.Location = new Point(2, 109);
             panelControl1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             panelControl1.Name = "panelControl1";
-            panelControl1.Size = new Size(1267, 875);
+            panelControl1.Size = new Size(1434, 806);
             panelControl1.TabIndex = 1;
             // 
             // grdOrder
@@ -395,7 +385,7 @@ namespace FrmMain
             grdOrder.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             grdOrder.MenuManager = ribbon;
             grdOrder.Name = "grdOrder";
-            grdOrder.Size = new Size(1263, 871);
+            grdOrder.Size = new Size(1430, 802);
             grdOrder.TabIndex = 0;
             grdOrder.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] { gridView1 });
             // 
@@ -419,7 +409,7 @@ namespace FrmMain
             pnlControl.Location = new Point(2, 2);
             pnlControl.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             pnlControl.Name = "pnlControl";
-            pnlControl.Size = new Size(1267, 107);
+            pnlControl.Size = new Size(1434, 107);
             pnlControl.TabIndex = 0;
             // 
             // drpOrders
@@ -504,7 +494,6 @@ namespace FrmMain
             Text = "FrmMain";
             Load += FrmMain_Load;
             ((System.ComponentModel.ISupportInitialize)ribbon).EndInit();
-            ((System.ComponentModel.ISupportInitialize)applicationMenu1).EndInit();
             ((System.ComponentModel.ISupportInitialize)pnlRight).EndInit();
             pnlRight.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)panelControl2).EndInit();
@@ -571,7 +560,6 @@ namespace FrmMain
         private DevExpress.XtraEditors.TextEdit txtKhachThanhToan;
         private DevExpress.XtraEditors.LabelControl labelControl13;
         private DevExpress.XtraEditors.LabelControl lblBranchName;
-        private DevExpress.XtraBars.Ribbon.ApplicationMenu applicationMenu1;
         private DevExpress.XtraEditors.DropDownButton drpOrders;
     }
 }
