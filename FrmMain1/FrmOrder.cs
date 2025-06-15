@@ -131,6 +131,10 @@ namespace FrmMain
             SetTextEditHeight(this, 25);
             var branches = await _branchService.GetAllBranches();
             lkupBranch.Properties.DataSource = branches.Data;
+            chkFinish.BackColor = Color.LightGreen;
+            chkDraft.BackColor = Color.Green;
+            chkDraft.ForeColor = Color.White;
+            chkCancel.BackColor = Color.OrangeRed;
         }
 
         private void Handler_CheckedChanged(object sender, EventArgs e)
