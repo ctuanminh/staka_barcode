@@ -1,18 +1,17 @@
-﻿using DevExpress.Utils.Extensions;
-using DevExpress.XtraEditors;
+﻿using DevExpress.XtraEditors;
 using DevExpress.XtraGrid.Views.Grid;
 using DevExpress.XtraSplashScreen;
-using DevExpress.XtraWaitForm;
 using FrmMain.Dto.Request;
 using FrmMain.Dto.Response;
 using FrmMain.Utils;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
-using Services;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
+using Be.Services.KiotViet;
+using Be.Services.Pos;
 using static FrmMain.FrmMainF;
 using Exception = System.Exception;
 
@@ -23,17 +22,19 @@ namespace FrmMain
         private readonly FrmMainF _mainForm;
         private readonly IKiotVietService _kiotVietService;
         private const string OrderUrl = " https://public.kiotapi.com/orders/code/";
-        private List<int> OrderStatusList;
-        public FrmOrder(FrmMainF mainForm, IKiotVietService kiotVietService)
+        private List<int> _orderStatusList;
+        private readonly IBranchService _branchService;
+        public FrmOrder(FrmMainF mainForm, IKiotVietService kiotVietService, IBranchService branchService)
         {
             _mainForm = mainForm;
             _kiotVietService = kiotVietService;
+            _branchService = branchService;
             InitializeComponent();
         }
 
         private async void FrmOrder_Shown(object sender, EventArgs e)
         {
-            OrderStatusList = [1];
+            _orderStatusList = [1];
             LoadData();
         }
 
@@ -50,7 +51,7 @@ namespace FrmMain
                 var request = new SearchOrderRequest()
                 {
                     BranchIds = [631782, 635192],
-                    Status = OrderStatusList.ToArray(),
+                    Status = _orderStatusList.ToArray(),
                     PageSize = 200,
                     OrderBy = "purchaseDate",
                     OrderDirection = "Desc"
@@ -86,7 +87,7 @@ namespace FrmMain
                 var code = view.GetRowCellValue(view.FocusedRowHandle, "Code");
                 if (code == null) return;
                 {
-                    if (FormHelper.OpenedForm(nameof(FrmOrderProcess), WuserControl.order, out var openForm))
+                    if (FormHelper.OpenedForm(nameof(FrmOrderProcess), WuserControl.Order, out var openForm))
                     {
                         if (openForm is FrmOrderProcess processForm)
                         {
@@ -98,7 +99,7 @@ namespace FrmMain
                         FrmOrderProcess.CurrentCode = code.ToString();
                         var frmOrderInstance = _mainForm.ServiceProvider.GetRequiredService<FrmOrderProcess>();
                         Form frmOrder = frmOrderInstance;
-                        FormHelper.NewFormNew(_mainForm, frmOrder, WuserControl.order, nameof(FrmOrderProcess));
+                        FormHelper.NewFormNew(_mainForm, frmOrder, WuserControl.Order, nameof(FrmOrderProcess));
                     }
                 }
             }
@@ -108,7 +109,7 @@ namespace FrmMain
             }
         }
 
-        private void SetTextEditHeight(Control control, int height)
+        private static void SetTextEditHeight(Control control, int height)
         {
             foreach (Control c in control.Controls)
             {
@@ -125,9 +126,11 @@ namespace FrmMain
             }
         }
 
-        private void FrmOrder_Load(object sender, EventArgs e)
+        private async void FrmOrder_Load(object sender, EventArgs e)
         {
             SetTextEditHeight(this, 25);
+            var branches = await _branchService.GetAllBranches();
+            lkupBranch.Properties.DataSource = branches.Data;
         }
 
         private void Handler_CheckedChanged(object sender, EventArgs e)
@@ -146,17 +149,17 @@ namespace FrmMain
 
             if (checkEdit.Checked)
             {
-                if (!OrderStatusList.Contains(statusValue))
-                    OrderStatusList.Add(statusValue);
+                if (!_orderStatusList.Contains(statusValue))
+                    _orderStatusList.Add(statusValue);
             }
             else
             {
-                OrderStatusList.Remove(statusValue);
-                if (OrderStatusList.Count == 0)
+                _orderStatusList.Remove(statusValue);
+                if (_orderStatusList.Count == 0)
                 {
                     chkDraft.CheckedChanged -= Handler_CheckedChanged;
                     chkDraft.Checked = true;
-                    OrderStatusList.Add(1);
+                    _orderStatusList.Add(1);
                     chkDraft.CheckedChanged += Handler_CheckedChanged;
                 }
             }

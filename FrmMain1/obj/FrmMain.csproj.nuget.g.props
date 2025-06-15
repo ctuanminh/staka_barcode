@@ -15,11 +15,13 @@
     <SourceRoot Include="C:\Program Files (x86)\Microsoft Visual Studio\Shared\NuGetPackages\" />
   </ItemGroup>
   <ImportGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
+    <Import Project="$(NuGetPackageRoot)microsoft.entityframeworkcore\9.0.4\buildTransitive\net8.0\Microsoft.EntityFrameworkCore.props" Condition="Exists('$(NuGetPackageRoot)microsoft.entityframeworkcore\9.0.4\buildTransitive\net8.0\Microsoft.EntityFrameworkCore.props')" />
     <Import Project="$(NuGetPackageRoot)microsoft.extensions.configuration.usersecrets\9.0.6\buildTransitive\net8.0\Microsoft.Extensions.Configuration.UserSecrets.props" Condition="Exists('$(NuGetPackageRoot)microsoft.extensions.configuration.usersecrets\9.0.6\buildTransitive\net8.0\Microsoft.Extensions.Configuration.UserSecrets.props')" />
     <Import Project="C:\Program Files\DevExpress 24.2\Components\Offline Packages\devexpress.data.desktop\24.2.7\build\net8.0-windows\DevExpress.Data.Desktop.props" Condition="Exists('C:\Program Files\DevExpress 24.2\Components\Offline Packages\devexpress.data.desktop\24.2.7\build\net8.0-windows\DevExpress.Data.Desktop.props')" />
     <Import Project="C:\Program Files\DevExpress 24.2\Components\Offline Packages\devexpress.diagram.core\24.2.7\build\net8.0-windows\DevExpress.Diagram.Core.props" Condition="Exists('C:\Program Files\DevExpress 24.2\Components\Offline Packages\devexpress.diagram.core\24.2.7\build\net8.0-windows\DevExpress.Diagram.Core.props')" />
   </ImportGroup>
   <PropertyGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
+    <PkgHangfire_SqlServer Condition=" '$(PkgHangfire_SqlServer)' == '' ">C:\Users\chuva\.nuget\packages\hangfire.sqlserver\1.8.20</PkgHangfire_SqlServer>
     <PkgDevExpress_Data Condition=" '$(PkgDevExpress_Data)' == '' ">C:\Program Files\DevExpress 24.2\Components\Offline Packages\devexpress.data\24.2.7</PkgDevExpress_Data>
     <PkgDevExpress_Xpo Condition=" '$(PkgDevExpress_Xpo)' == '' ">C:\Program Files\DevExpress 24.2\Components\Offline Packages\devexpress.xpo\24.2.7</PkgDevExpress_Xpo>
     <PkgDevExpress_Utils Condition=" '$(PkgDevExpress_Utils)' == '' ">C:\Program Files\DevExpress 24.2\Components\Offline Packages\devexpress.utils\24.2.7</PkgDevExpress_Utils>

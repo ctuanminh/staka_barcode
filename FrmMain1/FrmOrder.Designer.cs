@@ -94,7 +94,7 @@
             groupControl1.Location = new System.Drawing.Point(0, 0);
             groupControl1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             groupControl1.Name = "groupControl1";
-            groupControl1.Size = new System.Drawing.Size(1238, 128);
+            groupControl1.Size = new System.Drawing.Size(1230, 128);
             groupControl1.TabIndex = 0;
             groupControl1.Text = "Lọc Đơn hàng";
             // 
@@ -112,16 +112,16 @@
             layoutControlTop.Location = new System.Drawing.Point(2, 22);
             layoutControlTop.Name = "layoutControlTop";
             layoutControlTop.Root = Root;
-            layoutControlTop.Size = new System.Drawing.Size(1234, 104);
+            layoutControlTop.Size = new System.Drawing.Size(1226, 104);
             layoutControlTop.TabIndex = 0;
             layoutControlTop.Text = "layoutControl1";
             // 
             // layoutControl1
             // 
-            layoutControl1.Location = new System.Drawing.Point(487, 12);
+            layoutControl1.Location = new System.Drawing.Point(484, 12);
             layoutControl1.Name = "layoutControl1";
             layoutControl1.Root = layoutControlGroup1;
-            layoutControl1.Size = new System.Drawing.Size(735, 80);
+            layoutControl1.Size = new System.Drawing.Size(730, 80);
             layoutControl1.TabIndex = 8;
             layoutControl1.Text = "layoutControl1";
             // 
@@ -130,12 +130,12 @@
             layoutControlGroup1.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.True;
             layoutControlGroup1.GroupBordersVisible = false;
             layoutControlGroup1.Name = "layoutControlGroup1";
-            layoutControlGroup1.Size = new System.Drawing.Size(735, 80);
+            layoutControlGroup1.Size = new System.Drawing.Size(730, 80);
             layoutControlGroup1.TextVisible = false;
             // 
             // chkCancel
             // 
-            chkCancel.Location = new System.Drawing.Point(424, 12);
+            chkCancel.Location = new System.Drawing.Point(421, 12);
             chkCancel.Name = "chkCancel";
             chkCancel.Properties.Caption = "Đã huỷ";
             chkCancel.Size = new System.Drawing.Size(59, 19);
@@ -145,7 +145,7 @@
             // 
             // chkFinish
             // 
-            chkFinish.Location = new System.Drawing.Point(332, 12);
+            chkFinish.Location = new System.Drawing.Point(329, 12);
             chkFinish.Name = "chkFinish";
             chkFinish.Properties.Caption = "Hoàn thành";
             chkFinish.Size = new System.Drawing.Size(88, 19);
@@ -156,7 +156,7 @@
             // chkDraft
             // 
             chkDraft.EditValue = true;
-            chkDraft.Location = new System.Drawing.Point(252, 12);
+            chkDraft.Location = new System.Drawing.Point(249, 12);
             chkDraft.Name = "chkDraft";
             chkDraft.Properties.Caption = "Phiếu tạm";
             chkDraft.Size = new System.Drawing.Size(76, 19);
@@ -171,7 +171,7 @@
             dateEdit1.Name = "dateEdit1";
             dateEdit1.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
             dateEdit1.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
-            dateEdit1.Size = new System.Drawing.Size(178, 20);
+            dateEdit1.Size = new System.Drawing.Size(175, 20);
             dateEdit1.StyleController = layoutControlTop;
             dateEdit1.TabIndex = 4;
             // 
@@ -182,7 +182,7 @@
             lookUpEdit3.Name = "lookUpEdit3";
             lookUpEdit3.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
             lookUpEdit3.Properties.NullText = "Chọn Người Tạo";
-            lookUpEdit3.Size = new System.Drawing.Size(178, 20);
+            lookUpEdit3.Size = new System.Drawing.Size(175, 20);
             lookUpEdit3.StyleController = layoutControlTop;
             lookUpEdit3.TabIndex = 3;
             // 
@@ -191,8 +191,12 @@
             lkupBranch.Location = new System.Drawing.Point(70, 12);
             lkupBranch.Name = "lkupBranch";
             lkupBranch.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
+            lkupBranch.Properties.Columns.AddRange(new DevExpress.XtraEditors.Controls.LookUpColumnInfo[] { new DevExpress.XtraEditors.Controls.LookUpColumnInfo("BranchId", ""), new DevExpress.XtraEditors.Controls.LookUpColumnInfo("BranchName", "", 150, DevExpress.Utils.FormatType.None, "", true, DevExpress.Utils.HorzAlignment.Default, DevExpress.Data.ColumnSortOrder.None, DevExpress.Utils.DefaultBoolean.Default) });
+            lkupBranch.Properties.DisplayMember = "BranchName";
             lkupBranch.Properties.NullText = "Chọn Chi Nhánh";
-            lkupBranch.Size = new System.Drawing.Size(178, 20);
+            lkupBranch.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+            lkupBranch.Properties.ValueMember = "BranchId";
+            lkupBranch.Size = new System.Drawing.Size(175, 20);
             lkupBranch.StyleController = layoutControlTop;
             lkupBranch.TabIndex = 0;
             // 
@@ -202,7 +206,7 @@
             Root.GroupBordersVisible = false;
             Root.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] { layoutControlItem1, layoutControlItem3, layoutControlItem5, layoutControlItem6, layoutControlItem7, layoutControlItem4, layoutControlItem2 });
             Root.Name = "Root";
-            Root.Size = new System.Drawing.Size(1234, 104);
+            Root.Size = new System.Drawing.Size(1226, 104);
             Root.TextVisible = false;
             // 
             // layoutControlItem1
@@ -210,7 +214,7 @@
             layoutControlItem1.Control = lkupBranch;
             layoutControlItem1.Location = new System.Drawing.Point(0, 0);
             layoutControlItem1.Name = "layoutControlItem1";
-            layoutControlItem1.Size = new System.Drawing.Size(240, 24);
+            layoutControlItem1.Size = new System.Drawing.Size(237, 24);
             layoutControlItem1.Text = "Chi nhánh";
             layoutControlItem1.TextSize = new System.Drawing.Size(54, 14);
             // 
@@ -219,14 +223,14 @@
             layoutControlItem3.Control = lookUpEdit3;
             layoutControlItem3.Location = new System.Drawing.Point(0, 24);
             layoutControlItem3.Name = "layoutControlItem3";
-            layoutControlItem3.Size = new System.Drawing.Size(240, 24);
+            layoutControlItem3.Size = new System.Drawing.Size(237, 24);
             layoutControlItem3.Text = "Người tạo";
             layoutControlItem3.TextSize = new System.Drawing.Size(54, 14);
             // 
             // layoutControlItem5
             // 
             layoutControlItem5.Control = chkDraft;
-            layoutControlItem5.Location = new System.Drawing.Point(240, 0);
+            layoutControlItem5.Location = new System.Drawing.Point(237, 0);
             layoutControlItem5.Name = "layoutControlItem5";
             layoutControlItem5.Size = new System.Drawing.Size(80, 84);
             layoutControlItem5.TextVisible = false;
@@ -234,7 +238,7 @@
             // layoutControlItem6
             // 
             layoutControlItem6.Control = chkFinish;
-            layoutControlItem6.Location = new System.Drawing.Point(320, 0);
+            layoutControlItem6.Location = new System.Drawing.Point(317, 0);
             layoutControlItem6.Name = "layoutControlItem6";
             layoutControlItem6.Size = new System.Drawing.Size(92, 84);
             layoutControlItem6.TextVisible = false;
@@ -242,7 +246,7 @@
             // layoutControlItem7
             // 
             layoutControlItem7.Control = chkCancel;
-            layoutControlItem7.Location = new System.Drawing.Point(412, 0);
+            layoutControlItem7.Location = new System.Drawing.Point(409, 0);
             layoutControlItem7.Name = "layoutControlItem7";
             layoutControlItem7.Size = new System.Drawing.Size(63, 84);
             layoutControlItem7.TextVisible = false;
@@ -252,16 +256,16 @@
             layoutControlItem4.Control = dateEdit1;
             layoutControlItem4.Location = new System.Drawing.Point(0, 48);
             layoutControlItem4.Name = "layoutControlItem4";
-            layoutControlItem4.Size = new System.Drawing.Size(240, 36);
+            layoutControlItem4.Size = new System.Drawing.Size(237, 36);
             layoutControlItem4.Text = "Thời gian";
             layoutControlItem4.TextSize = new System.Drawing.Size(54, 14);
             // 
             // layoutControlItem2
             // 
             layoutControlItem2.Control = layoutControl1;
-            layoutControlItem2.Location = new System.Drawing.Point(475, 0);
+            layoutControlItem2.Location = new System.Drawing.Point(472, 0);
             layoutControlItem2.Name = "layoutControlItem2";
-            layoutControlItem2.Size = new System.Drawing.Size(739, 84);
+            layoutControlItem2.Size = new System.Drawing.Size(734, 84);
             layoutControlItem2.TextVisible = false;
             // 
             // grdControlOrders
@@ -272,7 +276,7 @@
             grdControlOrders.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             grdControlOrders.Name = "grdControlOrders";
             grdControlOrders.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] { repositoryItemCheckEdit1, repositoryItemDateEdit1, repositoryItemDateEdit2 });
-            grdControlOrders.Size = new System.Drawing.Size(1238, 480);
+            grdControlOrders.Size = new System.Drawing.Size(1230, 480);
             grdControlOrders.TabIndex = 1;
             grdControlOrders.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] { grdViewOrders });
             // 
@@ -363,9 +367,10 @@
             Appearance.Options.UseFont = true;
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(1238, 608);
+            ClientSize = new System.Drawing.Size(1230, 608);
             Controls.Add(grdControlOrders);
             Controls.Add(groupControl1);
+            Font = new System.Drawing.Font("Tahoma", 9F);
             Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             MaximizeBox = false;
             MinimizeBox = false;

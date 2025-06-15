@@ -42,6 +42,7 @@ namespace FrmMain.Dto.Response
         public string Note { get; set; }
         public decimal ViewDiscount { get; set; }
         public bool Checked { get; set; } = false;
+        public string Unit { get; set; }
     }
 
     public class OrderPagedResponse()

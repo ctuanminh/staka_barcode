@@ -1,0 +1,38 @@
+services:
+  postgres:
+    image: postgres:latest
+    container_name: postgres_api
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: "12345678"
+      POSTGRES_DB: staka
+    ports:
+      - "5432:5432"
+    volumes:
+      - beapi_api:/var/lib/postgresql/data
+    networks:
+      - staka_network
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: pgadmin_api
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: trongcv@staka.com
+      PGADMIN_DEFAULT_PASSWORD: "12345678"
+    ports:
+      - "80:80"
+    networks:
+      - staka_network
+    depends_on:
+      - postgres
+
+networks:
+  staka_network:
+    driver: bridge
+    name: staka_network
+
+volumes:
+  beapi_api:
+

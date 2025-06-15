@@ -3,11 +3,15 @@
   "WorkspaceRootPath": "E:\\2025\\staka_pos\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{33C4759F-1AE5-4793-8947-9C6964509316}|FrmMain1\\FrmMain.csproj|e:\\2025\\staka_pos\\frmmain1\\frmmainf.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{33C4759F-1AE5-4793-8947-9C6964509316}|FrmMain1\\FrmMain.csproj|solutionrelative:frmmain1\\frmmainf.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{33C4759F-1AE5-4793-8947-9C6964509316}|FrmMain1\\FrmMain.csproj|e:\\2025\\staka_pos\\frmmain1\\frmorderprocess.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{33C4759F-1AE5-4793-8947-9C6964509316}|FrmMain1\\FrmMain.csproj|solutionrelative:frmmain1\\frmorderprocess.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{33C4759F-1AE5-4793-8947-9C6964509316}|FrmMain1\\FrmMain.csproj|e:\\2025\\staka_pos\\frmmain1\\frmmainf.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "AbsoluteMoniker": "D:0:0:{33C4759F-1AE5-4793-8947-9C6964509316}|FrmMain1\\FrmMain.csproj|e:\\2025\\staka_pos\\frmmain1\\dto\\response\\orderresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{33C4759F-1AE5-4793-8947-9C6964509316}|FrmMain1\\FrmMain.csproj|solutionrelative:frmmain1\\dto\\response\\orderresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{33C4759F-1AE5-4793-8947-9C6964509316}|FrmMain1\\FrmMain.csproj|E:\\2025\\staka_pos\\frmmain1\\frmmainf.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{33C4759F-1AE5-4793-8947-9C6964509316}|FrmMain1\\FrmMain.csproj|solutionrelative:frmmain1\\frmmainf.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
@@ -15,32 +19,64 @@
       "RelativeMoniker": "D:0:0:{33C4759F-1AE5-4793-8947-9C6964509316}|FrmMain1\\FrmMain.csproj|solutionrelative:frmmain1\\frmorderprocess.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{33C4759F-1AE5-4793-8947-9C6964509316}|FrmMain1\\FrmMain.csproj|E:\\2025\\staka_pos\\frmmain1\\frmorder.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{33C4759F-1AE5-4793-8947-9C6964509316}|FrmMain1\\FrmMain.csproj|solutionrelative:frmmain1\\frmorder.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{33C4759F-1AE5-4793-8947-9C6964509316}|FrmMain1\\FrmMain.csproj|e:\\2025\\staka_pos\\frmmain1\\frmorderprocess.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{33C4759F-1AE5-4793-8947-9C6964509316}|FrmMain1\\FrmMain.csproj|solutionrelative:frmmain1\\frmorderprocess.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{33C4759F-1AE5-4793-8947-9C6964509316}|FrmMain1\\FrmMain.csproj|e:\\2025\\staka_pos\\frmmain1\\frmmainf.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{33C4759F-1AE5-4793-8947-9C6964509316}|FrmMain1\\FrmMain.csproj|solutionrelative:frmmain1\\frmmainf.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{33C4759F-1AE5-4793-8947-9C6964509316}|FrmMain1\\FrmMain.csproj|e:\\2025\\staka_pos\\frmmain1\\frmorder.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{33C4759F-1AE5-4793-8947-9C6964509316}|FrmMain1\\FrmMain.csproj|solutionrelative:frmmain1\\frmorder.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{33C4759F-1AE5-4793-8947-9C6964509316}|FrmMain1\\FrmMain.csproj|e:\\2025\\staka_pos\\frmmain1\\loadingform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{33C4759F-1AE5-4793-8947-9C6964509316}|FrmMain1\\FrmMain.csproj|solutionrelative:frmmain1\\loadingform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+      "AbsoluteMoniker": "D:0:0:{4E9B0E1F-B88A-ABB7-B856-F6F655E9423C}|Be.Services\\Be.Services.csproj|e:\\2025\\staka_pos\\be.services\\catalog\\productserviceimp.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4E9B0E1F-B88A-ABB7-B856-F6F655E9423C}|Be.Services\\Be.Services.csproj|solutionrelative:be.services\\catalog\\productserviceimp.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{33C4759F-1AE5-4793-8947-9C6964509316}|FrmMain1\\FrmMain.csproj|e:\\2025\\staka_pos\\frmmain1\\frmorder.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{33C4759F-1AE5-4793-8947-9C6964509316}|FrmMain1\\FrmMain.csproj|solutionrelative:frmmain1\\frmorder.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{4E9B0E1F-B88A-ABB7-B856-F6F655E9423C}|Be.Services\\Be.Services.csproj|e:\\2025\\staka_pos\\be.services\\catalog\\iproductservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4E9B0E1F-B88A-ABB7-B856-F6F655E9423C}|Be.Services\\Be.Services.csproj|solutionrelative:be.services\\catalog\\iproductservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{33C4759F-1AE5-4793-8947-9C6964509316}|FrmMain1\\FrmMain.csproj|e:\\2025\\staka_pos\\frmmain1\\utils\\orderstatusenum.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{33C4759F-1AE5-4793-8947-9C6964509316}|FrmMain1\\FrmMain.csproj|solutionrelative:frmmain1\\utils\\orderstatusenum.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{4A714AAA-7EB1-5630-E7D1-3125610F266E}|Be.Common\\Be.Common.csproj|e:\\2025\\staka_pos\\be.common\\product\\response\\productcodebarcode.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4A714AAA-7EB1-5630-E7D1-3125610F266E}|Be.Common\\Be.Common.csproj|solutionrelative:be.common\\product\\response\\productcodebarcode.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{33C4759F-1AE5-4793-8947-9C6964509316}|FrmMain1\\FrmMain.csproj|e:\\2025\\staka_pos\\frmmain1\\utils\\numberformatter.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{33C4759F-1AE5-4793-8947-9C6964509316}|FrmMain1\\FrmMain.csproj|solutionrelative:frmmain1\\utils\\numberformatter.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{4E9B0E1F-B88A-ABB7-B856-F6F655E9423C}|Be.Services\\Be.Services.csproj|e:\\2025\\staka_pos\\be.services\\identity\\userserviceimp.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4E9B0E1F-B88A-ABB7-B856-F6F655E9423C}|Be.Services\\Be.Services.csproj|solutionrelative:be.services\\identity\\userserviceimp.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{54B0B7DB-9FAE-629B-6AB5-DAAF907A82C2}|Be.Data\\Be.Data.csproj|e:\\2025\\staka_pos\\be.data\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{54B0B7DB-9FAE-629B-6AB5-DAAF907A82C2}|Be.Data\\Be.Data.csproj|solutionrelative:be.data\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4E9B0E1F-B88A-ABB7-B856-F6F655E9423C}|Be.Services\\Be.Services.csproj|e:\\2025\\staka_pos\\be.services\\cashflow\\cashflowserviceimp.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4E9B0E1F-B88A-ABB7-B856-F6F655E9423C}|Be.Services\\Be.Services.csproj|solutionrelative:be.services\\cashflow\\cashflowserviceimp.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4A714AAA-7EB1-5630-E7D1-3125610F266E}|Be.Common\\Be.Common.csproj|e:\\2025\\staka_pos\\be.common\\responses\\usermodelresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4A714AAA-7EB1-5630-E7D1-3125610F266E}|Be.Common\\Be.Common.csproj|solutionrelative:be.common\\responses\\usermodelresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4A714AAA-7EB1-5630-E7D1-3125610F266E}|Be.Common\\Be.Common.csproj|e:\\2025\\staka_pos\\be.common\\dtos\\identity\\userrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4A714AAA-7EB1-5630-E7D1-3125610F266E}|Be.Common\\Be.Common.csproj|solutionrelative:be.common\\dtos\\identity\\userrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4E9B0E1F-B88A-ABB7-B856-F6F655E9423C}|Be.Services\\Be.Services.csproj|e:\\2025\\staka_pos\\be.services\\servicecollectionextensions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4E9B0E1F-B88A-ABB7-B856-F6F655E9423C}|Be.Services\\Be.Services.csproj|solutionrelative:be.services\\servicecollectionextensions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4E9B0E1F-B88A-ABB7-B856-F6F655E9423C}|Be.Services\\Be.Services.csproj|e:\\2025\\staka_pos\\be.services\\gateway\\kiotvietserviceimp.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4E9B0E1F-B88A-ABB7-B856-F6F655E9423C}|Be.Services\\Be.Services.csproj|solutionrelative:be.services\\gateway\\kiotvietserviceimp.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{33C4759F-1AE5-4793-8947-9C6964509316}|FrmMain1\\FrmMain.csproj|E:\\2025\\staka_pos\\frmmain1\\frmsystem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{33C4759F-1AE5-4793-8947-9C6964509316}|FrmMain1\\FrmMain.csproj|solutionrelative:frmmain1\\frmsystem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{33C4759F-1AE5-4793-8947-9C6964509316}|FrmMain1\\FrmMain.csproj|e:\\2025\\staka_pos\\frmmain1\\frmmainf.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{33C4759F-1AE5-4793-8947-9C6964509316}|FrmMain1\\FrmMain.csproj|solutionrelative:frmmain1\\frmmainf.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4A714AAA-7EB1-5630-E7D1-3125610F266E}|Be.Common\\Be.Common.csproj|e:\\2025\\staka_pos\\be.common\\dtos\\identity\\syncrolerequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4A714AAA-7EB1-5630-E7D1-3125610F266E}|Be.Common\\Be.Common.csproj|solutionrelative:be.common\\dtos\\identity\\syncrolerequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -50,7 +86,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 6,
           "Children": [
             {
               "$type": "Bookmark",
@@ -62,116 +98,131 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "FrmMainF.cs",
-              "DocumentMoniker": "E:\\2025\\staka_pos\\FrmMain1\\FrmMainF.cs",
-              "RelativeDocumentMoniker": "FrmMain1\\FrmMainF.cs",
-              "ToolTip": "E:\\2025\\staka_pos\\FrmMain1\\FrmMainF.cs",
-              "RelativeToolTip": "FrmMain1\\FrmMainF.cs",
-              "ViewState": "AgIAAEAAAAAAAAAAAAAiwGAAAAAIAAAAAAAAAA==",
+              "DocumentIndex": 1,
+              "Title": "OrderResponse.cs",
+              "DocumentMoniker": "E:\\2025\\staka_pos\\FrmMain1\\Dto\\Response\\OrderResponse.cs",
+              "RelativeDocumentMoniker": "FrmMain1\\Dto\\Response\\OrderResponse.cs",
+              "ToolTip": "E:\\2025\\staka_pos\\FrmMain1\\Dto\\Response\\OrderResponse.cs",
+              "RelativeToolTip": "FrmMain1\\Dto\\Response\\OrderResponse.cs",
+              "ViewState": "AgIAABYAAAAAAAAAAAAowCwAAAAaAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-14T17:58:07.475Z",
+              "WhenOpened": "2025-06-15T17:01:39.604Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "FrmMainF.cs [Design]",
-              "DocumentMoniker": "E:\\2025\\staka_pos\\FrmMain1\\FrmMainF.cs",
-              "RelativeDocumentMoniker": "FrmMain1\\FrmMainF.cs",
-              "ToolTip": "E:\\2025\\staka_pos\\FrmMain1\\FrmMainF.cs [Design]",
-              "RelativeToolTip": "FrmMain1\\FrmMainF.cs [Design]",
+              "DocumentIndex": 8,
+              "Title": "ProductCodeBarCode.cs",
+              "DocumentMoniker": "E:\\2025\\staka_pos\\Be.Common\\Product\\Response\\ProductCodeBarCode.cs",
+              "RelativeDocumentMoniker": "Be.Common\\Product\\Response\\ProductCodeBarCode.cs",
+              "ToolTip": "E:\\2025\\staka_pos\\Be.Common\\Product\\Response\\ProductCodeBarCode.cs",
+              "RelativeToolTip": "Be.Common\\Product\\Response\\ProductCodeBarCode.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAjAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-14T17:51:44.331Z",
-              "EditorCaption": " [Design]"
+              "WhenOpened": "2025-06-15T15:18:22.88Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 7,
+              "Title": "IProductService.cs",
+              "DocumentMoniker": "E:\\2025\\staka_pos\\Be.Services\\Catalog\\IProductService.cs",
+              "RelativeDocumentMoniker": "Be.Services\\Catalog\\IProductService.cs",
+              "ToolTip": "E:\\2025\\staka_pos\\Be.Services\\Catalog\\IProductService.cs",
+              "RelativeToolTip": "Be.Services\\Catalog\\IProductService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAtAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-15T15:07:23.893Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
               "Title": "FrmOrderProcess.cs [Design]",
               "DocumentMoniker": "E:\\2025\\staka_pos\\FrmMain1\\FrmOrderProcess.cs",
               "RelativeDocumentMoniker": "FrmMain1\\FrmOrderProcess.cs",
               "ToolTip": "E:\\2025\\staka_pos\\FrmMain1\\FrmOrderProcess.cs [Design]",
               "RelativeToolTip": "FrmMain1\\FrmOrderProcess.cs [Design]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-14T17:45:38.018Z",
+              "WhenOpened": "2025-06-15T14:54:00.23Z",
               "EditorCaption": " [Design]"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "LoadingForm.cs [Design]",
-              "DocumentMoniker": "E:\\2025\\staka_pos\\FrmMain1\\LoadingForm.cs",
-              "RelativeDocumentMoniker": "FrmMain1\\LoadingForm.cs",
-              "ToolTip": "E:\\2025\\staka_pos\\FrmMain1\\LoadingForm.cs [Design]",
-              "RelativeToolTip": "FrmMain1\\LoadingForm.cs [Design]",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-14T17:23:38.288Z",
-              "EditorCaption": " [Design]"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "FrmOrder.Designer.cs",
-              "DocumentMoniker": "E:\\2025\\staka_pos\\FrmMain1\\FrmOrder.Designer.cs",
-              "RelativeDocumentMoniker": "FrmMain1\\FrmOrder.Designer.cs",
-              "ToolTip": "E:\\2025\\staka_pos\\FrmMain1\\FrmOrder.Designer.cs",
-              "RelativeToolTip": "FrmMain1\\FrmOrder.Designer.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-14T16:34:25.086Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "OrderStatusEnum.cs",
-              "DocumentMoniker": "E:\\2025\\staka_pos\\FrmMain1\\Utils\\OrderStatusEnum.cs",
-              "RelativeDocumentMoniker": "FrmMain1\\Utils\\OrderStatusEnum.cs",
-              "ToolTip": "E:\\2025\\staka_pos\\FrmMain1\\Utils\\OrderStatusEnum.cs",
-              "RelativeToolTip": "FrmMain1\\Utils\\OrderStatusEnum.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAgAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-14T15:36:09.189Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "NumberFormatter.cs",
-              "DocumentMoniker": "E:\\2025\\staka_pos\\FrmMain1\\Utils\\NumberFormatter.cs",
-              "RelativeDocumentMoniker": "FrmMain1\\Utils\\NumberFormatter.cs",
-              "ToolTip": "E:\\2025\\staka_pos\\FrmMain1\\Utils\\NumberFormatter.cs",
-              "RelativeToolTip": "FrmMain1\\Utils\\NumberFormatter.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAIAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-14T15:07:56.327Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 0,
               "Title": "FrmOrderProcess.cs",
               "DocumentMoniker": "E:\\2025\\staka_pos\\FrmMain1\\FrmOrderProcess.cs",
               "RelativeDocumentMoniker": "FrmMain1\\FrmOrderProcess.cs",
               "ToolTip": "E:\\2025\\staka_pos\\FrmMain1\\FrmOrderProcess.cs",
               "RelativeToolTip": "FrmMain1\\FrmOrderProcess.cs",
-              "ViewState": "AgIAAE0AAAAAAAAAAAAgwFkAAAARAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAbAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-14T14:37:51.508Z",
+              "WhenOpened": "2025-06-15T03:59:09.732Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "FrmOrder.cs [Design]",
-              "DocumentMoniker": "E:\\2025\\staka_pos\\FrmMain1\\FrmOrder.cs",
-              "RelativeDocumentMoniker": "FrmMain1\\FrmOrder.cs",
-              "ToolTip": "E:\\2025\\staka_pos\\FrmMain1\\FrmOrder.cs [Design]",
-              "RelativeToolTip": "FrmMain1\\FrmOrder.cs [Design]",
+              "DocumentIndex": 9,
+              "Title": "UserServiceImp.cs",
+              "DocumentMoniker": "E:\\2025\\staka_pos\\Be.Services\\Identity\\UserServiceImp.cs",
+              "RelativeDocumentMoniker": "Be.Services\\Identity\\UserServiceImp.cs",
+              "ToolTip": "E:\\2025\\staka_pos\\Be.Services\\Identity\\UserServiceImp.cs",
+              "RelativeToolTip": "Be.Services\\Identity\\UserServiceImp.cs",
+              "ViewState": "AgIAACAAAAAAAAAAAAAswAQBAAAjAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-14T14:13:29.34Z",
+              "WhenOpened": "2025-06-15T04:46:14.349Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "ProductServiceImp.cs",
+              "DocumentMoniker": "E:\\2025\\staka_pos\\Be.Services\\Catalog\\ProductServiceImp.cs",
+              "RelativeDocumentMoniker": "Be.Services\\Catalog\\ProductServiceImp.cs",
+              "ToolTip": "E:\\2025\\staka_pos\\Be.Services\\Catalog\\ProductServiceImp.cs",
+              "RelativeToolTip": "Be.Services\\Catalog\\ProductServiceImp.cs",
+              "ViewState": "AgIAABcAAAAAAAAAAAAcwEwAAABUAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-15T04:44:40.475Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "E:\\2025\\staka_pos\\Be.Data\\appsettings.json",
+              "RelativeDocumentMoniker": "Be.Data\\appsettings.json",
+              "ToolTip": "E:\\2025\\staka_pos\\Be.Data\\appsettings.json",
+              "RelativeToolTip": "Be.Data\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-06-15T06:15:58.167Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "FrmMainF.cs [Design]",
+              "DocumentMoniker": "E:\\2025\\staka_pos\\FrmMain1\\FrmMainF.cs",
+              "RelativeDocumentMoniker": "FrmMain1\\FrmMainF.cs",
+              "ToolTip": "E:\\2025\\staka_pos\\FrmMain1\\FrmMainF.cs [Design]",
+              "RelativeToolTip": "FrmMain1\\FrmMainF.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-15T04:07:12.684Z",
               "EditorCaption": " [Design]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "FrmMainF.cs",
+              "DocumentMoniker": "E:\\2025\\staka_pos\\FrmMain1\\FrmMainF.cs",
+              "RelativeDocumentMoniker": "FrmMain1\\FrmMainF.cs",
+              "ToolTip": "E:\\2025\\staka_pos\\FrmMain1\\FrmMainF.cs",
+              "RelativeToolTip": "FrmMain1\\FrmMainF.cs",
+              "ViewState": "AgIAAFYAAAAAAAAAAADwv2sAAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-15T16:41:09.96Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -181,9 +232,112 @@
               "RelativeDocumentMoniker": "FrmMain1\\FrmOrder.cs",
               "ToolTip": "E:\\2025\\staka_pos\\FrmMain1\\FrmOrder.cs",
               "RelativeToolTip": "FrmMain1\\FrmOrder.cs",
-              "ViewState": "AgIAADMAAAAAAAAAAADwv0sAAAAoAAAAAAAAAA==",
+              "ViewState": "AgIAAE0AAAAAAAAAAAAmwGUAAABBAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-14T16:09:40.115Z",
+              "WhenOpened": "2025-06-15T16:34:40.02Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "UserModelResponse.cs",
+              "DocumentMoniker": "E:\\2025\\staka_pos\\Be.Common\\Responses\\UserModelResponse.cs",
+              "RelativeDocumentMoniker": "Be.Common\\Responses\\UserModelResponse.cs",
+              "ToolTip": "E:\\2025\\staka_pos\\Be.Common\\Responses\\UserModelResponse.cs",
+              "RelativeToolTip": "Be.Common\\Responses\\UserModelResponse.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-15T05:55:35.604Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "UserRequest.cs",
+              "DocumentMoniker": "E:\\2025\\staka_pos\\Be.Common\\Dtos\\Identity\\UserRequest.cs",
+              "RelativeDocumentMoniker": "Be.Common\\Dtos\\Identity\\UserRequest.cs",
+              "ToolTip": "E:\\2025\\staka_pos\\Be.Common\\Dtos\\Identity\\UserRequest.cs",
+              "RelativeToolTip": "Be.Common\\Dtos\\Identity\\UserRequest.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAuAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-15T05:54:54.609Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "KiotVietServiceImp.cs",
+              "DocumentMoniker": "E:\\2025\\staka_pos\\Be.Services\\Gateway\\KiotVietServiceImp.cs",
+              "RelativeDocumentMoniker": "Be.Services\\Gateway\\KiotVietServiceImp.cs",
+              "ToolTip": "E:\\2025\\staka_pos\\Be.Services\\Gateway\\KiotVietServiceImp.cs",
+              "RelativeToolTip": "Be.Services\\Gateway\\KiotVietServiceImp.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAKAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-15T05:51:51.002Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "CashFlowServiceImp.cs",
+              "DocumentMoniker": "E:\\2025\\staka_pos\\Be.Services\\CashFlow\\CashFlowServiceImp.cs",
+              "RelativeDocumentMoniker": "Be.Services\\CashFlow\\CashFlowServiceImp.cs",
+              "ToolTip": "E:\\2025\\staka_pos\\Be.Services\\CashFlow\\CashFlowServiceImp.cs",
+              "RelativeToolTip": "Be.Services\\CashFlow\\CashFlowServiceImp.cs",
+              "ViewState": "AgIAABgAAAAAAAAAAAAmwCQAAAAhAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-15T05:26:25.032Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "ServiceCollectionExtensions.cs",
+              "DocumentMoniker": "E:\\2025\\staka_pos\\Be.Services\\ServiceCollectionExtensions.cs",
+              "RelativeDocumentMoniker": "Be.Services\\ServiceCollectionExtensions.cs",
+              "ToolTip": "E:\\2025\\staka_pos\\Be.Services\\ServiceCollectionExtensions.cs",
+              "RelativeToolTip": "Be.Services\\ServiceCollectionExtensions.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAABOwB4AAAAmAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-15T04:43:22.713Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "FrmSystem.cs [Design]",
+              "DocumentMoniker": "E:\\2025\\staka_pos\\FrmMain1\\FrmSystem.cs",
+              "RelativeDocumentMoniker": "FrmMain1\\FrmSystem.cs",
+              "ToolTip": "E:\\2025\\staka_pos\\FrmMain1\\FrmSystem.cs [Design]",
+              "RelativeToolTip": "FrmMain1\\FrmSystem.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-15T03:44:45.994Z",
+              "EditorCaption": " [Design]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "FrmMainF.Designer.cs",
+              "DocumentMoniker": "E:\\2025\\staka_pos\\FrmMain1\\FrmMainF.Designer.cs",
+              "RelativeDocumentMoniker": "FrmMain1\\FrmMainF.Designer.cs",
+              "ToolTip": "E:\\2025\\staka_pos\\FrmMain1\\FrmMainF.Designer.cs",
+              "RelativeToolTip": "FrmMain1\\FrmMainF.Designer.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-15T04:14:54.589Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "SyncRoleRequest.cs",
+              "DocumentMoniker": "E:\\2025\\staka_pos\\Be.Common\\Dtos\\Identity\\SyncRoleRequest.cs",
+              "RelativeDocumentMoniker": "Be.Common\\Dtos\\Identity\\SyncRoleRequest.cs",
+              "ToolTip": "E:\\2025\\staka_pos\\Be.Common\\Dtos\\Identity\\SyncRoleRequest.cs",
+              "RelativeToolTip": "Be.Common\\Dtos\\Identity\\SyncRoleRequest.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAZAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-15T03:56:56.187Z",
               "EditorCaption": ""
             }
           ]

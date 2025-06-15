@@ -3,6 +3,7 @@ using DevExpress.XtraNavBar;
 using System;
 using System.Linq;
 using System.Windows.Forms;
+using DevExpress.XtraBars;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace FrmMain
@@ -16,7 +17,8 @@ namespace FrmMain
             ServiceProvider = serviceProvider;
             InitializeComponent();
         }
-        public bool OpenedForm(string fName, WuserControl parent)
+
+        private bool OpenedForm(string fName, WuserControl parent)
         {
             var openForm = Application.OpenForms[fName];
             if (openForm == null)
@@ -24,7 +26,7 @@ namespace FrmMain
                 return false;
             }
 
-            if (parent == WuserControl.none || openForm.AccessibleDescription == parent.ToString())
+            if (parent == WuserControl.None || openForm.AccessibleDescription == parent.ToString())
             {
                 openForm.BringToFront();
                 return true;
@@ -35,9 +37,10 @@ namespace FrmMain
         }
         public enum WuserControl
         {
-            none = 0,
-            order = 1,
-            orderProccess = 2
+            None = 0,
+            Order = 1,
+            OrderProcess = 2,
+            FrmSystem = 3
         }
 
         private void FormActive(object sender, EventArgs e)
@@ -57,18 +60,23 @@ namespace FrmMain
             }
         }
 
-        private void barButtonItem1_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        private void mButtonItem_ItemClick(object sender, ItemClickEventArgs e)
         {
             switch (e.Item.Name)
             {
-                case nameof(btnOrder):
-                    if (!OpenedForm(nameof(FrmOrder), WuserControl.order))
+                case nameof(mbtnOrder):
+                    if (!OpenedForm(nameof(FrmOrder), WuserControl.Order))
                     {
                        var frmOrder =  ServiceProvider.GetRequiredService<FrmOrder>();
-                        NewFormNew(frmOrder, WuserControl.order);
+                        NewFormNew(frmOrder, WuserControl.Order);
                     }
                     break;
-                default:
+                case nameof(mbtnSystem):
+                    if (!OpenedForm(nameof(FrmSystem), WuserControl.FrmSystem))
+                    {
+                        var frmSystem = ServiceProvider.GetRequiredService<FrmSystem>();
+                        NewFormNew(frmSystem, WuserControl.FrmSystem);
+                    }
                     break;
             }
         }

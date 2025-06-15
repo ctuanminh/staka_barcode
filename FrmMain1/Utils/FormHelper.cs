@@ -22,7 +22,7 @@ namespace FrmMain.Utils
                 return false;
             }
 
-            if (parent == WuserControl.none || openForm.AccessibleDescription == parent.ToString())
+            if (parent == WuserControl.None || openForm.AccessibleDescription == parent.ToString())
             {
                 openForm.BringToFront();
                 return true;
