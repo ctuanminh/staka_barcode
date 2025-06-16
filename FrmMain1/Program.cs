@@ -48,6 +48,7 @@ namespace FrmMain
             services.AddTransient<FrmOrderProcess>();
             services.AddSingleton<FrmMainF>();
             services.AddSingleton<FrmSystem>(); 
+            services.AddSingleton<FrmLogin>(); 
             services.AddSingleton<IKiotVietService, KiotVietServiceImp>();
 
             // Xây dựng ServiceProvider

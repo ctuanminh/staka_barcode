@@ -1,24 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "E:\\2025\\staka_pos\\FrmMain1\\FrmMain.csproj": {}
+    "D:\\TrongCV\\DEV\\Pos\\StakaPos\\FrmMain1\\FrmMain.csproj": {}
   },
   "projects": {
-    "E:\\2025\\staka_pos\\Be.Common\\Be.Common.csproj": {
+    "D:\\TrongCV\\DEV\\Pos\\StakaPos\\Be.Common\\Be.Common.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\2025\\staka_pos\\Be.Common\\Be.Common.csproj",
+        "projectUniqueName": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\Be.Common\\Be.Common.csproj",
         "projectName": "Be.Common",
-        "projectPath": "E:\\2025\\staka_pos\\Be.Common\\Be.Common.csproj",
-        "packagesPath": "C:\\Users\\chuva\\.nuget\\packages\\",
-        "outputPath": "E:\\2025\\staka_pos\\Be.Common\\obj\\",
+        "projectPath": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\Be.Common\\Be.Common.csproj",
+        "packagesPath": "C:\\Users\\PV\\.nuget\\packages\\",
+        "outputPath": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\Be.Common\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\DevExpress 24.2\\Components\\Offline Packages",
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\chuva\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\PV\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress 24.2.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
@@ -35,8 +35,8 @@
           "net9.0": {
             "targetAlias": "net9.0",
             "projectReferences": {
-              "E:\\2025\\staka_pos\\Be.Core\\Be.Core.csproj": {
-                "projectPath": "E:\\2025\\staka_pos\\Be.Core\\Be.Core.csproj"
+              "D:\\TrongCV\\DEV\\Pos\\StakaPos\\Be.Core\\Be.Core.csproj": {
+                "projectPath": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\Be.Core\\Be.Core.csproj"
               }
             }
           }
@@ -90,21 +90,21 @@
         }
       }
     },
-    "E:\\2025\\staka_pos\\Be.Core\\Be.Core.csproj": {
+    "D:\\TrongCV\\DEV\\Pos\\StakaPos\\Be.Core\\Be.Core.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\2025\\staka_pos\\Be.Core\\Be.Core.csproj",
+        "projectUniqueName": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\Be.Core\\Be.Core.csproj",
         "projectName": "Be.Core",
-        "projectPath": "E:\\2025\\staka_pos\\Be.Core\\Be.Core.csproj",
-        "packagesPath": "C:\\Users\\chuva\\.nuget\\packages\\",
-        "outputPath": "E:\\2025\\staka_pos\\Be.Core\\obj\\",
+        "projectPath": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\Be.Core\\Be.Core.csproj",
+        "packagesPath": "C:\\Users\\PV\\.nuget\\packages\\",
+        "outputPath": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\Be.Core\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\DevExpress 24.2\\Components\\Offline Packages",
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\chuva\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\PV\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress 24.2.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
@@ -164,21 +164,21 @@
         }
       }
     },
-    "E:\\2025\\staka_pos\\Be.Data\\Be.Data.csproj": {
+    "D:\\TrongCV\\DEV\\Pos\\StakaPos\\Be.Data\\Be.Data.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\2025\\staka_pos\\Be.Data\\Be.Data.csproj",
+        "projectUniqueName": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\Be.Data\\Be.Data.csproj",
         "projectName": "Be.Data",
-        "projectPath": "E:\\2025\\staka_pos\\Be.Data\\Be.Data.csproj",
-        "packagesPath": "C:\\Users\\chuva\\.nuget\\packages\\",
-        "outputPath": "E:\\2025\\staka_pos\\Be.Data\\obj\\",
+        "projectPath": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\Be.Data\\Be.Data.csproj",
+        "packagesPath": "C:\\Users\\PV\\.nuget\\packages\\",
+        "outputPath": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\Be.Data\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\DevExpress 24.2\\Components\\Offline Packages",
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\chuva\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\PV\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress 24.2.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
@@ -195,11 +195,11 @@
           "net9.0": {
             "targetAlias": "net9.0",
             "projectReferences": {
-              "E:\\2025\\staka_pos\\Be.Common\\Be.Common.csproj": {
-                "projectPath": "E:\\2025\\staka_pos\\Be.Common\\Be.Common.csproj"
+              "D:\\TrongCV\\DEV\\Pos\\StakaPos\\Be.Common\\Be.Common.csproj": {
+                "projectPath": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\Be.Common\\Be.Common.csproj"
               },
-              "E:\\2025\\staka_pos\\Be.Core\\Be.Core.csproj": {
-                "projectPath": "E:\\2025\\staka_pos\\Be.Core\\Be.Core.csproj"
+              "D:\\TrongCV\\DEV\\Pos\\StakaPos\\Be.Core\\Be.Core.csproj": {
+                "projectPath": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\Be.Core\\Be.Core.csproj"
               }
             }
           }
@@ -289,21 +289,21 @@
         }
       }
     },
-    "E:\\2025\\staka_pos\\Be.Services\\Be.Services.csproj": {
+    "D:\\TrongCV\\DEV\\Pos\\StakaPos\\Be.Services\\Be.Services.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\2025\\staka_pos\\Be.Services\\Be.Services.csproj",
+        "projectUniqueName": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\Be.Services\\Be.Services.csproj",
         "projectName": "Be.Services",
-        "projectPath": "E:\\2025\\staka_pos\\Be.Services\\Be.Services.csproj",
-        "packagesPath": "C:\\Users\\chuva\\.nuget\\packages\\",
-        "outputPath": "E:\\2025\\staka_pos\\Be.Services\\obj\\",
+        "projectPath": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\Be.Services\\Be.Services.csproj",
+        "packagesPath": "C:\\Users\\PV\\.nuget\\packages\\",
+        "outputPath": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\Be.Services\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\DevExpress 24.2\\Components\\Offline Packages",
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\chuva\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\PV\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress 24.2.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
@@ -320,14 +320,14 @@
           "net9.0": {
             "targetAlias": "net9.0",
             "projectReferences": {
-              "E:\\2025\\staka_pos\\Be.Common\\Be.Common.csproj": {
-                "projectPath": "E:\\2025\\staka_pos\\Be.Common\\Be.Common.csproj"
+              "D:\\TrongCV\\DEV\\Pos\\StakaPos\\Be.Common\\Be.Common.csproj": {
+                "projectPath": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\Be.Common\\Be.Common.csproj"
               },
-              "E:\\2025\\staka_pos\\Be.Core\\Be.Core.csproj": {
-                "projectPath": "E:\\2025\\staka_pos\\Be.Core\\Be.Core.csproj"
+              "D:\\TrongCV\\DEV\\Pos\\StakaPos\\Be.Core\\Be.Core.csproj": {
+                "projectPath": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\Be.Core\\Be.Core.csproj"
               },
-              "E:\\2025\\staka_pos\\Be.Data\\Be.Data.csproj": {
-                "projectPath": "E:\\2025\\staka_pos\\Be.Data\\Be.Data.csproj"
+              "D:\\TrongCV\\DEV\\Pos\\StakaPos\\Be.Data\\Be.Data.csproj": {
+                "projectPath": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\Be.Data\\Be.Data.csproj"
               }
             }
           }
@@ -441,21 +441,21 @@
         }
       }
     },
-    "E:\\2025\\staka_pos\\FrmMain1\\FrmMain.csproj": {
+    "D:\\TrongCV\\DEV\\Pos\\StakaPos\\FrmMain1\\FrmMain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\2025\\staka_pos\\FrmMain1\\FrmMain.csproj",
+        "projectUniqueName": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\FrmMain1\\FrmMain.csproj",
         "projectName": "FrmMain",
-        "projectPath": "E:\\2025\\staka_pos\\FrmMain1\\FrmMain.csproj",
-        "packagesPath": "C:\\Users\\chuva\\.nuget\\packages\\",
-        "outputPath": "E:\\2025\\staka_pos\\FrmMain1\\obj\\",
+        "projectPath": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\FrmMain1\\FrmMain.csproj",
+        "packagesPath": "C:\\Users\\PV\\.nuget\\packages\\",
+        "outputPath": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\FrmMain1\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\DevExpress 24.2\\Components\\Offline Packages",
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\chuva\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\PV\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress 24.2.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
@@ -472,11 +472,11 @@
           "net9.0-windows7.0": {
             "targetAlias": "net9.0-windows",
             "projectReferences": {
-              "E:\\2025\\staka_pos\\Be.Services\\Be.Services.csproj": {
-                "projectPath": "E:\\2025\\staka_pos\\Be.Services\\Be.Services.csproj"
+              "D:\\TrongCV\\DEV\\Pos\\StakaPos\\Be.Services\\Be.Services.csproj": {
+                "projectPath": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\Be.Services\\Be.Services.csproj"
               },
-              "E:\\2025\\staka_pos\\Services\\Services.csproj": {
-                "projectPath": "E:\\2025\\staka_pos\\Services\\Services.csproj"
+              "D:\\TrongCV\\DEV\\Pos\\StakaPos\\Services\\Services.csproj": {
+                "projectPath": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\Services\\Services.csproj"
               }
             }
           }
@@ -557,21 +557,21 @@
         }
       }
     },
-    "E:\\2025\\staka_pos\\Services\\Services.csproj": {
+    "D:\\TrongCV\\DEV\\Pos\\StakaPos\\Services\\Services.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\2025\\staka_pos\\Services\\Services.csproj",
+        "projectUniqueName": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\Services\\Services.csproj",
         "projectName": "Services",
-        "projectPath": "E:\\2025\\staka_pos\\Services\\Services.csproj",
-        "packagesPath": "C:\\Users\\chuva\\.nuget\\packages\\",
-        "outputPath": "E:\\2025\\staka_pos\\Services\\obj\\",
+        "projectPath": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\Services\\Services.csproj",
+        "packagesPath": "C:\\Users\\PV\\.nuget\\packages\\",
+        "outputPath": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\Services\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\DevExpress 24.2\\Components\\Offline Packages",
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\chuva\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\PV\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress 24.2.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"

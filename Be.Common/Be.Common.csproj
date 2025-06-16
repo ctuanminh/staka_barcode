@@ -16,6 +16,7 @@
     <Folder Include="Auth\Response\" />
     <Folder Include="Auth\Request\" />
     <Folder Include="Branch\Dto\" />
+    <Folder Include="Order\Request\" />
     <Folder Include="Product\Request\" />
   </ItemGroup>
 

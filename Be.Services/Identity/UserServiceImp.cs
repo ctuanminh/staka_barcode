@@ -49,21 +49,19 @@ namespace Be.Services.Identity
         {
             try
             {              
-                var userExist = await _userManager.Users.FirstOrDefaultAsync(u => u.PhoneNumber == request.PhoneNumber);
-                if (userExist == null) return BadRequest("B", "Số điện thoại/mật khẩu không chính xác.");
+                var userExist = await _userManager.Users.FirstOrDefaultAsync(u => u.UserName == request.UserName);
+                if (userExist == null) return false;
                 var loginResult =
                     _userManager.PasswordHasher.VerifyHashedPassword(userExist, userExist.PasswordHash, request.Password);
 
                 if (loginResult == PasswordVerificationResult.Failed)
                 {
-                    return BadRequest("B", "Số điện thoại hoặc mật khẩu không chính xác.");
+                    return BadRequest("B", "Tên đăng nhập hoặc mật khẩu không chính xác.");
                 }
                                 
                 var roles = new List<string> { "admin", "customer" };
-                var accessToken = _jwtService.GenerateAccessToken(userExist.Id, userExist.Email, roles.ToList());
                 return Ok(new
                 {
-                    AccessToken = accessToken,
                     User = new
                     {
                         Id = userExist.Id,

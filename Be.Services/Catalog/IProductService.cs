@@ -1,6 +1,6 @@
 ﻿using Be.Common.Dtos.Product;
+using Be.Common.Order.Response;
 using Be.Common.Product.Response;
-using Be.Common.Request;
 using Be.Common.Responses;
 using Be.Core.Entities;
 
@@ -14,5 +14,6 @@ namespace Be.Services.Catalog
 		Task<ApiResponse> DeleteProduct(Guid Id);
 		Task<ApiResponse> SyncProduct(SearchProductRequestKiot searchProductRequestKiot);
 		Task<Product> GetProductById(long Id);
+        Task<List<ProductCodeBarCode>> SynAndGetProductCodeBarCode(List<OrderDetailResponse> orderDetail);
     }
 }

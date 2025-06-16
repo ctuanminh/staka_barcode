@@ -1,7 +1,6 @@
 ﻿using DevExpress.XtraEditors;
 using DevExpress.XtraGrid.Views.Grid;
 using DevExpress.XtraSplashScreen;
-using FrmMain.Dto.Response;
 using FrmMain.Utils;
 using Newtonsoft.Json;
 using System;
@@ -10,6 +9,8 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using Be.Common.Order.Response;
+using Be.Core.Entities;
 using Be.Services.Catalog;
 using Be.Services.KiotViet;
 using Exception = System.Exception;
@@ -26,6 +27,9 @@ namespace FrmMain
         private OrderResponse _orderResponse;
         private readonly IProductService _productService;
         private Dictionary<string, string> productLookupDictionary;
+        private Timer _reloadTimer;
+        private DateTime _nextReloadTime;
+        private const int ReloadIntervalMinutes = 60;
         public FrmOrderProcess(IKiotVietService kiotVietService, IProductService productService)
         {
             _kiotVietService = kiotVietService;
@@ -33,6 +37,7 @@ namespace FrmMain
             InitializeComponent();
             ReloadData(CurrentCode);
             txtOrderCode.Text = CurrentCode;
+            StartCountdownTimer();
         }
 
         public void ReloadData(string code)
@@ -41,14 +46,13 @@ namespace FrmMain
             txtOrderCode.Text = code;
             _scannedBarcodeCount = 0;
             LoadData(code);
-            LoadProduct();
         }
 
-        private async void LoadProduct()
+        private async void LoadProduct(List<OrderDetailResponse> orderDetailResponses)
         {
             try
             {
-                var productCodeBarCode = await _productService.GetProductCodeBarCode();
+                var productCodeBarCode = await _productService.SynAndGetProductCodeBarCode(orderDetailResponses);
                 productLookupDictionary = new Dictionary<string, string>();
                 foreach (var product in productCodeBarCode)
                 {
@@ -93,32 +97,36 @@ namespace FrmMain
                     orderApi.Unit = orderApi.ProductName.Substring(start + 1, end - start - 1).Trim();
                     orderApi.ProductName = orderApi.ProductName[..start].Trim();
                 }
-                switch (orderApiResponse.Status)
+                chkFinish.BackColor = Color.LightGreen;
+                chkCancel.BackColor = Color.OrangeRed;
+                chkCancel.ForeColor = Color.White;
+                chkDraft.BackColor = Color.Green;
+                chkDraft.BackColor = Color.Green;
+                chkDraft.ForeColor = Color.White;
+                // Reset trạng thái
+                chkFinish.Checked = false;
+                chkCancel.Checked = false;
+                chkDraft.Checked = false;
+
+                switch ((OrderStatusEnum)orderApiResponse.Status)
                 {
-                    case (int)OrderStatusEnum.Finished:
+                    case OrderStatusEnum.Finished:
                         MessageHelper.MsgBox($"Đơn hàng: {code} đã Hoàn thành", MsgType.Error_);
                         txtProductCode.ReadOnly = true;
                         chkFinish.Checked = true;
-                        chkFinish.BackColor = Color.LightGreen;
-                        chkDraft.Checked = false;
-                        chkCancel.Checked = false;
-                        break;
-                    case (int)OrderStatusEnum.Cancel:
-                        MessageHelper.MsgBox($"Đơn hàng: {code} đã Huỷ", MsgType.Error_);
                         txtProductCode.ReadOnly = true;
-                        chkCancel.Checked = true;
-                        chkCancel.BackColor = Color.OrangeRed;
-                        chkDraft.Checked = false;
-                        chkFinish.Checked = false;
                         break;
-                    case (int)OrderStatusEnum.Draft:
+                    case OrderStatusEnum.Cancel:
+                        MessageHelper.MsgBox($"Đơn hàng: {code} đã Huỷ", MsgType.Error_);
+                        chkCancel.Checked = true;
+                        txtProductCode.ReadOnly = true;
+                        break;
+                    case OrderStatusEnum.Draft:
                         chkDraft.Checked = true;
-                        chkDraft.BackColor = Color.Green;
-                        chkDraft.ForeColor = Color.White;
-                        chkFinish.Checked = false;
-                        chkCancel.Checked = false;
+                        txtProductCode.ReadOnly = false;
                         break;
                     default:
+                        txtProductCode.ReadOnly = true;
                         break;
                 }
 
@@ -141,7 +149,14 @@ namespace FrmMain
                 txtScanNumber.ReadOnly = true;
                 txtScanNumber.Text = $"{_scannedBarcodeCount.ToString()}" + "/" +
                                      orderApiResponse.OrderDetails.Count().ToString();
+                foreach (var item in _orderResponse.OrderDetails)
+                {
+
+                    item.DisplayDiscount = item.DiscountRatio > 0 ? $"{NumberFormatter.FormatDecimal(item.Discount)} - {item.DiscountRatio}%" : $"{NumberFormatter.FormatDecimal(item.Discount)}%";
+                }
                 gridControlOrder.DataSource = _orderResponse.OrderDetails;
+                gridViewOrder.BestFitColumns();
+                LoadProduct(_orderResponse.OrderDetails);
             }
             catch (Exception ex)
             {
@@ -156,19 +171,33 @@ namespace FrmMain
             }
         }
 
-        private void SetTextEditHeight(Control control, int height)
+        private static void SetTextEditHeight(Control control, int height)
         {
             foreach (Control c in control.Controls)
             {
-                if (c is TextEdit textEdit)
+                switch (c)
                 {
-                    textEdit.Properties.AutoHeight = false;
-                    textEdit.MinimumSize = new Size(0, height);
-                    textEdit.MaximumSize = new Size(0, height);
-                }
-                else if (c.HasChildren)
-                {
-                    SetTextEditHeight(c, height); // Đệ quy
+                    case TextEdit textEdit:
+                        textEdit.Properties.AutoHeight = false;
+                        textEdit.MinimumSize = new Size(0, height);
+                        textEdit.MaximumSize = new Size(0, height);
+                        break;
+                    case SimpleButton button:
+                        button.MinimumSize = new Size(0, height);
+                        button.MaximumSize = new Size(0, height);
+                        break;
+                    case CheckEdit checkEdit:
+                        checkEdit.MinimumSize = new Size(0, height);
+                        checkEdit.MaximumSize = new Size(0, height);
+                        break;
+                    default:
+                        {
+                            if (c.HasChildren)
+                            {
+                                SetTextEditHeight(c, height); // Đệ quy
+                            }
+                            break;
+                        }
                 }
             }
         }
@@ -221,7 +250,7 @@ namespace FrmMain
         {
             if (sender is not GridView view) return;
 
-            if (view.GetRow(e.RowHandle) is not OrderDetail row) return;
+            if (view.GetRow(e.RowHandle) is not OrderDetailResponse row) return;
 
             if (!row.Checked) return;
             e.Appearance.BackColor = Color.LightGreen; // Màu xanh nhạt
@@ -238,14 +267,18 @@ namespace FrmMain
             if (_scannedBarcodeCount == _orderResponse.OrderDetails.Count())
             {
                 var result = MessageHelper.MsgBox("Hoàn thành đơn hàng", MsgType.YesNo);
-                if (result == DialogResult.Yes)
-                {
-                    MessageHelper.MsgBox("Hoàn thành đơn hàng thành công", MsgType.Information);
-                }
+                if (result != DialogResult.Yes) return;
+                MessageHelper.MsgBox("Hoàn thành đơn hàng thành công", MsgType.Information);
+                txtOrderCode.Focus();
             }
             else
             {
-                MessageHelper.MsgBox("Quét mã sản phẩm trước khi hoàn thành", MsgType.Error_);
+                var listNotScan = _orderResponse.OrderDetails.Where(p => !p.Checked)
+                    .Select(p => p.ProductCode)
+                    .ToList();
+                var message = $"Còn {listNotScan.Count} sản phẩm chưa quét mã: {string.Join(", ", listNotScan)}.\nVui lòng thực hiện trước khi hoàn thành.";
+                MessageHelper.MsgBox(message, MsgType.Error_);
+                txtProductCode.Focus();
             }
 
         }
@@ -253,9 +286,19 @@ namespace FrmMain
         private void txtOrderCode_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode != Keys.Enter) return;
+
             var orderCode = txtOrderCode.Text.Trim();
+
+            if (_scannedBarcodeCount > 0 && _orderResponse.OrderDetails.Any(p => p.Checked))
+            {
+                var result = MessageHelper.MsgBox("Bạn chắc chắn tải lại dữ liệu", MsgType.YesNo);
+                if (result != DialogResult.Yes) return;
+            }
+
             if (string.IsNullOrEmpty(orderCode)) return;
+            _scannedBarcodeCount = 0;
             LoadData(orderCode);
+            txtProductCode.Focus();
         }
 
         private (bool check, string code) TryFindProductCode(string searchBarCode)
@@ -266,6 +309,48 @@ namespace FrmMain
         private void FrmOrderProcess_Shown(object sender, EventArgs e)
         {
             txtProductCode.Focus();
+        }
+
+        // Tick mỗi giây
+        private void ReloadTimer_Tick(object sender, EventArgs e)
+        {
+            var remaining = _nextReloadTime - DateTime.Now;
+
+            if (remaining <= TimeSpan.Zero)
+            {
+                _reloadTimer.Stop();
+                btnReloadOrder.Text = "Loading...";
+
+                LoadData(CurrentCode); // gọi reload dữ liệu
+
+                // Khởi động lại đếm ngược
+                _nextReloadTime = DateTime.Now.AddMinutes(ReloadIntervalMinutes);
+                _reloadTimer.Start();
+            }
+            else
+            {
+                btnReloadOrder.Text = $"Tải lại sau: {remaining.Minutes:D2}:{remaining.Seconds:D2}";
+            }
+        }
+
+        // Hàm khởi động Timer đếm ngược
+        private void StartCountdownTimer()
+        {
+            _nextReloadTime = DateTime.Now.AddMinutes(ReloadIntervalMinutes);
+
+            _reloadTimer = new Timer();
+            _reloadTimer.Interval = 1000; // mỗi 1 giây
+            _reloadTimer.Tick += ReloadTimer_Tick;
+            _reloadTimer.Start();
+        }
+
+        private void btnReloadOrder_Click(object sender, EventArgs e)
+        {
+            _reloadTimer?.Stop();
+            ReloadData(CurrentCode);
+            btnReloadOrder.Text = "Loading...";
+            _nextReloadTime = DateTime.Now.AddMinutes(ReloadIntervalMinutes);
+            _reloadTimer?.Start();
         }
     }
 

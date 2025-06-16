@@ -13851,25 +13851,25 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\chuva\\.nuget\\packages\\": {},
+    "C:\\Users\\PV\\.nuget\\packages\\": {},
     "C:\\Program Files\\DevExpress 24.2\\Components\\Offline Packages": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\2025\\staka_pos\\FrmMain1\\FrmMain.csproj",
+      "projectUniqueName": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\FrmMain1\\FrmMain.csproj",
       "projectName": "FrmMain",
-      "projectPath": "E:\\2025\\staka_pos\\FrmMain1\\FrmMain.csproj",
-      "packagesPath": "C:\\Users\\chuva\\.nuget\\packages\\",
-      "outputPath": "E:\\2025\\staka_pos\\FrmMain1\\obj\\",
+      "projectPath": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\FrmMain1\\FrmMain.csproj",
+      "packagesPath": "C:\\Users\\PV\\.nuget\\packages\\",
+      "outputPath": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\FrmMain1\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\DevExpress 24.2\\Components\\Offline Packages",
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\chuva\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\PV\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress 24.2.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
@@ -13886,11 +13886,11 @@
         "net9.0-windows7.0": {
           "targetAlias": "net9.0-windows",
           "projectReferences": {
-            "E:\\2025\\staka_pos\\Be.Services\\Be.Services.csproj": {
-              "projectPath": "E:\\2025\\staka_pos\\Be.Services\\Be.Services.csproj"
+            "D:\\TrongCV\\DEV\\Pos\\StakaPos\\Be.Services\\Be.Services.csproj": {
+              "projectPath": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\Be.Services\\Be.Services.csproj"
             },
-            "E:\\2025\\staka_pos\\Services\\Services.csproj": {
-              "projectPath": "E:\\2025\\staka_pos\\Services\\Services.csproj"
+            "D:\\TrongCV\\DEV\\Pos\\StakaPos\\Services\\Services.csproj": {
+              "projectPath": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\Services\\Services.csproj"
             }
           }
         }
