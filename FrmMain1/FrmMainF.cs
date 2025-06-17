@@ -41,7 +41,11 @@ namespace FrmMain
             None = 0,
             Order = 1,
             OrderProcess = 2,
-            FrmSystem = 3
+            FrmSystem = 3,
+            FrmPurchase = 4,
+            FrmPurchaseProcess = 5,
+            FrmTranfer = 5,
+            FrmTranferProcess = 6,
         }
 
         private void FormActive(object sender, EventArgs e)
@@ -77,6 +81,20 @@ namespace FrmMain
                     {
                         var frmSystem = ServiceProvider.GetRequiredService<FrmSystem>();
                         NewFormNew(frmSystem, WuserControl.FrmSystem);
+                    }
+                    break;
+                case nameof(mbtcPurchase):
+                    if (!OpenedForm(nameof(FrmPurchase), WuserControl.FrmPurchase))
+                    {
+                        var frmSystem = ServiceProvider.GetRequiredService<FrmPurchase>();
+                        NewFormNew(frmSystem, WuserControl.FrmPurchase);
+                    }
+                    break;
+                case nameof(mbtnTranfer):
+                    if (!OpenedForm(nameof(FrmTranfer), WuserControl.FrmTranfer))
+                    {
+                        var frmSystem = ServiceProvider.GetRequiredService<FrmTranfer>();
+                        NewFormNew(frmSystem, WuserControl.FrmTranfer);
                     }
                     break;
             }

@@ -579,3 +579,6 @@ D:\TrongCV\DEV\Pos\StakaPos\FrmMain1\bin\Debug\net9.0-windows\Be.Data.pdb
 D:\TrongCV\DEV\Pos\StakaPos\FrmMain1\obj\Debug\net9.0-windows\FrmMain.FrmSystem.resources
 D:\TrongCV\DEV\Pos\StakaPos\FrmMain1\obj\Debug\net9.0-windows\FrmMain.LoadingForm.resources
 D:\TrongCV\DEV\Pos\StakaPos\FrmMain1\obj\Debug\net9.0-windows\FrmMain.FrmLogin.resources
+D:\TrongCV\DEV\Pos\StakaPos\FrmMain1\obj\Debug\net9.0-windows\FrmMain.FrmPurchase.resources
+D:\TrongCV\DEV\Pos\StakaPos\FrmMain1\obj\Debug\net9.0-windows\FrmMain.FrmTranfer.resources
+D:\TrongCV\DEV\Pos\StakaPos\FrmMain1\obj\Debug\net9.0-windows\FrmMain.FrmPurchaseProcess.resources

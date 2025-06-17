@@ -26,7 +26,7 @@ namespace Be.Services.Pos
         /// Retrieves all branches from the database.
         /// </summary>
         /// <returns></returns>
-        public virtual async Task<ApiResponse> GetAllBranches()
+        public virtual async Task<ApiResponse> GetPagedBranches()
         {
             try
             {
@@ -38,6 +38,13 @@ namespace Be.Services.Pos
             {
                 return BadRequest("B", "Có lỗi trong quá trình lấy dữ liệu");
             }
+        }
+
+        public async Task<List<Branch>> GetAllBranches()
+        {
+            var result = await repository.GetQueryable<Branch>().Where(b => b.Status == 1 && !b.BranchName.ToUpper().Contains("HƯ"))
+                .ToListAsync();
+            return result;
         }
 
         public Task<ApiResponse> GetBranchById(int id)

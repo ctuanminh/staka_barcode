@@ -6,7 +6,7 @@ namespace Be.Services.Identity
 {
     public interface IUserService
     {
-        Task<ApiResponse> Login(UserLoginRequest request);
+        Task<(bool Success, string Content)> Login(UserLoginRequest request);
         Task<ApiResponse> GetAllUsers(SearchUserRequest request);
         Task<ApiResponse> GetUserById(Guid id);
         Task<ApiResponse> GetAllRoles();

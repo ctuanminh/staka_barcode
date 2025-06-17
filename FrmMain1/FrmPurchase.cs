@@ -10,6 +10,8 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
+using Be.Common.Purchase_Order.Request;
+using Be.Common.Purchase_Order.Response;
 using Be.Services.KiotViet;
 using Be.Services.Pos;
 using static FrmMain.FrmMainF;
@@ -17,29 +19,25 @@ using Exception = System.Exception;
 
 namespace FrmMain
 {
-    public partial class FrmOrder : XtraForm
+    public partial class FrmPurchase : XtraForm
     {
         private readonly FrmMainF _mainForm;
         private readonly IKiotVietService _kiotVietService;
-        private const string OrderUrl = " https://public.kiotapi.com/orders/code/";
-        private List<int> _orderStatusList;
+        private const string PurchaseOrderUrl = "https://public.kiotapi.com/purchaseorders";
+        private List<int> _PurchaseStatusList;
         private readonly IBranchService _branchService;
         private int _branchId = 631782;
-        private Timer _reloadTimer;
-        private DateTime _nextReloadTime;
-        private const int ReloadIntervalMinutes = 15;
-        public FrmOrder(FrmMainF mainForm, IKiotVietService kiotVietService, IBranchService branchService)
+        public FrmPurchase(FrmMainF mainForm, IKiotVietService kiotVietService, IBranchService branchService)
         {
             _mainForm = mainForm;
             _kiotVietService = kiotVietService;
             _branchService = branchService;
             InitializeComponent();
-            StartCountdownTimer();
         }
 
-        private void FrmOrder_Shown(object sender, EventArgs e)
+        private async void FrmOrder_Shown(object sender, EventArgs e)
         {
-            _orderStatusList = [1];
+            _PurchaseStatusList = [1];
             LoadData();
         }
 
@@ -52,24 +50,24 @@ namespace FrmMain
                 SplashScreenManager.Default.SetWaitFormDescription("Vui lòng đợi...");
                 layoutControlTop.Enabled = false;
                 grdControlOrders.Enabled = false;
-                const string orderUrl = $"https://public.kiotapi.com/orders";
-                var request = new SearchOrderRequest()
+                var request = new SearchPurchaseOrderRequest()
                 {
                     BranchIds = [_branchId],
-                    Status = _orderStatusList.ToArray(),
-                    PageSize = 200,
+                    Status = _PurchaseStatusList.ToArray(),
+                    PageSize = 100,
                     OrderBy = "purchaseDate",
                     OrderDirection = "Desc"
                 };
 
-                var (success, content) = await _kiotVietService.CallApiAsync(orderUrl, request, "GET");
+                var (success, content) = await _kiotVietService.CallApiAsync(PurchaseOrderUrl, request, "GET");
 
                 if (!success || content == null) return;
-                var orderPagedResponse = JsonConvert.DeserializeObject<OrderPagedResponse>(content);
-
-                grdControlOrders.DataSource = orderPagedResponse.Data;
+                var purchaseOrderPagedData = JsonConvert.DeserializeObject<PurchaseOrderPagedData>(content);
+                grdViewOrders.OptionsDetail.EnableMasterViewMode = false;
+                grdControlOrders.DataSource = purchaseOrderPagedData.Data;
                 grdViewOrders.Columns["PurchaseDate"].DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
                 grdViewOrders.Columns["PurchaseDate"].DisplayFormat.FormatString = "dd/MM/yyyy HH:mm:ss";
+                grdViewOrders.BestFitColumns();
             }
             catch (Exception exception)
             {
@@ -89,23 +87,23 @@ namespace FrmMain
             try
             {
                 if (sender is not GridView { FocusedRowHandle: >= 0 } view) return;
-                var code = view.GetRowCellValue(view.FocusedRowHandle, "Code");
-                if (code == null) return;
+                var purchaseOrderId = Convert.ToInt64(view.GetRowCellValue(view.FocusedRowHandle, "Id"));
+                var purchaseOrderCode = view.GetRowCellValue(view.FocusedRowHandle, "Code");
+                if (purchaseOrderId <=0) return;
+                if (FormHelper.OpenedForm(nameof(FrmPurchaseProcess), WuserControl.Order, out var openForm))
                 {
-                    if (FormHelper.OpenedForm(nameof(FrmOrderProcess), WuserControl.Order, out var openForm))
+                    if (openForm is FrmPurchaseProcess processForm)
                     {
-                        if (openForm is FrmOrderProcess processForm)
-                        {
-                            processForm.ReloadData(code.ToString());
-                        }
+                        processForm.ReloadData(purchaseOrderId);
                     }
-                    else
-                    {
-                        FrmOrderProcess.CurrentCode = code.ToString();
-                        var frmOrderInstance = _mainForm.ServiceProvider.GetRequiredService<FrmOrderProcess>();
-                        Form frmOrder = frmOrderInstance;
-                        FormHelper.NewFormNew(_mainForm, frmOrder, WuserControl.Order, nameof(FrmOrderProcess));
-                    }
+                }
+                else
+                {
+                    FrmPurchaseProcess.CurrentCode = purchaseOrderCode.ToString();
+                    FrmPurchaseProcess.CurrentId = purchaseOrderId;
+                    var frmPurchaseInstance = _mainForm.ServiceProvider.GetRequiredService<FrmPurchaseProcess>();
+                    Form frmPurchase = frmPurchaseInstance;
+                    FormHelper.NewFormNew(_mainForm, frmPurchase, WuserControl.Order, nameof(FrmPurchaseProcess));
                 }
             }
             catch (Exception ex)
@@ -173,17 +171,17 @@ namespace FrmMain
 
             if (checkEdit.Checked)
             {
-                if (!_orderStatusList.Contains(statusValue))
-                    _orderStatusList.Add(statusValue);
+                if (!_PurchaseStatusList.Contains(statusValue))
+                    _PurchaseStatusList.Add(statusValue);
             }
             else
             {
-                _orderStatusList.Remove(statusValue);
-                if (_orderStatusList.Count == 0)
+                _PurchaseStatusList.Remove(statusValue);
+                if (_PurchaseStatusList.Count == 0)
                 {
                     chkDraft.CheckedChanged -= Handler_CheckedChanged;
                     chkDraft.Checked = true;
-                    _orderStatusList.Add(1);
+                    _PurchaseStatusList.Add(1);
                     chkDraft.CheckedChanged += Handler_CheckedChanged;
                 }
             }
@@ -195,47 +193,6 @@ namespace FrmMain
             var branchId = (int)lkupBranch.EditValue;
             _branchId = branchId;
             LoadData();
-        }
-
-
-        // Tick mỗi giây
-        private void ReloadTimer_Tick(object sender, EventArgs e)
-        {
-            var remaining = _nextReloadTime - DateTime.Now;
-
-            if (remaining <= TimeSpan.Zero)
-            {
-                _reloadTimer.Stop();
-                btnReloadOrder.Text = "Loading...";
-                LoadData(); 
-                // Khởi động lại đếm ngược
-                _nextReloadTime = DateTime.Now.AddMinutes(ReloadIntervalMinutes);
-                _reloadTimer.Start();
-            }
-            else
-            {
-                btnReloadOrder.Text = $"Tải lại sau: {remaining.Minutes:D2}:{remaining.Seconds:D2}";
-            }
-        }
-
-        // Hàm khởi động Timer đếm ngược
-        private void StartCountdownTimer()
-        {
-            _nextReloadTime = DateTime.Now.AddMinutes(ReloadIntervalMinutes);
-
-            _reloadTimer = new Timer();
-            _reloadTimer.Interval = 1000; // mỗi 1 giây
-            _reloadTimer.Tick += ReloadTimer_Tick;
-            _reloadTimer.Start();
-        }
-
-        private void btnReloadOrder_Click(object sender, EventArgs e)
-        {
-            _reloadTimer?.Stop();
-            LoadData();
-            btnReloadOrder.Text = "Loading...";
-            _nextReloadTime = DateTime.Now.AddMinutes(ReloadIntervalMinutes);
-            _reloadTimer?.Start();
         }
     }
 }

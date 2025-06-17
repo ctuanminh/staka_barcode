@@ -1,45 +1,44 @@
-﻿using DevExpress.XtraEditors;
+﻿using Be.Common.Tranfer.Request;
+using Be.Common.Tranfer.Response;
+using Be.Core.Entities;
+using Be.Services.KiotViet;
+using Be.Services.Pos;
+using DevExpress.XtraEditors;
 using DevExpress.XtraGrid.Views.Grid;
 using DevExpress.XtraSplashScreen;
-using FrmMain.Dto.Request;
-using FrmMain.Dto.Response;
 using FrmMain.Utils;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
-using Be.Services.KiotViet;
-using Be.Services.Pos;
 using static FrmMain.FrmMainF;
 using Exception = System.Exception;
 
 namespace FrmMain
 {
-    public partial class FrmOrder : XtraForm
+    public partial class FrmTranfer : XtraForm
     {
         private readonly FrmMainF _mainForm;
         private readonly IKiotVietService _kiotVietService;
-        private const string OrderUrl = " https://public.kiotapi.com/orders/code/";
-        private List<int> _orderStatusList;
+        private const string TranferUrl = "https://public.kiotapi.com/transfers";
+        private List<int> _statusList;
         private readonly IBranchService _branchService;
         private int _branchId = 631782;
-        private Timer _reloadTimer;
-        private DateTime _nextReloadTime;
-        private const int ReloadIntervalMinutes = 15;
-        public FrmOrder(FrmMainF mainForm, IKiotVietService kiotVietService, IBranchService branchService)
+        private List<Branch> branches;
+        public FrmTranfer(FrmMainF mainForm, IKiotVietService kiotVietService, IBranchService branchService)
         {
             _mainForm = mainForm;
             _kiotVietService = kiotVietService;
             _branchService = branchService;
             InitializeComponent();
-            StartCountdownTimer();
         }
 
-        private void FrmOrder_Shown(object sender, EventArgs e)
+        private async void FrmOrder_Shown(object sender, EventArgs e)
         {
-            _orderStatusList = [1];
+            _statusList = [1];
             LoadData();
         }
 
@@ -48,28 +47,37 @@ namespace FrmMain
             try
             {
                 SplashScreenManager.ShowForm(this, typeof(LoadingForm), true, true);
-                SplashScreenManager.Default.SetWaitFormCaption("Đang lấy Đơn hàng");
+                SplashScreenManager.Default.SetWaitFormCaption("Đang lấy tải dữ liệu");
                 SplashScreenManager.Default.SetWaitFormDescription("Vui lòng đợi...");
                 layoutControlTop.Enabled = false;
                 grdControlOrders.Enabled = false;
-                const string orderUrl = $"https://public.kiotapi.com/orders";
-                var request = new SearchOrderRequest()
+                var request = new SearchTranferRequest()
                 {
-                    BranchIds = [_branchId],
-                    Status = _orderStatusList.ToArray(),
-                    PageSize = 200,
-                    OrderBy = "purchaseDate",
-                    OrderDirection = "Desc"
+                    FromBranchIds = [_branchId],
+                    Status = _statusList.ToArray(),
+                    //FromTransferDate = new DateTime(2025, 6, 1),
+                    //ToTransferDate = new DateTime(2025, 6, 30),
+                    //FromReceivedDate = new DateTime(2025, 6, 1),
+                    //ToReceivedDate = new DateTime(2025, 6, 30),
+                    PageSize = 100,
+                    CurrentItem = 1
                 };
 
-                var (success, content) = await _kiotVietService.CallApiAsync(orderUrl, request, "GET");
+                var (success, content) = await _kiotVietService.CallApiAsync(TranferUrl, request, "GET");
 
                 if (!success || content == null) return;
-                var orderPagedResponse = JsonConvert.DeserializeObject<OrderPagedResponse>(content);
+                var tranferPagedResponse = JsonConvert.DeserializeObject<TranferPagedResponse>(content);
 
-                grdControlOrders.DataSource = orderPagedResponse.Data;
-                grdViewOrders.Columns["PurchaseDate"].DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
-                grdViewOrders.Columns["PurchaseDate"].DisplayFormat.FormatString = "dd/MM/yyyy HH:mm:ss";
+                var branches = await _branchService.GetAllBranches();
+                foreach (var transfer in tranferPagedResponse.Data)
+                {
+                    var fromBranch = branches.FirstOrDefault(b => b.BranchId == transfer.FromBranchId);
+                    var toBranch = branches.FirstOrDefault(b => b.BranchId == transfer.ToBranchId);
+
+                    transfer.FromBranchName = fromBranch != null ? fromBranch.BranchName : "";
+                    transfer.ToBranchName = toBranch != null ? toBranch.BranchName : "";
+                }
+                grdControlOrders.DataSource = tranferPagedResponse.Data;
             }
             catch (Exception exception)
             {
@@ -148,13 +156,26 @@ namespace FrmMain
         private async void FrmOrder_Load(object sender, EventArgs e)
         {
             SetTextEditHeight(this, 25);
-            var branches = await _branchService.GetPagedBranches();
-            lkupBranch.Properties.DataSource = branches.Data;
+            branches = await _branchService.GetAllBranches();
+            lkupFromBranch.Properties.DataSource = branches;
+            lkupToBranch.Properties.DataSource = branches;
+            lkupFromBranch.Properties.AutoHeight = false;
+            lkupToBranch.Properties.AutoHeight = false;
+            lkupFromBranch.Height = 45;
+            lkupToBranch.Height = 45;
             chkFinish.BackColor = Color.LightGreen;
             chkDraft.BackColor = Color.Green;
             chkDraft.ForeColor = Color.White;
             chkCancel.BackColor = Color.OrangeRed;
             chkCancel.ForeColor = Color.White;
+            chkStatusTranfer.BackColor = Color.Cyan;
+            chkStatusTranfer.ForeColor = Color.Black;
+
+            //Set ngày mặc định
+            chkFromTranfer.Checked = true; //Check Ngày chuyển
+            chkFromReceived.Checked = true; // Check Ngày nhận
+            var dateNow = DateTime.Now.Year;
+            fromDate.Text = 
         }
 
         private void Handler_CheckedChanged(object sender, EventArgs e)
@@ -164,6 +185,7 @@ namespace FrmMain
             var statusValue = checkEdit.Name switch
             {
                 "chkDraft" => 1,
+                "chkTranfer" => 2,
                 "chkFinish" => 3,
                 "chkCancel" => 4,
                 _ => 0
@@ -173,17 +195,17 @@ namespace FrmMain
 
             if (checkEdit.Checked)
             {
-                if (!_orderStatusList.Contains(statusValue))
-                    _orderStatusList.Add(statusValue);
+                if (!_statusList.Contains(statusValue))
+                    _statusList.Add(statusValue);
             }
             else
             {
-                _orderStatusList.Remove(statusValue);
-                if (_orderStatusList.Count == 0)
+                _statusList.Remove(statusValue);
+                if (_statusList.Count == 0)
                 {
                     chkDraft.CheckedChanged -= Handler_CheckedChanged;
                     chkDraft.Checked = true;
-                    _orderStatusList.Add(1);
+                    _statusList.Add(1);
                     chkDraft.CheckedChanged += Handler_CheckedChanged;
                 }
             }
@@ -192,50 +214,9 @@ namespace FrmMain
 
         private void lkupBranch_EditValueChanged(object sender, EventArgs e)
         {
-            var branchId = (int)lkupBranch.EditValue;
+            var branchId = (int)lkupFromBranch.EditValue;
             _branchId = branchId;
             LoadData();
-        }
-
-
-        // Tick mỗi giây
-        private void ReloadTimer_Tick(object sender, EventArgs e)
-        {
-            var remaining = _nextReloadTime - DateTime.Now;
-
-            if (remaining <= TimeSpan.Zero)
-            {
-                _reloadTimer.Stop();
-                btnReloadOrder.Text = "Loading...";
-                LoadData(); 
-                // Khởi động lại đếm ngược
-                _nextReloadTime = DateTime.Now.AddMinutes(ReloadIntervalMinutes);
-                _reloadTimer.Start();
-            }
-            else
-            {
-                btnReloadOrder.Text = $"Tải lại sau: {remaining.Minutes:D2}:{remaining.Seconds:D2}";
-            }
-        }
-
-        // Hàm khởi động Timer đếm ngược
-        private void StartCountdownTimer()
-        {
-            _nextReloadTime = DateTime.Now.AddMinutes(ReloadIntervalMinutes);
-
-            _reloadTimer = new Timer();
-            _reloadTimer.Interval = 1000; // mỗi 1 giây
-            _reloadTimer.Tick += ReloadTimer_Tick;
-            _reloadTimer.Start();
-        }
-
-        private void btnReloadOrder_Click(object sender, EventArgs e)
-        {
-            _reloadTimer?.Stop();
-            LoadData();
-            btnReloadOrder.Text = "Loading...";
-            _nextReloadTime = DateTime.Now.AddMinutes(ReloadIntervalMinutes);
-            _reloadTimer?.Start();
         }
     }
 }

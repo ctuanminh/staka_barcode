@@ -29,9 +29,28 @@ namespace FrmMain
             InitializeComponent();
         }
 
-        private void btnSyncUsers_Click(object sender, EventArgs e)
+        private async void btnSyncUsers_Click(object sender, EventArgs e)
         {
-
+            try
+            {
+                SplashScreenManager.ShowForm(this, typeof(LoadingForm), true, true);
+                SplashScreenManager.Default.SetWaitFormCaption("Đang đồng bộ Người dùng");
+                SplashScreenManager.Default.SetWaitFormDescription("Vui lòng đợi...");
+                var request = new SyncUserRequest()
+                {
+                    PageSize = 200,
+                    CurrentItem = 0,
+                };
+                var syncUser = await  _userService.SyncUser(request);
+            }
+            catch (Exception exception)
+            {
+                MessageHelper.MsgBox($"Có lỗi trong quá trình đồng bộ dữ liệu: {exception}", MsgType.Error_);
+            }
+            finally
+            {
+                SplashScreenManager.CloseForm();
+            }
         }
 
         private void btnSyncCustomer_Click(object sender, EventArgs e)

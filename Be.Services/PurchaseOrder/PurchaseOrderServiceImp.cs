@@ -49,7 +49,7 @@ namespace Be.Services.PurchaseOrder
         {
             request.IncludePayment = true;
             request.PageSize = 200;
-            var purchaseOrderList = new List<PurchaseOrderReponse>();
+            var purchaseOrderList = new List<PurchaseOrderResponse>();
             int totalPages = 1, currentPage = 1, pageSize = 200;            
             do
             {
@@ -138,7 +138,7 @@ namespace Be.Services.PurchaseOrder
                 return BadRequest("B", "Failed to retrieve purchase orders from KiotViet API.");
             }
             var purchaseOrderPagedData = JsonConvert.DeserializeObject<PurchaseOrderPagedData>(Content);
-            var pageResult = new PagedResult<PurchaseOrderReponse>()
+            var pageResult = new PagedResult<PurchaseOrderResponse>()
             {
                 PageSize = purchaseOrderPagedData.PageSize,
                 PageIndex = purchaseOrderPagedData.CurrentItem,

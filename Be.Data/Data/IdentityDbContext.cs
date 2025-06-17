@@ -88,7 +88,7 @@ namespace Be.Data.Data
             {
                 entity.ToTable("Users", "Identity");
 
-                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.Property(e => e.Id).ValueGeneratedOnAdd();
 
                 entity.Property(e => e.Email).HasMaxLength(256);
 

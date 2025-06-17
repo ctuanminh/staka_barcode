@@ -29,7 +29,7 @@ namespace FrmMain
 
             };
             var loginEntity = await _userService.Login(userLogin);
-            if (loginEntity != null)
+            if (loginEntity.Success)
             {
                 MessageHelper.MsgBox("Đăng nhập thành công", MsgType.Information);
             }

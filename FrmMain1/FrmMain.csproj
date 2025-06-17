@@ -24,6 +24,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="FrmPurchaseProcess.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="FrmTranfer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="FrmPurchase.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="Properties\Resources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>

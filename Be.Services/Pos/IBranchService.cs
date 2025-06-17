@@ -1,12 +1,14 @@
 ﻿using Be.Common.Branch.Request;
 using Be.Common.Responses;
+using Be.Core.Entities;
 
 namespace Be.Services.Pos
 {
     public interface IBranchService
     {
         Task<ApiResponse> SyncBranch(BranchRequest branchRequest);
-        Task<ApiResponse> GetAllBranches();
+        Task<ApiResponse> GetPagedBranches();
+        Task<List<Branch>> GetAllBranches();
         Task<ApiResponse> GetBranchById(int id);
         Task<ApiResponse> CreateBranch(BranchRequest branchRequest);
         Task<ApiResponse> UpdateBranch(BranchRequest branchRequest);
