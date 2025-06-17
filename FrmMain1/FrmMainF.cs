@@ -12,6 +12,7 @@ namespace FrmMain
     {
         private Timer _clockTimer;
         public IServiceProvider ServiceProvider { get; }
+        public bool login = false;
         public FrmMainF(IServiceProvider serviceProvider)
         {
             ServiceProvider = serviceProvider;
@@ -40,7 +41,11 @@ namespace FrmMain
             None = 0,
             Order = 1,
             OrderProcess = 2,
-            FrmSystem = 3
+            FrmSystem = 3,
+            FrmPurchase = 4,
+            FrmPurchaseProcess = 5,
+            FrmTranfer = 5,
+            FrmTranferProcess = 6,
         }
 
         private void FormActive(object sender, EventArgs e)
@@ -74,8 +79,26 @@ namespace FrmMain
                 case nameof(mbtnSystem):
                     if (!OpenedForm(nameof(FrmSystem), WuserControl.FrmSystem))
                     {
-                        var frmSystem = ServiceProvider.GetRequiredService<FrmSystem>();
-                        NewFormNew(frmSystem, WuserControl.FrmSystem);
+                        var frmAdmin = new FrmAdmin();
+                        if (frmAdmin.ShowDialog() == DialogResult.OK)
+                        {
+                            var frmSystem = ServiceProvider.GetRequiredService<FrmSystem>();
+                            NewFormNew(frmSystem, WuserControl.FrmSystem);
+                        }
+                    }
+                    break;
+                case nameof(mbtcPurchase):
+                    if (!OpenedForm(nameof(FrmPurchase), WuserControl.FrmPurchase))
+                    {
+                        var frmSystem = ServiceProvider.GetRequiredService<FrmPurchase>();
+                        NewFormNew(frmSystem, WuserControl.FrmPurchase);
+                    }
+                    break;
+                case nameof(mbtnTranfer):
+                    if (!OpenedForm(nameof(FrmTranfer), WuserControl.FrmTranfer))
+                    {
+                        var frmSystem = ServiceProvider.GetRequiredService<FrmTranfer>();
+                        NewFormNew(frmSystem, WuserControl.FrmTranfer);
                     }
                     break;
             }
@@ -97,11 +120,20 @@ namespace FrmMain
             _clockTimer.Interval = 1000; // 1 giây
             _clockTimer.Tick += ClockTimer_Tick;
             _clockTimer.Start();
-            var isOrderFormOpened = this.MdiChildren.Any(f => f is FrmOrder);
-            if (isOrderFormOpened) return;
-            var frmOrder = ServiceProvider.GetRequiredService<FrmOrder>();
-            frmOrder.MdiParent = this;
-            frmOrder.Show();
+            if (login)
+            {
+                var isOrderFormOpened = this.MdiChildren.Any(f => f is FrmOrder);
+                if (isOrderFormOpened) return;
+                var frmOrder = ServiceProvider.GetRequiredService<FrmOrder>();
+                frmOrder.MdiParent = this;
+                frmOrder.Show();
+            }
+            else
+            {
+                var frmLogin = ServiceProvider.GetRequiredService<FrmLogin>();
+                frmLogin.ShowDialog();
+            }
+            
         }
         private void ClockTimer_Tick(object sender, EventArgs e)
         {

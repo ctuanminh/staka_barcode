@@ -19,7 +19,7 @@ namespace FrmMain
         private readonly ICustomerService _customerService;
         private readonly IUserService _userService;
         private readonly IProductService _productService;
-        
+
         public FrmSystem(ICustomerService customerService, IBranchService branchService, IUserService userService, IProductService productService)
         {
             _customerService = customerService;
@@ -29,14 +29,33 @@ namespace FrmMain
             InitializeComponent();
         }
 
-        private void btnSyncUsers_Click(object sender, EventArgs e)
+        private async void btnSyncUsers_Click(object sender, EventArgs e)
         {
-
+            try
+            {
+                SplashScreenManager.ShowForm(this, typeof(LoadingForm), true, true);
+                SplashScreenManager.Default.SetWaitFormCaption("Đang đồng bộ Người dùng");
+                SplashScreenManager.Default.SetWaitFormDescription("Vui lòng đợi...");
+                var request = new SyncUserRequest()
+                {
+                    PageSize = 200,
+                    CurrentItem = 0,
+                };
+                var syncUser = await _userService.SyncUser(request);
+            }
+            catch (Exception exception)
+            {
+                MessageHelper.MsgBox($"Có lỗi trong quá trình đồng bộ dữ liệu: {exception}", MsgType.Error_);
+            }
+            finally
+            {
+                SplashScreenManager.CloseForm();
+            }
         }
 
         private void btnSyncCustomer_Click(object sender, EventArgs e)
         {
-            
+
         }
 
         private async void btnSyncRole_Click(object sender, EventArgs e)
@@ -91,7 +110,7 @@ namespace FrmMain
                 SplashScreenManager.Default.SetWaitFormDescription("Vui lòng đợi...");
                 var request = new SearchProductRequestKiot()
                 {
-                    IsActive= true,
+                    IsActive = true,
                 };
                 var result = await _productService.SyncProduct(request);
             }
@@ -103,6 +122,12 @@ namespace FrmMain
             {
                 SplashScreenManager.CloseForm();
             }
+        }
+
+        private void FrmSystem_Load(object sender, EventArgs e)
+        {
+            var computerName = Environment.MachineName;
+            MessageHelper.MsgBox(computerName, MsgType.Information);
         }
     }
 }

@@ -6,6 +6,7 @@ namespace Be.Core.Entities.Identity
 {
 	public class ApplicationUser : IdentityUser<long>, IAuditedEntity
     {
+        public long KiotId { get; set; }
         public string FullName { get; set; }
         public string ResetPwToken { get; set; }
         public UserType UserType { get; set; }

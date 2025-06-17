@@ -25,7 +25,10 @@ namespace Be.Data.Migrations.IdentityDb
             modelBuilder.Entity("Be.Core.Entities.Identity.ApplicationUser", b =>
                 {
                     b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("integer");
@@ -66,6 +69,9 @@ namespace Be.Data.Migrations.IdentityDb
 
                     b.Property<bool>("IsVendor")
                         .HasColumnType("boolean");
+
+                    b.Property<long>("KiotId")
+                        .HasColumnType("bigint");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("boolean");

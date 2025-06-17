@@ -1,6 +1,6 @@
 ﻿namespace Be.Common.Purchase_Order.Response
 {
-    public partial class PurchaseOrderReponse
+    public partial class PurchaseOrderResponse
     {
         public long Id { get; set; }
         public long RetailerId { get; set; }
@@ -14,6 +14,19 @@
         public decimal Total { get; set; }
         public decimal TotalPayment { get; set; }
         public int Status { get; set; }
+        public string StatusValue
+        {
+            get
+            {
+                return Status switch
+                {
+                    1 => "Phiếu tạm",
+                    3 => "Hoàn thành",
+                    _ => "Đã huỷ"
+                };
+            }
+        }
+
         public DateTime CreatedDate { get; set; }
         public long SupplierId { get; set; }
         public string SupplierName { get; set; }
@@ -23,6 +36,13 @@
         public decimal ExReturnSuppliers { get; set; }
         public decimal ExReturnThirdParty { get; set; }
         public List<PurchaseOrderDetail> PurchaseOrderDetails { get; set; }
+        public int Quantity
+        {
+            get
+            {
+                return PurchaseOrderDetails.Count();
+            }
+        }
     }
 
     public partial class PurchaseOrderDetail
@@ -32,12 +52,20 @@
         public string ProductName { get; set; }
         public int Quantity { get; set; }
         public decimal Price { get; set; }
+        public string Unit { get; set; }
         public decimal Discount { get; set; }
+        public bool Checked { get; set; }
+        private decimal _total;
+        public decimal Total
+        {
+            get => (Price * Quantity) - Discount;
+            set => _total = value;
+        }
     }
 
     public partial class PurchaseOrderPagedData
     {
-        public List<PurchaseOrderReponse> Data { get; set; }
+        public List<PurchaseOrderResponse> Data { get; set; }
         public int Total { get; set; }
         public int PageSize { get; set; }
         public int CurrentItem { get; set; }

@@ -1,19 +1,12 @@
-﻿using Be.Common.Dtos.Category;
-using Be.Common.Dtos.Product;
+﻿using Be.Common.Dtos.Product;
+using Be.Common.Order.Response;
 using Be.Common.Product.Response;
-using Be.Common.Request;
 using Be.Common.Responses;
-using Be.Common.utils;
 using Be.Core.Entities;
 using Be.Data.Repository;
 using Be.Services.KiotViet;
-using DocumentFormat.OpenXml.Wordprocessing;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
-using System.Diagnostics.CodeAnalysis;
-using System.Net.Http.Headers;
-using System.Text.Json;
 
 namespace Be.Services.Catalog
 {
@@ -159,6 +152,58 @@ namespace Be.Services.Catalog
         {
             var product = await _repository.FindAsync<Product, long>(x => x.Id == Id);
             return product;
+        }
+
+        public async Task<List<ProductCodeBarCode>> SynAndGetProductCodeBarCode(List<OrderDetailResponse> orderDetails)
+        {
+            //Lấy code trong đơn hàng
+            var productCodes = orderDetails
+                .Select(p => p.ProductCode)
+                .Where(code => !string.IsNullOrWhiteSpace(code))
+                .Distinct()
+                .ToList();
+            //Lấy code đã có trong db
+            var existCodes = await _repository.GetQueryable<Product>()
+                .Where(p => productCodes.Contains(p.Code))
+                .Select(p => p.Code)
+                .ToListAsync();
+            //Lọc ra code chưa có
+            var missingCodes = productCodes.Except(existCodes).ToList();
+            
+            var products = new List<Product>();
+
+            //lấy sản phẩm code còn thiếu add vào db.
+            foreach (var code in missingCodes)
+            {
+                var productUrl = $"https://public.kiotapi.com/products/code/{code}";
+                var (success, content) = await _kiotVietService.CallApiAsync(productUrl, (string)null);
+                if (!success || string.IsNullOrWhiteSpace(content)) continue;
+                var productKiotDto = JsonConvert.DeserializeObject<ProductDto>(content);
+                var product = new Product()
+                {
+                    Id = productKiotDto.Id,
+                    Code = productKiotDto.Code,
+                    BarCode = string.IsNullOrEmpty(productKiotDto.BarCode) ? productKiotDto.Code : productKiotDto.BarCode,
+                    Name = productKiotDto.Name,
+                    Unit = productKiotDto.Unit,
+                    IsActive = true,
+                };
+                products.Add(product);
+            }
+
+            if (products.Any())
+            {
+                await _repository.AddRangeAsync<Product, long>(products);
+                await _repository.SaveChangeAsync();
+            }
+            var productCodeBarCodes = await _repository.GetQueryable<Product>()
+                .Where(p => p.IsActive)
+                .Select(p => new ProductCodeBarCode
+                {
+                    Code = p.Code,
+                    BarCode = p.BarCode
+                }).ToListAsync();
+            return productCodeBarCodes;
         }
 
         public async Task<Dictionary<string, string>> GetProductCodeDictionary()

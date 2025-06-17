@@ -12,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Be.Services.Identity
 {
@@ -45,41 +46,37 @@ namespace Be.Services.Identity
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public async Task<ApiResponse> Login(UserLoginRequest request)
+        public async Task<(bool Success, string Content)> Login(UserLoginRequest request)
         {
             try
             {              
-                var userExist = await _userManager.Users.FirstOrDefaultAsync(u => u.PhoneNumber == request.PhoneNumber);
-                if (userExist == null) return BadRequest("B", "Số điện thoại/mật khẩu không chính xác.");
+                var userExist = await _userManager.Users.FirstOrDefaultAsync(u => u.UserName == request.UserName);
+                if (userExist == null) return (false, null);
                 var loginResult =
                     _userManager.PasswordHasher.VerifyHashedPassword(userExist, userExist.PasswordHash, request.Password);
 
                 if (loginResult == PasswordVerificationResult.Failed)
                 {
-                    return BadRequest("B", "Số điện thoại hoặc mật khẩu không chính xác.");
+                    return (false, null);
                 }
                                 
                 var roles = new List<string> { "admin", "customer" };
-                var accessToken = _jwtService.GenerateAccessToken(userExist.Id, userExist.Email, roles.ToList());
-                return Ok(new
+                var user = new
                 {
-                    AccessToken = accessToken,
-                    User = new
-                    {
-                        Id = userExist.Id,
-                        UserName = userExist.UserName,
-                        Email = userExist.Email,
-                        Roles = roles,
-                        Phone = userExist.PhoneNumber,
-                        UserType = userExist.UserType,
-                        IsVendor = userExist.IsVendor
-                    }
-                });
+                    Id = userExist.Id,
+                    UserName = userExist.UserName,
+                    Email = userExist.Email,
+                    Roles = roles,
+                    Phone = userExist.PhoneNumber,
+                    UserType = userExist.UserType,
+                    IsVendor = userExist.IsVendor
+                };
+                return (true, JsonConvert.SerializeObject(user));
             }
             catch (Exception ex)
             {
 
-                return BadRequest("B", ex.ToString());
+                return (false, null);
             }
             
         }
@@ -312,12 +309,13 @@ namespace Be.Services.Identity
         public async Task<ApiResponse> SyncUser(SyncUserRequest request)
         {
             var baseUrl = "https://public.kiotapi.com/users";
-            var numRequest = 2;
-            request.PageSize = 100;
+            if (baseUrl == null) throw new ArgumentNullException(nameof(baseUrl));
+            const int numRequest = 2;
+            request.PageSize = 200;
             request.CurrentItem = 0;
 
             var kiotVietUserApiList = new List<KiotVietUserApi>();
-            for (int i = 1; i <= numRequest; i++)
+            for (var i = 1; i <= numRequest; i++)
             {
                 var (Success, Content) = await KiotVietApiHelper.CallApiAsync(_httpClient, _config, baseUrl, request);
                 if (!Success || string.IsNullOrEmpty(Content))
@@ -333,18 +331,20 @@ namespace Be.Services.Identity
             var userIdExistList = kiotVietUserApiList.Select(x => x.Id).ToList();
 
             var userExistList = await _userManager.Users
-                .Where(x => userIdExistList.Contains(x.Id))
-                .ToDictionaryAsync(u =>u.Id);
+                .Where(x => userIdExistList.Contains(x.KiotId))
+                .ToDictionaryAsync(u =>u.KiotId);
 
             foreach (var item in kiotVietUserApiList)
             {
                 if (userExistList.TryGetValue(item.Id, out var userExist))
                 {                    
                     userExist.UserName = item.UserName;
+                    userExist.KiotId = item.Id;
                     userExist.NormalizedUserName = item.GivenName;
                     userExist.PhoneNumber = item.MobilePhone;
                     userExist.Email = item.Email;
                     userExist.FullName = item.GivenName;
+                    userExist.PasswordHash = _userManager.PasswordHasher.HashPassword(userExist, "@Abc1234");
                     userExist.CreatedAt = DateTime.SpecifyKind(item.CreatedDate, DateTimeKind.Utc);
                     await _userManager.UpdateAsync(userExist);
                 }
@@ -352,7 +352,7 @@ namespace Be.Services.Identity
                 {
                     var newUser = new ApplicationUser
                     {
-                        Id = item.Id,
+                        KiotId = item.Id,
                         UserName = item.UserName,
                         NormalizedUserName = item.GivenName,
                         FullName = item.GivenName,
@@ -360,7 +360,7 @@ namespace Be.Services.Identity
                         Email = item.Email,
                         CreatedAt = DateTime.SpecifyKind(item.CreatedDate, DateTimeKind.Utc)
                     };
-                    await _userManager.CreateAsync(newUser);
+                    await _userManager.CreateAsync(newUser, "@Abc1234");
                 }
             }            
             

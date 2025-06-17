@@ -35,6 +35,8 @@
             lblTimer = new DevExpress.XtraBars.BarStaticItem();
             barStaticItem2 = new DevExpress.XtraBars.BarStaticItem();
             mbtnSystem = new DevExpress.XtraBars.BarButtonItem();
+            mbtcPurchase = new DevExpress.XtraBars.BarButtonItem();
+            mbtnTranfer = new DevExpress.XtraBars.BarButtonItem();
             rbOrder = new DevExpress.XtraBars.Ribbon.RibbonPage();
             ribbonPageGroup1 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             ribbonStatusBar1 = new DevExpress.XtraBars.Ribbon.RibbonStatusBar();
@@ -47,10 +49,10 @@
             // 
             ribbonControl1.EmptyAreaImageOptions.ImagePadding = new System.Windows.Forms.Padding(35, 32, 35, 32);
             ribbonControl1.ExpandCollapseItem.Id = 0;
-            ribbonControl1.Items.AddRange(new DevExpress.XtraBars.BarItem[] { ribbonControl1.ExpandCollapseItem, mbtnOrder, lblTimer, barStaticItem2, mbtnSystem });
+            ribbonControl1.Items.AddRange(new DevExpress.XtraBars.BarItem[] { ribbonControl1.ExpandCollapseItem, mbtnOrder, lblTimer, barStaticItem2, mbtnSystem, mbtcPurchase, mbtnTranfer });
             ribbonControl1.Location = new System.Drawing.Point(0, 0);
             ribbonControl1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            ribbonControl1.MaxItemId = 7;
+            ribbonControl1.MaxItemId = 9;
             ribbonControl1.Name = "ribbonControl1";
             ribbonControl1.OptionsMenuMinWidth = 385;
             ribbonControl1.Pages.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPage[] { rbOrder });
@@ -92,6 +94,24 @@
             mbtnSystem.Name = "mbtnSystem";
             mbtnSystem.ItemClick += mButtonItem_ItemClick;
             // 
+            // mbtcPurchase
+            // 
+            mbtcPurchase.Caption = "Nhập hàng";
+            mbtcPurchase.Id = 7;
+            mbtcPurchase.ImageOptions.Image = (System.Drawing.Image)resources.GetObject("mbtcPurchase.ImageOptions.Image");
+            mbtcPurchase.ImageOptions.LargeImage = (System.Drawing.Image)resources.GetObject("mbtcPurchase.ImageOptions.LargeImage");
+            mbtcPurchase.Name = "mbtcPurchase";
+            mbtcPurchase.ItemClick += mButtonItem_ItemClick;
+            // 
+            // mbtnTranfer
+            // 
+            mbtnTranfer.Caption = "Chuyển hàng";
+            mbtnTranfer.Id = 8;
+            mbtnTranfer.ImageOptions.Image = (System.Drawing.Image)resources.GetObject("mbtnTranfer.ImageOptions.Image");
+            mbtnTranfer.ImageOptions.LargeImage = (System.Drawing.Image)resources.GetObject("mbtnTranfer.ImageOptions.LargeImage");
+            mbtnTranfer.Name = "mbtnTranfer";
+            mbtnTranfer.ItemClick += mButtonItem_ItemClick;
+            // 
             // rbOrder
             // 
             rbOrder.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] { ribbonPageGroup1 });
@@ -101,6 +121,8 @@
             // ribbonPageGroup1
             // 
             ribbonPageGroup1.ItemLinks.Add(mbtnOrder);
+            ribbonPageGroup1.ItemLinks.Add(mbtcPurchase);
+            ribbonPageGroup1.ItemLinks.Add(mbtnTranfer);
             ribbonPageGroup1.ItemLinks.Add(mbtnSystem);
             ribbonPageGroup1.Name = "ribbonPageGroup1";
             ribbonPageGroup1.Text = "Đơn hàng";
@@ -153,5 +175,7 @@
         private DevExpress.XtraBars.Ribbon.RibbonStatusBar ribbonStatusBar1;
         private DevExpress.XtraBars.BarStaticItem barStaticItem2;
         private DevExpress.XtraBars.BarButtonItem mbtnSystem;
+        private DevExpress.XtraBars.BarButtonItem mbtcPurchase;
+        private DevExpress.XtraBars.BarButtonItem mbtnTranfer;
     }
 }

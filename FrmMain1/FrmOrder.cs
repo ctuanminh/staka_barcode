@@ -24,15 +24,20 @@ namespace FrmMain
         private const string OrderUrl = " https://public.kiotapi.com/orders/code/";
         private List<int> _orderStatusList;
         private readonly IBranchService _branchService;
+        private int _branchId = 631782;
+        private Timer _reloadTimer;
+        private DateTime _nextReloadTime;
+        private const int ReloadIntervalMinutes = 15;
         public FrmOrder(FrmMainF mainForm, IKiotVietService kiotVietService, IBranchService branchService)
         {
             _mainForm = mainForm;
             _kiotVietService = kiotVietService;
             _branchService = branchService;
             InitializeComponent();
+            StartCountdownTimer();
         }
 
-        private async void FrmOrder_Shown(object sender, EventArgs e)
+        private void FrmOrder_Shown(object sender, EventArgs e)
         {
             _orderStatusList = [1];
             LoadData();
@@ -50,7 +55,7 @@ namespace FrmMain
                 const string orderUrl = $"https://public.kiotapi.com/orders";
                 var request = new SearchOrderRequest()
                 {
-                    BranchIds = [631782, 635192],
+                    BranchIds = [_branchId],
                     Status = _orderStatusList.ToArray(),
                     PageSize = 200,
                     OrderBy = "purchaseDate",
@@ -109,19 +114,33 @@ namespace FrmMain
             }
         }
 
-        private static void SetTextEditHeight(Control control, int height)
+        private void SetTextEditHeight(Control control, int height)
         {
             foreach (Control c in control.Controls)
             {
-                if (c is TextEdit textEdit)
+                switch (c)
                 {
-                    textEdit.Properties.AutoHeight = false;
-                    textEdit.MinimumSize = new Size(0, height);
-                    textEdit.MaximumSize = new Size(0, height);
-                }
-                else if (c.HasChildren)
-                {
-                    SetTextEditHeight(c, height); // Đệ quy
+                    case TextEdit textEdit:
+                        textEdit.Properties.AutoHeight = false;
+                        textEdit.MinimumSize = new Size(0, height);
+                        textEdit.MaximumSize = new Size(0, height);
+                        break;
+                    case SimpleButton button:
+                        button.MinimumSize = new Size(0, height);
+                        button.MaximumSize = new Size(0, height);
+                        break;
+                    case CheckEdit checkEdit:
+                        checkEdit.MinimumSize = new Size(0, height);
+                        checkEdit.MaximumSize = new Size(0, height);
+                        break;
+                    default:
+                        {
+                            if (c.HasChildren)
+                            {
+                                SetTextEditHeight(c, height); // Đệ quy
+                            }
+                            break;
+                        }
                 }
             }
         }
@@ -129,12 +148,13 @@ namespace FrmMain
         private async void FrmOrder_Load(object sender, EventArgs e)
         {
             SetTextEditHeight(this, 25);
-            var branches = await _branchService.GetAllBranches();
+            var branches = await _branchService.GetPagedBranches();
             lkupBranch.Properties.DataSource = branches.Data;
             chkFinish.BackColor = Color.LightGreen;
             chkDraft.BackColor = Color.Green;
             chkDraft.ForeColor = Color.White;
             chkCancel.BackColor = Color.OrangeRed;
+            chkCancel.ForeColor = Color.White;
         }
 
         private void Handler_CheckedChanged(object sender, EventArgs e)
@@ -168,6 +188,54 @@ namespace FrmMain
                 }
             }
             LoadData();
+        }
+
+        private void lkupBranch_EditValueChanged(object sender, EventArgs e)
+        {
+            var branchId = (int)lkupBranch.EditValue;
+            _branchId = branchId;
+            LoadData();
+        }
+
+
+        // Tick mỗi giây
+        private void ReloadTimer_Tick(object sender, EventArgs e)
+        {
+            var remaining = _nextReloadTime - DateTime.Now;
+
+            if (remaining <= TimeSpan.Zero)
+            {
+                _reloadTimer.Stop();
+                btnReloadOrder.Text = "Loading...";
+                LoadData(); 
+                // Khởi động lại đếm ngược
+                _nextReloadTime = DateTime.Now.AddMinutes(ReloadIntervalMinutes);
+                _reloadTimer.Start();
+            }
+            else
+            {
+                btnReloadOrder.Text = $"Tải lại sau: {remaining.Minutes:D2}:{remaining.Seconds:D2}";
+            }
+        }
+
+        // Hàm khởi động Timer đếm ngược
+        private void StartCountdownTimer()
+        {
+            _nextReloadTime = DateTime.Now.AddMinutes(ReloadIntervalMinutes);
+
+            _reloadTimer = new Timer();
+            _reloadTimer.Interval = 1000; // mỗi 1 giây
+            _reloadTimer.Tick += ReloadTimer_Tick;
+            _reloadTimer.Start();
+        }
+
+        private void btnReloadOrder_Click(object sender, EventArgs e)
+        {
+            _reloadTimer?.Stop();
+            LoadData();
+            btnReloadOrder.Text = "Loading...";
+            _nextReloadTime = DateTime.Now.AddMinutes(ReloadIntervalMinutes);
+            _reloadTimer?.Start();
         }
     }
 }

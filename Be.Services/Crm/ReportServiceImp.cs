@@ -523,7 +523,7 @@ namespace Be.Services.Crm
             var listInvoiceReferenceRequest = invoiceReferenceTask.Result; // Danh sách hóa đơn bán hàng trong tháng tham chiếu
 
             // Lấy danh sách chi nhánh
-            var branches = await _branchService.GetAllBranches();
+            var branches = await _branchService.GetPagedBranches();
 
             // Lọc ra customer của chi nhánh trong danh sách khách hàng
             var listCustomerMonthOfBanch = listCustomerCompare

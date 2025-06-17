@@ -1,15 +1,11 @@
-﻿using System.Net.Http;
-using Be.Common.Branch.Request;
+﻿using Be.Common.Branch.Request;
 using Be.Common.Branch.Response;
 using Be.Common.Responses;
-using Be.Common.utils;
 using Be.Core.Entities;
 using Be.Data.Repository;
 using Be.Services.KiotViet;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
-using PuppeteerSharp;
 
 namespace Be.Services.Pos
 {
@@ -30,10 +26,25 @@ namespace Be.Services.Pos
         /// Retrieves all branches from the database.
         /// </summary>
         /// <returns></returns>
-        public virtual async Task<ApiResponse> GetAllBranches()
+        public virtual async Task<ApiResponse> GetPagedBranches()
         {
-            var query = await repository.GetQueryable<Branch>().ToListAsync();
-            return Ok(query);
+            try
+            {
+
+                var query = await repository.GetQueryable<Branch>().ToListAsync();
+                return Ok(query);
+            }
+            catch (Exception e)
+            {
+                return BadRequest("B", "Có lỗi trong quá trình lấy dữ liệu");
+            }
+        }
+
+        public async Task<List<Branch>> GetAllBranches()
+        {
+            var result = await repository.GetQueryable<Branch>().Where(b => b.Status == 1 && !b.BranchName.ToUpper().Contains("HƯ"))
+                .ToListAsync();
+            return result;
         }
 
         public Task<ApiResponse> GetBranchById(int id)
