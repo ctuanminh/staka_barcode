@@ -19,6 +19,10 @@ obj/
 
 ## Visual Studio
 .vs/
+*.suo
+*.user
+*.cache
+*.futdcache.v2
 
 ## Backup files
 *~ 
