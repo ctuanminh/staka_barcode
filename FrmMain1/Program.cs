@@ -1,13 +1,15 @@
-﻿using System;
-using System.Windows.Forms;
+﻿using AutoMapper;
 using Be.Core.Entities.Identity;
 using Be.Data.Data;
 using Be.Services;
+using Be.Services.AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Services;
+using System;
+using System.Windows.Forms;
 
 namespace FrmMain
 {
@@ -42,7 +44,16 @@ namespace FrmMain
             // extension method
             services.RegisterServices();
             // Build ServiceProvider
+            // Auto Mapper Configurations
+            var mappingConfig = new MapperConfiguration(mc =>
+            {
+                mc.AllowNullCollections = true;
+                mc.AddProfile(new MappingProfile());
+            });
             ServiceProvider = services.BuildServiceProvider();
+            var mapper = mappingConfig.CreateMapper();
+            services.AddSingleton(mapper);
+
             // Thêm các form
             services.AddTransient<FrmOrder>();
             services.AddTransient<FrmOrderProcess>();
@@ -51,8 +62,9 @@ namespace FrmMain
             services.AddTransient<FrmLogin>(); 
             services.AddTransient<FrmPurchase>(); 
             services.AddTransient<FrmTranfer>(); 
-            services.AddTransient<FrmPurchaseProcess>(); 
-            services.AddSingleton<IKiotVietService, KiotVietServiceImp>();
+            services.AddTransient<FrmPurchaseProcess>();
+            // Auto Mapper Configurations
+            
 
             // Xây dựng ServiceProvider
             var serviceProvider = services.BuildServiceProvider();

@@ -26,6 +26,7 @@ namespace Be.Data.Data
         public DbSet<CustomerGroup> CustomerGroups { get; set; }        
         public DbSet<CustomerGroupDetail> CustomerGroupDetails { get; set; }        
         public DbSet<BankAccountEntity> BankAccounts { get; set; }        
+        public DbSet<AppSettingEntity> AppSettings { get; set; }        
         //Chưa cần tạo db
         //public DbSet<BankAccount> BankAccounts { get; set; }        
 

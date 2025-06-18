@@ -56,18 +56,20 @@
             layoutControl1.Controls.Add(txtUserName);
             layoutControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             layoutControl1.Location = new System.Drawing.Point(0, 0);
+            layoutControl1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             layoutControl1.Name = "layoutControl1";
             layoutControl1.Root = Root;
-            layoutControl1.Size = new System.Drawing.Size(351, 150);
+            layoutControl1.Size = new System.Drawing.Size(410, 130);
             layoutControl1.TabIndex = 0;
             layoutControl1.Text = "layoutControl1";
             // 
             // btnLogin
             // 
-            btnLogin.ImageOptions.Image = (System.Drawing.Image)resources.GetObject("simpleButton1.ImageOptions.Image");
-            btnLogin.Location = new System.Drawing.Point(225, 60);
+            btnLogin.ImageOptions.Image = (System.Drawing.Image)resources.GetObject("btnLogin.ImageOptions.Image");
+            btnLogin.Location = new System.Drawing.Point(263, 60);
+            btnLogin.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnLogin.Name = "btnLogin";
-            btnLogin.Size = new System.Drawing.Size(114, 22);
+            btnLogin.Size = new System.Drawing.Size(135, 22);
             btnLogin.StyleController = layoutControl1;
             btnLogin.TabIndex = 6;
             btnLogin.Text = "Đăng nhập";
@@ -75,17 +77,20 @@
             // 
             // txtPassword
             // 
-            txtPassword.Location = new System.Drawing.Point(96, 36);
+            txtPassword.Location = new System.Drawing.Point(100, 36);
+            txtPassword.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             txtPassword.Name = "txtPassword";
-            txtPassword.Size = new System.Drawing.Size(243, 20);
+            txtPassword.Size = new System.Drawing.Size(298, 20);
             txtPassword.StyleController = layoutControl1;
             txtPassword.TabIndex = 5;
+            txtPassword.KeyDown += txtPassword_KeyDown;
             // 
             // txtUserName
             // 
-            txtUserName.Location = new System.Drawing.Point(96, 12);
+            txtUserName.Location = new System.Drawing.Point(100, 12);
+            txtUserName.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             txtUserName.Name = "txtUserName";
-            txtUserName.Size = new System.Drawing.Size(243, 20);
+            txtUserName.Size = new System.Drawing.Size(298, 20);
             txtUserName.StyleController = layoutControl1;
             txtUserName.TabIndex = 4;
             // 
@@ -95,7 +100,7 @@
             Root.GroupBordersVisible = false;
             Root.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] { layoutControlItem1, emptySpaceItem1, layoutControlItem2, layoutControlItem3 });
             Root.Name = "Root";
-            Root.Size = new System.Drawing.Size(351, 150);
+            Root.Size = new System.Drawing.Size(410, 130);
             Root.TextVisible = false;
             // 
             // layoutControlItem1
@@ -103,44 +108,47 @@
             layoutControlItem1.Control = txtUserName;
             layoutControlItem1.Location = new System.Drawing.Point(0, 0);
             layoutControlItem1.Name = "layoutControlItem1";
-            layoutControlItem1.Size = new System.Drawing.Size(331, 24);
+            layoutControlItem1.Size = new System.Drawing.Size(390, 24);
             layoutControlItem1.Text = "Tên đăng nhập";
-            layoutControlItem1.TextSize = new System.Drawing.Size(72, 13);
+            layoutControlItem1.TextSize = new System.Drawing.Size(84, 14);
             // 
             // emptySpaceItem1
             // 
             emptySpaceItem1.Location = new System.Drawing.Point(0, 48);
             emptySpaceItem1.Name = "emptySpaceItem1";
-            emptySpaceItem1.Size = new System.Drawing.Size(213, 82);
+            emptySpaceItem1.Size = new System.Drawing.Size(251, 62);
             // 
             // layoutControlItem2
             // 
             layoutControlItem2.Control = txtPassword;
             layoutControlItem2.Location = new System.Drawing.Point(0, 24);
             layoutControlItem2.Name = "layoutControlItem2";
-            layoutControlItem2.Size = new System.Drawing.Size(331, 24);
+            layoutControlItem2.Size = new System.Drawing.Size(390, 24);
             layoutControlItem2.Text = "Mật khẩu";
-            layoutControlItem2.TextSize = new System.Drawing.Size(72, 13);
+            layoutControlItem2.TextSize = new System.Drawing.Size(84, 14);
             // 
             // layoutControlItem3
             // 
             layoutControlItem3.Control = btnLogin;
-            layoutControlItem3.Location = new System.Drawing.Point(213, 48);
+            layoutControlItem3.Location = new System.Drawing.Point(251, 48);
             layoutControlItem3.Name = "layoutControlItem3";
-            layoutControlItem3.Size = new System.Drawing.Size(118, 82);
+            layoutControlItem3.Size = new System.Drawing.Size(139, 62);
             layoutControlItem3.TextVisible = false;
             // 
             // FrmLogin
             // 
-            AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(351, 150);
+            ClientSize = new System.Drawing.Size(410, 130);
             Controls.Add(layoutControl1);
+            FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             MaximizeBox = false;
             MinimizeBox = false;
             Name = "FrmLogin";
             StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             Text = "Đăng nhập";
+            Load += FrmLogin_Load;
             ((System.ComponentModel.ISupportInitialize)layoutControl1).EndInit();
             layoutControl1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)txtPassword.Properties).EndInit();

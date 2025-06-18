@@ -1,6 +1,9 @@
-﻿using DevExpress.XtraEditors;
+﻿using Be.Services.KiotViet;
+using Be.Services.Pos;
+using DevExpress.XtraEditors;
 using DevExpress.XtraGrid.Views.Grid;
 using DevExpress.XtraSplashScreen;
+using FrmMain.App;
 using FrmMain.Dto.Request;
 using FrmMain.Dto.Response;
 using FrmMain.Utils;
@@ -9,9 +12,8 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
-using Be.Services.KiotViet;
-using Be.Services.Pos;
 using static FrmMain.FrmMainF;
 using Exception = System.Exception;
 
@@ -24,7 +26,7 @@ namespace FrmMain
         private const string OrderUrl = " https://public.kiotapi.com/orders/code/";
         private List<int> _orderStatusList;
         private readonly IBranchService _branchService;
-        private int _branchId = 631782;
+        private int _branchId = 1000002446;
         private Timer _reloadTimer;
         private DateTime _nextReloadTime;
         private const int ReloadIntervalMinutes = 15;
@@ -55,6 +57,8 @@ namespace FrmMain
                 const string orderUrl = $"https://public.kiotapi.com/orders";
                 var request = new SearchOrderRequest()
                 {
+                    //Comment để test
+                    //BranchIds = [AppGlobals.BranchId],
                     BranchIds = [_branchId],
                     Status = _orderStatusList.ToArray(),
                     PageSize = 200,
@@ -90,6 +94,8 @@ namespace FrmMain
             {
                 if (sender is not GridView { FocusedRowHandle: >= 0 } view) return;
                 var code = view.GetRowCellValue(view.FocusedRowHandle, "Code");
+                var orderId = view.GetRowCellValue(view.FocusedRowHandle, "Id");
+
                 if (code == null) return;
                 {
                     if (FormHelper.OpenedForm(nameof(FrmOrderProcess), WuserControl.Order, out var openForm))
@@ -102,6 +108,7 @@ namespace FrmMain
                     else
                     {
                         FrmOrderProcess.CurrentCode = code.ToString();
+                        FrmOrderProcess.CurrentOrderId = orderId.ToString();
                         var frmOrderInstance = _mainForm.ServiceProvider.GetRequiredService<FrmOrderProcess>();
                         Form frmOrder = frmOrderInstance;
                         FormHelper.NewFormNew(_mainForm, frmOrder, WuserControl.Order, nameof(FrmOrderProcess));
@@ -147,14 +154,34 @@ namespace FrmMain
 
         private async void FrmOrder_Load(object sender, EventArgs e)
         {
-            SetTextEditHeight(this, 25);
-            var branches = await _branchService.GetPagedBranches();
-            lkupBranch.Properties.DataSource = branches.Data;
-            chkFinish.BackColor = Color.LightGreen;
-            chkDraft.BackColor = Color.Green;
-            chkDraft.ForeColor = Color.White;
-            chkCancel.BackColor = Color.OrangeRed;
-            chkCancel.ForeColor = Color.White;
+            try
+            {
+                SetTextEditHeight(this, 25);
+                var branchId = AppGlobals.AppSetting.FirstOrDefault(s =>
+                    s.ComputerName == Environment.MachineName && s.ModuleName == "Branch" && s.SettingKey == "BranchId")!.SettingValue;
+                           
+                var branch = await _branchService.GetBranchById(Convert.ToInt64(branchId));
+                txtBranch.Text = branch?.BranchName ?? "Chưa chọn chi nhánh";
+                txtBranch.ReadOnly = true;
+                txtBranch.BackColor = Color.White;
+                txtBranch.ForeColor = Color.OrangeRed;
+                chkFinish.BackColor = Color.LightGreen;
+                chkDraft.BackColor = Color.Green;
+                chkDraft.ForeColor = Color.White;
+                chkCancel.BackColor = Color.OrangeRed;
+                chkCancel.ForeColor = Color.White;
+            }
+            catch (Exception exception)
+            {
+                MessageHelper.MsgBox("Lỗi khi tải dữ liệu: " + exception.Message, MsgType.Error_);
+            }
+            finally
+            {
+                // Đăng ký sự kiện CheckedChanged cho các CheckEdit
+                chkDraft.CheckedChanged += Handler_CheckedChanged;
+                chkFinish.CheckedChanged += Handler_CheckedChanged;
+                chkCancel.CheckedChanged += Handler_CheckedChanged;
+            }
         }
 
         private void Handler_CheckedChanged(object sender, EventArgs e)
@@ -189,14 +216,6 @@ namespace FrmMain
             }
             LoadData();
         }
-
-        private void lkupBranch_EditValueChanged(object sender, EventArgs e)
-        {
-            var branchId = (int)lkupBranch.EditValue;
-            _branchId = branchId;
-            LoadData();
-        }
-
 
         // Tick mỗi giây
         private void ReloadTimer_Tick(object sender, EventArgs e)

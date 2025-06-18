@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Configuration;
+using System.Windows.Forms;
 using Be.Common.Dtos.Identity;
 using Be.Services.Identity;
+using FrmMain.App;
 using FrmMain.Utils;
 
 namespace FrmMain
@@ -26,13 +29,30 @@ namespace FrmMain
             {
                 UserName = txtUserName.Text,
                 Password = txtPassword.Text
-
             };
             var loginEntity = await _userService.Login(userLogin);
-            if (loginEntity.Success)
-            {
-                MessageHelper.MsgBox("Đăng nhập thành công", MsgType.Information);
-            }
+            if (!loginEntity.success) return;
+            AppGlobals.UserInfo.FullName = loginEntity.userLoginDto.FullName;
+            AppGlobals.UserInfo.UserName = loginEntity.userLoginDto.UserName;
+
+            var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+            config.AppSettings.Settings["LastUserName"].Value = txtUserName.Text;
+            config.AppSettings.Settings["LastPassword"].Value = txtPassword.Text;
+            config.Save(ConfigurationSaveMode.Modified);
+            ConfigurationManager.RefreshSection("appSettings");
+            DialogResult = DialogResult.OK;
+        }
+
+        private void FrmLogin_Load(object sender, EventArgs e)
+        {
+            txtUserName.Text = ConfigurationManager.AppSettings["LastUserName"] ?? "";
+            txtPassword.Text = ConfigurationManager.AppSettings["LastPassword"] ?? "";
+        }
+
+        private void txtPassword_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode != Keys.Enter) return;
+            btnLogin_Click(btnLogin, EventArgs.Empty);
         }
     }
 }

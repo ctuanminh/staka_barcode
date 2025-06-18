@@ -1,4 +1,5 @@
-﻿using Be.Common.Branch.Request;
+﻿using AutoMapper;
+using Be.Common.Branch.Request;
 using Be.Common.Branch.Response;
 using Be.Common.Responses;
 using Be.Core.Entities;
@@ -9,7 +10,7 @@ using Newtonsoft.Json;
 
 namespace Be.Services.Pos
 {
-    public partial class BranchServiceImp(IRepository repository, IKiotVietService kiotvietService)
+    public partial class BranchServiceImp(IRepository repository, IKiotVietService kiotvietService, IMapper mapper)
         : ServiceResponse, IBranchService
     {
         public Task<ApiResponse> CreateBranch(BranchRequest branchRequest)
@@ -47,9 +48,10 @@ namespace Be.Services.Pos
             return result;
         }
 
-        public Task<ApiResponse> GetBranchById(int id)
+        public async Task<BranchResponse> GetBranchById(long id)
         {
-            throw new NotImplementedException();
+            var branch = await repository.GetQueryable<Branch>().FirstOrDefaultAsync(x => x.Id == id);
+            return mapper.Map<BranchResponse>(branch);
         }
 
         public Task<ApiResponse> GetBranchesByCompany(int companyId)

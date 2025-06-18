@@ -9,11 +9,14 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using Be.Common.Order.Request;
 using Be.Common.Order.Response;
 using Be.Core.Entities;
 using Be.Services.Catalog;
 using Be.Services.KiotViet;
+using DevExpress.Mvvm.Native;
 using Exception = System.Exception;
+using OrderDetail = Be.Common.Order.Request.OrderDetail;
 
 namespace FrmMain
 {
@@ -21,6 +24,10 @@ namespace FrmMain
     {
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public static string CurrentCode { get; set; }
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public static string CurrentOrderId { get; set; }
+
         private readonly IKiotVietService _kiotVietService;
         private string _searchProductCode = "";
         private int _scannedBarcodeCount;
@@ -266,8 +273,9 @@ namespace FrmMain
             }
             if (_scannedBarcodeCount == _orderResponse.OrderDetails.Count())
             {
-                var result = MessageHelper.MsgBox("Hoàn thành đơn hàng", MsgType.YesNo);
-                if (result != DialogResult.Yes) return;
+                var confirm = MessageHelper.MsgBox("Hoàn thành đơn hàng", MsgType.YesNo);
+                if (confirm != DialogResult.Yes) return;
+                finishOrder();
                 MessageHelper.MsgBox("Hoàn thành đơn hàng thành công", MsgType.Information);
                 txtOrderCode.Focus();
             }
@@ -279,6 +287,7 @@ namespace FrmMain
                 var message = $"Còn {listNotScan.Count} sản phẩm chưa quét mã: {string.Join(", ", listNotScan)}.\nVui lòng thực hiện trước khi hoàn thành.";
                 MessageHelper.MsgBox(message, MsgType.Error_);
                 txtProductCode.Focus();
+                return;
             }
 
         }
@@ -351,6 +360,98 @@ namespace FrmMain
             btnReloadOrder.Text = "Loading...";
             _nextReloadTime = DateTime.Now.AddMinutes(ReloadIntervalMinutes);
             _reloadTimer?.Start();
+        }
+
+        private async void finishOrder()
+        {
+            try
+            {
+                SplashScreenManager.ShowForm(this, typeof(LoadingForm), true, true);
+                SplashScreenManager.Default.SetWaitFormCaption("Đang lấy Đơn hàng");
+                SplashScreenManager.Default.SetWaitFormDescription("Vui lòng đợi...");
+                layoutControlTop.Enabled = false;
+                gridControlOrder.Enabled = false;
+                var orderUrl = $"https://public.kiotapi.com/orders/{CurrentOrderId}";
+                var (success, content) = await _kiotVietService.CallApiAsync(orderUrl, (string)null, "GET");
+                if (!success && content == null) MessageBox.Show("Lỗi khi lấy dữ liệu Kiotviet");
+
+                if (content == null) return;
+                var orderApiResponse = JsonConvert.DeserializeObject<OrderResponse>(content);
+                if (orderApiResponse == null) return;
+
+                switch ((OrderStatusEnum)orderApiResponse.Status)
+                {
+                    case OrderStatusEnum.Finished:
+                        MessageHelper.MsgBox($"Đơn hàng: {CurrentCode} đã Hoàn thành", MsgType.Error_);
+                        break;
+                    case OrderStatusEnum.Cancel:
+                        MessageHelper.MsgBox($"Đơn hàng: {CurrentCode} đã Huỷ", MsgType.Error_);
+                        break;
+                    case OrderStatusEnum.Draft:
+                    default:
+                        break;
+                }
+
+                if (orderApiResponse.Status != 1)
+                {
+                    MessageHelper.MsgBox($"Đơn hàng: {CurrentCode} đã hoàn thành", MsgType.Error_);
+                    return;
+                }
+                var orderRequest = new OrderKiotRequest()
+                {
+                    purchaseDate = orderApiResponse.PurchaseDate,
+                    branchId = (int)orderApiResponse.BranchId,
+                    soldById = orderApiResponse.SoldById,
+                    discount = orderApiResponse.Discount,
+                    description = orderApiResponse.Description,
+                    method = orderApiResponse.UsingCod ? "COD" : "ONLINE",
+                    totalPayment = orderApiResponse.TotalPayment,
+                    makeInvoice = true,
+                    orderDetails = orderApiResponse.OrderDetails.Select(product => new OrderDetail
+                    {
+                        productId = product.ProductId,
+                        productCode = product.ProductCode,
+                        productName = product.ProductName,
+                        isMaster = product.IsMaster,
+                        quantity = product.Quantity,
+                        price = product.Price,
+                        discount = product.Discount,
+                        discountRatio = product.DiscountRatio
+                    }).ToList(),
+                    customer = new Customer
+                    {
+                        id = orderApiResponse.CustomerId,
+                        code = orderApiResponse.CustomerCode,
+                        name = orderApiResponse.CustomerName,
+                        gender = false,
+                        birthDate = DateTime.MinValue,
+                        contactNumber = "",
+                        address = "",
+                        wardName = "",
+                        email = "",
+                        comments = ""
+                    }
+                };
+
+                var result = await _kiotVietService.CallApiAsync(orderUrl, orderRequest, "PUT");
+                if (!result.Success || result.Content == null)
+                {
+                    MessageHelper.MsgBox("Có lỗi trong quá trình cập nhật đơn hàng", MsgType.Error_);
+                }
+                else
+                {
+                    MessageHelper.MsgBox("Thao tác thực hiện thành công.", MsgType.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageHelper.MsgBox("Có lỗi trong quá trình lấy dữ liệu", MsgType.Error_);
+            }
+            finally
+            {
+                layoutControlTop.Enabled = true;
+                SplashScreenManager.CloseForm();
+            }
         }
     }
 

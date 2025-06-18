@@ -10,7 +10,7 @@
         public bool includeRemoveIds { get; set; }
         public bool includeTotal { get; set; } //Có lấy thông tin TotalInvoice, TotalPoint, TotalRevenue
         public bool includeCustomerGroup { get; set; } //Có lấy thông tin nhóm khách hàng hay không
-        public int currentItem { get; set; } = 1;
+        public int CurrentItem { get; set; } = 1;
         public int PageSize { get; set; } = 10;
     }
 }

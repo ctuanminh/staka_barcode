@@ -175,7 +175,6 @@ namespace FrmMain
             chkFromTranfer.Checked = true; //Check Ngày chuyển
             chkFromReceived.Checked = true; // Check Ngày nhận
             var dateNow = DateTime.Now.Year;
-            fromDate.Text = 
         }
 
         private void Handler_CheckedChanged(object sender, EventArgs e)

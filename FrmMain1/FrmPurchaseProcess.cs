@@ -114,7 +114,7 @@ namespace FrmMain
                 switch ((OrderStatusEnum)purchaseOrderResponse.Status)
                 {
                     case OrderStatusEnum.Finished:
-                        MessageHelper.MsgBox($"Phiếu nhập hàng: {purchaseOrderResponse.Code} đã Hoàn thành", MsgType.Error_);
+                        MessageHelper.MsgBox($"Phiếu: {purchaseOrderResponse.Code} đã Nhập hàng", MsgType.Error_);
                         txtProductCode.ReadOnly = true;
                         chkFinish.Checked = true;
                         txtProductCode.ReadOnly = true;
@@ -133,8 +133,9 @@ namespace FrmMain
                         break;
                 }
 
-                //txtCustomerName.Text = purchaseOrderResponse.CustomerName; // Tên khách hàng
-                //txtSaleName.Text = orderApiResponse.SoldByName; // Tên người bán.
+                txtCustomerName.Text = purchaseOrderResponse.SupplierName; // Tên Người nhập
+                txtSaleName.Text = purchaseOrderResponse.PurchaseName; // Tên nhà cung cấp.
+                txtPurchaseDate.Text = purchaseOrderResponse.PurchaseDate.ToString("dd/MM/yyyy HH:mm:ss");
                 //txtSumTotal.Text = NumberFormatter.FormatDecimal(orderApiResponse.Total); // Tổng hoá đơn
                 //txtTotalPayment.Text = NumberFormatter.FormatDecimal(orderApiResponse.TotalPayment); // Khách đã trả
                 //txtTotal.Text = NumberFormatter.FormatDecimal(orderApiResponse.Total); // Khách cần trả

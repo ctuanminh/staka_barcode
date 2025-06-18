@@ -31,6 +31,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmOrder));
             groupControl1 = new DevExpress.XtraEditors.GroupControl();
             layoutControlTop = new DevExpress.XtraLayout.LayoutControl();
+            txtBranch = new DevExpress.XtraEditors.TextEdit();
             btnReloadOrder = new DevExpress.XtraEditors.SimpleButton();
             layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
@@ -39,9 +40,7 @@
             chkDraft = new DevExpress.XtraEditors.CheckEdit();
             dateEdit1 = new DevExpress.XtraEditors.DateEdit();
             lookUpEdit3 = new DevExpress.XtraEditors.LookUpEdit();
-            lkupBranch = new DevExpress.XtraEditors.LookUpEdit();
             Root = new DevExpress.XtraLayout.LayoutControlGroup();
-            layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
             layoutControlItem3 = new DevExpress.XtraLayout.LayoutControlItem();
             layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
             layoutControlItem6 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -49,6 +48,7 @@
             layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
             layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
             layoutControlItem8 = new DevExpress.XtraLayout.LayoutControlItem();
+            layoutControlItem9 = new DevExpress.XtraLayout.LayoutControlItem();
             grdControlOrders = new DevExpress.XtraGrid.GridControl();
             grdViewOrders = new DevExpress.XtraGrid.Views.Grid.GridView();
             grdClmCode = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -60,10 +60,12 @@
             repositoryItemCheckEdit1 = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
             repositoryItemDateEdit1 = new DevExpress.XtraEditors.Repository.RepositoryItemDateEdit();
             repositoryItemDateEdit2 = new DevExpress.XtraEditors.Repository.RepositoryItemDateEdit();
+            grdClmId = new DevExpress.XtraGrid.Columns.GridColumn();
             ((System.ComponentModel.ISupportInitialize)groupControl1).BeginInit();
             groupControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)layoutControlTop).BeginInit();
             layoutControlTop.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)txtBranch.Properties).BeginInit();
             ((System.ComponentModel.ISupportInitialize)layoutControl1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)layoutControlGroup1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)chkCancel.Properties).BeginInit();
@@ -72,9 +74,7 @@
             ((System.ComponentModel.ISupportInitialize)dateEdit1.Properties).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dateEdit1.Properties.CalendarTimeProperties).BeginInit();
             ((System.ComponentModel.ISupportInitialize)lookUpEdit3.Properties).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)lkupBranch.Properties).BeginInit();
             ((System.ComponentModel.ISupportInitialize)Root).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)layoutControlItem1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)layoutControlItem3).BeginInit();
             ((System.ComponentModel.ISupportInitialize)layoutControlItem5).BeginInit();
             ((System.ComponentModel.ISupportInitialize)layoutControlItem6).BeginInit();
@@ -82,6 +82,7 @@
             ((System.ComponentModel.ISupportInitialize)layoutControlItem4).BeginInit();
             ((System.ComponentModel.ISupportInitialize)layoutControlItem2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)layoutControlItem8).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)layoutControlItem9).BeginInit();
             ((System.ComponentModel.ISupportInitialize)grdControlOrders).BeginInit();
             ((System.ComponentModel.ISupportInitialize)grdViewOrders).BeginInit();
             ((System.ComponentModel.ISupportInitialize)repositoryItemCheckEdit1).BeginInit();
@@ -105,6 +106,7 @@
             // layoutControlTop
             // 
             layoutControlTop.AutoScroll = false;
+            layoutControlTop.Controls.Add(txtBranch);
             layoutControlTop.Controls.Add(btnReloadOrder);
             layoutControlTop.Controls.Add(layoutControl1);
             layoutControlTop.Controls.Add(chkCancel);
@@ -112,7 +114,6 @@
             layoutControlTop.Controls.Add(chkDraft);
             layoutControlTop.Controls.Add(dateEdit1);
             layoutControlTop.Controls.Add(lookUpEdit3);
-            layoutControlTop.Controls.Add(lkupBranch);
             layoutControlTop.Dock = System.Windows.Forms.DockStyle.Fill;
             layoutControlTop.Location = new System.Drawing.Point(2, 22);
             layoutControlTop.Name = "layoutControlTop";
@@ -120,6 +121,16 @@
             layoutControlTop.Size = new System.Drawing.Size(1226, 104);
             layoutControlTop.TabIndex = 0;
             layoutControlTop.Text = "layoutControl1";
+            // 
+            // txtBranch
+            // 
+            txtBranch.Location = new System.Drawing.Point(80, 12);
+            txtBranch.Name = "txtBranch";
+            txtBranch.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold);
+            txtBranch.Properties.Appearance.Options.UseFont = true;
+            txtBranch.Size = new System.Drawing.Size(271, 20);
+            txtBranch.StyleController = layoutControlTop;
+            txtBranch.TabIndex = 10;
             // 
             // btnReloadOrder
             // 
@@ -187,57 +198,33 @@
             // dateEdit1
             // 
             dateEdit1.EditValue = null;
-            dateEdit1.Location = new System.Drawing.Point(70, 62);
+            dateEdit1.Location = new System.Drawing.Point(80, 62);
             dateEdit1.Name = "dateEdit1";
             dateEdit1.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
             dateEdit1.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
-            dateEdit1.Size = new System.Drawing.Size(376, 20);
+            dateEdit1.Size = new System.Drawing.Size(366, 20);
             dateEdit1.StyleController = layoutControlTop;
             dateEdit1.TabIndex = 4;
             // 
             // lookUpEdit3
             // 
             lookUpEdit3.EditValue = "<Null>";
-            lookUpEdit3.Location = new System.Drawing.Point(70, 38);
+            lookUpEdit3.Location = new System.Drawing.Point(80, 38);
             lookUpEdit3.Name = "lookUpEdit3";
             lookUpEdit3.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
-            lookUpEdit3.Properties.NullText = "Chọn Người Tạo";
-            lookUpEdit3.Size = new System.Drawing.Size(376, 20);
+            lookUpEdit3.Properties.NullText = "Chọn Khách hàng";
+            lookUpEdit3.Size = new System.Drawing.Size(366, 20);
             lookUpEdit3.StyleController = layoutControlTop;
             lookUpEdit3.TabIndex = 3;
-            // 
-            // lkupBranch
-            // 
-            lkupBranch.Location = new System.Drawing.Point(70, 12);
-            lkupBranch.Name = "lkupBranch";
-            lkupBranch.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
-            lkupBranch.Properties.Columns.AddRange(new DevExpress.XtraEditors.Controls.LookUpColumnInfo[] { new DevExpress.XtraEditors.Controls.LookUpColumnInfo("BranchName", "", 150, DevExpress.Utils.FormatType.None, "", true, DevExpress.Utils.HorzAlignment.Default, DevExpress.Data.ColumnSortOrder.None, DevExpress.Utils.DefaultBoolean.Default) });
-            lkupBranch.Properties.DisplayMember = "BranchName";
-            lkupBranch.Properties.NullText = "Chọn Chi Nhánh";
-            lkupBranch.Properties.ShowFooter = false;
-            lkupBranch.Properties.ValueMember = "BranchId";
-            lkupBranch.Size = new System.Drawing.Size(281, 20);
-            lkupBranch.StyleController = layoutControlTop;
-            lkupBranch.TabIndex = 0;
-            lkupBranch.EditValueChanged += lkupBranch_EditValueChanged;
             // 
             // Root
             // 
             Root.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.True;
             Root.GroupBordersVisible = false;
-            Root.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] { layoutControlItem1, layoutControlItem3, layoutControlItem5, layoutControlItem6, layoutControlItem7, layoutControlItem4, layoutControlItem2, layoutControlItem8 });
+            Root.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] { layoutControlItem3, layoutControlItem5, layoutControlItem6, layoutControlItem7, layoutControlItem4, layoutControlItem2, layoutControlItem8, layoutControlItem9 });
             Root.Name = "Root";
             Root.Size = new System.Drawing.Size(1226, 104);
             Root.TextVisible = false;
-            // 
-            // layoutControlItem1
-            // 
-            layoutControlItem1.Control = lkupBranch;
-            layoutControlItem1.Location = new System.Drawing.Point(0, 0);
-            layoutControlItem1.Name = "layoutControlItem1";
-            layoutControlItem1.Size = new System.Drawing.Size(343, 26);
-            layoutControlItem1.Text = "Chi nhánh";
-            layoutControlItem1.TextSize = new System.Drawing.Size(54, 14);
             // 
             // layoutControlItem3
             // 
@@ -245,8 +232,8 @@
             layoutControlItem3.Location = new System.Drawing.Point(0, 26);
             layoutControlItem3.Name = "layoutControlItem3";
             layoutControlItem3.Size = new System.Drawing.Size(438, 24);
-            layoutControlItem3.Text = "Người tạo";
-            layoutControlItem3.TextSize = new System.Drawing.Size(54, 14);
+            layoutControlItem3.Text = "Khách hàng";
+            layoutControlItem3.TextSize = new System.Drawing.Size(64, 14);
             // 
             // layoutControlItem5
             // 
@@ -279,7 +266,7 @@
             layoutControlItem4.Name = "layoutControlItem4";
             layoutControlItem4.Size = new System.Drawing.Size(438, 34);
             layoutControlItem4.Text = "Thời gian";
-            layoutControlItem4.TextSize = new System.Drawing.Size(54, 14);
+            layoutControlItem4.TextSize = new System.Drawing.Size(64, 14);
             // 
             // layoutControlItem2
             // 
@@ -297,6 +284,15 @@
             layoutControlItem8.Size = new System.Drawing.Size(95, 26);
             layoutControlItem8.TextVisible = false;
             // 
+            // layoutControlItem9
+            // 
+            layoutControlItem9.Control = txtBranch;
+            layoutControlItem9.Location = new System.Drawing.Point(0, 0);
+            layoutControlItem9.Name = "layoutControlItem9";
+            layoutControlItem9.Size = new System.Drawing.Size(343, 26);
+            layoutControlItem9.Text = "Chi nhánh";
+            layoutControlItem9.TextSize = new System.Drawing.Size(64, 14);
+            // 
             // grdControlOrders
             // 
             grdControlOrders.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -311,7 +307,7 @@
             // 
             // grdViewOrders
             // 
-            grdViewOrders.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] { grdClmCode, purchaseDate, grdClmCustomerName, grdClmTotal, grdClmTotalPayment, grdClmStatus });
+            grdViewOrders.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] { grdClmCode, purchaseDate, grdClmCustomerName, grdClmTotal, grdClmTotalPayment, grdClmStatus, grdClmId });
             grdViewOrders.GridControl = grdControlOrders;
             grdViewOrders.Name = "grdViewOrders";
             grdViewOrders.OptionsBehavior.Editable = false;
@@ -396,6 +392,12 @@
             repositoryItemDateEdit2.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
             repositoryItemDateEdit2.Name = "repositoryItemDateEdit2";
             // 
+            // grdClmId
+            // 
+            grdClmId.Caption = "Id";
+            grdClmId.FieldName = "Id";
+            grdClmId.Name = "grdClmId";
+            // 
             // FrmOrder
             // 
             Appearance.Options.UseFont = true;
@@ -415,6 +417,7 @@
             groupControl1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)layoutControlTop).EndInit();
             layoutControlTop.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)txtBranch.Properties).EndInit();
             ((System.ComponentModel.ISupportInitialize)layoutControl1).EndInit();
             ((System.ComponentModel.ISupportInitialize)layoutControlGroup1).EndInit();
             ((System.ComponentModel.ISupportInitialize)chkCancel.Properties).EndInit();
@@ -423,9 +426,7 @@
             ((System.ComponentModel.ISupportInitialize)dateEdit1.Properties.CalendarTimeProperties).EndInit();
             ((System.ComponentModel.ISupportInitialize)dateEdit1.Properties).EndInit();
             ((System.ComponentModel.ISupportInitialize)lookUpEdit3.Properties).EndInit();
-            ((System.ComponentModel.ISupportInitialize)lkupBranch.Properties).EndInit();
             ((System.ComponentModel.ISupportInitialize)Root).EndInit();
-            ((System.ComponentModel.ISupportInitialize)layoutControlItem1).EndInit();
             ((System.ComponentModel.ISupportInitialize)layoutControlItem3).EndInit();
             ((System.ComponentModel.ISupportInitialize)layoutControlItem5).EndInit();
             ((System.ComponentModel.ISupportInitialize)layoutControlItem6).EndInit();
@@ -433,6 +434,7 @@
             ((System.ComponentModel.ISupportInitialize)layoutControlItem4).EndInit();
             ((System.ComponentModel.ISupportInitialize)layoutControlItem2).EndInit();
             ((System.ComponentModel.ISupportInitialize)layoutControlItem8).EndInit();
+            ((System.ComponentModel.ISupportInitialize)layoutControlItem9).EndInit();
             ((System.ComponentModel.ISupportInitialize)grdControlOrders).EndInit();
             ((System.ComponentModel.ISupportInitialize)grdViewOrders).EndInit();
             ((System.ComponentModel.ISupportInitialize)repositoryItemCheckEdit1).EndInit();
@@ -449,7 +451,6 @@
         private DevExpress.XtraLayout.LayoutControl layoutControlTop;
         private DevExpress.XtraEditors.LookUpEdit lkBranch;
         private DevExpress.XtraLayout.LayoutControlGroup Root;
-        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem1;
         private DevExpress.XtraEditors.LookUpEdit lookUpEdit3;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem3;
         private DevExpress.XtraEditors.DateEdit dateEdit1;
@@ -474,8 +475,10 @@
         private DevExpress.XtraLayout.LayoutControl layoutControl1;
         private DevExpress.XtraLayout.LayoutControlGroup layoutControlGroup1;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem2;
-        private DevExpress.XtraEditors.LookUpEdit lkupBranch;
         private DevExpress.XtraEditors.SimpleButton btnReloadOrder;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem8;
+        private DevExpress.XtraEditors.TextEdit txtBranch;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem9;
+        private DevExpress.XtraGrid.Columns.GridColumn grdClmId;
     }
 }
