@@ -1,66 +1,66 @@
 ﻿using Be.Common.Order.Request;
 using Be.Common.Order.Response;
+using Be.Common.Purchase_Order.Response;
+using Be.Common.Tranfer.Response;
 using Be.Services.Catalog;
 using Be.Services.KiotViet;
 using DevExpress.XtraEditors;
 using DevExpress.XtraGrid.Views.Grid;
-using FrmMain.Report;
+using DevExpress.XtraSplashScreen;
 using FrmMain.Utils;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using DevExpress.XtraReports.UI;
-using System.Drawing;
 using Exception = System.Exception;
-using OrderDetail = Be.Common.Order.Request.OrderDetail;
-using Size = System.Drawing.Size;
 
 namespace FrmMain
 {
-    public partial class FrmOrderProcess : XtraForm
+    public partial class FrmTranferProcess : XtraForm
     {
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public static string CurrentCode { get; set; }
-
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public static string CurrentOrderId { get; set; }
-        private bool _isReloading = false;
+        public static long CurrentId { get; set; }
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public static bool Tranfer = false;
         private readonly IKiotVietService _kiotVietService;
         private string _searchProductCode = "";
         private int _scannedBarcodeCount;
-        private OrderResponse _orderResponse;
+        private TransferResponse _transferResponse;
         private readonly IProductService _productService;
         private Dictionary<string, string> productLookupDictionary;
         private Timer _reloadTimer;
         private DateTime _nextReloadTime;
         private const int ReloadIntervalMinutes = 60;
-        public FrmOrderProcess(IKiotVietService kiotVietService, IProductService productService)
+        public FrmTranferProcess(IKiotVietService kiotVietService, IProductService productService)
         {
             _kiotVietService = kiotVietService;
             _productService = productService;
             InitializeComponent();
-            //ReloadData(CurrentCode);
-            txtOrderCode.Text = CurrentCode;
+            //ReloadData(CurrentCode, CurrentId);
+            //txtTranferCode.Text = CurrentCode;
             StartCountdownTimer();
         }
 
-        public void ReloadData(string code, string id)
+        public void ReloadData(string tranferCode, long tranferId, bool _tranfer)
         {
-            CurrentCode = code;
-            CurrentOrderId = id;
-            txtOrderCode.Text = code;
+            CurrentId = tranferId;
+            CurrentCode = tranferCode;
+            txtTranferCode.Text = tranferCode;
+            Tranfer = _tranfer;
             _scannedBarcodeCount = 0;
-            LoadData(code);
+            LoadData(tranferId);
         }
 
-        private async void LoadProduct(List<OrderDetailResponse> orderDetailResponses)
+        private async void LoadProduct(List<TransferDetail> transferDetails)
         {
             try
             {
-                var productCodes = orderDetailResponses
+                var productCodes = transferDetails
                     .Select(p => p.ProductCode)
                     .Where(code => !string.IsNullOrWhiteSpace(code))
                     .Distinct()
@@ -86,81 +86,68 @@ namespace FrmMain
             }
         }
 
-        private async void LoadData(string code)
+        private async void LoadData(long tranferId)
         {
             try
             {
                 SetControlEnable(false);
+                Text = Tranfer ? "Xử lý Phiếu Chuyển hàng" : "Xử lý Phiếu Nhận hàng";
+                grpCtlFilter.Text = Tranfer ? "Phiếu Chuyển hàng" : "Phiếu Nhận hàng";
+                var url = $"https://public.kiotapi.com/transfers/{tranferId}";
+                var (success, content) = await _kiotVietService.CallApiAsync(url, (string)null, "GET");
+                if (!success && content == null) MessageBox.Show("Lỗi khi lấy dữ liệu Kiotviet");
 
-                var orderUrl = $"https://public.kiotapi.com/orders/code/{code}";
-                var (success, content) = await _kiotVietService.CallApiAsync(orderUrl, (string)null, "GET");
-                if (!success || string.IsNullOrWhiteSpace(content))
-                {
-                    MessageHelper.MsgBox("Lỗi khi lấy dữ liệu Kiotviet", MsgType.Error_);
-                    return;
-                }
+                var transferResponse = JsonConvert.DeserializeObject<TransferResponse>(content);
+                if (transferResponse == null) return;
 
-                var orderApiResponse = JsonConvert.DeserializeObject<OrderResponse>(content);
-                if (orderApiResponse == null)
-                {
-                    MessageHelper.MsgBox("Không có dữ liệu trả về từ API", MsgType.Error_);
-                    return;
-                }
+                SetStatusCheckboxStyle();
 
-                // Xử lý tên sản phẩm tách đơn vị
-                foreach (var orderApi in orderApiResponse.OrderDetails)
-                {
-                    var start = orderApi.ProductName.LastIndexOf('(');
-                    var end = orderApi.ProductName.LastIndexOf(')');
-                    if (start == -1 || end <= start) continue;
-                    orderApi.Unit = orderApi.ProductName.Substring(start + 1, end - start - 1).Trim();
-                    orderApi.ProductName = orderApi.ProductName[..start].Trim();
-                }
+                // Reset trạng thái
+                chkFinish.Checked = false;
+                chkCancel.Checked = false;
+                chkDraft.Checked = false;
 
-                // Reset trạng thái check
-                chkFinish.Checked = chkCancel.Checked = chkDraft.Checked = false;
-
-                // Xử lý trạng thái
-                var status = (OrderStatusEnum)orderApiResponse.Status;
-                switch (status)
+                switch ((OrderStatusEnum)transferResponse.Status)
                 {
                     case OrderStatusEnum.Finished:
-                        if (!_isReloading)
-                            MessageHelper.MsgBox($"Đơn hàng: {code} đã Hoàn thành, vui lòng kiểm tra lại", MsgType.Information);
+                        MessageHelper.MsgBox($"Phiếu: {transferResponse.Code} đã Nhập hàng", MsgType.Error_);
+                        txtProductCode.ReadOnly = true;
                         break;
-
                     case OrderStatusEnum.Cancel:
-                        if (!_isReloading)
-                            MessageHelper.MsgBox($"Đơn hàng: {code} đã Huỷ, vui lòng kiểm tra lại", MsgType.Information);
+                        MessageHelper.MsgBox($"Phiếu nhập hàng: {transferResponse.Code} đã Huỷ", MsgType.Error_);
+                        txtProductCode.ReadOnly = true;
                         break;
                     case OrderStatusEnum.Draft:
+                        txtProductCode.ReadOnly = false;
+                        break;
+                    default:
+                        txtProductCode.ReadOnly = true;
                         break;
                 }
 
-                // Nếu trạng thái khác Draft thì khoá luôn ProductCode
-                txtProductCode.ReadOnly = status != OrderStatusEnum.Draft;
+                SetOrderStatusUI(transferResponse.Status);
 
-                // Load thông tin
-                txtCustomerName.Text = orderApiResponse.CustomerName;
-                txtSaleName.Text = orderApiResponse.SoldByName;
-                txtSumTotal.Text = NumberFormatter.FormatDecimal(orderApiResponse.Total);
-                txtTotalPayment.Text = NumberFormatter.FormatDecimal(orderApiResponse.TotalPayment);
-                txtTotal.Text = NumberFormatter.FormatDecimal(orderApiResponse.Total);
-
-                _orderResponse = orderApiResponse;
-                txtScanNumber.ReadOnly = true;
-                txtScanNumber.Text = $"{_scannedBarcodeCount}/{orderApiResponse.OrderDetails.Count()}";
-
-                foreach (var item in _orderResponse.OrderDetails)
+                // Xử lý tên sản phẩm tách đơn vị
+                foreach (var transfer in transferResponse.Details)
                 {
-                    item.DisplayDiscount = item.DiscountRatio > 0
-                        ? $"{NumberFormatter.FormatDecimal(item.Discount)} - {item.DiscountRatio}%"
-                        : $"{NumberFormatter.FormatDecimal(item.Discount)}%";
+                    var start = transfer.ProductName.LastIndexOf('(');
+                    var end = transfer.ProductName.LastIndexOf(')');
+                    if (start == -1 || end <= start) continue;
+                    transfer.Unit = transfer.ProductName.Substring(start + 1, end - start - 1).Trim();
+                    transfer.ProductName = transfer.ProductName[..start].Trim();
                 }
 
-                gridControlOrder.DataSource = _orderResponse.OrderDetails;
+                txtCustomerName.Text = transferResponse.FromBranchName; // Tên Người nhập
+                txtSaleName.Text = transferResponse.ToBranchName; // Tên nhà cung cấp.
+                txtPurchaseDate.Text = transferResponse.DispatchedDate?.ToString("dd/MM/yyyy HH:mm:ss");
+                _transferResponse = transferResponse;
+                txtScanNumber.ReadOnly = true;
+                txtScanNumber.Text = $"{_scannedBarcodeCount.ToString()}" + "/" +
+                                     transferResponse.Details.Count().ToString();
+                
+                gridControlOrder.DataSource = _transferResponse.Details;
                 gridViewOrder.BestFitColumns();
-                LoadProduct(_orderResponse.OrderDetails);
+                LoadProduct(_transferResponse.Details);
             }
             catch (Exception ex)
             {
@@ -168,10 +155,9 @@ namespace FrmMain
             }
             finally
             {
-                SetControlEnable(true);
+                layoutControlTop.Enabled = true;
                 txtProductCode.Focus();
-                SetStatusColor();
-                SetOrderStatusUI(_orderResponse);
+                gridControlOrder.Enabled = true;
             }
         }
 
@@ -207,44 +193,12 @@ namespace FrmMain
             }
         }
 
-        private void SetControlEnable(bool enable)
-        {
-            layoutControlTop.Enabled = enable;
-            gridControlOrder.Enabled = enable;
-        }
-
-        private void SetStatusColor()
-        {
-            chkFinish.BackColor = Color.LightGreen;
-            chkCancel.BackColor = Color.OrangeRed;
-            chkCancel.ForeColor = Color.White;
-            chkDraft.BackColor = Color.Green;
-            chkDraft.ForeColor = Color.White;
-            switch (_orderResponse.Status)
-            {
-                case (int)OrderStatusEnum.Finished:
-                    txtOrderCode.BackColor = Color.LightGreen;
-                    txtOrderCode.ForeColor = Color.Black;
-                    break;
-                case (int)OrderStatusEnum.Cancel:
-                    txtOrderCode.BackColor = Color.OrangeRed;
-                    break;
-                default:
-                    txtOrderCode.BackColor = Color.Green;
-                    txtOrderCode.ForeColor = Color.White;
-                    break;
-            }
-        }
-
-        private void FrmOrderProcess_Load(object sender, EventArgs e)
+        private void FrmTranferProcess_Load(object sender, EventArgs e)
         {
             SetTextEditHeight(this, 25);
             BeginInvoke(new Action(() => txtProductCode.Focus()));
-            chkFinish.BackColor = Color.LightGreen;
-            chkDraft.BackColor = Color.Green;
-            chkDraft.ForeColor = Color.White;
-            chkCancel.BackColor = Color.OrangeRed;
-            ReloadData(CurrentCode, CurrentOrderId);
+            SetStatusCheckboxStyle();
+            ReloadData(CurrentCode, CurrentId, Tranfer);
         }
 
         private void txtProductCode_KeyDown(object sender, KeyEventArgs e)
@@ -258,7 +212,7 @@ namespace FrmMain
             e.Handled = true;
             if (isProductFound)
             {
-                var findProduct = _orderResponse.OrderDetails.FirstOrDefault(p => p.ProductCode == productCode);
+                var findProduct = _transferResponse.Details.FirstOrDefault(p => p.ProductCode == productCode);
                 if (findProduct != null)
                 {
                     if (findProduct.Checked) return;
@@ -269,7 +223,7 @@ namespace FrmMain
                     if (rowHandle < 0) return;
                     gridViewOrder.FocusedRowHandle = rowHandle;
                     gridViewOrder.MakeRowVisible(rowHandle);
-                    txtScanNumber.Text = $"{_scannedBarcodeCount.ToString()}" + "/" + _orderResponse.OrderDetails.Count().ToString();
+                    txtScanNumber.Text = $"{_scannedBarcodeCount.ToString()}" + "/" + _transferResponse.Details.Count().ToString();
                 }
                 else
                 {
@@ -285,7 +239,7 @@ namespace FrmMain
         {
             if (sender is not GridView view) return;
 
-            if (view.GetRow(e.RowHandle) is not OrderDetailResponse row) return;
+            if (view.GetRow(e.RowHandle) is not PurchaseOrderDetail row) return;
 
             if (!row.Checked) return;
             e.Appearance.BackColor = Color.LightGreen; // Màu xanh nhạt
@@ -294,7 +248,7 @@ namespace FrmMain
 
         private void btnFinish_Click(object sender, EventArgs e)
         {
-            switch (_orderResponse.Status)
+            switch (_transferResponse.Status)
             {
                 case (int)OrderStatusEnum.Finished:
                     MessageHelper.MsgBox("Đơn hàng đã hoàn thành, vui lòng kiểm tra lại", MsgType.Error_);
@@ -303,7 +257,7 @@ namespace FrmMain
                     MessageHelper.MsgBox("Đơn hàng đã huỷ, vui lòng kiểm tra lại", MsgType.Error_);
                     break;
                 default:
-                    if (_scannedBarcodeCount == _orderResponse.OrderDetails.Count())
+                    if (_scannedBarcodeCount == _transferResponse.Details.Count())
                     {
                         var confirm = MessageHelper.MsgBox("Hoàn thành đơn hàng", MsgType.YesNo);
                         if (confirm != DialogResult.Yes) return;
@@ -311,7 +265,7 @@ namespace FrmMain
                     }
                     else
                     {
-                        var listNotScan = _orderResponse.OrderDetails.Where(p => !p.Checked)
+                        var listNotScan = _transferResponse.Details.Where(p => !p.Checked)
                             .Select(p => p.ProductCode)
                             .ToList();
                         var message =
@@ -323,15 +277,16 @@ namespace FrmMain
 
                     break;
             }
+
         }
 
         private void txtOrderCode_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode != Keys.Enter) return;
 
-            var orderCode = txtOrderCode.Text.Trim();
+            var orderCode = txtTranferCode.Text.Trim();
 
-            if (_scannedBarcodeCount > 0 && _orderResponse.OrderDetails.Any(p => p.Checked))
+            if (_scannedBarcodeCount > 0 && _transferResponse.Details.Any(p => p.Checked))
             {
                 var result = MessageHelper.MsgBox("Bạn chắc chắn tải lại dữ liệu", MsgType.YesNo);
                 if (result != DialogResult.Yes) return;
@@ -339,7 +294,7 @@ namespace FrmMain
 
             if (string.IsNullOrEmpty(orderCode)) return;
             _scannedBarcodeCount = 0;
-            LoadData(orderCode);
+            LoadData(CurrentId);
             txtProductCode.Focus();
         }
 
@@ -348,7 +303,7 @@ namespace FrmMain
             return productLookupDictionary.TryGetValue(searchBarCode, out var codeValue) ? (true, codeValue) : (false, null);
         }
 
-        private void FrmOrderProcess_Shown(object sender, EventArgs e)
+        private void FrmTranferProcess_Shown(object sender, EventArgs e)
         {
             txtProductCode.Focus();
         }
@@ -363,7 +318,7 @@ namespace FrmMain
                 _reloadTimer.Stop();
                 btnReloadOrder.Text = "Loading...";
 
-                LoadData(CurrentCode); // gọi reload dữ liệu
+                LoadData(CurrentId); // gọi reload dữ liệu
 
                 // Khởi động lại đếm ngược
                 _nextReloadTime = DateTime.Now.AddMinutes(ReloadIntervalMinutes);
@@ -389,20 +344,19 @@ namespace FrmMain
         private void btnReloadOrder_Click(object sender, EventArgs e)
         {
             _reloadTimer?.Stop();
-            ReloadData(CurrentCode, CurrentOrderId);
+            ReloadData(CurrentCode, CurrentId,Tranfer);
             btnReloadOrder.Text = "Loading...";
             _nextReloadTime = DateTime.Now.AddMinutes(ReloadIntervalMinutes);
             _reloadTimer?.Start();
         }
 
-        private async void FinishOrder()
-        {
+       private async void FinishOrder()
+       {
             try
             {
-                layoutControlTop.Enabled = false;
-                gridControlOrder.Enabled = false;
+                SetControlEnable(false);
 
-                var orderUrl = $"https://public.kiotapi.com/orders/{CurrentOrderId}";
+                var orderUrl = $"https://public.kiotapi.com/purchaseorders/{CurrentId}";
                 var (success, content) = await _kiotVietService.CallApiAsync(orderUrl, (string)null, "GET");
 
                 if (!success || string.IsNullOrEmpty(content))
@@ -411,14 +365,14 @@ namespace FrmMain
                     return;
                 }
 
-                var orderApiResponse = JsonConvert.DeserializeObject<OrderResponse>(content);
-                if (orderApiResponse == null)
+                var purchaseOrderResponse = JsonConvert.DeserializeObject<PurchaseOrderResponse>(content);
+                if (purchaseOrderResponse == null)
                 {
                     MessageHelper.MsgBox("Dữ liệu đơn hàng trả về không hợp lệ", MsgType.Error_);
                     return;
                 }
 
-                switch ((OrderStatusEnum)orderApiResponse.Status)
+                switch ((OrderStatusEnum)purchaseOrderResponse.Status)
                 {
                     case OrderStatusEnum.Finished:
                         MessageHelper.MsgBox($"Đơn hàng: {CurrentCode} đã Hoàn thành", MsgType.Information);
@@ -437,40 +391,35 @@ namespace FrmMain
                 }
 
                 // Build orderRequest từ dữ liệu hiện tại
-                var orderRequest = new OrderKiotRequest
+                var orderRequest = new 
                 {
                     purchaseDate = DateTime.UtcNow,
-                    branchId = (int)orderApiResponse.BranchId,
-                    soldById = orderApiResponse.SoldById,
-                    discount = orderApiResponse.Discount,
-                    description = orderApiResponse.Description,
-                    method = orderApiResponse.UsingCod ? "COD" : "ONLINE",
-                    totalPayment = orderApiResponse.TotalPayment,
+                    branchId = (int)purchaseOrderResponse.BranchId,
+                    supplier = new
+                    {
+                        code = purchaseOrderResponse.SupplierCode,
+                        name = purchaseOrderResponse.SupplierName,
+                    },
+                    description = purchaseOrderResponse.Description,
+                    isDraft = 3,
+
+                    discount = purchaseOrderResponse.Discount,
+                    discountRatio = 0,
+                    paidAmount = 0,
+                    //paymentMethod = null,
+                    surcharges = new List<object>(),
+                    totalPayment = purchaseOrderResponse.TotalPayment,
                     makeInvoice = true,
-                    orderDetails = orderApiResponse.OrderDetails.Select(product => new OrderDetail
+                    purchaseOrderDetails = purchaseOrderResponse.PurchaseOrderDetails.Select(product => new PurchaseOrderDetail
                     {
-                        productId = product.ProductId,
-                        productCode = product.ProductCode,
-                        productName = product.ProductName,
-                        isMaster = product.IsMaster,
-                        quantity = product.Quantity,
-                        price = product.Price,
-                        discount = product.Discount,
-                        discountRatio = product.DiscountRatio
+                        ProductId = product.ProductId,
+                        ProductCode = product.ProductCode,
+                        ProductName = product.ProductName,
+                        Quantity = product.Quantity,
+                        Price = product.Price,
+                        Discount = product.Discount,
+                        DiscountRatio = product.DiscountRatio
                     }).ToList(),
-                    customer = string.IsNullOrEmpty(orderApiResponse.CustomerCode) ? null : new Customer
-                    {
-                        id = orderApiResponse.CustomerId,
-                        code = orderApiResponse.CustomerCode,
-                        name = orderApiResponse.CustomerName,
-                        gender = false,
-                        birthDate = DateTime.MinValue,
-                        contactNumber = "",
-                        address = "",
-                        wardName = "",
-                        email = "",
-                        comments = ""
-                    }
                 };
 
                 var (updateSuccess, updateContent) = await _kiotVietService.CallApiAsync(orderUrl, orderRequest, "PUT");
@@ -482,8 +431,7 @@ namespace FrmMain
                 }
 
                 MessageHelper.MsgBox("Đơn hàng đã được hoàn thành thành công.", MsgType.Information);
-                _isReloading = true;
-                ReloadData(CurrentCode, CurrentOrderId);
+                ReloadData(CurrentCode, CurrentId, Tranfer);
             }
             catch (Exception ex)
             {
@@ -491,32 +439,35 @@ namespace FrmMain
             }
             finally
             {
-                layoutControlTop.Enabled = true;
-                gridControlOrder.Enabled = true;
+                SetControlEnable(true);
             }
         }
 
-        private void btnPrintOrder_Click(object sender, EventArgs e)
+        private void SetControlEnable(bool enable)
         {
-            PrintOrderGrid();
-        }
-        private void PrintOrderGrid()
-        {
-            OrderReport report = new OrderReport(_orderResponse);
-            report.ShowPreview();
+            layoutControlTop.Enabled = enable;
+            gridControlOrder.Enabled = enable;
         }
 
-        private void SetOrderStatusUI(OrderResponse orderApiResponse)
+        private void SetStatusCheckboxStyle()
         {
-            chkFinish.Checked = orderApiResponse.Status == 3;
-            chkCancel.Checked = orderApiResponse.Status == 2;
-            chkDraft.Checked = orderApiResponse.Status == 1;
-
-            // Ẩn nút Draft nếu đã hoàn thành
-            if (orderApiResponse.Status != 1)
-                chkDraft.Visible = false;
-            chkDraft.Refresh();
+            chkFinish.BackColor = Color.LightGreen;
+            chkDraft.BackColor = Color.Green;
+            chkDraft.ForeColor = Color.White;
+            chkCancel.BackColor = Color.OrangeRed;
+            chkCancel.ForeColor = Color.White;
+            chkTranfered.BackColor = Color.Cyan;
+            chkTranfered.ForeColor = Color.Black;
         }
+
+        private void SetOrderStatusUI(int status)
+        {
+            chkFinish.Checked = status == 3; // Trạng thái đã nhận
+            chkCancel.Checked = status == 4; // Trạng thái đã huỷ
+            chkDraft.Checked = status == 1; // Trạng thái tạm
+            chkTranfered.Checked = status == 2; // Trạng thái đã chuyển
+        }
+
     }
 
 }

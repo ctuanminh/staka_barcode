@@ -41,23 +41,24 @@
             barBranch = new DevExpress.XtraBars.BarEditItem();
             rpLkpBranch = new DevExpress.XtraEditors.Repository.RepositoryItemLookUpEdit();
             mbtnLogout = new DevExpress.XtraBars.BarButtonItem();
+            mbtnReceiver = new DevExpress.XtraBars.BarButtonItem();
             rbOrder = new DevExpress.XtraBars.Ribbon.RibbonPage();
             ribbonPageGroup1 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             ribbonStatusBar1 = new DevExpress.XtraBars.Ribbon.RibbonStatusBar();
-            xtraTabbedMdiManager1 = new DevExpress.XtraTabbedMdi.XtraTabbedMdiManager(components);
+            TabMdiManager = new DevExpress.XtraTabbedMdi.XtraTabbedMdiManager(components);
             ((System.ComponentModel.ISupportInitialize)ribbonControl1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)rpLkpBranch).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)xtraTabbedMdiManager1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)TabMdiManager).BeginInit();
             SuspendLayout();
             // 
             // ribbonControl1
             // 
             ribbonControl1.EmptyAreaImageOptions.ImagePadding = new System.Windows.Forms.Padding(35, 32, 35, 32);
             ribbonControl1.ExpandCollapseItem.Id = 0;
-            ribbonControl1.Items.AddRange(new DevExpress.XtraBars.BarItem[] { ribbonControl1.ExpandCollapseItem, mbtnOrder, lblTimer, barStaticItem2, mbtnSystem, mbtcPurchase, mbtnTranfer, barSubItem1, barBranch, mbtnLogout });
+            ribbonControl1.Items.AddRange(new DevExpress.XtraBars.BarItem[] { ribbonControl1.ExpandCollapseItem, mbtnOrder, lblTimer, barStaticItem2, mbtnSystem, mbtcPurchase, mbtnTranfer, barSubItem1, barBranch, mbtnLogout, mbtnReceiver });
             ribbonControl1.Location = new System.Drawing.Point(0, 0);
             ribbonControl1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            ribbonControl1.MaxItemId = 19;
+            ribbonControl1.MaxItemId = 20;
             ribbonControl1.Name = "ribbonControl1";
             ribbonControl1.OptionsMenuMinWidth = 385;
             ribbonControl1.Pages.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPage[] { rbOrder });
@@ -157,6 +158,15 @@
             mbtnLogout.Name = "mbtnLogout";
             mbtnLogout.ItemClick += mButtonItem_ItemClick;
             // 
+            // mbtnReceiver
+            // 
+            mbtnReceiver.Caption = "Nhận hàng chuyển";
+            mbtnReceiver.Id = 19;
+            mbtnReceiver.ImageOptions.Image = (System.Drawing.Image)resources.GetObject("mbtnReceiver.ImageOptions.Image");
+            mbtnReceiver.ImageOptions.LargeImage = (System.Drawing.Image)resources.GetObject("mbtnReceiver.ImageOptions.LargeImage");
+            mbtnReceiver.Name = "mbtnReceiver";
+            mbtnReceiver.ItemClick += mButtonItem_ItemClick;
+            // 
             // rbOrder
             // 
             rbOrder.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] { ribbonPageGroup1 });
@@ -168,6 +178,7 @@
             ribbonPageGroup1.ItemLinks.Add(mbtnOrder);
             ribbonPageGroup1.ItemLinks.Add(mbtcPurchase);
             ribbonPageGroup1.ItemLinks.Add(mbtnTranfer);
+            ribbonPageGroup1.ItemLinks.Add(mbtnReceiver);
             ribbonPageGroup1.ItemLinks.Add(mbtnSystem);
             ribbonPageGroup1.ItemLinks.Add(mbtnLogout);
             ribbonPageGroup1.Name = "ribbonPageGroup1";
@@ -184,10 +195,10 @@
             ribbonStatusBar1.Ribbon = ribbonControl1;
             ribbonStatusBar1.Size = new System.Drawing.Size(920, 23);
             // 
-            // xtraTabbedMdiManager1
+            // TabMdiManager
             // 
-            xtraTabbedMdiManager1.ClosePageButtonShowMode = DevExpress.XtraTab.ClosePageButtonShowMode.InActiveTabPageAndTabControlHeader;
-            xtraTabbedMdiManager1.MdiParent = this;
+            TabMdiManager.ClosePageButtonShowMode = DevExpress.XtraTab.ClosePageButtonShowMode.InActiveTabPageAndTabControlHeader;
+            TabMdiManager.MdiParent = this;
             // 
             // FrmMainF
             // 
@@ -209,7 +220,7 @@
             Load += FrmMainF_Load;
             ((System.ComponentModel.ISupportInitialize)ribbonControl1).EndInit();
             ((System.ComponentModel.ISupportInitialize)rpLkpBranch).EndInit();
-            ((System.ComponentModel.ISupportInitialize)xtraTabbedMdiManager1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)TabMdiManager).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -220,7 +231,7 @@
         private DevExpress.XtraBars.Ribbon.RibbonPage rbOrder;
         private DevExpress.XtraBars.Ribbon.RibbonPageGroup ribbonPageGroup1;
         private DevExpress.XtraBars.BarButtonItem mbtnOrder;
-        private DevExpress.XtraTabbedMdi.XtraTabbedMdiManager xtraTabbedMdiManager1;
+        private DevExpress.XtraTabbedMdi.XtraTabbedMdiManager TabMdiManager;
         private DevExpress.XtraBars.BarStaticItem lblTimer;
         private DevExpress.XtraBars.Ribbon.RibbonStatusBar ribbonStatusBar1;
         private DevExpress.XtraBars.BarStaticItem barStaticItem2;
@@ -231,5 +242,6 @@
         private DevExpress.XtraBars.BarEditItem barBranch;
         private DevExpress.XtraEditors.Repository.RepositoryItemLookUpEdit rpLkpBranch;
         private DevExpress.XtraBars.BarButtonItem mbtnLogout;
+        private DevExpress.XtraBars.BarButtonItem mbtnReceiver;
     }
 }

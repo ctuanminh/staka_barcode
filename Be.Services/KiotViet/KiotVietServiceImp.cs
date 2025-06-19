@@ -96,7 +96,7 @@ namespace Be.Services.KiotViet
                             var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
                             var response = await _httpClient.PutAsync(baseUrl, content);
                             if (!response.IsSuccessStatusCode)
-                            {
+                            {   
                                 var error = await response.Content.ReadAsStringAsync();
                                 return (false, error);
                             }

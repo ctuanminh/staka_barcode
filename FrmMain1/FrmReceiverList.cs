@@ -20,7 +20,7 @@ using Exception = System.Exception;
 
 namespace FrmMain
 {
-    public partial class FrmTranfer : XtraForm
+    public partial class FrmReceiverList : XtraForm
     {
         private readonly FrmMainF _mainForm;
         private readonly IKiotVietService _kiotVietService;
@@ -29,8 +29,10 @@ namespace FrmMain
         private readonly IBranchService _branchService;
         private int _branchIdTranfer;
         private int _branchIdReceiver;
+        private int _branchDefault;
         private int currentBranchId;
-        public FrmTranfer(FrmMainF mainForm, IKiotVietService kiotVietService, IBranchService branchService)
+        private List<Branch> branches;
+        public FrmReceiverList(FrmMainF mainForm, IKiotVietService kiotVietService, IBranchService branchService)
         {
             _mainForm = mainForm;
             _kiotVietService = kiotVietService;
@@ -50,8 +52,8 @@ namespace FrmMain
                 SetControlEnable(false);
                 var request = new SearchTranferRequest()
                 {
-                    FromBranchIds = [currentBranchId],
-                    ToBranchIds = null,
+                    FromBranchIds = null,
+                    ToBranchIds = [currentBranchId],
                     Status = _statusList.ToArray(),
                     PageSize = 100,
                     CurrentItem = 1
@@ -97,14 +99,14 @@ namespace FrmMain
                     {
                         if (openForm is FrmTranferProcess processForm)
                         {
-                            processForm.ReloadData(code.ToString(), Convert.ToInt64(id), true);
+                            processForm.ReloadData(code.ToString(), Convert.ToInt64(id), false);
                         }
                     }
                     else
                     {
                         FrmTranferProcess.CurrentCode = code.ToString();
                         FrmTranferProcess.CurrentId = Convert.ToInt64(id);
-                        FrmTranferProcess.Tranfer = true;
+                        FrmTranferProcess.Tranfer = false;
                         var frmOrderInstance = _mainForm.ServiceProvider.GetRequiredService<FrmTranferProcess>();
                         Form frmOrder = frmOrderInstance;
                         FormHelper.NewFormNew(_mainForm, frmOrder, WuserControl.Order, nameof(FrmTranferProcess));
@@ -151,13 +153,14 @@ namespace FrmMain
         private async void FrmOrder_Load(object sender, EventArgs e)
         {
             SetTextEditHeight(this, 25);
+            branches = await _branchService.GetAllBranches();
             chkFinish.BackColor = Color.LightGreen;
             chkDraft.BackColor = Color.Green;
             chkDraft.ForeColor = Color.White;
             chkCancel.BackColor = Color.OrangeRed;
             chkCancel.ForeColor = Color.White;
-            chkTranfer.BackColor = Color.Cyan;
-            chkTranfer.ForeColor = Color.Black;
+            chkStatusTranfer.BackColor = Color.Cyan;
+            chkStatusTranfer.ForeColor = Color.Black;
 
             //Set ngày mặc định
             chkFromTranfer.Checked = true; //Check Ngày chuyển
@@ -180,11 +183,12 @@ namespace FrmMain
                 MessageHelper.MsgBox("Mã chi nhánh không hợp lệ.", MsgType.Error_);
                 return;
             }
-
             var branch = await _branchService.GetBranchById(branchId);
             currentBranchId = branch?.BranchId ?? 0;
             txtBranchName.Text = branch?.BranchName ?? "Chưa chọn chi nhánh";
             txtBranchName.ReadOnly = true;
+            txtBranchName.BackColor = Color.White;
+            txtBranchName.ForeColor = Color.OrangeRed;
             LoadData();
         }
 

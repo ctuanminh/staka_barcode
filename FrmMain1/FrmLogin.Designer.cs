@@ -59,17 +59,17 @@
             layoutControl1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             layoutControl1.Name = "layoutControl1";
             layoutControl1.Root = Root;
-            layoutControl1.Size = new System.Drawing.Size(410, 130);
+            layoutControl1.Size = new System.Drawing.Size(406, 130);
             layoutControl1.TabIndex = 0;
             layoutControl1.Text = "layoutControl1";
             // 
             // btnLogin
             // 
             btnLogin.ImageOptions.Image = (System.Drawing.Image)resources.GetObject("btnLogin.ImageOptions.Image");
-            btnLogin.Location = new System.Drawing.Point(263, 60);
+            btnLogin.Location = new System.Drawing.Point(260, 60);
             btnLogin.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             btnLogin.Name = "btnLogin";
-            btnLogin.Size = new System.Drawing.Size(135, 22);
+            btnLogin.Size = new System.Drawing.Size(134, 22);
             btnLogin.StyleController = layoutControl1;
             btnLogin.TabIndex = 6;
             btnLogin.Text = "Đăng nhập";
@@ -80,7 +80,8 @@
             txtPassword.Location = new System.Drawing.Point(100, 36);
             txtPassword.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             txtPassword.Name = "txtPassword";
-            txtPassword.Size = new System.Drawing.Size(298, 20);
+            txtPassword.Properties.UseSystemPasswordChar = true;
+            txtPassword.Size = new System.Drawing.Size(294, 20);
             txtPassword.StyleController = layoutControl1;
             txtPassword.TabIndex = 5;
             txtPassword.KeyDown += txtPassword_KeyDown;
@@ -90,7 +91,7 @@
             txtUserName.Location = new System.Drawing.Point(100, 12);
             txtUserName.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             txtUserName.Name = "txtUserName";
-            txtUserName.Size = new System.Drawing.Size(298, 20);
+            txtUserName.Size = new System.Drawing.Size(294, 20);
             txtUserName.StyleController = layoutControl1;
             txtUserName.TabIndex = 4;
             // 
@@ -100,7 +101,7 @@
             Root.GroupBordersVisible = false;
             Root.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] { layoutControlItem1, emptySpaceItem1, layoutControlItem2, layoutControlItem3 });
             Root.Name = "Root";
-            Root.Size = new System.Drawing.Size(410, 130);
+            Root.Size = new System.Drawing.Size(406, 130);
             Root.TextVisible = false;
             // 
             // layoutControlItem1
@@ -108,7 +109,7 @@
             layoutControlItem1.Control = txtUserName;
             layoutControlItem1.Location = new System.Drawing.Point(0, 0);
             layoutControlItem1.Name = "layoutControlItem1";
-            layoutControlItem1.Size = new System.Drawing.Size(390, 24);
+            layoutControlItem1.Size = new System.Drawing.Size(386, 24);
             layoutControlItem1.Text = "Tên đăng nhập";
             layoutControlItem1.TextSize = new System.Drawing.Size(84, 14);
             // 
@@ -116,31 +117,32 @@
             // 
             emptySpaceItem1.Location = new System.Drawing.Point(0, 48);
             emptySpaceItem1.Name = "emptySpaceItem1";
-            emptySpaceItem1.Size = new System.Drawing.Size(251, 62);
+            emptySpaceItem1.Size = new System.Drawing.Size(248, 62);
             // 
             // layoutControlItem2
             // 
             layoutControlItem2.Control = txtPassword;
             layoutControlItem2.Location = new System.Drawing.Point(0, 24);
             layoutControlItem2.Name = "layoutControlItem2";
-            layoutControlItem2.Size = new System.Drawing.Size(390, 24);
+            layoutControlItem2.Size = new System.Drawing.Size(386, 24);
             layoutControlItem2.Text = "Mật khẩu";
             layoutControlItem2.TextSize = new System.Drawing.Size(84, 14);
             // 
             // layoutControlItem3
             // 
             layoutControlItem3.Control = btnLogin;
-            layoutControlItem3.Location = new System.Drawing.Point(251, 48);
+            layoutControlItem3.Location = new System.Drawing.Point(248, 48);
             layoutControlItem3.Name = "layoutControlItem3";
-            layoutControlItem3.Size = new System.Drawing.Size(139, 62);
+            layoutControlItem3.Size = new System.Drawing.Size(138, 62);
             layoutControlItem3.TextVisible = false;
             // 
             // FrmLogin
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(410, 130);
+            ClientSize = new System.Drawing.Size(406, 130);
             Controls.Add(layoutControl1);
+            Font = new System.Drawing.Font("Tahoma", 9F);
             FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             MaximizeBox = false;

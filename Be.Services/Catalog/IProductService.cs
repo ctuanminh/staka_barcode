@@ -14,6 +14,6 @@ namespace Be.Services.Catalog
 		Task<ApiResponse> DeleteProduct(Guid Id);
 		Task<ApiResponse> SyncProduct(SearchProductRequestKiot searchProductRequestKiot);
 		Task<Product> GetProductById(long Id);
-        Task<List<ProductCodeBarCode>> SynAndGetProductCodeBarCode(List<OrderDetailResponse> orderDetail);
+        Task<List<ProductCodeBarCode>> SynAndGetProductCodeBarCode(List<string> productCodes);
     }
 }

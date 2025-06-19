@@ -6,12 +6,14 @@ using DevExpress.XtraCharts.Design;
 using DevExpress.XtraEditors;
 using DevExpress.XtraGrid.Views.Grid;
 using DevExpress.XtraSplashScreen;
+using FrmMain.App;
 using FrmMain.Utils;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 using static FrmMain.FrmMainF;
 using Exception = System.Exception;
@@ -50,14 +52,35 @@ namespace FrmMain
         {
             try
             {
-                SplashScreenManager.ShowForm(this, typeof(LoadingForm), true, true);
-                SplashScreenManager.Default.SetWaitFormCaption("Đang lấy Đơn hàng");
-                SplashScreenManager.Default.SetWaitFormDescription("Vui lòng đợi...");
+                var setting = AppGlobals.AppSetting.FirstOrDefault(s =>
+                    s.ComputerName == Environment.MachineName &&
+                    s.ModuleName == "Branch" &&
+                    s.SettingKey == "BranchId");
+
+                if (setting == null || string.IsNullOrWhiteSpace(setting.SettingValue))
+                {
+                    MessageHelper.MsgBox("Không tìm thấy thông tin chi nhánh trên máy này.", MsgType.Error_);
+                    return;
+                }
+
+                if (!long.TryParse(setting.SettingValue, out var branchId))
+                {
+                    MessageHelper.MsgBox("Mã chi nhánh không hợp lệ.", MsgType.Error_);
+                    return;
+                }
+
+                var branch = await _branchService.GetBranchById(branchId);
+                branchId = branch?.Id ?? 0;
+                txtBranch.Text = branch?.BranchName ?? "Chưa chọn chi nhánh";
+                txtBranch.ReadOnly = true;
+                txtBranch.BackColor = Color.White;
+                txtBranch.ForeColor = Color.OrangeRed;
+
                 layoutControlTop.Enabled = false;
                 grdControlOrders.Enabled = false;
                 var request = new SearchPurchaseOrderRequest()
                 {
-                    BranchIds = [_branchId],
+                    BranchIds = [AppGlobals.BranchId],
                     Status = _PurchaseStatusList.ToArray(),
                     PageSize = 100,
                     OrderBy = "purchaseDate",
@@ -84,8 +107,6 @@ namespace FrmMain
             }
             finally
             {
-                // Ẩn màn hình chờ
-                SplashScreenManager.CloseForm();
                 layoutControlTop.Enabled = true;
                 grdControlOrders.Enabled = true;
             }
@@ -157,7 +178,6 @@ namespace FrmMain
         {
             SetTextEditHeight(this, 25);
             var branches = await _branchService.GetPagedBranches();
-            lkupBranch.Properties.DataSource = branches.Data;
             chkFinish.BackColor = Color.LightGreen;
             chkDraft.BackColor = Color.Green;
             chkDraft.ForeColor = Color.White;
@@ -198,13 +218,6 @@ namespace FrmMain
                 }
             }
 
-            LoadData();
-        }
-
-        private void lkupBranch_EditValueChanged(object sender, EventArgs e)
-        {
-            var branchId = (int)lkupBranch.EditValue;
-            _branchId = branchId;
             LoadData();
         }
 

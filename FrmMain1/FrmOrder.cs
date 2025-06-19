@@ -49,31 +49,22 @@ namespace FrmMain
         {
             try
             {
-                SplashScreenManager.ShowForm(this, typeof(LoadingForm), true, true);
-                SplashScreenManager.Default.SetWaitFormCaption("Đang lấy Đơn hàng");
-                SplashScreenManager.Default.SetWaitFormDescription("Vui lòng đợi...");
-                layoutControlTop.Enabled = false;
-                grdControlOrders.Enabled = false;
+                SetControlEnable(false);
                 const string orderUrl = $"https://public.kiotapi.com/orders";
                 var request = new SearchOrderRequest()
                 {
                     //Comment để test
-                    //BranchIds = [AppGlobals.BranchId],
-                    BranchIds = [_branchId],
+                    BranchIds = [AppGlobals.BranchId],
+                    //BranchIds = [_branchId],
                     Status = _orderStatusList.ToArray(),
                     PageSize = 200,
                     OrderBy = "purchaseDate",
                     OrderDirection = "Desc"
                 };
-
                 var (success, content) = await _kiotVietService.CallApiAsync(orderUrl, request, "GET");
-
-                if (!success || content == null) return;
+                if (!success || string.IsNullOrWhiteSpace(content)) return;
                 var orderPagedResponse = JsonConvert.DeserializeObject<OrderPagedResponse>(content);
-
                 grdControlOrders.DataSource = orderPagedResponse.Data;
-                grdViewOrders.Columns["PurchaseDate"].DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
-                grdViewOrders.Columns["PurchaseDate"].DisplayFormat.FormatString = "dd/MM/yyyy HH:mm:ss";
             }
             catch (Exception exception)
             {
@@ -81,10 +72,7 @@ namespace FrmMain
             }
             finally
             {
-                // Ẩn màn hình chờ
-                SplashScreenManager.CloseForm();
-                layoutControlTop.Enabled = true;
-                grdControlOrders.Enabled = true;
+                SetControlEnable(true);
             }
         }
 
@@ -96,23 +84,25 @@ namespace FrmMain
                 var code = view.GetRowCellValue(view.FocusedRowHandle, "Code");
                 var orderId = view.GetRowCellValue(view.FocusedRowHandle, "Id");
 
-                if (code == null) return;
+                if (code == null || orderId == null)
                 {
-                    if (FormHelper.OpenedForm(nameof(FrmOrderProcess), WuserControl.Order, out var openForm))
+                    MessageHelper.MsgBox("Không tìm thấy đơn hàng", MsgType.Error_);
+                    return;
+                }
+                if (FormHelper.OpenedForm(nameof(FrmOrderProcess), WuserControl.Order, out var openForm))
+                {
+                    if (openForm is FrmOrderProcess processForm)
                     {
-                        if (openForm is FrmOrderProcess processForm)
-                        {
-                            processForm.ReloadData(code.ToString());
-                        }
+                        processForm.ReloadData(code.ToString(), orderId.ToString());
                     }
-                    else
-                    {
-                        FrmOrderProcess.CurrentCode = code.ToString();
-                        FrmOrderProcess.CurrentOrderId = orderId.ToString();
-                        var frmOrderInstance = _mainForm.ServiceProvider.GetRequiredService<FrmOrderProcess>();
-                        Form frmOrder = frmOrderInstance;
-                        FormHelper.NewFormNew(_mainForm, frmOrder, WuserControl.Order, nameof(FrmOrderProcess));
-                    }
+                }
+                else
+                {
+                    FrmOrderProcess.CurrentCode = code.ToString();
+                    FrmOrderProcess.CurrentOrderId = orderId.ToString();
+                    var frmOrderInstance = _mainForm.ServiceProvider.GetRequiredService<FrmOrderProcess>();
+                    Form frmOrder = frmOrderInstance;
+                    FormHelper.NewFormNew(_mainForm, frmOrder, WuserControl.Order, nameof(FrmOrderProcess));
                 }
             }
             catch (Exception ex)
@@ -157,19 +147,30 @@ namespace FrmMain
             try
             {
                 SetTextEditHeight(this, 25);
-                var branchId = AppGlobals.AppSetting.FirstOrDefault(s =>
-                    s.ComputerName == Environment.MachineName && s.ModuleName == "Branch" && s.SettingKey == "BranchId")!.SettingValue;
-                           
-                var branch = await _branchService.GetBranchById(Convert.ToInt64(branchId));
+
+                var setting = AppGlobals.AppSetting.FirstOrDefault(s =>
+                    s.ComputerName == Environment.MachineName &&
+                    s.ModuleName == "Branch" &&
+                    s.SettingKey == "BranchId");
+
+                if (setting == null || string.IsNullOrWhiteSpace(setting.SettingValue))
+                {
+                    MessageHelper.MsgBox("Không tìm thấy thông tin chi nhánh trên máy này.", MsgType.Error_);
+                    return;
+                }
+
+                if (!long.TryParse(setting.SettingValue, out var branchId))
+                {
+                    MessageHelper.MsgBox("Mã chi nhánh không hợp lệ.", MsgType.Error_);
+                    return;
+                }
+
+                var branch = await _branchService.GetBranchById(branchId);
                 txtBranch.Text = branch?.BranchName ?? "Chưa chọn chi nhánh";
                 txtBranch.ReadOnly = true;
                 txtBranch.BackColor = Color.White;
                 txtBranch.ForeColor = Color.OrangeRed;
-                chkFinish.BackColor = Color.LightGreen;
-                chkDraft.BackColor = Color.Green;
-                chkDraft.ForeColor = Color.White;
-                chkCancel.BackColor = Color.OrangeRed;
-                chkCancel.ForeColor = Color.White;
+                SetStatusCheckboxStyle();
             }
             catch (Exception exception)
             {
@@ -177,7 +178,10 @@ namespace FrmMain
             }
             finally
             {
-                // Đăng ký sự kiện CheckedChanged cho các CheckEdit
+                chkDraft.CheckedChanged -= Handler_CheckedChanged;
+                chkFinish.CheckedChanged -= Handler_CheckedChanged;
+                chkCancel.CheckedChanged -= Handler_CheckedChanged;
+
                 chkDraft.CheckedChanged += Handler_CheckedChanged;
                 chkFinish.CheckedChanged += Handler_CheckedChanged;
                 chkCancel.CheckedChanged += Handler_CheckedChanged;
@@ -255,6 +259,21 @@ namespace FrmMain
             btnReloadOrder.Text = "Loading...";
             _nextReloadTime = DateTime.Now.AddMinutes(ReloadIntervalMinutes);
             _reloadTimer?.Start();
+        }
+
+        private void SetControlEnable(bool enable)
+        {
+            layoutControlTop.Enabled = enable;
+            grdControlOrders.Enabled = enable;
+        }
+
+        private void SetStatusCheckboxStyle()
+        {
+            chkFinish.BackColor = Color.LightGreen;
+            chkDraft.BackColor = Color.Green;
+            chkDraft.ForeColor = Color.White;
+            chkCancel.BackColor = Color.OrangeRed;
+            chkCancel.ForeColor = Color.White;
         }
     }
 }

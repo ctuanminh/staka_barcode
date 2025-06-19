@@ -29,6 +29,9 @@
     <Compile Update="LoadingForm.Designer.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Report\OrderReport.cs">
+      <SubType>XtraReport</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Update="LoadingForm.resx">

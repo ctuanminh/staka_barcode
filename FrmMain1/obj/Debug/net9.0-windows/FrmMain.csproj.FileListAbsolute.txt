@@ -588,3 +588,6 @@ D:\TrongCV\DEV\Pos\StakaPos\FrmMain1\obj\Debug\net9.0-windows\refint\FrmMain.dll
 D:\TrongCV\DEV\Pos\StakaPos\FrmMain1\obj\Debug\net9.0-windows\FrmMain.pdb
 D:\TrongCV\DEV\Pos\StakaPos\FrmMain1\obj\Debug\net9.0-windows\FrmMain.genruntimeconfig.cache
 D:\TrongCV\DEV\Pos\StakaPos\FrmMain1\obj\Debug\net9.0-windows\ref\FrmMain.dll
+D:\TrongCV\DEV\Pos\StakaPos\FrmMain1\obj\Debug\net9.0-windows\FrmMain.Report.OrderReport.resources
+D:\TrongCV\DEV\Pos\StakaPos\FrmMain1\obj\Debug\net9.0-windows\FrmMain.FrmTranferProcess.resources
+D:\TrongCV\DEV\Pos\StakaPos\FrmMain1\obj\Debug\net9.0-windows\FrmMain.FrmReceiverList.resources

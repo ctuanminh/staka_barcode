@@ -5,6 +5,7 @@ using DevExpress.XtraNavBar;
 using FrmMain.App;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -29,6 +30,7 @@ namespace FrmMain
             _systemService = systemService;
             _branchService = branchService;
             InitializeComponent();
+            CustomizeTabControl();
         }
 
         private static bool OpenedForm(string fName, WuserControl parent)
@@ -58,6 +60,7 @@ namespace FrmMain
             FrmPurchaseProcess = 5,
             FrmTranfer = 5,
             FrmTranferProcess = 6,
+            FrmReceiverList = 7,
         }
 
         private void mButtonItem_ItemClick(object sender, ItemClickEventArgs e)
@@ -101,6 +104,13 @@ namespace FrmMain
                     {
                         var frmSystem = ServiceProvider.GetRequiredService<FrmTranfer>();
                         NewFormNew(frmSystem, WuserControl.FrmTranfer);
+                    }
+                    break;
+                case nameof(mbtnReceiver):
+                    if (!OpenedForm(nameof(FrmReceiverList), WuserControl.FrmReceiverList))
+                    {
+                        var frmReceiverList = ServiceProvider.GetRequiredService<FrmReceiverList>();
+                        NewFormNew(frmReceiverList, WuserControl.FrmReceiverList);
                     }
                     break;
                 case nameof(mbtnLogout):
@@ -185,6 +195,14 @@ namespace FrmMain
                 MessageHelper.MsgBox("Có lỗi trong quá trình tải dữ liệu", MsgType.Error_);
                 return;
             }
+        }
+
+        private void CustomizeTabControl()
+        {
+            TabMdiManager.Appearance.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+            TabMdiManager.Appearance.Options.UseFont = true;
+            TabMdiManager.AppearancePage.Header.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+            TabMdiManager.AppearancePage.Header.Options.UseFont = true;
         }
     }
 }

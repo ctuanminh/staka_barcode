@@ -36,6 +36,7 @@
         public decimal ExReturnSuppliers { get; set; }
         public decimal ExReturnThirdParty { get; set; }
         public List<PurchaseOrderDetail> PurchaseOrderDetails { get; set; }
+        public List<Payment>? Payments { get; set; }
         public int Quantity
         {
             get
@@ -54,6 +55,7 @@
         public decimal Price { get; set; }
         public string Unit { get; set; }
         public decimal Discount { get; set; }
+        public double DiscountRatio { get; set; }
         public bool Checked { get; set; }
         private decimal _total;
         public decimal Total
@@ -69,6 +71,15 @@
         public int Total { get; set; }
         public int PageSize { get; set; }
         public int CurrentItem { get; set; }
+    }
+    public class Payment
+    {
+        public long Id { get; set; }           // Id thanh toán
+        public string Code { get; set; }       // Mã thanh toán
+        public string Method { get; set; }     // Phương thức thanh toán
+        public int Status { get; set; }        // Trạng thái
+        public string StatusValue { get; set; } // Tên trạng thái
+        public DateTime TransDate { get; set; } // Ngày thanh toán
     }
 
 }
