@@ -1,13 +1,16 @@
-﻿using System;
-using System.Windows.Forms;
+﻿using AutoMapper;
 using Be.Core.Entities.Identity;
 using Be.Data.Data;
 using Be.Services;
+using Be.Services.AutoMapper;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Services;
+using System;
+using System.Windows.Forms;
 
 namespace FrmMain
 {
@@ -28,12 +31,15 @@ namespace FrmMain
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .Build();
             var connectionString = configuration.GetConnectionString("Default");
-            services.AddDbContext<IdentityDbContext>(options => options.UseNpgsql(connectionString));
+
             services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connectionString));
 
+            services.AddDbContext<Be.Data.Data.IdentityDbContext>(options => options.UseNpgsql(connectionString));
+            
             services.AddIdentity<ApplicationUser, IdentityRole<long>>()
-                .AddEntityFrameworkStores<IdentityDbContext>()
-                .AddRoleManager<RoleManager<IdentityRole<long>>>();
+                .AddEntityFrameworkStores<Be.Data.Data.IdentityDbContext>()
+                .AddRoleManager<RoleManager<IdentityRole<long>>>()
+                .AddDefaultTokenProviders();
 
 
             services.AddSingleton<IConfiguration>(configuration);
@@ -42,7 +48,16 @@ namespace FrmMain
             // extension method
             services.RegisterServices();
             // Build ServiceProvider
+            // Auto Mapper Configurations
+            var mappingConfig = new MapperConfiguration(mc =>
+            {
+                mc.AllowNullCollections = true;
+                mc.AddProfile(new MappingProfile());
+            });
             ServiceProvider = services.BuildServiceProvider();
+            var mapper = mappingConfig.CreateMapper();
+            services.AddSingleton(mapper);
+
             // Thêm các form
             services.AddTransient<FrmOrder>();
             services.AddTransient<FrmOrderProcess>();
@@ -51,8 +66,11 @@ namespace FrmMain
             services.AddTransient<FrmLogin>(); 
             services.AddTransient<FrmPurchase>(); 
             services.AddTransient<FrmTranfer>(); 
-            services.AddTransient<FrmPurchaseProcess>(); 
-            services.AddSingleton<IKiotVietService, KiotVietServiceImp>();
+            services.AddTransient<FrmPurchaseProcess>();
+            services.AddTransient<FrmTranferProcess>();
+            services.AddTransient<FrmReceiverList>();
+            // Auto Mapper Configurations
+            
 
             // Xây dựng ServiceProvider
             var serviceProvider = services.BuildServiceProvider();

@@ -20,6 +20,8 @@
         public string Groups { get; set; }
         public string LocationName { get; set; }
         public string WardName { get; set; }
+        public string Email { get; set; }
+        public int  Type { get; set; }
         public DateTime ModifiedDate { get; set; }
         public DateTime CreatedDate { get; set; }
 

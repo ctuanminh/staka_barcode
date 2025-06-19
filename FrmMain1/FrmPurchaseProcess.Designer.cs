@@ -34,9 +34,7 @@
             grpCtlButton = new DevExpress.XtraEditors.GroupControl();
             ltCtlButton = new DevExpress.XtraLayout.LayoutControl();
             btnFinish = new DevExpress.XtraEditors.SimpleButton();
-            simpleButton1 = new DevExpress.XtraEditors.SimpleButton();
             layoutControlGroup2 = new DevExpress.XtraLayout.LayoutControlGroup();
-            layoutControlItem11 = new DevExpress.XtraLayout.LayoutControlItem();
             layoutControlItem10 = new DevExpress.XtraLayout.LayoutControlItem();
             layoutControl2 = new DevExpress.XtraLayout.LayoutControl();
             txtPurchaseDate = new DevExpress.XtraEditors.TextEdit();
@@ -116,7 +114,6 @@
             ((System.ComponentModel.ISupportInitialize)ltCtlButton).BeginInit();
             ltCtlButton.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)layoutControlGroup2).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)layoutControlItem11).BeginInit();
             ((System.ComponentModel.ISupportInitialize)layoutControlItem10).BeginInit();
             ((System.ComponentModel.ISupportInitialize)layoutControl2).BeginInit();
             layoutControl2.SuspendLayout();
@@ -204,7 +201,6 @@
             // ltCtlButton
             // 
             ltCtlButton.Controls.Add(btnFinish);
-            ltCtlButton.Controls.Add(simpleButton1);
             ltCtlButton.Dock = System.Windows.Forms.DockStyle.Fill;
             ltCtlButton.Location = new System.Drawing.Point(2, 2);
             ltCtlButton.Name = "ltCtlButton";
@@ -216,47 +212,29 @@
             // btnFinish
             // 
             btnFinish.ImageOptions.Image = (System.Drawing.Image)resources.GetObject("btnFinish.ImageOptions.Image");
-            btnFinish.Location = new System.Drawing.Point(175, 12);
+            btnFinish.Location = new System.Drawing.Point(12, 12);
             btnFinish.Name = "btnFinish";
-            btnFinish.Size = new System.Drawing.Size(160, 38);
+            btnFinish.Size = new System.Drawing.Size(323, 38);
             btnFinish.StyleController = ltCtlButton;
             btnFinish.TabIndex = 2;
             btnFinish.Text = "HOÀN THÀNH";
             btnFinish.Click += btnFinish_Click;
             // 
-            // simpleButton1
-            // 
-            simpleButton1.ImageOptions.Image = (System.Drawing.Image)resources.GetObject("simpleButton1.ImageOptions.Image");
-            simpleButton1.Location = new System.Drawing.Point(12, 12);
-            simpleButton1.Name = "simpleButton1";
-            simpleButton1.Size = new System.Drawing.Size(159, 38);
-            simpleButton1.StyleController = ltCtlButton;
-            simpleButton1.TabIndex = 1;
-            simpleButton1.Text = "IN";
-            // 
             // layoutControlGroup2
             // 
             layoutControlGroup2.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.True;
             layoutControlGroup2.GroupBordersVisible = false;
-            layoutControlGroup2.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] { layoutControlItem11, layoutControlItem10 });
+            layoutControlGroup2.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] { layoutControlItem10 });
             layoutControlGroup2.Name = "layoutControlGroup2";
             layoutControlGroup2.Size = new System.Drawing.Size(347, 94);
             layoutControlGroup2.TextVisible = false;
             // 
-            // layoutControlItem11
-            // 
-            layoutControlItem11.Control = simpleButton1;
-            layoutControlItem11.Location = new System.Drawing.Point(0, 0);
-            layoutControlItem11.Name = "layoutControlItem11";
-            layoutControlItem11.Size = new System.Drawing.Size(163, 74);
-            layoutControlItem11.TextVisible = false;
-            // 
             // layoutControlItem10
             // 
             layoutControlItem10.Control = btnFinish;
-            layoutControlItem10.Location = new System.Drawing.Point(163, 0);
+            layoutControlItem10.Location = new System.Drawing.Point(0, 0);
             layoutControlItem10.Name = "layoutControlItem10";
-            layoutControlItem10.Size = new System.Drawing.Size(164, 74);
+            layoutControlItem10.Size = new System.Drawing.Size(327, 74);
             layoutControlItem10.TextVisible = false;
             // 
             // layoutControl2
@@ -943,8 +921,8 @@
             MaximizeBox = false;
             MinimizeBox = false;
             Name = "FrmPurchaseProcess";
-            Text = "Xử lý Nhập hàng";
-            Load += FrmOrderProcess_Load;
+            Text = "Xử lý Phiếu Nhập hàng";
+            Load += FrmPurchaseProcess_Load;
             Shown += FrmOrderProcess_Shown;
             ((System.ComponentModel.ISupportInitialize)groupControl1).EndInit();
             groupControl1.ResumeLayout(false);
@@ -954,7 +932,6 @@
             ((System.ComponentModel.ISupportInitialize)ltCtlButton).EndInit();
             ltCtlButton.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)layoutControlGroup2).EndInit();
-            ((System.ComponentModel.ISupportInitialize)layoutControlItem11).EndInit();
             ((System.ComponentModel.ISupportInitialize)layoutControlItem10).EndInit();
             ((System.ComponentModel.ISupportInitialize)layoutControl2).EndInit();
             layoutControl2.ResumeLayout(false);
@@ -1046,7 +1023,6 @@
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem9;
         private DevExpress.Utils.Behaviors.BehaviorManager behaviorManager1;
         private DevExpress.XtraEditors.SimpleButton btnFinish;
-        private DevExpress.XtraEditors.SimpleButton simpleButton1;
         private DevExpress.XtraEditors.GroupControl grpCtlButton;
         private DevExpress.XtraLayout.LayoutControl ltCtlButton;
         private DevExpress.XtraLayout.LayoutControlGroup layoutControlGroup2;
@@ -1067,7 +1043,6 @@
         private DevExpress.XtraGrid.Columns.GridColumn clmPrice;
         private DevExpress.XtraGrid.Columns.GridColumn clmDiscount;
         private DevExpress.XtraGrid.Columns.GridColumn clmTotal;
-        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem11;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem10;
         private DevExpress.XtraEditors.TextEdit txtScanNumber;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem12;

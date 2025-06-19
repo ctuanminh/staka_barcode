@@ -6,9 +6,11 @@ using Be.Services.Catalog;
 using Be.Services.Crm;
 using Be.Services.customer;
 using Be.Services.Identity;
+using Be.Services.KiotViet;
 using Be.Services.Order;
 using Be.Services.Pos;
 using Be.Services.PurchaseOrder;
+using Be.Services.System;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Be.Services
@@ -28,10 +30,11 @@ namespace Be.Services
 			services.AddScoped<IOrderService, OrderServiceImp>();
 			services.AddScoped<ICashFlowService, CashFlowServiceImp>();
 			services.AddScoped<Gateway.IKiotVietService, Gateway.KiotVietServiceImp>();
-			services.AddScoped<Be.Services.KiotViet.IKiotVietService, Be.Services.KiotViet.KiotVietServiceImp>();
 			services.AddScoped<IReportService, ReportServiceImp>();
 			services.AddScoped<IBranchService, BranchServiceImp>();
 			services.AddScoped<IPurchaseOrderService, PurchaseOrderServiceImp>();
+			services.AddScoped<IKiotVietService, KiotVietServiceImp>();
+			services.AddScoped<ISystemService, SystemServiceImp>();
 			return services;
 		}
 	}

@@ -154,14 +154,8 @@ namespace Be.Services.Catalog
             return product;
         }
 
-        public async Task<List<ProductCodeBarCode>> SynAndGetProductCodeBarCode(List<OrderDetailResponse> orderDetails)
+        public async Task<List<ProductCodeBarCode>> SynAndGetProductCodeBarCode(List<string> productCodes)
         {
-            //Lấy code trong đơn hàng
-            var productCodes = orderDetails
-                .Select(p => p.ProductCode)
-                .Where(code => !string.IsNullOrWhiteSpace(code))
-                .Distinct()
-                .ToList();
             //Lấy code đã có trong db
             var existCodes = await _repository.GetQueryable<Product>()
                 .Where(p => productCodes.Contains(p.Code))

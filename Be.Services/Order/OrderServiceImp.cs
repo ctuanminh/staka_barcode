@@ -45,7 +45,7 @@ namespace Be.Services.Order
                 return BadRequest("B", "Token is not valid");
             }
             request.PageSize = request.PageSize <= 0 ? 10 : request.PageSize;
-            request.currentItem = request.currentItem <= 0 ? 0 : (request.currentItem - 1) * request.PageSize;
+            request.CurrentItem = request.CurrentItem <= 0 ? 0 : (request.CurrentItem - 1) * request.PageSize;
 
             var baseUrl = "https://public.kiotapi.com/customers";
             var url = QueryStringHelper.BuildQueryString(request, baseUrl);

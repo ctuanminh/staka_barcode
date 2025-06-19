@@ -13,6 +13,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Be.Common.User.Dto;
 
 namespace Be.Services.Identity
 {
@@ -46,7 +47,7 @@ namespace Be.Services.Identity
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public async Task<(bool Success, string Content)> Login(UserLoginRequest request)
+        public async Task<(bool success, UserLoginDto userLoginDto)> Login(UserLoginRequest request)
         {
             try
             {              
@@ -61,17 +62,12 @@ namespace Be.Services.Identity
                 }
                                 
                 var roles = new List<string> { "admin", "customer" };
-                var user = new
+                var user = new UserLoginDto()
                 {
-                    Id = userExist.Id,
-                    UserName = userExist.UserName,
-                    Email = userExist.Email,
-                    Roles = roles,
-                    Phone = userExist.PhoneNumber,
-                    UserType = userExist.UserType,
-                    IsVendor = userExist.IsVendor
+                    UserName = userExist.UserName,  
+                    FullName = userExist.FullName,
                 };
-                return (true, JsonConvert.SerializeObject(user));
+                return (true, user);
             }
             catch (Exception ex)
             {
@@ -217,20 +213,23 @@ namespace Be.Services.Identity
             return Ok(pageResult);
         }
 
-        public async Task<ApiResponse> GetUserById(Guid id)
+        public async Task<UserDto> GetUserById(long id)
         {
             try
             {
-                var user = await _userManager.FindByIdAsync(id.ToString());
-                if (user != null)
+                var user = await _userManager.Users.FirstOrDefaultAsync(u => u.KiotId == id);
+                return new UserDto()
                 {
-                    return Ok(user);
-                }
-                return BadRequest("B", "User not exist");
+                    Id = user.Id,
+                    UserName = user.UserName,
+                    FullName = user.FullName,
+                    PhoneNumber = user.PhoneNumber,
+                    Email = user.Email,
+                };
             }
             catch (Exception e)
             {
-                return BadRequest("B", e.ToString());
+                return null;
             }
         }
 
@@ -306,7 +305,7 @@ namespace Be.Services.Identity
             return Ok(new {});
         }
 
-        public async Task<ApiResponse> SyncUser(SyncUserRequest request)
+        public async Task<bool> SyncUser(SyncUserRequest request)
         {
             var baseUrl = "https://public.kiotapi.com/users";
             if (baseUrl == null) throw new ArgumentNullException(nameof(baseUrl));
@@ -317,17 +316,15 @@ namespace Be.Services.Identity
             var kiotVietUserApiList = new List<KiotVietUserApi>();
             for (var i = 1; i <= numRequest; i++)
             {
-                var (Success, Content) = await KiotVietApiHelper.CallApiAsync(_httpClient, _config, baseUrl, request);
-                if (!Success || string.IsNullOrEmpty(Content))
-                {                    
-                    return BadRequest("Không thể lấy dữ liệu từ KiotViet");
+                var (success, content) = await KiotVietApiHelper.CallApiAsync(_httpClient, _config, baseUrl, request);
+                if (!success || string.IsNullOrEmpty(content))
+                {
+                    return false;
                 }                
-                kiotVietUserApiList.AddRange(JsonConvert.DeserializeObject<KiotVietUserApiResponse>(Content).Data);                                
+                kiotVietUserApiList.AddRange(JsonConvert.DeserializeObject<KiotVietUserApiResponse>(content).Data);                                
                 request.CurrentItem = (i) * request.PageSize;
             }
 
-            // Lấy danh sách ID người dùng từ KiotViet
-            // Để lấy toàn bộ user có trong db
             var userIdExistList = kiotVietUserApiList.Select(x => x.Id).ToList();
 
             var userExistList = await _userManager.Users
@@ -363,8 +360,7 @@ namespace Be.Services.Identity
                     await _userManager.CreateAsync(newUser, "@Abc1234");
                 }
             }            
-            
-            return Ok(new { });
+            return true;
         }
 
         public Task<ApiResponse> GetInfo(string token)

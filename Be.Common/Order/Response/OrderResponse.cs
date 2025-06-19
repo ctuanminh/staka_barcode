@@ -6,8 +6,8 @@
         public string Code { get; set; }
         public DateTime PurchaseDate { get; set; }
         public long BranchId { get; set; }
-        public string BranchName { get; set; }
         public long SoldById { get; set; }
+        public string BranchName { get; set; }
         public string SoldByName { get; set; }
         public long CustomerId { get; set; }
         public string CustomerCode { get; set; }

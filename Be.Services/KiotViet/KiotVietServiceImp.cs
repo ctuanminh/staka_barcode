@@ -1,7 +1,9 @@
 ﻿using Microsoft.Extensions.Configuration;
 using System.Net.Http.Headers;
+using System.Text;
 using System.Text.Json;
 using Be.Common.utils;
+using Newtonsoft.Json;
 
 namespace Be.Services.KiotViet
 {
@@ -76,23 +78,44 @@ namespace Be.Services.KiotViet
                     return (false, "Token is not valid");
                 }
 
-                var url = request != null ? QueryStringHelper.BuildQueryString(request, baseUrl) : baseUrl;
-
-                if (method != "GET")
+                switch (method)
                 {
-                    return (true, "");
-                }
-                else
-                {
-                    var response = await _httpClient.GetAsync(url);
-                    if (!response.IsSuccessStatusCode)
-                    {
-                        var error = await response.Content.ReadAsStringAsync();
-                        return (false, error);
-                    }
+                    case "POST":
+                        var responseGet = await _httpClient.GetAsync(baseUrl);
+                        if (!responseGet.IsSuccessStatusCode)
+                        {
+                            var error = await responseGet.Content.ReadAsStringAsync();
+                            return (false, error);
+                        }
 
-                    var dataResponse = await response.Content.ReadAsStringAsync();
-                    return (true, dataResponse);
+                        var dataGetResponse = await responseGet.Content.ReadAsStringAsync();
+                        return (true, dataGetResponse);
+                    case "PUT":
+                        {
+                            var jsonContent = JsonConvert.SerializeObject(request);
+                            var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+                            var response = await _httpClient.PutAsync(baseUrl, content);
+                            if (!response.IsSuccessStatusCode)
+                            {   
+                                var error = await response.Content.ReadAsStringAsync();
+                                return (false, error);
+                            }
+                            var dataResponse = await response.Content.ReadAsStringAsync();
+                            return (true, dataResponse);
+                        }
+                    default:
+                        {
+                            var url = request != null ? QueryStringHelper.BuildQueryString(request, baseUrl) : baseUrl;
+                            var response = await _httpClient.GetAsync(url);
+                            if (!response.IsSuccessStatusCode)
+                            {
+                                var error = await response.Content.ReadAsStringAsync();
+                                return (false, error);
+                            }
+
+                            var dataResponse = await response.Content.ReadAsStringAsync();
+                            return (true, dataResponse);
+                        }
                 }
 
             }

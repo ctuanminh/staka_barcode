@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using Be.Common.Branch.Response;
 using Be.Common.Dtos.Category;
 using Be.Common.Dtos.Product;
+using Be.Common.System;
 using Be.Core.Entities;
 
 namespace Be.Services.AutoMapper
@@ -11,6 +13,9 @@ namespace Be.Services.AutoMapper
         {
             CreateMap<Product, ProductDto>().ReverseMap();
             CreateMap<Category, CategoryDto>().ReverseMap();
+            //Map AppSetting và AppSettingDto
+            CreateMap<AppSettingEntity, AppSettingDto>().ReverseMap();
+            CreateMap<BranchResponse, Branch>().ReverseMap();
         }
     }
 }

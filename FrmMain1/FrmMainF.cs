@@ -1,10 +1,19 @@
-﻿using DevExpress.XtraBars.Ribbon;
-using DevExpress.XtraNavBar;
-using System;
-using System.Linq;
-using System.Windows.Forms;
+﻿using Be.Services.System;
 using DevExpress.XtraBars;
+using DevExpress.XtraBars.Ribbon;
+using DevExpress.XtraNavBar;
+using FrmMain.App;
 using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Drawing;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using Be.Common.System;
+using Be.Services.Pos;
+using DevExpress.Mvvm.POCO;
+using DevExpress.XtraEditors.Controls;
+using FrmMain.Utils;
 
 namespace FrmMain
 {
@@ -13,13 +22,18 @@ namespace FrmMain
         private Timer _clockTimer;
         public IServiceProvider ServiceProvider { get; }
         public bool login = false;
-        public FrmMainF(IServiceProvider serviceProvider)
+        private readonly ISystemService _systemService;
+        private readonly IBranchService _branchService;
+        public FrmMainF(IServiceProvider serviceProvider, ISystemService systemService, IBranchService branchService)
         {
             ServiceProvider = serviceProvider;
+            _systemService = systemService;
+            _branchService = branchService;
             InitializeComponent();
+            CustomizeTabControl();
         }
 
-        private bool OpenedForm(string fName, WuserControl parent)
+        private static bool OpenedForm(string fName, WuserControl parent)
         {
             var openForm = Application.OpenForms[fName];
             if (openForm == null)
@@ -46,33 +60,24 @@ namespace FrmMain
             FrmPurchaseProcess = 5,
             FrmTranfer = 5,
             FrmTranferProcess = 6,
-        }
-
-        private void FormActive(object sender, EventArgs e)
-        {
-            if (sender is not Form frm) return;
-            frm.Refresh();
-
-            if (frm.Tag is not NavBarItem navItem) return;
-            if (navItem.Links.Count > 0)
-            {
-                navItem.Links[0].PerformClick();
-            }
-
-            if (navItem.NavBar is { Parent: not null })
-            {
-                navItem.NavBar.Parent.BringToFront();
-            }
+            FrmReceiverList = 7,
         }
 
         private void mButtonItem_ItemClick(object sender, ItemClickEventArgs e)
         {
+            if (AppGlobals.UserInfo.FullName == null)
+            {
+                var frmLogin = ServiceProvider.GetRequiredService<FrmLogin>();
+                frmLogin.ShowDialog();
+                if (AppGlobals.UserInfo.UserName == null) return;
+            }
+
             switch (e.Item.Name)
             {
                 case nameof(mbtnOrder):
                     if (!OpenedForm(nameof(FrmOrder), WuserControl.Order))
                     {
-                       var frmOrder =  ServiceProvider.GetRequiredService<FrmOrder>();
+                        var frmOrder = ServiceProvider.GetRequiredService<FrmOrder>();
                         NewFormNew(frmOrder, WuserControl.Order);
                     }
                     break;
@@ -101,6 +106,31 @@ namespace FrmMain
                         NewFormNew(frmSystem, WuserControl.FrmTranfer);
                     }
                     break;
+                case nameof(mbtnReceiver):
+                    if (!OpenedForm(nameof(FrmReceiverList), WuserControl.FrmReceiverList))
+                    {
+                        var frmReceiverList = ServiceProvider.GetRequiredService<FrmReceiverList>();
+                        NewFormNew(frmReceiverList, WuserControl.FrmReceiverList);
+                    }
+                    break;
+                case nameof(mbtnLogout):
+                    if (MessageHelper.MsgBox("Bạn muốn thoát tài khoản?", MsgType.YesNo) == DialogResult.Yes)
+                    {
+                        AppGlobals.UserInfo = new UserInfo();
+                        
+                        foreach (var form in MdiChildren)
+                        {
+                            form.Close();
+                        }
+                        var frmLogin = ServiceProvider.GetRequiredService<FrmLogin>();
+                        frmLogin.ShowDialog();
+                        var isOrderFormOpened = this.MdiChildren.Any(f => f is FrmOrder);
+                        if (isOrderFormOpened) return;
+                        var frmOrder = ServiceProvider.GetRequiredService<FrmOrder>();
+                        frmOrder.MdiParent = this;
+                        frmOrder.Show();
+                    }
+                    break;
             }
         }
 
@@ -114,30 +144,65 @@ namespace FrmMain
             f.Show();
         }
 
-        private void FrmMainF_Load(object sender, EventArgs e)
+        private async void FrmMainF_Load(object sender, EventArgs e)
         {
             _clockTimer = new Timer();
             _clockTimer.Interval = 1000; // 1 giây
             _clockTimer.Tick += ClockTimer_Tick;
             _clockTimer.Start();
-            if (login)
-            {
-                var isOrderFormOpened = this.MdiChildren.Any(f => f is FrmOrder);
-                if (isOrderFormOpened) return;
-                var frmOrder = ServiceProvider.GetRequiredService<FrmOrder>();
-                frmOrder.MdiParent = this;
-                frmOrder.Show();
-            }
-            else
-            {
-                var frmLogin = ServiceProvider.GetRequiredService<FrmLogin>();
-                frmLogin.ShowDialog();
-            }
-            
+            LoadSetting();
+            if (AppGlobals.UserInfo != null) return;
+            AppGlobals.UserInfo = new UserInfo();
+            var frmLogin = ServiceProvider.GetRequiredService<FrmLogin>();
+            frmLogin.ShowDialog();
+            var isOrderFormOpened = this.MdiChildren.Any(f => f is FrmOrder);
+            if (isOrderFormOpened) return;
+            var frmOrder = ServiceProvider.GetRequiredService<FrmOrder>();
+            frmOrder.MdiParent = this;
+            frmOrder.Show();
         }
+
         private void ClockTimer_Tick(object sender, EventArgs e)
         {
             lblTimer.Caption = DateTime.Now.ToString("HH:mm:ss dd/MM/yyyy");
+        }
+
+        private async void LoadSetting()
+        {
+            try
+            {
+                var branches = await _branchService.GetAllBranches();
+                rpLkpBranch.DataSource = branches;
+                rpLkpBranch.ReadOnly = true; // Set ReadOnly to true to prevent editing
+
+                var setting = await _systemService.GetAppSettingBuyComputer(Environment.MachineName);
+                AppGlobals.AppSetting = setting;
+                var branchId = AppGlobals.AppSetting.FirstOrDefault(s =>
+                    s.ComputerName == Environment.MachineName && s.ModuleName == "Branch" && s.SettingKey == "BranchId");
+
+                if (branchId != null)
+                {
+                    AppGlobals.BranchId = Convert.ToInt32(branchId.SettingValue);
+                    barBranch.EditValue = branchId?.SettingValue; // Corrected assignment
+                }
+                else
+                {
+                    MessageHelper.MsgBox("Kiểm tra lại dữ liệu mặc đinh Chi nhánh/Tài khoản", MsgType.Error_);
+                }
+            }
+            catch (Exception e)
+            {
+                MessageHelper.MsgBox("Có lỗi trong quá trình tải dữ liệu", MsgType.Error_);
+                return;
+            }
+        }
+
+        private void CustomizeTabControl()
+        {
+            TabMdiManager.Appearance.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+            TabMdiManager.Appearance.Options.UseFont = true;
+            TabMdiManager.AppearancePage.Header.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+            TabMdiManager.AppearancePage.Header.Options.UseFont = true;
         }
     }
 }

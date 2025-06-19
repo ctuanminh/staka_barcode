@@ -1,4 +1,9 @@
-﻿using DevExpress.XtraEditors;
+﻿using Be.Common.Order.Request;
+using Be.Common.Order.Response;
+using Be.Common.Purchase_Order.Response;
+using Be.Services.Catalog;
+using Be.Services.KiotViet;
+using DevExpress.XtraEditors;
 using DevExpress.XtraGrid.Views.Grid;
 using DevExpress.XtraSplashScreen;
 using FrmMain.Utils;
@@ -9,10 +14,6 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using Be.Common.Order.Response;
-using Be.Common.Purchase_Order.Response;
-using Be.Services.Catalog;
-using Be.Services.KiotViet;
 using Exception = System.Exception;
 
 namespace FrmMain
@@ -50,11 +51,16 @@ namespace FrmMain
             LoadData(purchaseId);
         }
 
-        private async void LoadProduct(List<OrderDetailResponse> orderDetailResponses)
+        private async void LoadProduct(List<PurchaseOrderDetail> purchaseOrderDetails)
         {
             try
             {
-                var productCodeBarCode = await _productService.SynAndGetProductCodeBarCode(orderDetailResponses);
+                var productCodes = purchaseOrderDetails
+                    .Select(p => p.ProductCode)
+                    .Where(code => !string.IsNullOrWhiteSpace(code))
+                    .Distinct()
+                    .ToList();
+                var productCodeBarCode = await _productService.SynAndGetProductCodeBarCode(productCodes);
                 productLookupDictionary = new Dictionary<string, string>();
                 foreach (var product in productCodeBarCode)
                 {
@@ -136,9 +142,6 @@ namespace FrmMain
                 txtCustomerName.Text = purchaseOrderResponse.SupplierName; // Tên Người nhập
                 txtSaleName.Text = purchaseOrderResponse.PurchaseName; // Tên nhà cung cấp.
                 txtPurchaseDate.Text = purchaseOrderResponse.PurchaseDate.ToString("dd/MM/yyyy HH:mm:ss");
-                //txtSumTotal.Text = NumberFormatter.FormatDecimal(orderApiResponse.Total); // Tổng hoá đơn
-                //txtTotalPayment.Text = NumberFormatter.FormatDecimal(orderApiResponse.TotalPayment); // Khách đã trả
-                //txtTotal.Text = NumberFormatter.FormatDecimal(orderApiResponse.Total); // Khách cần trả
                 _orderResponse = purchaseOrderResponse;
                 txtScanNumber.ReadOnly = true;
                 txtScanNumber.Text = $"{_scannedBarcodeCount.ToString()}" + "/" +
@@ -146,7 +149,7 @@ namespace FrmMain
                 
                 gridControlOrder.DataSource = _orderResponse.PurchaseOrderDetails;
                 gridViewOrder.BestFitColumns();
-                //LoadProduct(_orderResponse.PurchaseOrderDetails);
+                LoadProduct(_orderResponse.PurchaseOrderDetails);
             }
             catch (Exception ex)
             {
@@ -173,6 +176,7 @@ namespace FrmMain
                         textEdit.MaximumSize = new Size(0, height);
                         break;
                     case SimpleButton button:
+                        if (c.Name is nameof(btnFinish)) break;
                         button.MinimumSize = new Size(0, height);
                         button.MaximumSize = new Size(0, height);
                         break;
@@ -192,7 +196,7 @@ namespace FrmMain
             }
         }
 
-        private void FrmOrderProcess_Load(object sender, EventArgs e)
+        private void FrmPurchaseProcess_Load(object sender, EventArgs e)
         {
             SetTextEditHeight(this, 25);
             BeginInvoke(new Action(() => txtProductCode.Focus()));
@@ -240,7 +244,7 @@ namespace FrmMain
         {
             if (sender is not GridView view) return;
 
-            if (view.GetRow(e.RowHandle) is not OrderDetailResponse row) return;
+            if (view.GetRow(e.RowHandle) is not PurchaseOrderDetail row) return;
 
             if (!row.Checked) return;
             e.Appearance.BackColor = Color.LightGreen; // Màu xanh nhạt
@@ -249,26 +253,34 @@ namespace FrmMain
 
         private void btnFinish_Click(object sender, EventArgs e)
         {
-            if (_orderResponse is not { Status: 1 })
+            switch (_orderResponse.Status)
             {
-                MessageHelper.MsgBox("Vui lòng kiểm tra dữ liệu", MsgType.Error_);
-                return;
-            }
-            if (_scannedBarcodeCount == _orderResponse.PurchaseOrderDetails.Count())
-            {
-                var result = MessageHelper.MsgBox("Hoàn thành đơn hàng", MsgType.YesNo);
-                if (result != DialogResult.Yes) return;
-                MessageHelper.MsgBox("Hoàn thành đơn hàng thành công", MsgType.Information);
-                txtOrderCode.Focus();
-            }
-            else
-            {
-                var listNotScan = _orderResponse.PurchaseOrderDetails.Where(p => !p.Checked)
-                    .Select(p => p.ProductCode)
-                    .ToList();
-                var message = $"Còn {listNotScan.Count} sản phẩm chưa quét mã: {string.Join(", ", listNotScan)}.\nVui lòng thực hiện trước khi hoàn thành.";
-                MessageHelper.MsgBox(message, MsgType.Error_);
-                txtProductCode.Focus();
+                case (int)OrderStatusEnum.Finished:
+                    MessageHelper.MsgBox("Đơn hàng đã hoàn thành, vui lòng kiểm tra lại", MsgType.Error_);
+                    break;
+                case (int)OrderStatusEnum.Cancel:
+                    MessageHelper.MsgBox("Đơn hàng đã huỷ, vui lòng kiểm tra lại", MsgType.Error_);
+                    break;
+                default:
+                    if (_scannedBarcodeCount == _orderResponse.PurchaseOrderDetails.Count())
+                    {
+                        var confirm = MessageHelper.MsgBox("Hoàn thành đơn hàng", MsgType.YesNo);
+                        if (confirm != DialogResult.Yes) return;
+                        FinishOrder();
+                    }
+                    else
+                    {
+                        var listNotScan = _orderResponse.PurchaseOrderDetails.Where(p => !p.Checked)
+                            .Select(p => p.ProductCode)
+                            .ToList();
+                        var message =
+                            $"Còn {listNotScan.Count} sản phẩm chưa quét mã: {string.Join(", ", listNotScan)}.\nVui lòng thực hiện trước khi hoàn thành.";
+                        MessageHelper.MsgBox(message, MsgType.Error_);
+                        txtProductCode.Focus();
+                        return;
+                    }
+
+                    break;
             }
 
         }
@@ -341,6 +353,101 @@ namespace FrmMain
             btnReloadOrder.Text = "Loading...";
             _nextReloadTime = DateTime.Now.AddMinutes(ReloadIntervalMinutes);
             _reloadTimer?.Start();
+        }
+
+       private async void FinishOrder()
+       {
+            try
+            {
+                layoutControlTop.Enabled = false;
+                gridControlOrder.Enabled = false;
+
+                var orderUrl = $"https://public.kiotapi.com/purchaseorders/{CurrentId}";
+                var (success, content) = await _kiotVietService.CallApiAsync(orderUrl, (string)null, "GET");
+
+                if (!success || string.IsNullOrEmpty(content))
+                {
+                    MessageHelper.MsgBox("Lỗi khi lấy dữ liệu Kiotviet", MsgType.Error_);
+                    return;
+                }
+
+                var purchaseOrderResponse = JsonConvert.DeserializeObject<PurchaseOrderResponse>(content);
+                if (purchaseOrderResponse == null)
+                {
+                    MessageHelper.MsgBox("Dữ liệu đơn hàng trả về không hợp lệ", MsgType.Error_);
+                    return;
+                }
+
+                switch ((OrderStatusEnum)purchaseOrderResponse.Status)
+                {
+                    case OrderStatusEnum.Finished:
+                        MessageHelper.MsgBox($"Đơn hàng: {CurrentCode} đã Hoàn thành", MsgType.Information);
+                        return;
+
+                    case OrderStatusEnum.Cancel:
+                        MessageHelper.MsgBox($"Đơn hàng: {CurrentCode} đã Huỷ", MsgType.Information);
+                        return;
+
+                    case OrderStatusEnum.Draft:
+                        break;
+
+                    default:
+                        MessageHelper.MsgBox($"Trạng thái đơn hàng không hợp lệ", MsgType.Error_);
+                        return;
+                }
+
+                // Build orderRequest từ dữ liệu hiện tại
+                var orderRequest = new 
+                {
+                    purchaseDate = DateTime.UtcNow,
+                    branchId = (int)purchaseOrderResponse.BranchId,
+                    supplier = new
+                    {
+                        code = purchaseOrderResponse.SupplierCode,
+                        name = purchaseOrderResponse.SupplierName,
+                    },
+                    description = purchaseOrderResponse.Description,
+                    isDraft = 3,
+
+                    discount = purchaseOrderResponse.Discount,
+                    discountRatio = 0,
+                    paidAmount = 0,
+                    //paymentMethod = null,
+                    surcharges = new List<object>(),
+                    totalPayment = purchaseOrderResponse.TotalPayment,
+                    makeInvoice = true,
+                    purchaseOrderDetails = purchaseOrderResponse.PurchaseOrderDetails.Select(product => new PurchaseOrderDetail
+                    {
+                        ProductId = product.ProductId,
+                        ProductCode = product.ProductCode,
+                        ProductName = product.ProductName,
+                        Quantity = product.Quantity,
+                        Price = product.Price,
+                        Discount = product.Discount,
+                        DiscountRatio = product.DiscountRatio
+                    }).ToList(),
+                };
+
+                var (updateSuccess, updateContent) = await _kiotVietService.CallApiAsync(orderUrl, orderRequest, "PUT");
+
+                if (!updateSuccess || string.IsNullOrEmpty(updateContent))
+                {
+                    MessageHelper.MsgBox($"Có lỗi khi cập nhật đơn hàng: {updateContent}", MsgType.Error_);
+                    return;
+                }
+
+                MessageHelper.MsgBox("Đơn hàng đã được hoàn thành thành công.", MsgType.Information);
+                ReloadData(CurrentId);
+            }
+            catch (Exception ex)
+            {
+                MessageHelper.MsgBox("Có lỗi trong quá trình xử lý đơn hàng.", MsgType.Error_);
+            }
+            finally
+            {
+                layoutControlTop.Enabled = true;
+                gridControlOrder.Enabled = true;
+            }
         }
     }
 

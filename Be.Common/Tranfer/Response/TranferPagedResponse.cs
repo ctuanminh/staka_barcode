@@ -10,23 +10,24 @@
     {
         public long ProductId { get; set; } // Id hàng hóa
         public string ProductCode { get; set; } // Mã hàng hóa
-
+        public string ProductName { get; set; }
         public double SendQuantity { get; set; } // Số lượng hàng hóa chuyển
-        public double RecieveQuantity { get; set; } // Số lượng hàng hóa nhận
+        public double TransferredQuantity { get; set; } // Số lượng hàng hóa nhận
         public decimal Price { get; set; } // Giá trị
-
+        public decimal TotalTransfer { get; set; }
+        public decimal TotalReceive { get; set; }
         public decimal SendPrice { get; set; } // Giá chuyển
         public decimal ReceivePrice { get; set; } // Giá nhận
+        public bool Checked { get; set; }
+        public string Unit { get; set; }
     }
 
     public class TransferResponse
     {
         public long Id { get; set; } // Id phiếu
         public string Code { get; set; } // Mã phiếu
-
         public int FromBranchId { get; set; } // Id chi nhánh chuyển
         public string FromBranchName { get; set; }
-
         public int ToBranchId { get; set; } // Id chi nhánh nhận
         public string ToBranchName { get; set; }
         public int Status { get; set; } // Trạng thái phiếu chuyển
@@ -43,11 +44,15 @@
                 };
             }
         }
-        public long RetailerId { get; set; } // Id gian hàng
+        public string CreatedByName { get; set; }
+        public long CreatedById { get; set; }
         public string Description { get; set; } // Ghi chú
         public DateTime? DispatchedDate { get; set; }
         public DateTime? ReceivedDate { get; set; }
 
-        public List<TransferDetail> TransferDetails { get; set; } = new List<TransferDetail>();
+        public int Count => Details?.Count() ?? 0;
+        public int CountTranfer => TransferDetails?.Count() ?? 0;
+        public List<TransferDetail> TransferDetails { get; set; } = [];
+        public List<TransferDetail> Details { get; set; } = [];
     }
 }

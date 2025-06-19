@@ -1,13 +1,18 @@
-﻿using System.Net.Http.Headers;
-using System.Text.Json;
-using Be.Common.Branch.Response;
+﻿using Be.Common.Branch.Response;
 using Be.Common.customer;
 using Be.Common.customer.Request;
 using Be.Common.customer.Response;
 using Be.Common.Dtos.Invoice;
 using Be.Common.Responses;
 using Be.Common.utils;
+using Be.Core.Entities.Customer;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
+using System.Buffers.Text;
+using System.Net.Http.Headers;
+using System.Text.Json;
+using Be.Data.Repository;
+using Microsoft.EntityFrameworkCore;
 
 namespace Be.Services.customer
 {
@@ -16,11 +21,13 @@ namespace Be.Services.customer
         private readonly HttpClient _httpClient;
         private readonly IConfiguration _config;
         private readonly IHttpClientFactory _httpClientFactory;
-
-        public CustomerServiceImp(IConfiguration config, IHttpClientFactory httpClientFactory)
+        private const string BaseUrl = "https://public.kiotapi.com/customers";
+        private readonly IRepository _repository;
+        public CustomerServiceImp(IConfiguration config, IHttpClientFactory httpClientFactory, IRepository repository)
         {
             _config = config;
             _httpClientFactory = httpClientFactory;
+            _repository = repository;
             _httpClient = _httpClientFactory.CreateClient(); // Tạo HttpClient từ factory
         }
 
@@ -32,7 +39,7 @@ namespace Be.Services.customer
                 return BadRequest("Token", "Token is not valid");
             }
             request.PageSize = request.PageSize <= 0 ? 10 : request.PageSize;
-            request.currentItem = request.currentItem <= 0 ? 0 : (request.currentItem - 1) * request.PageSize;
+            request.CurrentItem = request.CurrentItem <= 0 ? 0 : (request.CurrentItem - 1) * request.PageSize;
 
             var baseUrl = "https://public.kiotapi.com/customers";
             var url = QueryStringHelper.BuildQueryString(request, baseUrl);            
@@ -43,10 +50,7 @@ namespace Be.Services.customer
                 return BadRequest("Error", error);
             }
             var responseData = await response.Content.ReadAsStringAsync();
-            var customerApiResponse = JsonSerializer.Deserialize<CustomerPagedResponse>(responseData, new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true 
-            });
+            var customerApiResponse = JsonConvert.DeserializeObject<CustomerPagedResponse>(responseData);
             
             var pageResult = new PagedResult<CustomerResponse>()
             {
@@ -68,36 +72,11 @@ namespace Be.Services.customer
                 throw new Exception($"Error fetching customer {customerId}: {error}");
             }
             var responseData = await response.Content.ReadAsStringAsync();
-            var customerDetails = JsonSerializer.Deserialize<CustomerResponse>(responseData, new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true
-            });
+            var customerDetails = JsonConvert.DeserializeObject<CustomerResponse>(responseData);  
 
             return customerDetails;
         }
 
-        private async Task<BranchResponse> GetBranchDetailsAsync(int branchId)
-        {
-            var isHeaderReady = await PrepareAuthorizedHeadersAsync();
-            if (!isHeaderReady)
-            {
-                throw new Exception($"Error fetching branch");
-            }
-            var url = $"https://public.kiotapi.com/branches/{branchId}";
-            var response = await _httpClient.GetAsync(url);
-            if (!response.IsSuccessStatusCode)
-            {
-                return null;
-            }
-
-            var responseData = await response.Content.ReadAsStringAsync();
-            var branchDetails = JsonSerializer.Deserialize<BranchResponse>(responseData, new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true
-            });
-
-            return branchDetails;
-        }
 
 
         private async Task<bool> PrepareAuthorizedHeadersAsync()
@@ -136,178 +115,82 @@ namespace Be.Services.customer
             }
         }
 
-        public async Task<Byte[]> GetAllInvoice(SearchInvoiceRequest request, string templatePath)
-        {            
-            string exportFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Exports");
-            string timestamp = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
-            
-            string destFilename = Path.Combine(exportFolder, $"misa_export_{timestamp}.xlsx");
-
-            File.Copy(templatePath, destFilename, true);
-
-            var isHeaderReady = await PrepareAuthorizedHeadersAsync();
-            if (!isHeaderReady)
-            {
-                return null;
-            }
-            request.PageSize = request.PageSize <= 0 ? 10 : request.PageSize;
-            request.CurrentItem = request.CurrentItem <= 0 ? 0 : (request.CurrentItem - 1) * request.PageSize;
-
-            var baseUrl = "https://public.kiotapi.com/invoices";
-            var url = QueryStringHelper.BuildQueryString(request, baseUrl);
-            var response = await _httpClient.GetAsync(url);
-            if (!response.IsSuccessStatusCode)
-            {
-                var error = await response.Content.ReadAsStringAsync();
-                return null;
-            }
-            var responseData = await response.Content.ReadAsStringAsync();
-            var invoiceApiResponse = JsonSerializer.Deserialize<InvoiceApiResponse>(responseData, new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true
-            });
-
-            
-            // Chuẩn bị dữ liệu từ KiotViet
-            var misaRows = new List<Dictionary<string, object>>();
-            foreach (var invoice in invoiceApiResponse.Data)
-            {
-                //string date = invoice.PurchaseDate;
-                string code = invoice.Code;
-                var customer = invoice.CustomerName;
-                string customerName = invoice.CustomerName ?? "";
-                string customerCode = invoice.CustomerCode ?? "";
-
-                foreach (var item in invoice.InvoiceDetails)
-                {
-                    var product = await _httpClient.GetAsync("https://public.kiotapi.com/products/code/" + item.ProductCode);
-                    var responseDataProduct = await product.Content.ReadAsStringAsync();
-                    var dataProduct = JsonSerializer.Deserialize<ProductInvoice>(responseDataProduct, new JsonSerializerOptions
-                    {
-                        PropertyNameCaseInsensitive = true
-                    });
-                    misaRows.Add(new Dictionary<string, object>
-                    {
-                        { "Hình thức bán hàng", "Bán hàng hóa trong nước" },
-                        { "Phương thức thanh toán", "Chưa thu tiền" },
-                        { "Kiểm phiếu xuất kho", "Có" },
-                        { "Lập kèm hóa đơn", "" },
-                        { "Đã lập hóa đơn", "" },
-                        { "Ngày hạch toán (*)", invoice.PurchaseDate.ToString("dd/MM/yyyy") },
-                        { "Ngày chứng từ (*)", invoice.PurchaseDate.ToString("dd/MM/yyyy") },
-                        { "Số chứng từ (*)", code },
-                        { "Số phiếu xuất", $"{code}.1" },
-                        { "Mẫu số HĐ", "" },
-                        { "Ký hiệu HĐ", "" },
-                        { "Số hoá đơn", "" },
-                        { "Ngày hoá đơn", "" },
-                        { "Mã khách hàng", customerCode },
-                        { "Tên khách hàng", customerName },
-                        { "Địa chỉ", invoice.CustomerName },
-                        { "Mã số thuế", ""},
-                        { "Đơn vị giao đại lý", ""},
-                        { "Người nộp", ""},
-                        { "Nạp vào TK", ""},
-                        { "Tên ngân hàng", ""},
-                        { "Diễn giải/Lý do nộp", "Bán hàng"},
-                        { "Lý do xuất", "Xuất kho bán hàng"},
-                        { "Loại tiền", "VNĐ"},
-                        { "Tỉ giá", "-"},
-                        { "Mã hàng (*)", item.ProductCode },
-                        { "Tên hàng", item.ProductName },
-                        { "Là dòng ghi chú", "không"},
-                        { "Hàng khuyến mại", "không"},
-                        { "TK Tiền/Chi phí/Nợ (*)", "131QB"},
-                        { "TK Doanh thu/Có (*)", "5111QB"},
-                        { "ĐVT", dataProduct.unit},
-                        { "Số lượng (*)", item.Quantity },
-                        { "Đơn giá", item.Price },
-                        { "Thành tiền", Convert.ToDecimal(item.Quantity * Convert.ToDouble( item.Price)) },
-                        { "Thành tiền quy đổi", ""},
-                        { "Tỷ lệ CK (%)", item.DiscountRatio},
-                        { "Tiền chiết khấu", (item.DiscountRatio * Convert.ToDouble( item.Price))/100},
-                        { "Tiền chiết khấu quy đổi", ""},
-                        { "TK chiết khấu", "5211QB"},
-                        { "Giá tính thuế XK", ""},
-                        {"% thuế xuất khẩu", "" },
-                        {"Tiền thuế xuất khẩu", "" },
-                        {"TK thuế xuất khẩu", "" },
-                        {"% thuế GTGT", "" },
-                        {"% thuế suất KHAC", "" },
-                        {"Tiền thuế GTGT", "" },
-                        {"Tiền thuế GTGT quy đổi", "" },
-                        {"TK thuế GTGT", "" },
-                        {"HH không TH trên tờ khai thuế GTGT", "" },
-                        {"Mã kho", "KQB" },
-                        {"TK giá vốn", "632QB" },
-                        {"TK Kho", "1561QB" },
-                        {"Đơn giá vốn", "" },
-                        {"Tiền vốn", "" },
-                        {"Hàng hóa giữ hộ/bán hộ", "" },
-                    });
-                }
-            }
-
-            var bytes = new byte[0];
-            // Tạo file Excel và đổ dữ liệu vào file
-            using (var workbook = new ClosedXML.Excel.XLWorkbook(templatePath))
-            {
-                var worksheet = workbook.Worksheet("Ban hang");
-
-                // Xác định vị trí bắt đầu từ hàng 10
-                int row = 9;
-                foreach (var rowData in misaRows)
-                {
-                    int col = 1;
-                    foreach (var keyValue in rowData)
-                    {
-                        var value = keyValue.Value;
-                        var cell = worksheet.Cell(row, col);
-
-                        switch (value)
-                        {
-                            case DateTime dt:
-                                cell.Style.DateFormat.Format = "dd/MM/yyyy";
-                                cell.Value = dt;
-                                break;
-
-                            case int i:
-                                cell.Style.NumberFormat.Format = "#,##0.0";
-                                cell.Value = i;
-                                break;
-
-                            case double d:
-                                cell.Style.NumberFormat.Format = "#,##0.0";
-                                cell.Value = d;
-                                break;
-
-                            case decimal dec:
-                                cell.Style.NumberFormat.Format = "#,##0.0";
-                                cell.Value = dec;
-                                break;
-
-                            default:
-                                cell.Value = value?.ToString() ?? "";
-                                break;
-                        }
-
-                        col++;
-                    }
-                    row++;
-                }       
-
-                // With this corrected line:
-                //workbook.SaveAs(destFilename);
-                using var stream = new MemoryStream();
-                workbook.SaveAs(stream);
-                bytes = stream.ToArray();
-            }
-            return bytes;
-        }
-
         public Task<ApiResponse> ExportInvoiceMisa(SearchInvoiceRequest request, string templatePath)
         {
             throw new NotImplementedException();
+        }
+        public async Task<bool> SyncCustomer()
+        {
+            var customerList = new List<CustomerResponse>();
+            var totalPages = 1;
+            var currentPage = 1;
+            const int pageSize = 200;
+
+            var request = new SearchCustomerRequest
+            {
+                PageSize = pageSize,
+                CurrentItem = 1,
+            };
+
+            do
+            {
+                request.CurrentItem = (currentPage - 1) * pageSize;
+                var (success, content) = await KiotVietApiHelper.CallApiAsync(_httpClient, _config, BaseUrl, request);
+                if (success && content != null)
+                {
+                    var customerData = JsonConvert.DeserializeObject<CustomerPagedResponse>(content);
+                    customerList.AddRange(customerData.Data);
+                    if (currentPage == 1 && customerData.Total > pageSize)
+                        totalPages = (int)Math.Ceiling((double)customerData.Total / pageSize);
+                }
+                currentPage++;
+            } while (currentPage <= totalPages);
+
+            var customerExistList = await _repository.GetQueryable<Customer, long>()
+                .Where(c => c.KiotId != 0)
+                .ToDictionaryAsync(u => u.KiotId);
+
+            if (customerList.Count == 0) return false;
+            foreach (var customer in customerList)
+            {
+                if (customerExistList.TryGetValue(customer.Id, out var customerExist))
+                {
+                    customerExist.KiotId = customer.Id;
+                    customerExist.Name = customer.Name;
+                    customerExist.Code = customer.Code;
+                    customerExist.Type = customerExist.Type;
+                    customerExist.Address = customer.Address;
+                    customerExist.Email = customer.Email;
+                    customerExist.BirthDate = DateTime.SpecifyKind(customer.BirthDate, DateTimeKind.Utc);
+                    customerExist.ContactNumber = customer.ContactNumber;
+                    customerExist.Gender = customer.Gender;
+                    customerExist.RetailerId = customer.RetailerId;
+                    customerExist.CreatedAt = DateTime.SpecifyKind(customerExist.CreatedAt, DateTimeKind.Utc);
+                    customerExist.CreatedBy = customerExist.CreatedBy;
+                    customerExist.UpdatedAt = DateTime.SpecifyKind(customerExist.UpdatedAt, DateTimeKind.Utc);
+                    customerExist.UpdatedBy = customerExist.UpdatedBy;
+                    await _repository.UpdateAsync<Customer, long>(customerExist);
+                }
+                else
+                {
+                    var newCustomer = new Customer()
+                    {
+                        KiotId = customer.Id,
+                        Name = customer.Name,
+                        Code = customer.Code,
+                        Type = customer.Type,
+                        Address = customer.Address,
+                        Email = customer.Email,
+                        BirthDate = DateTime.SpecifyKind((DateTime)customer.BirthDate, DateTimeKind.Utc),
+                        ContactNumber = customer.ContactNumber,
+                        Gender = customer.Gender,
+                        RetailerId = customer.RetailerId
+                    };
+                    await _repository.AddAsync<Customer, long>(newCustomer);
+                }
+            }
+            await _repository.SaveChangeAsync();
+            return true;
         }
     }
 }
