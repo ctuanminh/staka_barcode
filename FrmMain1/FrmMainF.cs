@@ -100,9 +100,9 @@ namespace FrmMain
                     }
                     break;
                 case nameof(mbtnTranfer):
-                    if (!OpenedForm(nameof(FrmTranfer), WuserControl.FrmTranfer))
+                    if (!OpenedForm(nameof(FrmTransfer), WuserControl.FrmTranfer))
                     {
-                        var frmSystem = ServiceProvider.GetRequiredService<FrmTranfer>();
+                        var frmSystem = ServiceProvider.GetRequiredService<FrmTransfer>();
                         NewFormNew(frmSystem, WuserControl.FrmTranfer);
                     }
                     break;

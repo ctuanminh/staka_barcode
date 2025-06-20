@@ -9,7 +9,7 @@ namespace Be.Services.Identity
     {
         Task<(bool success, UserLoginDto userLoginDto)> Login(UserLoginRequest request);
         Task<ApiResponse> GetAllUsers(SearchUserRequest request);
-        Task<ApiResponse> GetUserById(Guid id);
+        Task<UserDto> GetUserById(long id);
         Task<ApiResponse> GetAllRoles();
         Task<ApiResponse> AddUser(UserRequest request);
         Task<ApiResponse> AddRole(CreateRoleRequest request);

@@ -27,13 +27,13 @@
     <Compile Update="FrmReceiverList.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="FrmTranferProcess.cs">
+    <Compile Update="FrmTransferProcess.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="FrmPurchaseProcess.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="FrmTranfer.cs">
+    <Compile Update="FrmTransfer.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="FrmPurchase.cs">

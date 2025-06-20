@@ -129,7 +129,7 @@
             // barBranch
             // 
             barBranch.Alignment = DevExpress.XtraBars.BarItemLinkAlignment.Right;
-            barBranch.Caption = "Chọn Chi nhánh";
+            barBranch.Caption = "Chi nhánh làm việc";
             barBranch.Edit = rpLkpBranch;
             barBranch.EditWidth = 250;
             barBranch.Id = 17;

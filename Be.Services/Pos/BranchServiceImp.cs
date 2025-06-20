@@ -43,7 +43,7 @@ namespace Be.Services.Pos
 
         public async Task<List<Branch>> GetAllBranches()
         {
-            var result = await repository.GetQueryable<Branch>().Where(b => b.Status == 1 && !b.BranchName.ToUpper().Contains("HƯ"))
+            var result = await repository.GetQueryable<Branch>().Where(b => b.Status == 1)
                 .ToListAsync();
             return result;
         }

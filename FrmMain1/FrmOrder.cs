@@ -26,10 +26,9 @@ namespace FrmMain
         private const string OrderUrl = " https://public.kiotapi.com/orders/code/";
         private List<int> _orderStatusList;
         private readonly IBranchService _branchService;
-        private int _branchId = 1000002446;
         private Timer _reloadTimer;
         private DateTime _nextReloadTime;
-        private const int ReloadIntervalMinutes = 15;
+        private const int ReloadIntervalMinutes = 5;
         public FrmOrder(FrmMainF mainForm, IKiotVietService kiotVietService, IBranchService branchService)
         {
             _mainForm = mainForm;
@@ -53,9 +52,7 @@ namespace FrmMain
                 const string orderUrl = $"https://public.kiotapi.com/orders";
                 var request = new SearchOrderRequest()
                 {
-                    //Comment để test
                     BranchIds = [AppGlobals.BranchId],
-                    //BranchIds = [_branchId],
                     Status = _orderStatusList.ToArray(),
                     PageSize = 200,
                     OrderBy = "purchaseDate",
@@ -111,7 +108,7 @@ namespace FrmMain
             }
         }
 
-        private void SetTextEditHeight(Control control, int height)
+        private static void SetTextEditHeight(Control control, int height)
         {
             foreach (Control c in control.Controls)
             {

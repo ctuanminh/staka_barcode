@@ -213,20 +213,23 @@ namespace Be.Services.Identity
             return Ok(pageResult);
         }
 
-        public async Task<ApiResponse> GetUserById(Guid id)
+        public async Task<UserDto> GetUserById(long id)
         {
             try
             {
-                var user = await _userManager.FindByIdAsync(id.ToString());
-                if (user != null)
+                var user = await _userManager.Users.FirstOrDefaultAsync(u => u.KiotId == id);
+                return new UserDto()
                 {
-                    return Ok(user);
-                }
-                return BadRequest("B", "User not exist");
+                    Id = user.Id,
+                    UserName = user.UserName,
+                    FullName = user.FullName,
+                    PhoneNumber = user.PhoneNumber,
+                    Email = user.Email,
+                };
             }
             catch (Exception e)
             {
-                return BadRequest("B", e.ToString());
+                return null;
             }
         }
 

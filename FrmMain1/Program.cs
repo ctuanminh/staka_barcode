@@ -4,6 +4,7 @@ using Be.Data.Data;
 using Be.Services;
 using Be.Services.AutoMapper;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -30,12 +31,15 @@ namespace FrmMain
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .Build();
             var connectionString = configuration.GetConnectionString("Default");
-            services.AddDbContext<IdentityDbContext>(options => options.UseNpgsql(connectionString));
+
             services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connectionString));
 
+            services.AddDbContext<Be.Data.Data.IdentityDbContext>(options => options.UseNpgsql(connectionString));
+            
             services.AddIdentity<ApplicationUser, IdentityRole<long>>()
-                .AddEntityFrameworkStores<IdentityDbContext>()
-                .AddRoleManager<RoleManager<IdentityRole<long>>>();
+                .AddEntityFrameworkStores<Be.Data.Data.IdentityDbContext>()
+                .AddRoleManager<RoleManager<IdentityRole<long>>>()
+                .AddDefaultTokenProviders();
 
 
             services.AddSingleton<IConfiguration>(configuration);
@@ -61,9 +65,9 @@ namespace FrmMain
             services.AddTransient<FrmSystem>(); 
             services.AddTransient<FrmLogin>(); 
             services.AddTransient<FrmPurchase>(); 
-            services.AddTransient<FrmTranfer>(); 
+            services.AddTransient<FrmTransfer>(); 
             services.AddTransient<FrmPurchaseProcess>();
-            services.AddTransient<FrmTranferProcess>();
+            services.AddTransient<FrmTransferProcess>();
             services.AddTransient<FrmReceiverList>();
             // Auto Mapper Configurations
             
