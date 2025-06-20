@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{33C4759F-1AE5-4793-8947-9C6964509316}|FrmMain1\\FrmMain.csproj|d:\\trongcv\\dev\\pos\\stakapos\\frmmain1\\frmtranferprocess.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{33C4759F-1AE5-4793-8947-9C6964509316}|FrmMain1\\FrmMain.csproj|solutionrelative:frmmain1\\frmtranferprocess.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{33C4759F-1AE5-4793-8947-9C6964509316}|FrmMain1\\FrmMain.csproj|d:\\trongcv\\dev\\pos\\stakapos\\frmmain1\\frmtranfer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{33C4759F-1AE5-4793-8947-9C6964509316}|FrmMain1\\FrmMain.csproj|solutionrelative:frmmain1\\frmtranfer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -11,8 +15,12 @@
       "RelativeMoniker": "D:0:0:{33C4759F-1AE5-4793-8947-9C6964509316}|FrmMain1\\FrmMain.csproj|solutionrelative:frmmain1\\frmtranfer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{33C4759F-1AE5-4793-8947-9C6964509316}|FrmMain1\\FrmMain.csproj|d:\\trongcv\\dev\\pos\\stakapos\\frmmain1\\frmtranferprocess.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{33C4759F-1AE5-4793-8947-9C6964509316}|FrmMain1\\FrmMain.csproj|solutionrelative:frmmain1\\frmtranferprocess.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{33C4759F-1AE5-4793-8947-9C6964509316}|FrmMain1\\FrmMain.csproj|d:\\trongcv\\dev\\pos\\stakapos\\frmmain1\\frmlogin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{33C4759F-1AE5-4793-8947-9C6964509316}|FrmMain1\\FrmMain.csproj|solutionrelative:frmmain1\\frmlogin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{33C4759F-1AE5-4793-8947-9C6964509316}|FrmMain1\\FrmMain.csproj|d:\\trongcv\\dev\\pos\\stakapos\\frmmain1\\frmlogin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{33C4759F-1AE5-4793-8947-9C6964509316}|FrmMain1\\FrmMain.csproj|solutionrelative:frmmain1\\frmlogin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
       "AbsoluteMoniker": "D:0:0:{33C4759F-1AE5-4793-8947-9C6964509316}|FrmMain1\\FrmMain.csproj|d:\\trongcv\\dev\\pos\\stakapos\\frmmain1\\frmtranferprocess.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
@@ -42,7 +50,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 7,
           "Children": [
             {
               "$type": "Bookmark",
@@ -50,20 +58,32 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 4,
+              "Title": "FrmLogin.cs [Design]",
+              "DocumentMoniker": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\FrmMain1\\FrmLogin.cs",
+              "RelativeDocumentMoniker": "FrmMain1\\FrmLogin.cs",
+              "ToolTip": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\FrmMain1\\FrmLogin.cs [Design]",
+              "RelativeToolTip": "FrmMain1\\FrmLogin.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-19T11:17:33.572Z",
+              "EditorCaption": " [Design]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
               "Title": "FrmTranfer.cs",
               "DocumentMoniker": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\FrmMain1\\FrmTranfer.cs",
               "RelativeDocumentMoniker": "FrmMain1\\FrmTranfer.cs",
               "ToolTip": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\FrmMain1\\FrmTranfer.cs",
               "RelativeToolTip": "FrmMain1\\FrmTranfer.cs",
-              "ViewState": "AgIAAMIAAAAAAAAAAAAAwM8AAAAnAAAAAAAAAA==",
+              "ViewState": "AgIAALsAAAAAAAAAAAArwMUAAAAQAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-06-19T09:51:44.901Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 8,
               "Title": "FrmReceiverList.cs",
               "DocumentMoniker": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\FrmMain1\\FrmReceiverList.cs",
               "RelativeDocumentMoniker": "FrmMain1\\FrmReceiverList.cs",
@@ -76,7 +96,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 7,
               "Title": "FrmMainF.cs",
               "DocumentMoniker": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\FrmMain1\\FrmMainF.cs",
               "RelativeDocumentMoniker": "FrmMain1\\FrmMainF.cs",
@@ -89,7 +109,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 9,
               "Title": "Program.cs",
               "DocumentMoniker": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\FrmMain1\\Program.cs",
               "RelativeDocumentMoniker": "FrmMain1\\Program.cs",
@@ -102,7 +122,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 5,
               "Title": "FrmTranferProcess.cs [Design]",
               "DocumentMoniker": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\FrmMain1\\FrmTranferProcess.cs",
               "RelativeDocumentMoniker": "FrmMain1\\FrmTranferProcess.cs",
@@ -114,20 +134,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 0,
               "Title": "FrmTranferProcess.cs",
               "DocumentMoniker": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\FrmMain1\\FrmTranferProcess.cs",
               "RelativeDocumentMoniker": "FrmMain1\\FrmTranferProcess.cs",
               "ToolTip": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\FrmMain1\\FrmTranferProcess.cs",
               "RelativeToolTip": "FrmMain1\\FrmTranferProcess.cs",
-              "ViewState": "AgIAALMBAAAAAAAAAIAxwMcBAAAtAAAAAAAAAA==",
+              "ViewState": "AgIAALkBAAAAAAAAAIAxwM4BAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-06-19T07:57:14.356Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "FrmTranfer.cs [Design]",
               "DocumentMoniker": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\FrmMain1\\FrmTranfer.cs",
               "RelativeDocumentMoniker": "FrmMain1\\FrmTranfer.cs",
@@ -139,7 +159,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 3,
+              "Title": "FrmLogin.cs",
+              "DocumentMoniker": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\FrmMain1\\FrmLogin.cs",
+              "RelativeDocumentMoniker": "FrmMain1\\FrmLogin.cs",
+              "ToolTip": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\FrmMain1\\FrmLogin.cs",
+              "RelativeToolTip": "FrmMain1\\FrmLogin.cs",
+              "ViewState": "AgIAAA0AAAAAAAAAAAAhwBQAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-19T11:17:35.85Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
               "Title": "FrmReceiverList.cs [Design]",
               "DocumentMoniker": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\FrmMain1\\FrmReceiverList.cs",
               "RelativeDocumentMoniker": "FrmMain1\\FrmReceiverList.cs",
