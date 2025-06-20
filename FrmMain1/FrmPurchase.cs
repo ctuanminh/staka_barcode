@@ -2,10 +2,8 @@
 using Be.Common.Purchase_Order.Response;
 using Be.Services.KiotViet;
 using Be.Services.Pos;
-using DevExpress.XtraCharts.Design;
 using DevExpress.XtraEditors;
 using DevExpress.XtraGrid.Views.Grid;
-using DevExpress.XtraSplashScreen;
 using FrmMain.App;
 using FrmMain.Utils;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using static FrmMain.FrmMainF;
 using Exception = System.Exception;
@@ -25,11 +24,10 @@ namespace FrmMain
         private readonly FrmMainF _mainForm;
         private readonly IKiotVietService _kiotVietService;
         private const string PurchaseOrderUrl = "https://public.kiotapi.com/purchaseorders";
-        private List<int> _PurchaseStatusList;
+        private List<int> _purchaseStatusList;
         private readonly IBranchService _branchService;
-        private int _branchId = 631782;
-        private DateTime searchFromPurchase;
-        private DateTime searchToPurchase;
+        private DateTime _searchFromPurchase;
+        private DateTime _searchToPurchase;
         private Timer _reloadTimer;
         private DateTime _nextReloadTime;
         private const int ReloadIntervalMinutes = 15;
@@ -44,14 +42,14 @@ namespace FrmMain
 
         private void FrmOrder_Shown(object sender, EventArgs e)
         {
-            _PurchaseStatusList = [1];
-            LoadData();
+            _purchaseStatusList = [1];
         }
 
-        private async void LoadData()
+        private async Task LoadData()
         {
             try
             {
+                SetControlEnable(false);
                 var setting = AppGlobals.AppSetting.FirstOrDefault(s =>
                     s.ComputerName == Environment.MachineName &&
                     s.ModuleName == "Branch" &&
@@ -70,28 +68,29 @@ namespace FrmMain
                 }
 
                 var branch = await _branchService.GetBranchById(branchId);
-                branchId = branch?.Id ?? 0;
-                txtBranch.Text = branch?.BranchName ?? "Chưa chọn chi nhánh";
-                txtBranch.ReadOnly = true;
-                txtBranch.BackColor = Color.White;
-                txtBranch.ForeColor = Color.OrangeRed;
+                
+                txtBranchName.Text = branch?.BranchName ?? "Chưa chọn chi nhánh";
+                txtBranchName.ReadOnly = true;
 
-                layoutControlTop.Enabled = false;
-                grdControlOrders.Enabled = false;
                 var request = new SearchPurchaseOrderRequest()
                 {
                     BranchIds = [AppGlobals.BranchId],
-                    Status = _PurchaseStatusList.ToArray(),
+                    Status = _purchaseStatusList.ToArray(),
                     PageSize = 100,
                     OrderBy = "purchaseDate",
                     OrderDirection = "Desc",
-                    FromPurchaseDate = searchFromPurchase,
-                    ToPurchaseDate = searchToPurchase,
+                    FromPurchaseDate = _searchFromPurchase,
+                    ToPurchaseDate = _searchToPurchase,
                 };
 
                 var (success, content) = await _kiotVietService.CallApiAsync(PurchaseOrderUrl, request, "GET");
 
-                if (!success || content == null) return;
+                if (!success || string.IsNullOrWhiteSpace(content))
+                {
+                    MessageHelper.MsgBox($"Có lỗi trong quá trình tải dữ liệu: {content}", MsgType.Error_);
+                    grdControlOrders.DataSource = null;
+                    return;
+                }
                 var purchaseOrderPagedData = JsonConvert.DeserializeObject<PurchaseOrderPagedData>(content);
                 grdViewOrders.OptionsDetail.EnableMasterViewMode = false;
                 //Sort Data: Sort theo PurchaseDate
@@ -107,8 +106,7 @@ namespace FrmMain
             }
             finally
             {
-                layoutControlTop.Enabled = true;
-                grdControlOrders.Enabled = true;
+                SetControlEnable(true);
             }
         }
 
@@ -142,7 +140,7 @@ namespace FrmMain
             }
         }
 
-        private void SetTextEditHeight(Control control, int height)
+        private static void SetTextEditHeight(Control control, int height)
         {
             foreach (Control c in control.Controls)
             {
@@ -176,47 +174,58 @@ namespace FrmMain
 
         private async void FrmOrder_Load(object sender, EventArgs e)
         {
-            SetTextEditHeight(this, 25);
-            chkFinish.BackColor = Color.LightGreen;
-            chkDraft.BackColor = Color.Green;
-            chkDraft.ForeColor = Color.White;
-            chkCancel.BackColor = Color.OrangeRed;
-            chkCancel.ForeColor = Color.White;
-            SetDefaultDatePurchase();
+            try
+            {
+                SetTextEditHeight(this, 25);
+                SetStatusCheckboxStyle();
+                SetDefaultDatePurchase();
+                await LoadData();
+            }
+            catch (Exception exception)
+            {
+                MessageHelper.MsgBox($"Có lỗi trong quá trình tải dữ liệu: {exception}", MsgType.Error_);
+            }
         }
 
-        private void Handler_CheckedChanged(object sender, EventArgs e)
+        private async void Handler_CheckedChanged(object sender, EventArgs e)
         {
-            if (sender is not CheckEdit checkEdit) return;
-
-            var statusValue = checkEdit.Name switch
+            try
             {
-                "chkDraft" => 1,
-                "chkFinish" => 3,
-                "chkCancel" => 4,
-                _ => 0
-            };
+                if (sender is not CheckEdit checkEdit) return;
 
-            if (statusValue == 0) return;
-
-            if (checkEdit.Checked)
-            {
-                if (!_PurchaseStatusList.Contains(statusValue))
-                    _PurchaseStatusList.Add(statusValue);
-            }
-            else
-            {
-                _PurchaseStatusList.Remove(statusValue);
-                if (_PurchaseStatusList.Count == 0)
+                var statusValue = checkEdit.Name switch
                 {
-                    chkDraft.CheckedChanged -= Handler_CheckedChanged;
-                    chkDraft.Checked = true;
-                    _PurchaseStatusList.Add(1);
-                    chkDraft.CheckedChanged += Handler_CheckedChanged;
-                }
-            }
+                    "chkDraft" => 1,
+                    "chkFinish" => 3,
+                    "chkCancel" => 4,
+                    _ => 0
+                };
 
-            LoadData();
+                if (statusValue == 0) return;
+
+                if (checkEdit.Checked)
+                {
+                    if (!_purchaseStatusList.Contains(statusValue))
+                        _purchaseStatusList.Add(statusValue);
+                }
+                else
+                {
+                    _purchaseStatusList.Remove(statusValue);
+                    if (_purchaseStatusList.Count == 0)
+                    {
+                        chkDraft.CheckedChanged -= Handler_CheckedChanged;
+                        chkDraft.Checked = true;
+                        _purchaseStatusList.Add(1);
+                        chkDraft.CheckedChanged += Handler_CheckedChanged;
+                    }
+                }
+
+                await LoadData();
+            }
+            catch (Exception exception)
+            {
+                MessageHelper.MsgBox($"Có lỗi trong quá trình tải dữ liệu: {exception}", MsgType.Error_);
+            }
         }
 
         private void fromPurchaseDate_EditValueChanged(object sender, EventArgs e)
@@ -234,7 +243,7 @@ namespace FrmMain
                 toPurchaseDate.DateTime = _fromPurchaseDate.Value;
             }
 
-            searchFromPurchase = _fromPurchaseDate.Value;
+            _searchFromPurchase = _fromPurchaseDate.Value;
         }
 
         private void toPurchaseDate_EditValueChanged(object sender, EventArgs e)
@@ -252,7 +261,7 @@ namespace FrmMain
                 fromPurchaseDate.DateTime = _toPurchaseDate.Value;
             }
 
-            searchToPurchase = _toPurchaseDate.Value;
+            _searchToPurchase = _toPurchaseDate.Value;
         }
 
         private void SetDefaultDatePurchase()
@@ -275,27 +284,34 @@ namespace FrmMain
             // Optional: Giới hạn Min/Max cho chọn ngày
             fromPurchaseDate.Properties.MaxValue = lastDayOfMonth;
             toPurchaseDate.Properties.MinValue = firstDayOfMonth;
-            searchFromPurchase = firstDayOfMonth;
-            searchToPurchase = lastDayOfMonth;
+            _searchFromPurchase = firstDayOfMonth;
+            _searchToPurchase = lastDayOfMonth;
         }
 
         // Tick mỗi giây
-        private void ReloadTimer_Tick(object sender, EventArgs e)
+        private async void ReloadTimer_Tick(object sender, EventArgs e)
         {
-            var remaining = _nextReloadTime - DateTime.Now;
+            try
+            {
+                var remaining = _nextReloadTime - DateTime.Now;
 
-            if (remaining <= TimeSpan.Zero)
-            {
-                _reloadTimer.Stop();
-                btnReloadPurchase.Text = "Loading...";
-                LoadData();
-                // Khởi động lại đếm ngược
-                _nextReloadTime = DateTime.Now.AddMinutes(ReloadIntervalMinutes);
-                _reloadTimer.Start();
+                if (remaining <= TimeSpan.Zero)
+                {
+                    _reloadTimer.Stop();
+                    btnReloadPurchase.Text = "Loading...";
+                    await LoadData();
+                    // Khởi động lại đếm ngược
+                    _nextReloadTime = DateTime.Now.AddMinutes(ReloadIntervalMinutes);
+                    _reloadTimer.Start();
+                }
+                else
+                {
+                    btnReloadPurchase.Text = $"Tải lại sau: {remaining.Minutes:D2}:{remaining.Seconds:D2}";
+                }
             }
-            else
+            catch (Exception exception)
             {
-                btnReloadPurchase.Text = $"Tải lại sau: {remaining.Minutes:D2}:{remaining.Seconds:D2}";
+                MessageHelper.MsgBox($"Có lỗi trong quá trình tải dữ liệu: {exception}", MsgType.Error_);
             }
         }
 
@@ -310,13 +326,41 @@ namespace FrmMain
             _reloadTimer.Start();
         }
 
-        private void btnReloadOrder_Click(object sender, EventArgs e)
+        private async void btnReloadOrder_Click(object sender, EventArgs e)
         {
-            _reloadTimer?.Stop();
-            LoadData();
-            btnReloadPurchase.Text = "Loading...";
-            _nextReloadTime = DateTime.Now.AddMinutes(ReloadIntervalMinutes);
-            _reloadTimer?.Start();
+            try
+            {
+                _reloadTimer?.Stop();
+                await LoadData();
+                btnReloadPurchase.Text = "Loading...";
+                _nextReloadTime = DateTime.Now.AddMinutes(ReloadIntervalMinutes);
+                _reloadTimer?.Start();
+            }
+            catch (Exception exception)
+            {
+                MessageHelper.MsgBox($"Có lỗi trong quá trình tải dữ liệu: {exception}", MsgType.Error_);
+            }
         }
+
+        private void SetStatusCheckboxStyle()
+        {
+            SetCheckboxColor(chkFinish, Color.LightGreen, Color.Black);
+            SetCheckboxColor(chkDraft, Color.Green, Color.White);
+            SetCheckboxColor(chkCancel, Color.OrangeRed, Color.White);
+            txtBranchName.BackColor = Color.White;
+            txtBranchName.ForeColor = Color.OrangeRed;
+        }
+
+        private static void SetCheckboxColor(CheckEdit checkEdit, Color backColor, Color foreColor)
+        {
+            checkEdit.BackColor = backColor;
+            checkEdit.ForeColor = foreColor;
+        }
+        private void SetControlEnable(bool enable)
+        {
+            layoutControlTop.Enabled = enable;
+            grdControlOrders.Enabled = enable;
+        }
+
     }
 }

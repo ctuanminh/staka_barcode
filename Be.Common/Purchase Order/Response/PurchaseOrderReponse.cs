@@ -11,8 +11,8 @@
         public DateTime PurchaseDate { get; set; }
         public decimal Discount { get; set; }
         public decimal DiscountRatio { get; set; }
-        public decimal Total { get; set; }
-        public decimal TotalPayment { get; set; }
+        public decimal Total { get; set; } // Tổng tiền hàng
+        public decimal TotalPayment { get; set; } // Tiền đã trả NCC
         public int Status { get; set; }
         public string StatusValue
         {
@@ -37,13 +37,7 @@
         public decimal ExReturnThirdParty { get; set; }
         public List<PurchaseOrderDetail> PurchaseOrderDetails { get; set; }
         public List<Payment>? Payments { get; set; }
-        public int Quantity
-        {
-            get
-            {
-                return PurchaseOrderDetails.Count();
-            }
-        }
+        public int Quantity => PurchaseOrderDetails.Count();
     }
 
     public partial class PurchaseOrderDetail

@@ -14,8 +14,10 @@ using System.Linq;
 using System.Windows.Forms;
 using DevExpress.XtraReports.UI;
 using System.Drawing;
+using FrmMain.Dto.Response;
 using Exception = System.Exception;
 using OrderDetail = Be.Common.Order.Request.OrderDetail;
+using OrderResponse = Be.Common.Order.Response.OrderResponse;
 using Size = System.Drawing.Size;
 
 namespace FrmMain
@@ -439,7 +441,7 @@ namespace FrmMain
                 // Build orderRequest từ dữ liệu hiện tại
                 var orderRequest = new OrderKiotRequest
                 {
-                    purchaseDate = DateTime.UtcNow,
+                    purchaseDate = orderApiResponse.PurchaseDate,
                     branchId = (int)orderApiResponse.BranchId,
                     soldById = orderApiResponse.SoldById,
                     discount = orderApiResponse.Discount,
@@ -477,7 +479,8 @@ namespace FrmMain
 
                 if (!updateSuccess || string.IsNullOrEmpty(updateContent))
                 {
-                    MessageHelper.MsgBox($"Có lỗi khi cập nhật đơn hàng: {updateContent}", MsgType.Error_);
+                    var apiErrorResponse = JsonConvert.DeserializeObject<ApiErrorResponse>(updateContent);
+                    MessageHelper.MsgBox($"Có lỗi khi cập nhật đơn hàng: {apiErrorResponse.ResponseStatus.Message}", MsgType.Error_);
                     return;
                 }
 

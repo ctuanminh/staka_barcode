@@ -277,10 +277,11 @@ D:\TrongCV\DEV\Pos\StakaPos\FrmMain1\obj\Debug\net9.0-windows\FrmMain.FrmOrder.r
 D:\TrongCV\DEV\Pos\StakaPos\FrmMain1\obj\Debug\net9.0-windows\FrmMain.FrmOrderProcess.resources
 D:\TrongCV\DEV\Pos\StakaPos\FrmMain1\obj\Debug\net9.0-windows\FrmMain.FrmPurchase.resources
 D:\TrongCV\DEV\Pos\StakaPos\FrmMain1\obj\Debug\net9.0-windows\FrmMain.FrmPurchaseProcess.resources
+D:\TrongCV\DEV\Pos\StakaPos\FrmMain1\obj\Debug\net9.0-windows\FrmMain.FrmReceiverList.resources
 D:\TrongCV\DEV\Pos\StakaPos\FrmMain1\obj\Debug\net9.0-windows\FrmMain.FrmSystem.resources
-D:\TrongCV\DEV\Pos\StakaPos\FrmMain1\obj\Debug\net9.0-windows\FrmMain.FrmTranfer.resources
 D:\TrongCV\DEV\Pos\StakaPos\FrmMain1\obj\Debug\net9.0-windows\FrmMain.LoadingForm.resources
 D:\TrongCV\DEV\Pos\StakaPos\FrmMain1\obj\Debug\net9.0-windows\FrmMain.Properties.Resources.resources
+D:\TrongCV\DEV\Pos\StakaPos\FrmMain1\obj\Debug\net9.0-windows\FrmMain.Report.OrderReport.resources
 D:\TrongCV\DEV\Pos\StakaPos\FrmMain1\obj\Debug\net9.0-windows\FrmMain.csproj.GenerateResource.cache
 D:\TrongCV\DEV\Pos\StakaPos\FrmMain1\obj\Debug\net9.0-windows\FrmMain.GeneratedMSBuildEditorConfig.editorconfig
 D:\TrongCV\DEV\Pos\StakaPos\FrmMain1\obj\Debug\net9.0-windows\FrmMain.AssemblyInfoInputs.cache
@@ -293,9 +294,8 @@ D:\TrongCV\DEV\Pos\StakaPos\FrmMain1\obj\Debug\net9.0-windows\refint\FrmMain.dll
 D:\TrongCV\DEV\Pos\StakaPos\FrmMain1\obj\Debug\net9.0-windows\FrmMain.pdb
 D:\TrongCV\DEV\Pos\StakaPos\FrmMain1\obj\Debug\net9.0-windows\FrmMain.genruntimeconfig.cache
 D:\TrongCV\DEV\Pos\StakaPos\FrmMain1\obj\Debug\net9.0-windows\ref\FrmMain.dll
-D:\TrongCV\DEV\Pos\StakaPos\FrmMain1\obj\Debug\net9.0-windows\FrmMain.Report.OrderReport.resources
-D:\TrongCV\DEV\Pos\StakaPos\FrmMain1\obj\Debug\net9.0-windows\FrmMain.FrmTranferProcess.resources
-D:\TrongCV\DEV\Pos\StakaPos\FrmMain1\obj\Debug\net9.0-windows\FrmMain.FrmReceiverList.resources
+D:\TrongCV\DEV\Pos\StakaPos\FrmMain1\obj\Debug\net9.0-windows\FrmMain.FrmTransfer.resources
+D:\TrongCV\DEV\Pos\StakaPos\FrmMain1\obj\Debug\net9.0-windows\FrmMain.FrmTransferProcess.resources
 E:\2025\staka_pos\FrmMain1\bin\Debug\net9.0-windows\appsettings.Development.json
 E:\2025\staka_pos\FrmMain1\bin\Debug\net9.0-windows\appsettings.json
 E:\2025\staka_pos\FrmMain1\bin\Debug\net9.0-windows\appsettings.Production.json
@@ -577,8 +577,8 @@ E:\2025\staka_pos\FrmMain1\obj\Debug\net9.0-windows\FrmMain.FrmPurchase.resource
 E:\2025\staka_pos\FrmMain1\obj\Debug\net9.0-windows\FrmMain.FrmPurchaseProcess.resources
 E:\2025\staka_pos\FrmMain1\obj\Debug\net9.0-windows\FrmMain.FrmReceiverList.resources
 E:\2025\staka_pos\FrmMain1\obj\Debug\net9.0-windows\FrmMain.FrmSystem.resources
-E:\2025\staka_pos\FrmMain1\obj\Debug\net9.0-windows\FrmMain.FrmTranfer.resources
-E:\2025\staka_pos\FrmMain1\obj\Debug\net9.0-windows\FrmMain.FrmTranferProcess.resources
+E:\2025\staka_pos\FrmMain1\obj\Debug\net9.0-windows\FrmMain.FrmTransfer.resources
+E:\2025\staka_pos\FrmMain1\obj\Debug\net9.0-windows\FrmMain.FrmTransferProcess.resources
 E:\2025\staka_pos\FrmMain1\obj\Debug\net9.0-windows\FrmMain.LoadingForm.resources
 E:\2025\staka_pos\FrmMain1\obj\Debug\net9.0-windows\FrmMain.Properties.Resources.resources
 E:\2025\staka_pos\FrmMain1\obj\Debug\net9.0-windows\FrmMain.Report.OrderReport.resources

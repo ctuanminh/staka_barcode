@@ -65,9 +65,9 @@ namespace FrmMain
             services.AddTransient<FrmSystem>(); 
             services.AddTransient<FrmLogin>(); 
             services.AddTransient<FrmPurchase>(); 
-            services.AddTransient<FrmTranfer>(); 
+            services.AddTransient<FrmTransfer>(); 
             services.AddTransient<FrmPurchaseProcess>();
-            services.AddTransient<FrmTranferProcess>();
+            services.AddTransient<FrmTransferProcess>();
             services.AddTransient<FrmReceiverList>();
             // Auto Mapper Configurations
             

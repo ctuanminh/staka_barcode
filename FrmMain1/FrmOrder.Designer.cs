@@ -130,7 +130,7 @@
             layoutControl1.Location = new System.Drawing.Point(12, 107);
             layoutControl1.Name = "layoutControl1";
             layoutControl1.Root = layoutControlGroup1;
-            layoutControl1.Size = new System.Drawing.Size(216, 465);
+            layoutControl1.Size = new System.Drawing.Size(142, 465);
             layoutControl1.TabIndex = 8;
             layoutControl1.Text = "layoutControl1";
             // 
@@ -139,7 +139,7 @@
             layoutControlGroup1.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.True;
             layoutControlGroup1.GroupBordersVisible = false;
             layoutControlGroup1.Name = "layoutControlGroup1";
-            layoutControlGroup1.Size = new System.Drawing.Size(216, 465);
+            layoutControlGroup1.Size = new System.Drawing.Size(142, 465);
             layoutControlGroup1.TextVisible = false;
             // 
             // txtBranch
@@ -158,13 +158,15 @@
             btnReloadOrder.Appearance.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold);
             btnReloadOrder.Appearance.Options.UseBackColor = true;
             btnReloadOrder.Appearance.Options.UseFont = true;
+            btnReloadOrder.Cursor = System.Windows.Forms.Cursors.Hand;
             btnReloadOrder.ImageOptions.Image = (System.Drawing.Image)resources.GetObject("btnReloadOrder.ImageOptions.Image");
-            btnReloadOrder.Location = new System.Drawing.Point(232, 107);
+            btnReloadOrder.Location = new System.Drawing.Point(158, 107);
             btnReloadOrder.Name = "btnReloadOrder";
-            btnReloadOrder.Size = new System.Drawing.Size(102, 22);
+            btnReloadOrder.Size = new System.Drawing.Size(176, 22);
             btnReloadOrder.StyleController = layoutControlTop;
             btnReloadOrder.TabIndex = 7;
             btnReloadOrder.Text = "Tải dữ liệu";
+            btnReloadOrder.Click += btnReloadOrder_Click;
             // 
             // chkCancel
             // 
@@ -284,9 +286,9 @@
             // layoutControlItem8
             // 
             layoutControlItem8.Control = btnReloadOrder;
-            layoutControlItem8.Location = new System.Drawing.Point(220, 95);
+            layoutControlItem8.Location = new System.Drawing.Point(146, 95);
             layoutControlItem8.Name = "layoutControlItem8";
-            layoutControlItem8.Size = new System.Drawing.Size(106, 469);
+            layoutControlItem8.Size = new System.Drawing.Size(180, 469);
             layoutControlItem8.TextVisible = false;
             // 
             // layoutControlItem1
@@ -294,7 +296,7 @@
             layoutControlItem1.Control = layoutControl1;
             layoutControlItem1.Location = new System.Drawing.Point(0, 95);
             layoutControlItem1.Name = "layoutControlItem1";
-            layoutControlItem1.Size = new System.Drawing.Size(220, 469);
+            layoutControlItem1.Size = new System.Drawing.Size(146, 469);
             layoutControlItem1.TextVisible = false;
             // 
             // groupControl2
@@ -327,6 +329,7 @@
             grdViewOrders.OptionsBehavior.Editable = false;
             grdViewOrders.OptionsDetail.EnableMasterViewMode = false;
             grdViewOrders.OptionsView.ShowGroupPanel = false;
+            grdViewOrders.DoubleClick += grdViewOrders_DoubleClick;
             // 
             // grdClmCode
             // 
@@ -421,7 +424,6 @@
             ClientSize = new System.Drawing.Size(1214, 608);
             Controls.Add(groupControl2);
             Controls.Add(groupControl1);
-            Font = new System.Drawing.Font("Tahoma", 9F);
             Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             MaximizeBox = false;
             MinimizeBox = false;
