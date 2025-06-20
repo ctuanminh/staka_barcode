@@ -7,6 +7,10 @@
       "RelativeMoniker": "D:0:0:{33C4759F-1AE5-4793-8947-9C6964509316}|FrmMain1\\FrmMain.csproj|solutionrelative:frmmain1\\frmpurchase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{33C4759F-1AE5-4793-8947-9C6964509316}|FrmMain1\\FrmMain.csproj|e:\\2025\\staka_pos\\frmmain1\\frmpurchase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{33C4759F-1AE5-4793-8947-9C6964509316}|FrmMain1\\FrmMain.csproj|solutionrelative:frmmain1\\frmpurchase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{33C4759F-1AE5-4793-8947-9C6964509316}|FrmMain1\\FrmMain.csproj|e:\\2025\\staka_pos\\frmmain1\\frmtranfer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{33C4759F-1AE5-4793-8947-9C6964509316}|FrmMain1\\FrmMain.csproj|solutionrelative:frmmain1\\frmtranfer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
@@ -22,7 +26,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Bookmark",
@@ -31,6 +35,19 @@
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "FrmPurchase.cs",
+              "DocumentMoniker": "E:\\2025\\staka_pos\\FrmMain1\\FrmPurchase.cs",
+              "RelativeDocumentMoniker": "FrmMain1\\FrmPurchase.cs",
+              "ToolTip": "E:\\2025\\staka_pos\\FrmMain1\\FrmPurchase.cs",
+              "RelativeToolTip": "FrmMain1\\FrmPurchase.cs",
+              "ViewState": "AgIAALIAAAAAAAAAAAAiwLsAAAArAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-19T17:34:44.157Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -46,7 +63,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "FrmTranfer.cs [Design]",
               "DocumentMoniker": "E:\\2025\\staka_pos\\FrmMain1\\FrmTranfer.cs",
               "RelativeDocumentMoniker": "FrmMain1\\FrmTranfer.cs",
@@ -58,7 +75,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "FrmOrder.cs [Design]",
               "DocumentMoniker": "E:\\2025\\staka_pos\\FrmMain1\\FrmOrder.cs",
               "RelativeDocumentMoniker": "FrmMain1\\FrmOrder.cs",
