@@ -119,6 +119,7 @@ namespace FrmMain
                     .Where(p => !string.IsNullOrWhiteSpace(p.ProductCode))
                     .Select(p => p.Quantity)
                     .Sum().ToString();
+                txtDescription.Text = purchaseOrderResponse.Description; // Ghi chú
 
                 _orderResponse = purchaseOrderResponse;
                 txtScanNumber.ReadOnly = true;
@@ -252,15 +253,15 @@ namespace FrmMain
             switch (_orderResponse.Status)
             {
                 case (int)OrderStatusEnum.Finished:
-                    MessageHelper.MsgBox("Đơn hàng đã hoàn thành, vui lòng kiểm tra lại", MsgType.Error_);
+                    MessageHelper.MsgBox("Đơn Nhập hàng đã hoàn thành, vui lòng kiểm tra lại", MsgType.Error_);
                     break;
                 case (int)OrderStatusEnum.Cancel:
-                    MessageHelper.MsgBox("Đơn hàng đã huỷ, vui lòng kiểm tra lại", MsgType.Error_);
+                    MessageHelper.MsgBox("Đơn Nhập hàng đã huỷ, vui lòng kiểm tra lại", MsgType.Error_);
                     break;
                 default:
                     if (_scannedBarcodeCount == _orderResponse.PurchaseOrderDetails.Count())
                     {
-                        var confirm = MessageHelper.MsgBox("Hoàn thành đơn hàng", MsgType.YesNo);
+                        var confirm = MessageHelper.MsgBox("Chắc chắn hoàn thành đơn Nhập hàng", MsgType.YesNo);
                         if (confirm != DialogResult.Yes) return;
                         FinishOrder();
                     }
@@ -393,7 +394,7 @@ namespace FrmMain
                 // Build orderRequest từ dữ liệu hiện tại
                 var orderRequest = new 
                 {
-                    purchaseDate = DateTime.UtcNow,
+                    purchaseDate = purchaseOrderResponse.PurchaseDate,
                     branchId = (int)purchaseOrderResponse.BranchId,
                     supplier = new
                     {
@@ -430,7 +431,7 @@ namespace FrmMain
                     return;
                 }
 
-                MessageHelper.MsgBox("Đơn hàng đã được hoàn thành thành công.", MsgType.Information);
+                MessageHelper.MsgBox("Nhập hàng thành thành công.", MsgType.Information);
                 ReloadData(CurrentId);
             }
             catch (Exception ex)

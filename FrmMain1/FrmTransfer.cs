@@ -24,7 +24,7 @@ namespace FrmMain
         private readonly FrmMainF _mainForm;
         private readonly IKiotVietService _kiotVietService;
         private const string TransferUrl = "https://public.kiotapi.com/transfers";
-        private List<int> _statusList;
+        private int _statusFilter;
         private readonly IBranchService _branchService;
         private int _currentBranchId;
         private DateTime _searchFromTransferDate;
@@ -32,7 +32,7 @@ namespace FrmMain
 
         private Timer _reloadTimer;
         private DateTime _nextReloadTime;
-        private const int ReloadIntervalMinutes = 1;
+        private const int ReloadIntervalMinutes = 5;
         public FrmTransfer(FrmMainF mainForm, IKiotVietService kiotVietService, IBranchService branchService)
         {
             _mainForm = mainForm;
@@ -44,7 +44,7 @@ namespace FrmMain
 
         private void FrmOrder_Shown(object sender, EventArgs e)
         {
-            _statusList = [1];
+            _statusFilter = 1;
         }
 
         private async Task LoadData()
@@ -55,11 +55,11 @@ namespace FrmMain
                 var request = new SearchTranferRequest()
                 {
                     FromBranchIds = [_currentBranchId],
-                    Status = _statusList.ToArray(),
+                    Status = [_statusFilter],
                     PageSize = 100,
                     CurrentItem = 0,
-                    FromTransferDate = _searchFromTransferDate,
-                    ToTransferDate = _searchToTransferDate
+                    FromTransferDate = _statusFilter !=1? _searchFromTransferDate : null,
+                    ToTransferDate = _statusFilter !=1? _searchToTransferDate : null
                 };
 
                 var (success, content) = await _kiotVietService.CallApiAsync(TransferUrl, request, "GET");
@@ -207,8 +207,7 @@ namespace FrmMain
         private void Handler_CheckedChanged(object sender, EventArgs e)
         {
             if (sender is not CheckEdit checkEdit) return;
-            checkEdit.CheckStateChanged -= Handler_CheckedChanged;
-            chkDraft.Checked = chkCancel.Checked = chkTransfer.Checked = false;
+            var checkedValue = checkEdit.Checked;
 
             var statusValue = checkEdit.Name switch
             {
@@ -219,26 +218,43 @@ namespace FrmMain
                 _ => 0
             };
 
-            if (statusValue == 0) return;
+            if (statusValue == 0)
+                return;
 
-            //Trong COmmnet
-            //if (checkEdit.Checked)
-            //{
-            //    _statusList = _statusList.RemoveAll();
-            //    _statusList.Add(statusValue);
-            //}
+            chkDraft.CheckedChanged -= Handler_CheckedChanged;
+            chkTransfer.CheckedChanged -= Handler_CheckedChanged;
+            chkCancel.CheckedChanged -= Handler_CheckedChanged;
+
+            chkDraft.Checked = chkTransfer.Checked = chkCancel.Checked = false;
+
+            if (checkedValue)
+            {
+                switch (checkEdit.Name)
+                {
+                    case "chkDraft":
+                        chkDraft.Checked = true;
+                        break;
+                    case "chkTransfer":
+                        chkTransfer.Checked = true;
+                        break;
+                    case "chkFinish":
+                        break;
+                    case "chkCancel":
+                        chkCancel.Checked = true;
+                        break;
+                }
+                _statusFilter = statusValue;
+            }
             else
             {
-                if (_statusList.Count == 0)
-                {
-                    chkDraft.Checked = true;
-                    _statusList.Add(1);
-                    chkDraft.CheckedChanged += Handler_CheckedChanged;
-                }
-                _statusList.Remove(statusValue);
-                
+                chkDraft.Checked = true;
+                _statusFilter = 1;
             }
-            btnReload_Click(btnReloadPurchase, EventArgs.Empty);
+
+            chkDraft.CheckedChanged += Handler_CheckedChanged;
+            chkTransfer.CheckedChanged += Handler_CheckedChanged;
+            chkCancel.CheckedChanged += Handler_CheckedChanged;
+            _ = LoadData();
         }
 
         private void fromPurchaseDate_EditValueChanged(object sender, EventArgs e)

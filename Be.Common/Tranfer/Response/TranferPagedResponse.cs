@@ -13,7 +13,7 @@
         public string ProductCode { get; set; } // Mã hàng hóa
         public string ProductName { get; set; }
         public double SendQuantity { get; set; } // Số lượng hàng hóa chuyển
-        public double TransferredQuantity { get; set; } // Số lượng hàng hóa nhận
+        public int TransferredQuantity { get; set; } // Số lượng hàng hóa nhận, trên doc là double.
         public double RecivedQuantity { get; set; }
         public decimal Price { get; set; } // Giá trị
         public decimal TotalTransfer { get; set; }
@@ -41,7 +41,7 @@
                 {
                     1 => "Phiếu tạm",
                     2 => "Đang chuyển",
-                    3 => "Hoàn thành",
+                    3 => "Đã nhận",
                     _ => "Đã huỷ"
                 };
             }

@@ -1,9 +1,10 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Be.Common.utils;
+using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
-using Be.Common.utils;
-using Newtonsoft.Json;
 
 namespace Be.Services.KiotViet
 {
@@ -92,7 +93,11 @@ namespace Be.Services.KiotViet
                         return (true, dataGetResponse);
                     case "PUT":
                         {
-                            var jsonContent = JsonConvert.SerializeObject(request);
+                            var jsonContent = JsonConvert.SerializeObject(request, new JsonSerializerSettings
+                            {
+                                ContractResolver = new CamelCasePropertyNamesContractResolver(),
+                                NullValueHandling = NullValueHandling.Ignore
+                            });
                             var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
                             var response = await _httpClient.PutAsync(baseUrl, content);
                             if (!response.IsSuccessStatusCode)

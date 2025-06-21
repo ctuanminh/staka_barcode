@@ -31,6 +31,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmReceiverList));
             groupControl1 = new DevExpress.XtraEditors.GroupControl();
             layoutControlTop = new DevExpress.XtraLayout.LayoutControl();
+            labelControl1 = new DevExpress.XtraEditors.LabelControl();
             layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
             btnReload = new DevExpress.XtraEditors.SimpleButton();
@@ -49,6 +50,7 @@
             layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
             layoutControlItem8 = new DevExpress.XtraLayout.LayoutControlItem();
             layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
+            layoutControlItem3 = new DevExpress.XtraLayout.LayoutControlItem();
             groupControl2 = new DevExpress.XtraEditors.GroupControl();
             grdControlOrders = new DevExpress.XtraGrid.GridControl();
             grdViewOrders = new DevExpress.XtraGrid.Views.Grid.GridView();
@@ -87,6 +89,7 @@
             ((System.ComponentModel.ISupportInitialize)layoutControlItem2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)layoutControlItem8).BeginInit();
             ((System.ComponentModel.ISupportInitialize)layoutControlItem5).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)layoutControlItem3).BeginInit();
             ((System.ComponentModel.ISupportInitialize)groupControl2).BeginInit();
             groupControl2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)grdControlOrders).BeginInit();
@@ -112,6 +115,7 @@
             // layoutControlTop
             // 
             layoutControlTop.AutoScroll = false;
+            layoutControlTop.Controls.Add(labelControl1);
             layoutControlTop.Controls.Add(layoutControl1);
             layoutControlTop.Controls.Add(btnReload);
             layoutControlTop.Controls.Add(txtBranchName);
@@ -128,12 +132,21 @@
             layoutControlTop.TabIndex = 0;
             layoutControlTop.Text = "layoutControl1";
             // 
+            // labelControl1
+            // 
+            labelControl1.Location = new System.Drawing.Point(12, 36);
+            labelControl1.Name = "labelControl1";
+            labelControl1.Size = new System.Drawing.Size(113, 14);
+            labelControl1.StyleController = layoutControlTop;
+            labelControl1.TabIndex = 20;
+            labelControl1.Text = "Thời gian Nhận hàng";
+            // 
             // layoutControl1
             // 
-            layoutControl1.Location = new System.Drawing.Point(12, 107);
+            layoutControl1.Location = new System.Drawing.Point(12, 125);
             layoutControl1.Name = "layoutControl1";
             layoutControl1.Root = layoutControlGroup1;
-            layoutControl1.Size = new System.Drawing.Size(138, 465);
+            layoutControl1.Size = new System.Drawing.Size(138, 447);
             layoutControl1.TabIndex = 19;
             layoutControl1.Text = "layoutControl1";
             // 
@@ -142,7 +155,7 @@
             layoutControlGroup1.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.True;
             layoutControlGroup1.GroupBordersVisible = false;
             layoutControlGroup1.Name = "layoutControlGroup1";
-            layoutControlGroup1.Size = new System.Drawing.Size(138, 465);
+            layoutControlGroup1.Size = new System.Drawing.Size(138, 447);
             layoutControlGroup1.TextVisible = false;
             // 
             // btnReload
@@ -152,7 +165,7 @@
             btnReload.Appearance.Options.UseBackColor = true;
             btnReload.Appearance.Options.UseFont = true;
             btnReload.ImageOptions.Image = (System.Drawing.Image)resources.GetObject("btnReload.ImageOptions.Image");
-            btnReload.Location = new System.Drawing.Point(154, 107);
+            btnReload.Location = new System.Drawing.Point(154, 125);
             btnReload.Name = "btnReload";
             btnReload.Size = new System.Drawing.Size(176, 22);
             btnReload.StyleController = layoutControlTop;
@@ -174,7 +187,7 @@
             // 
             // chkCancel
             // 
-            chkCancel.Location = new System.Drawing.Point(220, 84);
+            chkCancel.Location = new System.Drawing.Point(220, 102);
             chkCancel.Name = "chkCancel";
             chkCancel.Properties.Caption = "Đã huỷ";
             chkCancel.Size = new System.Drawing.Size(110, 19);
@@ -185,7 +198,7 @@
             // chkTransfer
             // 
             chkTransfer.EditValue = true;
-            chkTransfer.Location = new System.Drawing.Point(12, 84);
+            chkTransfer.Location = new System.Drawing.Point(12, 102);
             chkTransfer.Name = "chkTransfer";
             chkTransfer.Properties.Caption = "Đang chuyển";
             chkTransfer.Size = new System.Drawing.Size(105, 19);
@@ -195,7 +208,7 @@
             // 
             // chkFinish
             // 
-            chkFinish.Location = new System.Drawing.Point(121, 84);
+            chkFinish.Location = new System.Drawing.Point(121, 102);
             chkFinish.Name = "chkFinish";
             chkFinish.Properties.Caption = "Đã nhận";
             chkFinish.Size = new System.Drawing.Size(95, 19);
@@ -206,10 +219,15 @@
             // toTransferDate
             // 
             toTransferDate.EditValue = null;
-            toTransferDate.Location = new System.Drawing.Point(117, 60);
+            toTransferDate.Location = new System.Drawing.Point(117, 78);
             toTransferDate.Name = "toTransferDate";
             toTransferDate.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
             toTransferDate.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
+            toTransferDate.Properties.DisplayFormat.FormatString = "dd/MM/yyyy";
+            toTransferDate.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
+            toTransferDate.Properties.EditFormat.FormatString = "dd/MM/yyyy";
+            toTransferDate.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
+            toTransferDate.Properties.MaskSettings.Set("mask", "dd/MM/yyyy");
             toTransferDate.Size = new System.Drawing.Size(213, 20);
             toTransferDate.StyleController = layoutControlTop;
             toTransferDate.TabIndex = 14;
@@ -218,10 +236,15 @@
             // fromTransferDate
             // 
             fromTransferDate.EditValue = null;
-            fromTransferDate.Location = new System.Drawing.Point(117, 36);
+            fromTransferDate.Location = new System.Drawing.Point(117, 54);
             fromTransferDate.Name = "fromTransferDate";
             fromTransferDate.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
             fromTransferDate.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
+            fromTransferDate.Properties.DisplayFormat.FormatString = "dd/MM/yyyy";
+            fromTransferDate.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
+            fromTransferDate.Properties.EditFormat.FormatString = "dd/MM/yyyy";
+            fromTransferDate.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
+            fromTransferDate.Properties.MaskSettings.Set("mask", "dd/MM/yyyy");
             fromTransferDate.Size = new System.Drawing.Size(213, 20);
             fromTransferDate.StyleController = layoutControlTop;
             fromTransferDate.TabIndex = 4;
@@ -231,7 +254,7 @@
             // 
             Root.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.True;
             Root.GroupBordersVisible = false;
-            Root.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] { layoutControlItem11, layoutControlItem6, layoutControlItem7, layoutControlItem1, layoutControlItem4, layoutControlItem2, layoutControlItem8, layoutControlItem5 });
+            Root.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] { layoutControlItem11, layoutControlItem6, layoutControlItem7, layoutControlItem1, layoutControlItem4, layoutControlItem2, layoutControlItem8, layoutControlItem5, layoutControlItem3 });
             Root.Name = "Root";
             Root.Size = new System.Drawing.Size(342, 584);
             Root.TextVisible = false;
@@ -239,7 +262,7 @@
             // layoutControlItem11
             // 
             layoutControlItem11.Control = toTransferDate;
-            layoutControlItem11.Location = new System.Drawing.Point(0, 48);
+            layoutControlItem11.Location = new System.Drawing.Point(0, 66);
             layoutControlItem11.Name = "layoutControlItem11";
             layoutControlItem11.Size = new System.Drawing.Size(322, 24);
             layoutControlItem11.Text = "Đến ngày";
@@ -248,7 +271,7 @@
             // layoutControlItem6
             // 
             layoutControlItem6.Control = chkTransfer;
-            layoutControlItem6.Location = new System.Drawing.Point(0, 72);
+            layoutControlItem6.Location = new System.Drawing.Point(0, 90);
             layoutControlItem6.Name = "layoutControlItem6";
             layoutControlItem6.Size = new System.Drawing.Size(109, 23);
             layoutControlItem6.TextVisible = false;
@@ -256,7 +279,7 @@
             // layoutControlItem7
             // 
             layoutControlItem7.Control = chkCancel;
-            layoutControlItem7.Location = new System.Drawing.Point(208, 72);
+            layoutControlItem7.Location = new System.Drawing.Point(208, 90);
             layoutControlItem7.Name = "layoutControlItem7";
             layoutControlItem7.Size = new System.Drawing.Size(114, 23);
             layoutControlItem7.TextVisible = false;
@@ -273,7 +296,7 @@
             // layoutControlItem4
             // 
             layoutControlItem4.Control = fromTransferDate;
-            layoutControlItem4.Location = new System.Drawing.Point(0, 24);
+            layoutControlItem4.Location = new System.Drawing.Point(0, 42);
             layoutControlItem4.Name = "layoutControlItem4";
             layoutControlItem4.Size = new System.Drawing.Size(322, 24);
             layoutControlItem4.Text = "Từ ngày";
@@ -282,26 +305,34 @@
             // layoutControlItem2
             // 
             layoutControlItem2.Control = btnReload;
-            layoutControlItem2.Location = new System.Drawing.Point(142, 95);
+            layoutControlItem2.Location = new System.Drawing.Point(142, 113);
             layoutControlItem2.Name = "layoutControlItem2";
-            layoutControlItem2.Size = new System.Drawing.Size(180, 469);
+            layoutControlItem2.Size = new System.Drawing.Size(180, 451);
             layoutControlItem2.TextVisible = false;
             // 
             // layoutControlItem8
             // 
             layoutControlItem8.Control = layoutControl1;
-            layoutControlItem8.Location = new System.Drawing.Point(0, 95);
+            layoutControlItem8.Location = new System.Drawing.Point(0, 113);
             layoutControlItem8.Name = "layoutControlItem8";
-            layoutControlItem8.Size = new System.Drawing.Size(142, 469);
+            layoutControlItem8.Size = new System.Drawing.Size(142, 451);
             layoutControlItem8.TextVisible = false;
             // 
             // layoutControlItem5
             // 
             layoutControlItem5.Control = chkFinish;
-            layoutControlItem5.Location = new System.Drawing.Point(109, 72);
+            layoutControlItem5.Location = new System.Drawing.Point(109, 90);
             layoutControlItem5.Name = "layoutControlItem5";
             layoutControlItem5.Size = new System.Drawing.Size(99, 23);
             layoutControlItem5.TextVisible = false;
+            // 
+            // layoutControlItem3
+            // 
+            layoutControlItem3.Control = labelControl1;
+            layoutControlItem3.Location = new System.Drawing.Point(0, 24);
+            layoutControlItem3.Name = "layoutControlItem3";
+            layoutControlItem3.Size = new System.Drawing.Size(322, 18);
+            layoutControlItem3.TextVisible = false;
             // 
             // groupControl2
             // 
@@ -477,6 +508,7 @@
             ((System.ComponentModel.ISupportInitialize)layoutControlItem2).EndInit();
             ((System.ComponentModel.ISupportInitialize)layoutControlItem8).EndInit();
             ((System.ComponentModel.ISupportInitialize)layoutControlItem5).EndInit();
+            ((System.ComponentModel.ISupportInitialize)layoutControlItem3).EndInit();
             ((System.ComponentModel.ISupportInitialize)groupControl2).EndInit();
             groupControl2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)grdControlOrders).EndInit();
@@ -529,5 +561,7 @@
         private DevExpress.XtraEditors.SimpleButton btnReload;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem2;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem8;
+        private DevExpress.XtraEditors.LabelControl labelControl1;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem3;
     }
 }

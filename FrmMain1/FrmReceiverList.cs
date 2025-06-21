@@ -24,7 +24,7 @@ namespace FrmMain
         private readonly FrmMainF _mainForm;
         private readonly IKiotVietService _kiotVietService;
         private const string TransferUrl = "https://public.kiotapi.com/transfers";
-        private List<int> _statusList;
+        private int _statusFilter;
         private readonly IBranchService _branchService;
         private int _currentBranchId;
 
@@ -33,7 +33,7 @@ namespace FrmMain
 
         private Timer _reloadTimer;
         private DateTime _nextReloadTime;
-        private const int ReloadIntervalMinutes = 1;
+        private const int ReloadIntervalMinutes = 5;
         public FrmReceiverList(FrmMainF mainForm, IKiotVietService kiotVietService, IBranchService branchService)
         {
             _mainForm = mainForm;
@@ -44,7 +44,7 @@ namespace FrmMain
 
         private void FrmOrder_Shown(object sender, EventArgs e)
         {
-            _statusList = [2];
+            _statusFilter = 2;
         }
 
         private async Task LoadData()
@@ -56,11 +56,13 @@ namespace FrmMain
                 {
                     FromBranchIds = null,
                     ToBranchIds = [_currentBranchId],
-                    Status = _statusList.ToArray(),
+                    Status = [_statusFilter],
                     PageSize = 100,
-                    CurrentItem = 1,
-                    FromReceivedDate = _searchFromTransferDate,
-                    ToReceivedDate = _searchToTransferDate,
+                    CurrentItem = 0,
+                    FromTransferDate = _statusFilter ==2? _searchFromTransferDate : null,
+                    ToTransferDate = _statusFilter ==2? _searchToTransferDate : null,
+                    FromReceivedDate = _statusFilter ==3? _searchFromTransferDate : null,
+                    ToReceivedDate = _statusFilter ==3? _searchToTransferDate : null,
                 };
 
                 var (success, content) = await _kiotVietService.CallApiAsync(TransferUrl, request, "GET");
@@ -168,46 +170,55 @@ namespace FrmMain
                 MessageHelper.MsgBox($"Có lỗi trong quá trình tải dữ liệu: {exception}", MsgType.Error_);
             }
         }
-
-        private async void Handler_CheckedChanged(object sender, EventArgs e)
+        private void Handler_CheckedChanged(object sender, EventArgs e)
         {
-            try
+            if (sender is not CheckEdit checkEdit) return;
+            var checkedValue = checkEdit.Checked;
+
+            var statusValue = checkEdit.Name switch
             {
-                if (sender is not CheckEdit checkEdit) return;
+                "chkDraft" => 1,
+                "chkTransfer" => 2,
+                "chkFinish" => 3,
+                "chkCancel" => 4,
+                _ => 0
+            };
 
-                var statusValue = checkEdit.Name switch
-                {
-                    "chkDraft" => 1,
-                    "chkTransfer" => 2,
-                    "chkFinish" => 3,
-                    "chkCancel" => 4,
-                    _ => 0
-                };
+            if (statusValue == 0)
+                return;
 
-                if (statusValue == 0) return;
+            chkTransfer.CheckedChanged -= Handler_CheckedChanged;
+            chkFinish.CheckedChanged -= Handler_CheckedChanged;
+            chkCancel.CheckedChanged -= Handler_CheckedChanged;
 
-                if (checkEdit.Checked)
+            chkTransfer.Checked = chkFinish.Checked = chkCancel.Checked = false;
+
+            if (checkedValue)
+            {
+                switch (checkEdit.Name)
                 {
-                    if (!_statusList.Contains(statusValue))
-                        _statusList.Add(statusValue);
-                }
-                else
-                {
-                    _statusList.Remove(statusValue);
-                    if (_statusList.Count == 0)
-                    {
-                        chkTransfer.CheckedChanged -= Handler_CheckedChanged;
+                    case "chkTransfer":
                         chkTransfer.Checked = true;
-                        _statusList.Add(2);
-                        chkTransfer.CheckedChanged += Handler_CheckedChanged;
-                    }
+                        break;
+                    case "chkFinish":
+                        chkFinish.Checked = true;
+                        break;
+                    case "chkCancel":
+                        chkCancel.Checked = true;
+                        break;
                 }
-                await LoadData();
+                _statusFilter = statusValue;
             }
-            catch (Exception exception)
+            else
             {
-                MessageHelper.MsgBox($"Có lỗi trong quá trình tải dữ liệu: {exception}", MsgType.Error_);
+                chkTransfer.Checked = true;
+                _statusFilter = 2;
             }
+
+            chkTransfer.CheckedChanged += Handler_CheckedChanged;
+            chkFinish.CheckedChanged += Handler_CheckedChanged;
+            chkCancel.CheckedChanged += Handler_CheckedChanged;
+            _ = LoadData();
         }
 
         private void fromPurchaseDate_EditValueChanged(object sender, EventArgs e)

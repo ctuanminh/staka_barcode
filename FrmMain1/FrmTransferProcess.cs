@@ -76,12 +76,8 @@ namespace FrmMain
                 if (transferResponse == null) return;
 
                 HandleTransferStatusUi(transferResponse);
-
                 SetStatusCheckboxStyle();
-                chkFinish.Checked = false;
-                chkCancel.Checked = false;
-                chkDraft.Checked = false;
-
+                ResetStatusCheckboxes();
                 ProcessProductUnits(transferResponse.Details);
 
                 var userTransfer = await _userService.GetUserById(transferResponse.CreatedById);
@@ -89,7 +85,7 @@ namespace FrmMain
                 txtTranferName.Text = userTransfer?.FullName;
                 txtFromBranchName.Text = transferResponse.FromBranchName;
 
-                // Đếm tổng số lượng gửi & nhận
+                // Tổng hợp số lượng
                 var totalSend = transferResponse.Details
                     .Where(p => !string.IsNullOrWhiteSpace(p.ProductCode))
                     .Sum(p => p.TransferredQuantity);
@@ -176,7 +172,7 @@ namespace FrmMain
         {
             if (sender is not GridView view) return;
 
-            if (view.GetRow(e.RowHandle) is not PurchaseOrderDetail row) return;
+            if (view.GetRow(e.RowHandle) is not TransferDetail row) return;
 
             if (!row.Checked) return;
             e.Appearance.BackColor = Color.LightGreen; // Màu xanh nhạt
@@ -187,8 +183,6 @@ namespace FrmMain
         {
             if (_scannedBarcodeCount == _transferResponse.Details.Count())
             {
-                var confirm = MessageHelper.MsgBox("Hoàn thành đơn hàng", MsgType.YesNo);
-                if (confirm != DialogResult.Yes) return;
                 FinishOrder();
             }
             else
@@ -280,35 +274,33 @@ namespace FrmMain
                     MessageHelper.MsgBox("Kiểm tra dữ liệu trước khi thực hiện", MsgType.Error_);
                 }
 
-                var nextStatus = 0;
-                if (transferResponse.Status == (int)TransferStatusEnum.Draft)
-                {
-                    nextStatus = (int)TransferStatusEnum.Transferred;
-                }
-                else
-                {
-                    nextStatus = (int)TransferStatusEnum.Finished;
-                }
 
-                    // Build orderRequest từ dữ liệu hiện tại
-                    var transferRequest = new
+                // Xác định trạng thái kế tiếp
+                var nextStatus = transferResponse.Status switch
+                {
+                    (int)TransferStatusEnum.Draft => (int)TransferStatusEnum.Transferred,
+                    _ => (int)TransferStatusEnum.Finished
+                };
+
+                var transferRequest = new
+                {
+                    fromBranchId = transferResponse.FromBranchId,
+                    toBranchId = transferResponse.ToBranchId,
+                    code = transferResponse.Code,
+                    status = nextStatus,
+                    isDraft = false,
+                    dispatchedDate = transferResponse.DispatchedDate,
+                    transferDetails = transferResponse.Details.Select(product => new
                     {
-                        fromBranchId = transferResponse.FromBranchId,
-                        toBranchId = transferResponse.ToBranchId,
-                        code = transferResponse.Code,
-                        status = nextStatus,
-                        
-                        transferDetails = transferResponse.TransferDetails.Select(product => new TransferDetail()
-                        {
-                            TransferId = transferResponse.Id,
-                            ProductId = product.ProductId,
-                            ProductCode = product.ProductCode,
-                            ProductName = product.ProductName,
-                            SendQuantity = product.SendQuantity,
-                            RecivedQuantity = product.SendQuantity,
-                            Price = product.Price
-                        }).ToList(),
-                    };
+                        transferId = transferResponse.Id,
+                        productId = product.ProductId,
+                        productCode = product.ProductCode,
+                        productName = product.ProductName,
+                        sendQuantity = product.TransferredQuantity,
+                        receiveQuantity =product.TransferredQuantity,
+                        price = product.Price
+                    }).ToList(),
+                };
 
                 var (updateSuccess, updateContent) = await _kiotVietService.CallApiAsync(orderUrl, transferRequest, "PUT");
 
@@ -318,7 +310,7 @@ namespace FrmMain
                     return;
                 }
 
-                MessageHelper.MsgBox("Đơn hàng đã được hoàn thành thành công.", MsgType.Information);
+                MessageHelper.MsgBox("Thao tác được thực hiện thành công.", MsgType.Information);
                 ReloadData(CurrentCode, CurrentId, Transfer);
             }
             catch (Exception ex)
@@ -418,14 +410,16 @@ namespace FrmMain
             {
                 case (int)TransferStatusEnum.Draft:
                     Text = Transfer ? "Xử lý Phiếu Chuyển hàng" : "Xử lý Phiếu Nhận hàng";
-                    grpCtlFilter.Text = Transfer? "Phiếu Chuyển hàng" : "Phiếu Nhận hàng";
-                    txtProductCode.ReadOnly = Transfer;
+                    grpCtlFilter.Text = "Phiếu Chuyển hàng";
+                    btnFinish.Text = Transfer ? "Chuyển hàng" : "Nhận hàng";
+                    txtProductCode.ReadOnly = !Transfer;
                     break;
 
                 case (int)TransferStatusEnum.Transferred:
                     Text = Transfer ? "Xử lý Phiếu Chuyển hàng" : "Xử lý Phiếu Nhận hàng";
                     grpCtlFilter.Text = Transfer ? "Phiếu Chuyển hàng" : "Phiếu Nhận hàng";
-
+                    grpCtlFilter.Text = "Nhận hàng";
+                    btnFinish.Text = "Nhận hàng";
                     if (Transfer)
                     {
                         MessageHelper.MsgBox("Phiếu đang ở trạng thái Đang chuyển, vui lòng kiểm tra lại",
@@ -460,7 +454,6 @@ namespace FrmMain
             };
         }
 
-
         private static void SetTextEditHeight(Control control, int height)
         {
             foreach (Control c in control.Controls)
@@ -492,7 +485,12 @@ namespace FrmMain
                 }
             }
         }
-
+        private void ResetStatusCheckboxes()
+        {
+            chkFinish.Checked = false;
+            chkCancel.Checked = false;
+            chkDraft.Checked = false;
+        }
     }
 
 }

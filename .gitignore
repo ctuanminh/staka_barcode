@@ -1,9 +1,14 @@
 ## Build results
 bin/
 obj/
-[Bb]uild/
-[Ll]og/
-*.log
+*.dll
+*.exe
+*.pdb
+*.cache
+*.nuget.g.props
+*.nuget.dgspec.json
+*.sourcelink.json
+*.GeneratedMSBuildEditorConfig.editorconfig
 
 ## User-specific files
 *.user

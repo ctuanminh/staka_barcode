@@ -46,11 +46,11 @@
             layoutControlItem3 = new DevExpress.XtraLayout.LayoutControlItem();
             layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
             layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
-            layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
             layoutControlItem6 = new DevExpress.XtraLayout.LayoutControlItem();
             layoutControlItem8 = new DevExpress.XtraLayout.LayoutControlItem();
             layoutControlItem7 = new DevExpress.XtraLayout.LayoutControlItem();
             layoutControlItem9 = new DevExpress.XtraLayout.LayoutControlItem();
+            layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
             groupControl2 = new DevExpress.XtraEditors.GroupControl();
             grdControlOrders = new DevExpress.XtraGrid.GridControl();
             grdViewOrders = new DevExpress.XtraGrid.Views.Grid.GridView();
@@ -85,11 +85,11 @@
             ((System.ComponentModel.ISupportInitialize)layoutControlItem3).BeginInit();
             ((System.ComponentModel.ISupportInitialize)layoutControlItem1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)layoutControlItem4).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)layoutControlItem2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)layoutControlItem6).BeginInit();
             ((System.ComponentModel.ISupportInitialize)layoutControlItem8).BeginInit();
             ((System.ComponentModel.ISupportInitialize)layoutControlItem7).BeginInit();
             ((System.ComponentModel.ISupportInitialize)layoutControlItem9).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)layoutControlItem2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)groupControl2).BeginInit();
             groupControl2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)grdControlOrders).BeginInit();
@@ -138,7 +138,7 @@
             layoutControl1.Name = "layoutControl1";
             layoutControl1.Root = layoutControlGroup1;
             layoutControl1.Size = new System.Drawing.Size(158, 447);
-            layoutControl1.TabIndex = 13;
+            layoutControl1.TabIndex = 8;
             layoutControl1.Text = "layoutControl1";
             // 
             // layoutControlGroup1
@@ -156,7 +156,7 @@
             chkCancel.Properties.Caption = "Đã huỷ";
             chkCancel.Size = new System.Drawing.Size(100, 19);
             chkCancel.StyleController = layoutControlTop;
-            chkCancel.TabIndex = 10;
+            chkCancel.TabIndex = 6;
             chkCancel.CheckedChanged += Handler_CheckedChanged;
             // 
             // btnReloadPurchase
@@ -171,7 +171,7 @@
             btnReloadPurchase.Name = "btnReloadPurchase";
             btnReloadPurchase.Size = new System.Drawing.Size(160, 22);
             btnReloadPurchase.StyleController = layoutControlTop;
-            btnReloadPurchase.TabIndex = 12;
+            btnReloadPurchase.TabIndex = 9;
             btnReloadPurchase.Text = "Tải dữ liệu";
             btnReloadPurchase.Click += btnReload_Click;
             // 
@@ -181,7 +181,7 @@
             labelControl1.Name = "labelControl1";
             labelControl1.Size = new System.Drawing.Size(102, 14);
             labelControl1.StyleController = layoutControlTop;
-            labelControl1.TabIndex = 11;
+            labelControl1.TabIndex = 1;
             labelControl1.Text = "Chọn ngày chuyển";
             // 
             // txtBranchName
@@ -203,7 +203,7 @@
             chkTransfer.Properties.Caption = "Đang chuyển";
             chkTransfer.Size = new System.Drawing.Size(109, 19);
             chkTransfer.StyleController = layoutControlTop;
-            chkTransfer.TabIndex = 9;
+            chkTransfer.TabIndex = 5;
             chkTransfer.CheckedChanged += Handler_CheckedChanged;
             // 
             // chkDraft
@@ -214,7 +214,7 @@
             chkDraft.Properties.Caption = "Phiếu tạm";
             chkDraft.Size = new System.Drawing.Size(105, 19);
             chkDraft.StyleController = layoutControlTop;
-            chkDraft.TabIndex = 7;
+            chkDraft.TabIndex = 4;
             chkDraft.CheckedChanged += Handler_CheckedChanged;
             // 
             // toTransferDate
@@ -226,9 +226,12 @@
             toTransferDate.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
             toTransferDate.Properties.DisplayFormat.FormatString = "dd/MM/yyyy";
             toTransferDate.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
+            toTransferDate.Properties.EditFormat.FormatString = "dd/MM/yyyy";
+            toTransferDate.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
+            toTransferDate.Properties.MaskSettings.Set("mask", "dd/MM/yyyy");
             toTransferDate.Size = new System.Drawing.Size(217, 20);
             toTransferDate.StyleController = layoutControlTop;
-            toTransferDate.TabIndex = 6;
+            toTransferDate.TabIndex = 3;
             toTransferDate.EditValueChanged += toPurchaseDate_EditValueChanged;
             // 
             // fromTransferDate
@@ -240,16 +243,19 @@
             fromTransferDate.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
             fromTransferDate.Properties.DisplayFormat.FormatString = "dd/MM/yyyy";
             fromTransferDate.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
+            fromTransferDate.Properties.EditFormat.FormatString = "dd/MM/yyyy";
+            fromTransferDate.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
+            fromTransferDate.Properties.MaskSettings.Set("mask", "dd/MM/yyyy");
             fromTransferDate.Size = new System.Drawing.Size(217, 20);
             fromTransferDate.StyleController = layoutControlTop;
-            fromTransferDate.TabIndex = 5;
+            fromTransferDate.TabIndex = 2;
             fromTransferDate.EditValueChanged += fromPurchaseDate_EditValueChanged;
             // 
             // Root
             // 
             Root.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.True;
             Root.GroupBordersVisible = false;
-            Root.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] { layoutControlItem11, layoutControlItem3, layoutControlItem1, layoutControlItem4, layoutControlItem2, layoutControlItem6, layoutControlItem8, layoutControlItem7, layoutControlItem9 });
+            Root.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] { layoutControlItem11, layoutControlItem3, layoutControlItem1, layoutControlItem4, layoutControlItem6, layoutControlItem8, layoutControlItem7, layoutControlItem9, layoutControlItem2 });
             Root.Name = "Root";
             Root.Size = new System.Drawing.Size(346, 584);
             Root.TextVisible = false;
@@ -289,14 +295,6 @@
             layoutControlItem4.Text = "Từ ngày";
             layoutControlItem4.TextSize = new System.Drawing.Size(101, 14);
             // 
-            // layoutControlItem2
-            // 
-            layoutControlItem2.Control = labelControl1;
-            layoutControlItem2.Location = new System.Drawing.Point(0, 24);
-            layoutControlItem2.Name = "layoutControlItem2";
-            layoutControlItem2.Size = new System.Drawing.Size(326, 18);
-            layoutControlItem2.TextVisible = false;
-            // 
             // layoutControlItem6
             // 
             layoutControlItem6.Control = chkTransfer;
@@ -328,6 +326,14 @@
             layoutControlItem9.Name = "layoutControlItem9";
             layoutControlItem9.Size = new System.Drawing.Size(162, 451);
             layoutControlItem9.TextVisible = false;
+            // 
+            // layoutControlItem2
+            // 
+            layoutControlItem2.Control = labelControl1;
+            layoutControlItem2.Location = new System.Drawing.Point(0, 24);
+            layoutControlItem2.Name = "layoutControlItem2";
+            layoutControlItem2.Size = new System.Drawing.Size(326, 18);
+            layoutControlItem2.TextVisible = false;
             // 
             // groupControl2
             // 
@@ -474,7 +480,6 @@
             ClientSize = new System.Drawing.Size(1130, 608);
             Controls.Add(groupControl2);
             Controls.Add(groupControl1);
-            Font = new System.Drawing.Font("Tahoma", 9F);
             Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             MaximizeBox = false;
             MinimizeBox = false;
@@ -501,11 +506,11 @@
             ((System.ComponentModel.ISupportInitialize)layoutControlItem3).EndInit();
             ((System.ComponentModel.ISupportInitialize)layoutControlItem1).EndInit();
             ((System.ComponentModel.ISupportInitialize)layoutControlItem4).EndInit();
-            ((System.ComponentModel.ISupportInitialize)layoutControlItem2).EndInit();
             ((System.ComponentModel.ISupportInitialize)layoutControlItem6).EndInit();
             ((System.ComponentModel.ISupportInitialize)layoutControlItem8).EndInit();
             ((System.ComponentModel.ISupportInitialize)layoutControlItem7).EndInit();
             ((System.ComponentModel.ISupportInitialize)layoutControlItem9).EndInit();
+            ((System.ComponentModel.ISupportInitialize)layoutControlItem2).EndInit();
             ((System.ComponentModel.ISupportInitialize)groupControl2).EndInit();
             groupControl2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)grdControlOrders).EndInit();

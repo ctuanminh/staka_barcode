@@ -1,26 +1,54 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\",
+  "WorkspaceRootPath": "E:\\2025\\staka_pos\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{33C4759F-1AE5-4793-8947-9C6964509316}|FrmMain1\\FrmMain.csproj|d:\\trongcv\\dev\\pos\\stakapos\\frmmain1\\frmtransfer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{33C4759F-1AE5-4793-8947-9C6964509316}|FrmMain1\\FrmMain.csproj|solutionrelative:frmmain1\\frmtransfer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{4E9B0E1F-B88A-ABB7-B856-F6F655E9423C}|Be.Services\\Be.Services.csproj|d:\\trongcv\\dev\\pos\\stakapos\\be.services\\kiotviet\\ikiotvietservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{4E9B0E1F-B88A-ABB7-B856-F6F655E9423C}|Be.Services\\Be.Services.csproj|solutionrelative:be.services\\kiotviet\\ikiotvietservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{4A714AAA-7EB1-5630-E7D1-3125610F266E}|Be.Common\\Be.Common.csproj|d:\\trongcv\\dev\\pos\\stakapos\\be.common\\tranfer\\response\\tranferpagedresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{4A714AAA-7EB1-5630-E7D1-3125610F266E}|Be.Common\\Be.Common.csproj|e:\\2025\\staka_pos\\be.common\\tranfer\\response\\tranferpagedresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{4A714AAA-7EB1-5630-E7D1-3125610F266E}|Be.Common\\Be.Common.csproj|solutionrelative:be.common\\tranfer\\response\\tranferpagedresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{33C4759F-1AE5-4793-8947-9C6964509316}|FrmMain1\\FrmMain.csproj|d:\\trongcv\\dev\\pos\\stakapos\\frmmain1\\frmtransferprocess.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{33C4759F-1AE5-4793-8947-9C6964509316}|FrmMain1\\FrmMain.csproj|e:\\2025\\staka_pos\\frmmain1\\frmtransferprocess.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{33C4759F-1AE5-4793-8947-9C6964509316}|FrmMain1\\FrmMain.csproj|solutionrelative:frmmain1\\frmtransferprocess.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{33C4759F-1AE5-4793-8947-9C6964509316}|FrmMain1\\FrmMain.csproj|d:\\trongcv\\dev\\pos\\stakapos\\frmmain1\\frmtransferprocess.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{33C4759F-1AE5-4793-8947-9C6964509316}|FrmMain1\\FrmMain.csproj|solutionrelative:frmmain1\\frmtransferprocess.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+      "AbsoluteMoniker": "D:0:0:{33C4759F-1AE5-4793-8947-9C6964509316}|FrmMain1\\FrmMain.csproj|e:\\2025\\staka_pos\\frmmain1\\frmreceiverlist.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{33C4759F-1AE5-4793-8947-9C6964509316}|FrmMain1\\FrmMain.csproj|solutionrelative:frmmain1\\frmreceiverlist.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{33C4759F-1AE5-4793-8947-9C6964509316}|FrmMain1\\FrmMain.csproj|e:\\2025\\staka_pos\\frmmain1\\frmorderprocess.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{33C4759F-1AE5-4793-8947-9C6964509316}|FrmMain1\\FrmMain.csproj|solutionrelative:frmmain1\\frmorderprocess.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{33C4759F-1AE5-4793-8947-9C6964509316}|FrmMain1\\FrmMain.csproj|e:\\2025\\staka_pos\\frmmain1\\dto\\response\\responsestatus.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{33C4759F-1AE5-4793-8947-9C6964509316}|FrmMain1\\FrmMain.csproj|solutionrelative:frmmain1\\dto\\response\\responsestatus.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{33C4759F-1AE5-4793-8947-9C6964509316}|FrmMain1\\FrmMain.csproj|e:\\2025\\staka_pos\\frmmain1\\frmpurchaseprocess.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{33C4759F-1AE5-4793-8947-9C6964509316}|FrmMain1\\FrmMain.csproj|solutionrelative:frmmain1\\frmpurchaseprocess.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4A714AAA-7EB1-5630-E7D1-3125610F266E}|Be.Common\\Be.Common.csproj|e:\\2025\\staka_pos\\be.common\\purchase order\\response\\purchaseorderreponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4A714AAA-7EB1-5630-E7D1-3125610F266E}|Be.Common\\Be.Common.csproj|solutionrelative:be.common\\purchase order\\response\\purchaseorderreponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{33C4759F-1AE5-4793-8947-9C6964509316}|FrmMain1\\FrmMain.csproj|e:\\2025\\staka_pos\\frmmain1\\frmpurchaseprocess.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{33C4759F-1AE5-4793-8947-9C6964509316}|FrmMain1\\FrmMain.csproj|solutionrelative:frmmain1\\frmpurchaseprocess.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{33C4759F-1AE5-4793-8947-9C6964509316}|FrmMain1\\FrmMain.csproj|e:\\2025\\staka_pos\\frmmain1\\frmtransfer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{33C4759F-1AE5-4793-8947-9C6964509316}|FrmMain1\\FrmMain.csproj|solutionrelative:frmmain1\\frmtransfer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{33C4759F-1AE5-4793-8947-9C6964509316}|FrmMain1\\FrmMain.csproj|e:\\2025\\staka_pos\\frmmain1\\frmpurchase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{33C4759F-1AE5-4793-8947-9C6964509316}|FrmMain1\\FrmMain.csproj|solutionrelative:frmmain1\\frmpurchase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{33C4759F-1AE5-4793-8947-9C6964509316}|FrmMain1\\FrmMain.csproj|e:\\2025\\staka_pos\\frmmain1\\frmtransfer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{33C4759F-1AE5-4793-8947-9C6964509316}|FrmMain1\\FrmMain.csproj|solutionrelative:frmmain1\\frmtransfer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{33C4759F-1AE5-4793-8947-9C6964509316}|FrmMain1\\FrmMain.csproj|e:\\2025\\staka_pos\\frmmain1\\frmpurchase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{33C4759F-1AE5-4793-8947-9C6964509316}|FrmMain1\\FrmMain.csproj|solutionrelative:frmmain1\\frmpurchase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     }
   ],
   "DocumentGroupContainers": [
@@ -30,8 +58,12 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 8,
           "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
@@ -39,66 +71,155 @@
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "IKiotVietService.cs",
-              "DocumentMoniker": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\Be.Services\\KiotViet\\IKiotVietService.cs",
-              "RelativeDocumentMoniker": "Be.Services\\KiotViet\\IKiotVietService.cs",
-              "ToolTip": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\Be.Services\\KiotViet\\IKiotVietService.cs",
-              "RelativeToolTip": "Be.Services\\KiotViet\\IKiotVietService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAxAAAAAAAAAA==",
+              "Title": "FrmTransferProcess.cs",
+              "DocumentMoniker": "E:\\2025\\staka_pos\\FrmMain1\\FrmTransferProcess.cs",
+              "RelativeDocumentMoniker": "FrmMain1\\FrmTransferProcess.cs",
+              "ToolTip": "E:\\2025\\staka_pos\\FrmMain1\\FrmTransferProcess.cs",
+              "RelativeToolTip": "FrmMain1\\FrmTransferProcess.cs",
+              "ViewState": "AgIAABkBAAAAAAAAAADwvyoBAAA5AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-20T10:02:06.877Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "FrmTransfer.cs",
-              "DocumentMoniker": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\FrmMain1\\FrmTransfer.cs",
-              "RelativeDocumentMoniker": "FrmMain1\\FrmTransfer.cs",
-              "ToolTip": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\FrmMain1\\FrmTransfer.cs",
-              "RelativeToolTip": "FrmMain1\\FrmTransfer.cs",
-              "ViewState": "AgIAABwAAAAAAAAAAAAgwD0AAAAUAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-20T09:43:46.869Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "TranferPagedResponse.cs",
-              "DocumentMoniker": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\Be.Common\\Tranfer\\Response\\TranferPagedResponse.cs",
-              "RelativeDocumentMoniker": "Be.Common\\Tranfer\\Response\\TranferPagedResponse.cs",
-              "ToolTip": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\Be.Common\\Tranfer\\Response\\TranferPagedResponse.cs",
-              "RelativeToolTip": "Be.Common\\Tranfer\\Response\\TranferPagedResponse.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAlAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-20T09:10:42.685Z",
+              "WhenOpened": "2025-06-20T17:21:38.094Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 4,
-              "Title": "FrmTransferProcess.cs [Design]",
-              "DocumentMoniker": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\FrmMain1\\FrmTransferProcess.cs",
-              "RelativeDocumentMoniker": "FrmMain1\\FrmTransferProcess.cs",
-              "ToolTip": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\FrmMain1\\FrmTransferProcess.cs [Design]",
-              "RelativeToolTip": "FrmMain1\\FrmTransferProcess.cs [Design]",
+              "Title": "ResponseStatus.cs",
+              "DocumentMoniker": "E:\\2025\\staka_pos\\FrmMain1\\Dto\\Response\\ResponseStatus.cs",
+              "RelativeDocumentMoniker": "FrmMain1\\Dto\\Response\\ResponseStatus.cs",
+              "ToolTip": "E:\\2025\\staka_pos\\FrmMain1\\Dto\\Response\\ResponseStatus.cs",
+              "RelativeToolTip": "FrmMain1\\Dto\\Response\\ResponseStatus.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAsAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-20T08:03:12.47Z",
-              "EditorCaption": " [Design]"
+              "WhenOpened": "2025-06-20T16:55:06.921Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 3,
-              "Title": "FrmTransferProcess.cs",
-              "DocumentMoniker": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\FrmMain1\\FrmTransferProcess.cs",
-              "RelativeDocumentMoniker": "FrmMain1\\FrmTransferProcess.cs",
-              "ToolTip": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\FrmMain1\\FrmTransferProcess.cs",
-              "RelativeToolTip": "FrmMain1\\FrmTransferProcess.cs",
-              "ViewState": "AgIAAAUBAAAAAAAAAAAhwB4BAAARAAAAAAAAAA==",
+              "Title": "FrmOrderProcess.cs",
+              "DocumentMoniker": "E:\\2025\\staka_pos\\FrmMain1\\FrmOrderProcess.cs",
+              "RelativeDocumentMoniker": "FrmMain1\\FrmOrderProcess.cs",
+              "ToolTip": "E:\\2025\\staka_pos\\FrmMain1\\FrmOrderProcess.cs",
+              "RelativeToolTip": "FrmMain1\\FrmOrderProcess.cs",
+              "ViewState": "AgIAAMgBAAAAAAAAAAAcwN8BAAAQAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-20T07:14:50.713Z",
+              "WhenOpened": "2025-06-20T16:52:42.901Z",
               "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "FrmPurchaseProcess.cs [Design]",
+              "DocumentMoniker": "E:\\2025\\staka_pos\\FrmMain1\\FrmPurchaseProcess.cs",
+              "RelativeDocumentMoniker": "FrmMain1\\FrmPurchaseProcess.cs",
+              "ToolTip": "E:\\2025\\staka_pos\\FrmMain1\\FrmPurchaseProcess.cs [Design]",
+              "RelativeToolTip": "FrmMain1\\FrmPurchaseProcess.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-20T16:46:25.267Z",
+              "EditorCaption": " [Design]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "FrmPurchase.cs",
+              "DocumentMoniker": "E:\\2025\\staka_pos\\FrmMain1\\FrmPurchase.cs",
+              "RelativeDocumentMoniker": "FrmMain1\\FrmPurchase.cs",
+              "ToolTip": "E:\\2025\\staka_pos\\FrmMain1\\FrmPurchase.cs",
+              "RelativeToolTip": "FrmMain1\\FrmPurchase.cs",
+              "ViewState": "AgIAAC4AAAAAAAAAAADwvwAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-20T16:38:14.223Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "FrmPurchaseProcess.cs",
+              "DocumentMoniker": "E:\\2025\\staka_pos\\FrmMain1\\FrmPurchaseProcess.cs",
+              "RelativeDocumentMoniker": "FrmMain1\\FrmPurchaseProcess.cs",
+              "ToolTip": "E:\\2025\\staka_pos\\FrmMain1\\FrmPurchaseProcess.cs",
+              "RelativeToolTip": "FrmMain1\\FrmPurchaseProcess.cs",
+              "ViewState": "AgIAABgAAAAAAAAAAAAqwFAAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-20T16:30:57.557Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "TranferPagedResponse.cs",
+              "DocumentMoniker": "E:\\2025\\staka_pos\\Be.Common\\Tranfer\\Response\\TranferPagedResponse.cs",
+              "RelativeDocumentMoniker": "Be.Common\\Tranfer\\Response\\TranferPagedResponse.cs",
+              "ToolTip": "E:\\2025\\staka_pos\\Be.Common\\Tranfer\\Response\\TranferPagedResponse.cs",
+              "RelativeToolTip": "Be.Common\\Tranfer\\Response\\TranferPagedResponse.cs",
+              "ViewState": "AgIAAAUAAAAAAAAAAAAhwA8AAABjAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-20T16:18:20.961Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "FrmTransfer.cs",
+              "DocumentMoniker": "E:\\2025\\staka_pos\\FrmMain1\\FrmTransfer.cs",
+              "RelativeDocumentMoniker": "FrmMain1\\FrmTransfer.cs",
+              "ToolTip": "E:\\2025\\staka_pos\\FrmMain1\\FrmTransfer.cs",
+              "RelativeToolTip": "FrmMain1\\FrmTransfer.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACIAAAAzAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-20T15:34:27.732Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "FrmReceiverList.cs",
+              "DocumentMoniker": "E:\\2025\\staka_pos\\FrmMain1\\FrmReceiverList.cs",
+              "RelativeDocumentMoniker": "FrmMain1\\FrmReceiverList.cs",
+              "ToolTip": "E:\\2025\\staka_pos\\FrmMain1\\FrmReceiverList.cs",
+              "RelativeToolTip": "FrmMain1\\FrmReceiverList.cs",
+              "ViewState": "AgIAAIkAAAAAAAAAAAAUwCkBAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-20T15:30:37.488Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "PurchaseOrderReponse.cs",
+              "DocumentMoniker": "E:\\2025\\staka_pos\\Be.Common\\Purchase Order\\Response\\PurchaseOrderReponse.cs",
+              "RelativeDocumentMoniker": "Be.Common\\Purchase Order\\Response\\PurchaseOrderReponse.cs",
+              "ToolTip": "E:\\2025\\staka_pos\\Be.Common\\Purchase Order\\Response\\PurchaseOrderReponse.cs",
+              "RelativeToolTip": "Be.Common\\Purchase Order\\Response\\PurchaseOrderReponse.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAA1wCcAAAA8AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-20T16:47:30.646Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "FrmPurchase.cs [Design]",
+              "DocumentMoniker": "E:\\2025\\staka_pos\\FrmMain1\\FrmPurchase.cs",
+              "RelativeDocumentMoniker": "FrmMain1\\FrmPurchase.cs",
+              "ToolTip": "E:\\2025\\staka_pos\\FrmMain1\\FrmPurchase.cs [Design]",
+              "RelativeToolTip": "FrmMain1\\FrmPurchase.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-20T15:21:29.866Z",
+              "EditorCaption": " [Design]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "FrmTransfer.cs [Design]",
+              "DocumentMoniker": "E:\\2025\\staka_pos\\FrmMain1\\FrmTransfer.cs",
+              "RelativeDocumentMoniker": "FrmMain1\\FrmTransfer.cs",
+              "ToolTip": "E:\\2025\\staka_pos\\FrmMain1\\FrmTransfer.cs [Design]",
+              "RelativeToolTip": "FrmMain1\\FrmTransfer.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-20T13:28:52.224Z",
+              "EditorCaption": " [Design]"
             }
           ]
         }
