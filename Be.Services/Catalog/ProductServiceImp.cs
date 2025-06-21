@@ -5,25 +5,21 @@ using Be.Common.Responses;
 using Be.Core.Entities;
 using Be.Data.Repository;
 using Be.Services.KiotViet;
+using Be.Services.System;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
 namespace Be.Services.Catalog
 {
-	public class ProductServiceImp : ServiceResponse, IProductService
-	{
-		private readonly IRepository _repository;
-        private readonly IKiotVietService _kiotVietService;
-
-        public ProductServiceImp(IRepository repository, IKiotVietService kiotVietService)
+	public class ProductServiceImp(
+        IRepository repository,
+        IKiotVietService kiotVietService,
+        ISystemService systemService)
+        : ServiceResponse, IProductService
+    {
+        public async Task<ApiResponse> InsertProduct(ProductCreateRequest request)
         {
-            _repository = repository;
-            _kiotVietService = kiotVietService;
-        }
-
-		public async Task<ApiResponse> InsertProduct(ProductCreateRequest request)
-        {
-            var rootPath = "";
+            const string rootPath = "";
 			var fullPath = Path.Combine(rootPath, "wwwroot", "images", "products");
             
             if (!Directory.Exists(fullPath))
@@ -79,7 +75,7 @@ namespace Be.Services.Catalog
             do
             {
                 request.CurrentItem = (currentPage - 1) * request.PageSize;
-                var (success, content) = await _kiotVietService.CallApiAsync(baseUrl, request);
+                var (success, content) = await kiotVietService.CallApiAsync(baseUrl, request);
                 if (!success || content == null) return null;
                 var productApiResponse = JsonConvert.DeserializeObject<ProductApiResponse>(content);
                 totalPages = (int)Math.Ceiling((double)productApiResponse.Total / pageSize);
@@ -91,7 +87,7 @@ namespace Be.Services.Catalog
 
             foreach (var item in productList)
             {            
-                var productExist = _repository.GetQueryable<Product>()
+                var productExist = repository.GetQueryable<Product>()
                     .FirstOrDefault(x => x.Id == item.Id);
                 if (productExist is null)
                 {
@@ -112,18 +108,18 @@ namespace Be.Services.Catalog
                     productExist.Unit = item.Unit;
                     productExist.BarCode = string.IsNullOrEmpty(item.BarCode) ? item.Code : item.BarCode;
                     productExist.IsActive = true;
-                    await _repository.UpdateAsync(productExist);                    
-                    await _repository.SaveChangeAsync();
+                    await repository.UpdateAsync(productExist);                    
+                    await repository.SaveChangeAsync();
                 }
             }
-            await _repository.AddRangeAsync<Product, long>(products);
-            await _repository.SaveChangeAsync();
+            await repository.AddRangeAsync<Product, long>(products);
+            await repository.SaveChangeAsync();
             return Ok(products);
         }
 
         public async Task<List<ProductCodeBarCode>> GetProductCodeBarCode()
         {
-            var products = await _repository.GetQueryable<Product>()
+            var products = await repository.GetQueryable<Product>()
                 .Where(p => p.IsActive)
                 .Select(p => new ProductCodeBarCode
                 {
@@ -150,14 +146,14 @@ namespace Be.Services.Catalog
 
         public async Task<Product> GetProductById(long Id)
         {
-            var product = await _repository.FindAsync<Product, long>(x => x.Id == Id);
+            var product = await repository.FindAsync<Product, long>(x => x.Id == Id);
             return product;
         }
 
-        public async Task<List<ProductCodeBarCode>> SynAndGetProductCodeBarCode(List<string> productCodes)
+        public async Task<List<ProductCodeBarCode>> SynAndGetProductCodeBarCode(List<string> productCodes, int branchId)
         {
             //Lấy code đã có trong db
-            var existCodes = await _repository.GetQueryable<Product>()
+            var existCodes = await repository.GetQueryable<Product>()
                 .Where(p => productCodes.Contains(p.Code))
                 .Select(p => p.Code)
                 .ToListAsync();
@@ -170,7 +166,14 @@ namespace Be.Services.Catalog
             foreach (var code in missingCodes)
             {
                 var productUrl = $"https://public.kiotapi.com/products/code/{code}";
-                var (success, content) = await _kiotVietService.CallApiAsync(productUrl, (string)null);
+                var (success, content) = await kiotVietService.CallApiAsync(productUrl, (string)null);
+                await systemService.AddRequest(new RequestEntity()
+                {
+                    Module = "SyncProduct",
+                    Url = productUrl,
+                    IsSuccess = success,
+                    BranchId = branchId
+                });
                 if (!success || string.IsNullOrWhiteSpace(content)) continue;
                 var productKiotDto = JsonConvert.DeserializeObject<ProductDto>(content);
                 var product = new Product()
@@ -187,10 +190,10 @@ namespace Be.Services.Catalog
 
             if (products.Any())
             {
-                await _repository.AddRangeAsync<Product, long>(products);
-                await _repository.SaveChangeAsync();
+                await repository.AddRangeAsync<Product, long>(products);
+                await repository.SaveChangeAsync();
             }
-            var productCodeBarCodes = await _repository.GetQueryable<Product>()
+            var productCodeBarCodes = await repository.GetQueryable<Product>()
                 .Where(p => p.IsActive)
                 .Select(p => new ProductCodeBarCode
                 {
@@ -202,7 +205,7 @@ namespace Be.Services.Catalog
 
         public async Task<Dictionary<string, string>> GetProductCodeDictionary()
         {
-            var productDictionary = await _repository.GetQueryable<Product>()
+            var productDictionary = await repository.GetQueryable<Product>()
                 .Where(p => p.IsActive)
                 .ToDictionaryAsync(d => d.Code, d => d.BarCode);
             return productDictionary;

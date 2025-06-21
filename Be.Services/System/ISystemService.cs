@@ -21,5 +21,9 @@ namespace Be.Services.System
         /// <returns>A task representing the asynchronous operation.</returns>
         Task<List<AppSettingDto>> GetAppSettingBuyComputer(string computerName);
         Task<AppSettingDto> GetAppSetting(string computerName, string module, string settingKey);
+
+        Task<RequestEntity> AddRequest(RequestEntity requestEntity);
+        Task<List<RequestEntity>> GetAllRequest();
+
     }
 }
