@@ -583,6 +583,7 @@ E:\2025\staka_pos\FrmMain1\obj\Debug\net9.0-windows\FrmMain.LoadingForm.resource
 E:\2025\staka_pos\FrmMain1\obj\Debug\net9.0-windows\FrmMain.Properties.Resources.resources
 E:\2025\staka_pos\FrmMain1\obj\Debug\net9.0-windows\FrmMain.Report.OrderReport.resources
 E:\2025\staka_pos\FrmMain1\obj\Debug\net9.0-windows\FrmMain.csproj.GenerateResource.cache
+E:\2025\staka_pos\FrmMain1\obj\Debug\net9.0-windows\FrmMain.dll.licenses
 E:\2025\staka_pos\FrmMain1\obj\Debug\net9.0-windows\FrmMain.GeneratedMSBuildEditorConfig.editorconfig
 E:\2025\staka_pos\FrmMain1\obj\Debug\net9.0-windows\FrmMain.AssemblyInfoInputs.cache
 E:\2025\staka_pos\FrmMain1\obj\Debug\net9.0-windows\FrmMain.AssemblyInfo.cs
