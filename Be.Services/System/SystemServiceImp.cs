@@ -70,5 +70,19 @@ namespace Be.Services.System
 
             return settings;
         }
+
+        public async Task<RequestEntity> AddRequest(RequestEntity requestEntity)
+        {
+            await repository.AddAsync(requestEntity);
+            await repository.SaveChangeAsync();
+            return requestEntity;
+        }
+
+        public async Task<List<RequestEntity>> GetAllRequest()
+        {
+            var requests = await repository.GetQueryable<RequestEntity>()
+                .ToListAsync();
+            return requests;
+        }
     }
 }
