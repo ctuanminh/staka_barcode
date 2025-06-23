@@ -11,6 +11,7 @@ using Be.Services.Order;
 using Be.Services.Pos;
 using Be.Services.PurchaseOrder;
 using Be.Services.System;
+using Be.Services.Transfer;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Be.Services
@@ -35,6 +36,7 @@ namespace Be.Services
 			services.AddScoped<IPurchaseOrderService, PurchaseOrderServiceImp>();
 			services.AddScoped<IKiotVietService, KiotVietServiceImp>();
 			services.AddScoped<ISystemService, SystemServiceImp>();
+			services.AddScoped<ITransferService, TransferServiceImp>();
 			return services;
 		}
 	}

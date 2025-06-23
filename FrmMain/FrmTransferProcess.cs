@@ -17,6 +17,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using Be.Services.Transfer;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using Exception = System.Exception;
 
@@ -38,16 +39,18 @@ namespace FrmMain
         private TransferResponse _transferResponse;
         private readonly IProductService _productService;
         private readonly ISystemService _systemService;
+        private readonly ITransferService _transferService;
         private Dictionary<string, string> _productLookupDictionary;
         private Timer _reloadTimer;
         private DateTime _nextReloadTime;
         private const int ReloadIntervalMinutes = 60;
-        public FrmTransferProcess(IKiotVietService kiotVietService, IProductService productService, IUserService userService, ISystemService systemService)
+        public FrmTransferProcess(IKiotVietService kiotVietService, IProductService productService, IUserService userService, ISystemService systemService, ITransferService transferService)
         {
             _kiotVietService = kiotVietService;
             _productService = productService;
             _userService = userService;
             _systemService = systemService;
+            _transferService = transferService;
             InitializeComponent();
             StartCountdownTimer();
         }
@@ -104,7 +107,7 @@ namespace FrmMain
 
                 var totalReceived = transferResponse.Details
                     .Where(p => !string.IsNullOrWhiteSpace(p.ProductCode))
-                    .Sum(p => p.RecivedQuantity);
+                    .Sum(p => p.ReceiveQuantity);
                 txtTotalReceivered.Text = totalReceived.ToString();
 
                 _transferResponse = transferResponse;
@@ -117,6 +120,29 @@ namespace FrmMain
 
                 gridControlOrder.DataSource = _transferResponse.Details;
                 gridViewOrder.BestFitColumns();
+
+                var shouldLoadCheckedList = (Transfer && transferResponse.Status ==(int)TransferStatusEnum.Draft) ||
+                                            (!Transfer && transferResponse.Status == (int)TransferStatusEnum.Transferred);
+
+                if (shouldLoadCheckedList)
+                {
+                    var transferCheckedList = await _transferService.GetTransferChecks(transferResponse.Code, _branchId, AppGlobals.UserInfo.UserName);
+                    var transferCheckedListDic = transferCheckedList.ToDictionary(p => p.ProductBarCode, p => p.Checked);
+                    if (transferCheckedList.Count > 0)
+                    {
+                        if (MessageHelper.MsgBox("Tải lại những sản phẩm đã check mã", MsgType.YesNo) == DialogResult.Yes)
+                        {
+                            foreach (var checkedProduct in _transferResponse.Details)
+                            {
+                                transferCheckedListDic.TryGetValue(checkedProduct.ProductCode, out var isChecked);
+                                if (!isChecked) continue;
+                                checkedProduct.Checked = true;
+                                gridControlOrder.RefreshDataSource();
+                                _scannedBarcodeCount++;
+                            }
+                        }
+                    }
+                }
 
                 LoadProduct(_transferResponse.Details);
 
@@ -164,6 +190,15 @@ namespace FrmMain
                 var findProduct = _transferResponse.Details.FirstOrDefault(p => p.ProductCode == productCode);
                 if (findProduct != null)
                 {
+                    _transferService.AddOrUpdateProductCheck(new TransferChecked()
+                    {
+                        TransferId = _transferResponse.Id,
+                        TransferCode = _transferResponse.Code,
+                        ProductBarCode = findProduct.ProductCode,
+                        BranchId = _branchId,
+                        UserName = AppGlobals.UserInfo.UserName,
+                        Checked = true
+                    });
                     if (findProduct.Checked) return;
                     _scannedBarcodeCount++;
                     findProduct.Checked = true;
@@ -259,14 +294,14 @@ namespace FrmMain
         private void btnReloadOrder_Click(object sender, EventArgs e)
         {
             _reloadTimer?.Stop();
-            ReloadData(CurrentCode, CurrentId,Transfer);
+            ReloadData(CurrentCode, CurrentId, Transfer);
             btnReloadOrder.Text = "Loading...";
             _nextReloadTime = DateTime.Now.AddMinutes(ReloadIntervalMinutes);
             _reloadTimer?.Start();
         }
 
-       private async void FinishOrder()
-       {
+        private async void FinishOrder()
+        {
             try
             {
                 SetControlEnable(false);
@@ -313,7 +348,7 @@ namespace FrmMain
                         productCode = product.ProductCode,
                         productName = product.ProductName,
                         sendQuantity = product.TransferredQuantity,
-                        receiveQuantity =product.TransferredQuantity,
+                        receiveQuantity = Transfer? product.TransferredQuantity : product.ReceiveQuantity,
                         price = product.Price
                     }).ToList(),
                 };
@@ -340,34 +375,34 @@ namespace FrmMain
         }
 
         private async void LoadProduct(List<TransferDetail> transferDetails)
-       {
-           try
-           {
-               var productCodes = transferDetails
-                   .Select(p => p.ProductCode)
-                   .Where(code => !string.IsNullOrWhiteSpace(code))
-                   .Distinct()
-                   .ToList();
-               var productCodeBarCode = await _productService.SynAndGetProductCodeBarCode(productCodes, _branchId);
-               _productLookupDictionary = new Dictionary<string, string>();
-               foreach (var product in productCodeBarCode)
-               {
-                   if (!string.IsNullOrWhiteSpace(product.Code))
-                   {
-                       _productLookupDictionary.TryAdd(product.Code, product.Code);
-                   }
+        {
+            try
+            {
+                var productCodes = transferDetails
+                    .Select(p => p.ProductCode)
+                    .Where(code => !string.IsNullOrWhiteSpace(code))
+                    .Distinct()
+                    .ToList();
+                var productCodeBarCode = await _productService.SynAndGetProductCodeBarCode(productCodes, _branchId);
+                _productLookupDictionary = new Dictionary<string, string>();
+                foreach (var product in productCodeBarCode)
+                {
+                    if (!string.IsNullOrWhiteSpace(product.Code))
+                    {
+                        _productLookupDictionary.TryAdd(product.Code, product.Code);
+                    }
 
-                   if (!string.IsNullOrWhiteSpace(product.BarCode))
-                   {
-                       _productLookupDictionary.TryAdd(product.BarCode, product.Code);
-                   }
-               }
-           }
-           catch (Exception ex)
-           {
-               MessageHelper.MsgBox($"Có lỗi trong quá trình lấy dữ liệu: {ex}", MsgType.Error_);
-           }
-       }
+                    if (!string.IsNullOrWhiteSpace(product.BarCode))
+                    {
+                        _productLookupDictionary.TryAdd(product.BarCode, product.Code);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageHelper.MsgBox($"Có lỗi trong quá trình lấy dữ liệu: {ex}", MsgType.Error_);
+            }
+        }
 
         private void SetControlEnable(bool enable)
         {
@@ -420,6 +455,7 @@ namespace FrmMain
         private void HandleTransferStatusUi(TransferResponse transfer)
         {
             ltCtlCode.Text = Transfer ? "Mã Phiếu Chuyển" : "Mã Phiếu Nhận";
+            rpReceiveQuantity.ReadOnly = Transfer;
             switch (transfer.Status)
             {
                 case (int)TransferStatusEnum.Draft:
@@ -434,16 +470,7 @@ namespace FrmMain
                     grpCtlFilter.Text = Transfer ? "Phiếu Chuyển hàng" : "Phiếu Nhận hàng";
                     grpCtlFilter.Text = "Nhận hàng";
                     btnFinish.Text = "Nhận hàng";
-                    if (Transfer)
-                    {
-                        MessageHelper.MsgBox("Phiếu đang ở trạng thái Đang chuyển, vui lòng kiểm tra lại",
-                            MsgType.Error_);
-                        txtProductCode.ReadOnly = true;
-                    }
-                    else
-                    {
-                        txtProductCode.ReadOnly = false;
-                    }
+                    txtProductCode.ReadOnly = Transfer;
                     break;
 
                 case (int)TransferStatusEnum.Finished:
@@ -458,7 +485,7 @@ namespace FrmMain
                     break;
             }
         }
-        private bool CanComplete(TransferResponse transfer)
+        private static bool CanComplete(TransferResponse transfer)
         {
             return transfer.Status switch
             {
@@ -489,13 +516,13 @@ namespace FrmMain
                         checkEdit.MaximumSize = new Size(0, height);
                         break;
                     default:
-                    {
-                        if (c.HasChildren)
                         {
-                            SetTextEditHeight(c, height); // Đệ quy
+                            if (c.HasChildren)
+                            {
+                                SetTextEditHeight(c, height); // Đệ quy
+                            }
+                            break;
                         }
-                        break;
-                    }
                 }
             }
         }
@@ -504,6 +531,12 @@ namespace FrmMain
             chkFinish.Checked = false;
             chkCancel.Checked = false;
             chkDraft.Checked = false;
+        }
+
+        private void gridViewOrder_ShownEditor(object sender, CancelEventArgs e)
+        {
+            var view = sender as GridView;
+            view?.ActiveEditor?.SelectAll();
         }
     }
 
