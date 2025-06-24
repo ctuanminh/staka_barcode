@@ -36,6 +36,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="FrmAddPurchase.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="FrmReceiverList.cs">
       <SubType>Form</SubType>
     </Compile>

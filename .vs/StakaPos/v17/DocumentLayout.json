@@ -3,16 +3,36 @@
   "WorkspaceRootPath": "E:\\2025\\staka_pos\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{E7EE7295-A665-B0D5-F69A-18F25EEE8274}|FrmMain\\FrmMain.csproj|e:\\2025\\staka_pos\\frmmain\\frmtransferprocess.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E7EE7295-A665-B0D5-F69A-18F25EEE8274}|FrmMain\\FrmMain.csproj|solutionrelative:frmmain\\frmtransferprocess.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{E7EE7295-A665-B0D5-F69A-18F25EEE8274}|FrmMain\\FrmMain.csproj|e:\\2025\\staka_pos\\frmmain\\frmaddpurchase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E7EE7295-A665-B0D5-F69A-18F25EEE8274}|FrmMain\\FrmMain.csproj|solutionrelative:frmmain\\frmaddpurchase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{E7EE7295-A665-B0D5-F69A-18F25EEE8274}|FrmMain\\FrmMain.csproj|e:\\2025\\staka_pos\\frmmain\\frmpurchaseprocess.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E7EE7295-A665-B0D5-F69A-18F25EEE8274}|FrmMain\\FrmMain.csproj|solutionrelative:frmmain\\frmpurchaseprocess.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{E7EE7295-A665-B0D5-F69A-18F25EEE8274}|FrmMain\\FrmMain.csproj|e:\\2025\\staka_pos\\frmmain\\frmaddpurchase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{E7EE7295-A665-B0D5-F69A-18F25EEE8274}|FrmMain\\FrmMain.csproj|solutionrelative:frmmain\\frmaddpurchase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{E7EE7295-A665-B0D5-F69A-18F25EEE8274}|FrmMain\\FrmMain.csproj|e:\\2025\\staka_pos\\frmmain\\frmpurchaseprocess.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{E7EE7295-A665-B0D5-F69A-18F25EEE8274}|FrmMain\\FrmMain.csproj|solutionrelative:frmmain\\frmpurchaseprocess.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+      "AbsoluteMoniker": "D:0:0:{4A714AAA-7EB1-5630-E7D1-3125610F266E}|Be.Common\\Be.Common.csproj|e:\\2025\\staka_pos\\be.common\\purchase order\\response\\purchaseorderreponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4A714AAA-7EB1-5630-E7D1-3125610F266E}|Be.Common\\Be.Common.csproj|solutionrelative:be.common\\purchase order\\response\\purchaseorderreponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4E9B0E1F-B88A-ABB7-B856-F6F655E9423C}|Be.Services\\Be.Services.csproj|e:\\2025\\staka_pos\\be.services\\catalog\\productserviceimp.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4E9B0E1F-B88A-ABB7-B856-F6F655E9423C}|Be.Services\\Be.Services.csproj|solutionrelative:be.services\\catalog\\productserviceimp.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4A714AAA-7EB1-5630-E7D1-3125610F266E}|Be.Common\\Be.Common.csproj|e:\\2025\\staka_pos\\be.common\\dtos\\product\\productdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4A714AAA-7EB1-5630-E7D1-3125610F266E}|Be.Common\\Be.Common.csproj|solutionrelative:be.common\\dtos\\product\\productdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4A714AAA-7EB1-5630-E7D1-3125610F266E}|Be.Common\\Be.Common.csproj|e:\\2025\\staka_pos\\be.common\\dtos\\product\\searchproductrequestkiot.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4A714AAA-7EB1-5630-E7D1-3125610F266E}|Be.Common\\Be.Common.csproj|solutionrelative:be.common\\dtos\\product\\searchproductrequestkiot.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4E9B0E1F-B88A-ABB7-B856-F6F655E9423C}|Be.Services\\Be.Services.csproj|e:\\2025\\staka_pos\\be.services\\supplier\\supplierserviceimp.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4E9B0E1F-B88A-ABB7-B856-F6F655E9423C}|Be.Services\\Be.Services.csproj|solutionrelative:be.services\\supplier\\supplierserviceimp.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E7EE7295-A665-B0D5-F69A-18F25EEE8274}|FrmMain\\FrmMain.csproj|e:\\2025\\staka_pos\\frmmain\\frmtransferprocess.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{E7EE7295-A665-B0D5-F69A-18F25EEE8274}|FrmMain\\FrmMain.csproj|solutionrelative:frmmain\\frmtransferprocess.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     }
   ],
   "DocumentGroupContainers": [
@@ -22,7 +42,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 6,
           "Children": [
             {
               "$type": "Bookmark",
@@ -34,41 +54,105 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "FrmTransferProcess.cs",
-              "DocumentMoniker": "E:\\2025\\staka_pos\\FrmMain\\FrmTransferProcess.cs",
-              "RelativeDocumentMoniker": "FrmMain\\FrmTransferProcess.cs",
-              "ToolTip": "E:\\2025\\staka_pos\\FrmMain\\FrmTransferProcess.cs",
-              "RelativeToolTip": "FrmMain\\FrmTransferProcess.cs",
-              "ViewState": "AgIAAAoBAAAAAAAAAAAswD4BAAAAAAAAAAAAAA==",
+              "DocumentIndex": 2,
+              "Title": "PurchaseOrderReponse.cs",
+              "DocumentMoniker": "E:\\2025\\staka_pos\\Be.Common\\Purchase Order\\Response\\PurchaseOrderReponse.cs",
+              "RelativeDocumentMoniker": "Be.Common\\Purchase Order\\Response\\PurchaseOrderReponse.cs",
+              "ToolTip": "E:\\2025\\staka_pos\\Be.Common\\Purchase Order\\Response\\PurchaseOrderReponse.cs",
+              "RelativeToolTip": "Be.Common\\Purchase Order\\Response\\PurchaseOrderReponse.cs",
+              "ViewState": "AgIAACEAAAAAAAAAAAAYwAIAAAAuAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-23T14:12:56.424Z",
+              "WhenOpened": "2025-06-24T14:49:55.99Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "ProductServiceImp.cs",
+              "DocumentMoniker": "E:\\2025\\staka_pos\\Be.Services\\Catalog\\ProductServiceImp.cs",
+              "RelativeDocumentMoniker": "Be.Services\\Catalog\\ProductServiceImp.cs",
+              "ToolTip": "E:\\2025\\staka_pos\\Be.Services\\Catalog\\ProductServiceImp.cs",
+              "RelativeToolTip": "Be.Services\\Catalog\\ProductServiceImp.cs",
+              "ViewState": "AgIAAFIAAAAAAAAAAAAywFcAAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-24T14:49:23.602Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "ProductDto.cs",
+              "DocumentMoniker": "E:\\2025\\staka_pos\\Be.Common\\Dtos\\Product\\ProductDto.cs",
+              "RelativeDocumentMoniker": "Be.Common\\Dtos\\Product\\ProductDto.cs",
+              "ToolTip": "E:\\2025\\staka_pos\\Be.Common\\Dtos\\Product\\ProductDto.cs",
+              "RelativeToolTip": "Be.Common\\Dtos\\Product\\ProductDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAnAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-24T16:20:36.455Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "SearchProductRequestKiot.cs",
+              "DocumentMoniker": "E:\\2025\\staka_pos\\Be.Common\\Dtos\\Product\\SearchProductRequestKiot.cs",
+              "RelativeDocumentMoniker": "Be.Common\\Dtos\\Product\\SearchProductRequestKiot.cs",
+              "ToolTip": "E:\\2025\\staka_pos\\Be.Common\\Dtos\\Product\\SearchProductRequestKiot.cs",
+              "RelativeToolTip": "Be.Common\\Dtos\\Product\\SearchProductRequestKiot.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAyAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-24T16:18:32.936Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "FrmAddPurchase.cs",
+              "DocumentMoniker": "E:\\2025\\staka_pos\\FrmMain\\FrmAddPurchase.cs",
+              "RelativeDocumentMoniker": "FrmMain\\FrmAddPurchase.cs",
+              "ToolTip": "E:\\2025\\staka_pos\\FrmMain\\FrmAddPurchase.cs",
+              "RelativeToolTip": "FrmMain\\FrmAddPurchase.cs",
+              "ViewState": "AgIAADQBAAAAAAAAAAAcwEcBAAAuAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-24T14:40:23.487Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "FrmPurchaseProcess.cs",
-              "DocumentMoniker": "E:\\2025\\staka_pos\\FrmMain\\FrmPurchaseProcess.cs",
-              "RelativeDocumentMoniker": "FrmMain\\FrmPurchaseProcess.cs",
-              "ToolTip": "E:\\2025\\staka_pos\\FrmMain\\FrmPurchaseProcess.cs",
-              "RelativeToolTip": "FrmMain\\FrmPurchaseProcess.cs",
-              "ViewState": "AgIAAIoAAAAAAAAAAAAuwGwAAAAyAAAAAAAAAA==",
+              "Title": "FrmAddPurchase.cs [Design]",
+              "DocumentMoniker": "E:\\2025\\staka_pos\\FrmMain\\FrmAddPurchase.cs",
+              "RelativeDocumentMoniker": "FrmMain\\FrmAddPurchase.cs",
+              "ToolTip": "E:\\2025\\staka_pos\\FrmMain\\FrmAddPurchase.cs [Design]",
+              "RelativeToolTip": "FrmMain\\FrmAddPurchase.cs [Design]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-23T14:11:51.579Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-06-24T14:40:09.04Z",
+              "EditorCaption": " [Design]"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "FrmPurchaseProcess.cs [Design]",
-              "DocumentMoniker": "E:\\2025\\staka_pos\\FrmMain\\FrmPurchaseProcess.cs",
-              "RelativeDocumentMoniker": "FrmMain\\FrmPurchaseProcess.cs",
-              "ToolTip": "E:\\2025\\staka_pos\\FrmMain\\FrmPurchaseProcess.cs [Design]",
-              "RelativeToolTip": "FrmMain\\FrmPurchaseProcess.cs [Design]",
+              "DocumentIndex": 7,
+              "Title": "FrmTransferProcess.cs [Design]",
+              "DocumentMoniker": "E:\\2025\\staka_pos\\FrmMain\\FrmTransferProcess.cs",
+              "RelativeDocumentMoniker": "FrmMain\\FrmTransferProcess.cs",
+              "ToolTip": "E:\\2025\\staka_pos\\FrmMain\\FrmTransferProcess.cs [Design]",
+              "RelativeToolTip": "FrmMain\\FrmTransferProcess.cs [Design]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-23T14:11:24.566Z",
+              "WhenOpened": "2025-06-24T15:09:15.194Z",
               "EditorCaption": " [Design]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "SupplierServiceImp.cs",
+              "DocumentMoniker": "E:\\2025\\staka_pos\\Be.Services\\Supplier\\SupplierServiceImp.cs",
+              "RelativeDocumentMoniker": "Be.Services\\Supplier\\SupplierServiceImp.cs",
+              "ToolTip": "E:\\2025\\staka_pos\\Be.Services\\Supplier\\SupplierServiceImp.cs",
+              "RelativeToolTip": "Be.Services\\Supplier\\SupplierServiceImp.cs",
+              "ViewState": "AgIAAA4AAAAAAAAAAAAcwFkAAAA7AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-24T15:24:34.215Z",
+              "EditorCaption": ""
             }
           ]
         }

@@ -6,7 +6,6 @@ using Be.Services.System;
 using DevExpress.XtraEditors;
 using DevExpress.XtraGrid.Views.Grid;
 using FrmMain.Utils;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -16,6 +15,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Be.Services.Pos;
 using FrmMain.App;
+using System.Text.Json;
+using Newtonsoft.Json;
 using Exception = System.Exception;
 
 namespace FrmMain
@@ -50,12 +51,19 @@ namespace FrmMain
             StartCountdownTimer();
         }
 
-        public void ReloadData(long purchaseId)
+        public async void ReloadData(long purchaseId)
         {
-            CurrentId = purchaseId;
-            txtOrderCode.Text = CurrentCode;
-            _scannedBarcodeCount = 0;
-            LoadData(purchaseId);
+            try
+            {
+                CurrentId = purchaseId;
+                txtOrderCode.Text = CurrentCode;
+                _scannedBarcodeCount = 0;
+                await LoadData(purchaseId);
+            }
+            catch (Exception ex)
+            {
+                MessageHelper.MsgBox("Có lỗi trong quá trình lấy dữ liệu", MsgType.Error_);
+            }
         }
 
         private async void LoadProduct(List<PurchaseOrderDetail> purchaseOrderDetails)
@@ -88,7 +96,7 @@ namespace FrmMain
             }
         }
 
-        private async void LoadData(long purchaseId)
+        private async Task LoadData(long purchaseId)
         {
             try
             {
@@ -151,13 +159,11 @@ namespace FrmMain
                 switch ((OrderStatusEnum)purchaseOrderResponse.Status)
                 {
                     case OrderStatusEnum.Finished:
-                        MessageHelper.MsgBox($"Phiếu: {purchaseOrderResponse.Code} đã Nhập hàng", MsgType.Error_);
                         txtProductCode.ReadOnly = true;
                         chkFinish.Checked = true;
                         txtProductCode.ReadOnly = true;
                         break;
                     case OrderStatusEnum.Cancel:
-                        MessageHelper.MsgBox($"Phiếu nhập hàng: {purchaseOrderResponse.Code} đã Huỷ", MsgType.Error_);
                         chkCancel.Checked = true;
                         txtProductCode.ReadOnly = true;
                         break;
@@ -215,13 +221,20 @@ namespace FrmMain
             }
         }
 
-        private void FrmPurchaseProcess_Load(object sender, EventArgs e)
+        private async void FrmPurchaseProcess_Load(object sender, EventArgs e)
         {
-            SetTextEditHeight(this, 25);
-            BeginInvoke(() => txtProductCode.Focus());
-            SetStatusCheckboxStyle();
-            _= LoadDefaultSetting();
-            ReloadData(CurrentId);
+            try
+            {
+                SetTextEditHeight(this, 25);
+                BeginInvoke(() => txtProductCode.Focus());
+                SetStatusCheckboxStyle();
+                await LoadDefaultSetting();
+                ReloadData(CurrentId);
+            }
+            catch (Exception ex)
+            {
+                MessageHelper.MsgBox("Có lỗi trong quá trình lấy dữ liệu", MsgType.Error_);
+            }
         }
 
         private void txtProductCode_KeyDown(object sender, KeyEventArgs e)
@@ -301,22 +314,29 @@ namespace FrmMain
 
         }
 
-        private void txtOrderCode_KeyDown(object sender, KeyEventArgs e)
+        private async void txtOrderCode_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode != Keys.Enter) return;
-
-            var orderCode = txtOrderCode.Text.Trim();
-
-            if (_scannedBarcodeCount > 0 && _orderResponse.PurchaseOrderDetails.Any(p => p.Checked))
+            try
             {
-                var result = MessageHelper.MsgBox("Bạn chắc chắn tải lại dữ liệu", MsgType.YesNo);
-                if (result != DialogResult.Yes) return;
-            }
+                if (e.KeyCode != Keys.Enter) return;
 
-            if (string.IsNullOrEmpty(orderCode)) return;
-            _scannedBarcodeCount = 0;
-            LoadData(CurrentId);
-            txtProductCode.Focus();
+                var orderCode = txtOrderCode.Text.Trim();
+
+                if (_scannedBarcodeCount > 0 && _orderResponse.PurchaseOrderDetails.Any(p => p.Checked))
+                {
+                    var result = MessageHelper.MsgBox("Bạn chắc chắn tải lại dữ liệu", MsgType.YesNo);
+                    if (result != DialogResult.Yes) return;
+                }
+
+                if (string.IsNullOrEmpty(orderCode)) return;
+                _scannedBarcodeCount = 0;
+                await LoadData(CurrentId);
+                txtProductCode.Focus();
+            }
+            catch (Exception ex)
+            {
+                MessageHelper.MsgBox("Có lỗi trong quá trình lấy dữ liệu", MsgType.Error_);
+            }
         }
 
         private (bool check, string code) TryFindProductCode(string searchBarCode)
@@ -330,24 +350,31 @@ namespace FrmMain
         }
 
         // Tick mỗi giây
-        private void ReloadTimer_Tick(object sender, EventArgs e)
+        private async void ReloadTimer_Tick(object sender, EventArgs e)
         {
-            var remaining = _nextReloadTime - DateTime.Now;
-
-            if (remaining <= TimeSpan.Zero)
+            try
             {
-                _reloadTimer.Stop();
-                btnReloadOrder.Text = "Loading...";
+                var remaining = _nextReloadTime - DateTime.Now;
 
-                LoadData(CurrentId); // gọi reload dữ liệu
+                if (remaining <= TimeSpan.Zero)
+                {
+                    _reloadTimer.Stop();
+                    btnReloadOrder.Text = "Loading...";
 
-                // Khởi động lại đếm ngược
-                _nextReloadTime = DateTime.Now.AddMinutes(ReloadIntervalMinutes);
-                _reloadTimer.Start();
+                    await LoadData(CurrentId); // gọi reload dữ liệu
+
+                    // Khởi động lại đếm ngược
+                    _nextReloadTime = DateTime.Now.AddMinutes(ReloadIntervalMinutes);
+                    _reloadTimer.Start();
+                }
+                else
+                {
+                    btnReloadOrder.Text = $"Tải lại sau: {remaining.Minutes:D2}:{remaining.Seconds:D2}";
+                }
             }
-            else
+            catch (Exception ex)
             {
-                btnReloadOrder.Text = $"Tải lại sau: {remaining.Minutes:D2}:{remaining.Seconds:D2}";
+                MessageHelper.MsgBox("Có lỗi trong quá trình lấy dữ liệu", MsgType.Error_);
             }
         }
 
@@ -380,7 +407,7 @@ namespace FrmMain
                 var orderUrl = $"https://public.kiotapi.com/purchaseorders/{CurrentId}";
                 var (success, content) = await _kiotVietService.CallApiAsync(orderUrl, (string)null, "GET");
 
-                if (!success || string.IsNullOrEmpty(content))
+                if (!success || string.IsNullOrWhiteSpace(content))
                 {
                     MessageHelper.MsgBox("Lỗi khi lấy dữ liệu Kiotviet", MsgType.Error_);
                     return;

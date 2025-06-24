@@ -8,7 +8,8 @@ namespace Be.Services.Catalog
 {
 	public interface IProductService
 	{
-		Task<List<ProductCodeBarCode>> GetProductCodeBarCode();
+		Task<List<Product>> GetProducts(long branchId);
+        Task<List<ProductCodeBarCode>> GetProductCodeBarCode();
         Task<ApiResponse> InsertProduct(ProductCreateRequest request);
 		Task<ApiResponse> UpdateProduct(ProductUpdateRequest request);
 		Task<ApiResponse> DeleteProduct(Guid Id);

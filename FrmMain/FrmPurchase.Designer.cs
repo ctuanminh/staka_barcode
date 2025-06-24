@@ -64,6 +64,8 @@
             layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
             layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
             groupControl2 = new DevExpress.XtraEditors.GroupControl();
+            btnAddPurchase = new DevExpress.XtraEditors.SimpleButton();
+            layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
             ((System.ComponentModel.ISupportInitialize)grdControlOrders).BeginInit();
             ((System.ComponentModel.ISupportInitialize)grdViewOrders).BeginInit();
             ((System.ComponentModel.ISupportInitialize)repositoryItemCheckEdit1).BeginInit();
@@ -98,6 +100,7 @@
             ((System.ComponentModel.ISupportInitialize)layoutControlItem1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)groupControl2).BeginInit();
             groupControl2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)layoutControlItem2).BeginInit();
             SuspendLayout();
             // 
             // grdControlOrders
@@ -217,6 +220,7 @@
             // layoutControlTop
             // 
             layoutControlTop.AutoScroll = false;
+            layoutControlTop.Controls.Add(btnAddPurchase);
             layoutControlTop.Controls.Add(layoutControl1);
             layoutControlTop.Controls.Add(txtBranchName);
             layoutControlTop.Controls.Add(toPurchaseDate);
@@ -357,7 +361,7 @@
             // 
             Root.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.True;
             Root.GroupBordersVisible = false;
-            Root.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] { layoutControlItem3, layoutControlItem10, layoutControlItem5, layoutControlItem6, layoutControlItem8, layoutControlItem9, layoutControlItem7, layoutControlItem4, layoutControlItem1 });
+            Root.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] { layoutControlItem3, layoutControlItem10, layoutControlItem5, layoutControlItem6, layoutControlItem8, layoutControlItem9, layoutControlItem7, layoutControlItem4, layoutControlItem1, layoutControlItem2 });
             Root.Name = "Root";
             Root.Size = new System.Drawing.Size(346, 584);
             Root.TextVisible = false;
@@ -401,7 +405,7 @@
             layoutControlItem8.Control = btnReloadPurchase;
             layoutControlItem8.Location = new System.Drawing.Point(146, 119);
             layoutControlItem8.Name = "layoutControlItem8";
-            layoutControlItem8.Size = new System.Drawing.Size(180, 445);
+            layoutControlItem8.Size = new System.Drawing.Size(180, 26);
             layoutControlItem8.TextVisible = false;
             // 
             // layoutControlItem9
@@ -449,6 +453,25 @@
             groupControl2.TabIndex = 3;
             groupControl2.Text = "Danh sách phiếu Nhập hàng";
             // 
+            // btnAddPurchase
+            // 
+            btnAddPurchase.ImageOptions.Image = (System.Drawing.Image)resources.GetObject("simpleButton1.ImageOptions.Image");
+            btnAddPurchase.Location = new System.Drawing.Point(158, 157);
+            btnAddPurchase.Name = "btnAddPurchase";
+            btnAddPurchase.Size = new System.Drawing.Size(176, 22);
+            btnAddPurchase.StyleController = layoutControlTop;
+            btnAddPurchase.TabIndex = 11;
+            btnAddPurchase.Text = "Nhập hàng";
+            btnAddPurchase.Click += btnAddPurchase_Click;
+            // 
+            // layoutControlItem2
+            // 
+            layoutControlItem2.Control = btnAddPurchase;
+            layoutControlItem2.Location = new System.Drawing.Point(146, 145);
+            layoutControlItem2.Name = "layoutControlItem2";
+            layoutControlItem2.Size = new System.Drawing.Size(180, 419);
+            layoutControlItem2.TextVisible = false;
+            // 
             // FrmPurchase
             // 
             Appearance.Options.UseFont = true;
@@ -463,7 +486,6 @@
             Name = "FrmPurchase";
             Text = "Danh sách Phiếu Nhập hàng";
             Load += FrmOrder_Load;
-            Shown += FrmOrder_Shown;
             ((System.ComponentModel.ISupportInitialize)grdControlOrders).EndInit();
             ((System.ComponentModel.ISupportInitialize)grdViewOrders).EndInit();
             ((System.ComponentModel.ISupportInitialize)repositoryItemCheckEdit1).EndInit();
@@ -498,6 +520,7 @@
             ((System.ComponentModel.ISupportInitialize)layoutControlItem1).EndInit();
             ((System.ComponentModel.ISupportInitialize)groupControl2).EndInit();
             groupControl2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)layoutControlItem2).EndInit();
             ResumeLayout(false);
         }
 
@@ -538,5 +561,7 @@
         private DevExpress.XtraLayout.LayoutControl layoutControl1;
         private DevExpress.XtraLayout.LayoutControlGroup layoutControlGroup1;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem1;
+        private DevExpress.XtraEditors.SimpleButton btnAddPurchase;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem2;
     }
 }

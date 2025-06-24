@@ -34,7 +34,7 @@ namespace FrmMain
         private DateTime _searchToPurchase;
         private Timer _reloadTimer;
         private DateTime _nextReloadTime;
-        private const int ReloadIntervalMinutes = 15;
+        private const int ReloadIntervalMinutes = 60;
         public FrmPurchase(FrmMainF mainForm, IKiotVietService kiotVietService, IBranchService branchService, ISystemService systemService)
         {
             _mainForm = mainForm;
@@ -45,18 +45,14 @@ namespace FrmMain
             StartCountdownTimer();
         }
 
-        private void FrmOrder_Shown(object sender, EventArgs e)
-        {
-        }
-
         private async Task LoadData()
         {
             try
             {
                 SetControlEnable(false);
-                _ = LoadDefaultSetting();
+                await LoadDefaultSetting();
 
-                var request = new SearchPurchaseOrderRequest()
+                var request = new SearchPurchaseOrderRequest
                 {
                     BranchIds = [AppGlobals.BranchId],
                     Status = _purchaseStatusList.ToArray(),
@@ -64,12 +60,12 @@ namespace FrmMain
                     OrderBy = "purchaseDate",
                     OrderDirection = "Desc",
                     FromPurchaseDate = _searchFromPurchase,
-                    ToPurchaseDate = _searchToPurchase,
+                    ToPurchaseDate = _searchToPurchase
                 };
 
                 var (success, content) = await _kiotVietService.CallApiAsync(PurchaseOrderUrl, request, "GET");
-                // Log the request
-                await _systemService.AddRequest(new RequestEntity()
+
+                await _systemService.AddRequest(new RequestEntity
                 {
                     Module = Name,
                     Url = PurchaseOrderUrl,
@@ -79,28 +75,43 @@ namespace FrmMain
 
                 if (!success || string.IsNullOrWhiteSpace(content))
                 {
-                    MessageHelper.MsgBox($"Có lỗi trong quá trình tải dữ liệu: {content}", MsgType.Error_);
+                    MessageHelper.MsgBox("Không thể tải dữ liệu từ hệ thống.", MsgType.Error_);
                     grdControlOrders.DataSource = null;
                     return;
                 }
-                var purchaseOrderPagedData = JsonConvert.DeserializeObject<PurchaseOrderPagedData>(content);
-                grdViewOrders.OptionsDetail.EnableMasterViewMode = false;
-                //Sort Data: Sort theo PurchaseDate
-                purchaseOrderPagedData.Data.Sort((x, y) => DateTime.Compare(y.PurchaseDate, x.PurchaseDate));
+
+                PurchaseOrderPagedData purchaseOrderPagedData;
+                try
+                {
+                    purchaseOrderPagedData = JsonConvert.DeserializeObject<PurchaseOrderPagedData>(content);
+                }
+                catch
+                {
+                    MessageHelper.MsgBox("Dữ liệu trả về không hợp lệ.", MsgType.Error_);
+                    grdControlOrders.DataSource = null;
+                    return;
+                }
+
+                if (purchaseOrderPagedData?.Data == null || purchaseOrderPagedData.Data.Count == 0)
+                {
+                    grdControlOrders.DataSource = null;
+                    return;
+                }
+                purchaseOrderPagedData.Data.Sort((x, y) => y.PurchaseDate.CompareTo(x.PurchaseDate));
+
                 grdControlOrders.DataSource = purchaseOrderPagedData.Data;
-                grdViewOrders.Columns["PurchaseDate"].DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
-                grdViewOrders.Columns["PurchaseDate"].DisplayFormat.FormatString = "dd/MM/yyyy HH:mm:ss";
                 grdViewOrders.BestFitColumns();
             }
-            catch (Exception exception)
+            catch (Exception ex)
             {
-                MessageHelper.MsgBox("Lỗi gọi API: " + exception, MsgType.Error_);
+                MessageHelper.MsgBox("Có lỗi xảy ra trong quá trình tải dữ liệu.", MsgType.Error_);
             }
             finally
             {
                 SetControlEnable(true);
             }
         }
+
 
         private void grdViewOrders_DoubleClick(object sender, EventArgs e)
         {
@@ -152,14 +163,14 @@ namespace FrmMain
                         checkEdit.MaximumSize = new Size(0, height);
                         break;
                     default:
-                    {
-                        if (c.HasChildren)
                         {
-                            SetTextEditHeight(c, height); // Đệ quy
-                        }
+                            if (c.HasChildren)
+                            {
+                                SetTextEditHeight(c, height); // Đệ quy
+                            }
 
-                        break;
-                    }
+                            break;
+                        }
                 }
             }
         }
@@ -172,6 +183,7 @@ namespace FrmMain
                 SetTextEditHeight(this, 25);
                 SetStatusCheckboxStyle();
                 SetDefaultDatePurchase();
+                InitGridView();
                 await LoadData();
             }
             catch (Exception exception)
@@ -379,6 +391,20 @@ namespace FrmMain
 
             txtBranchName.Text = branch?.BranchName ?? "Chưa chọn chi nhánh";
             txtBranchName.ReadOnly = true;
+        }
+
+        private void InitGridView()
+        {
+            grdViewOrders.OptionsDetail.EnableMasterViewMode = false;
+            grdViewOrders.Columns["PurchaseDate"].DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
+            grdViewOrders.Columns["PurchaseDate"].DisplayFormat.FormatString = "dd/MM/yyyy HH:mm:ss";
+        }
+
+        private void btnAddPurchase_Click(object sender, EventArgs e)
+        {
+            if (FormHelper.OpenedForm(nameof(FrmAddPurchase), WuserControl.FrmReceiverList, out _)) return;
+            var frmAddPurchase = _mainForm.ServiceProvider.GetRequiredService<FrmAddPurchase>();
+            FormHelper.NewFormNew(_mainForm, frmAddPurchase, WuserControl.FrmPurchaseAdd);
         }
     }
 }

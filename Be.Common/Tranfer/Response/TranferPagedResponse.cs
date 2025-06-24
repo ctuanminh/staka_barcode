@@ -49,6 +49,7 @@
         public string CreatedByName { get; set; }
         public long CreatedById { get; set; }
         public string Description { get; set; } // Ghi chú
+        public string NoteBySource { get; set; } // Ghi chú
         public DateTime? DispatchedDate { get; set; }
         public DateTime? ReceivedDate { get; set; }
 

@@ -21,7 +21,8 @@ namespace Be.Services.System
         {
             try
             {
-                var appSetting = mapper.Map<AppSettingEntity>(appSettingDto);
+                var appSettingExist = await repository.FindAsync<AppSettingEntity>(appSettingDto.Id);
+                var appSetting = mapper.Map(appSettingDto, appSettingExist);
                 await repository.UpdateAsync(appSetting);
                 await repository.SaveChangeAsync();
                 return true;

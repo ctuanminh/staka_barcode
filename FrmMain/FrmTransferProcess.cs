@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using Be.Services.Transfer;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
@@ -95,10 +96,12 @@ namespace FrmMain
             try
             {
                 SetControlEnable(false);
+                _scannedBarcodeCount = 0;
 
                 var url = $"https://public.kiotapi.com/transfers/{transferId}";
                 var (success, content) = await _kiotVietService.CallApiAsync(url, (string)null, "GET");
-                // Log the request
+
+                //Lưu số lần request lên kiotviet
                 await _systemService.AddRequest(new RequestEntity()
                 {
                     Module = Name,
@@ -106,83 +109,111 @@ namespace FrmMain
                     IsSuccess = success,
                     BranchId = _branchId
                 });
+
                 if (!success || string.IsNullOrWhiteSpace(content))
                 {
                     MessageHelper.MsgBox("Không tìm thấy dữ liệu phiếu chuyển hàng", MsgType.Error_);
                     return;
                 }
 
-                var transferResponse = JsonConvert.DeserializeObject<TransferResponse>(content);
+                TransferResponse transferResponse;
+                try
+                {
+                    transferResponse = JsonConvert.DeserializeObject<TransferResponse>(content);
+                }
+                catch (Exception ex)
+                {
+                    MessageHelper.MsgBox("Lỗi đọc dữ liệu trả về từ API.", MsgType.Error_);
+                    return;
+                }
+
                 if (transferResponse == null) return;
 
+                // Kiểm tra transfer nếu chưa tồn tại thì thêm mới
+                var transferExist = await _transferService.GetTransferById(transferResponse.Id);
+                if (transferExist == null)
+                {
+                    await _transferService.AddOrUpdateTransfer(new TransferEntity()
+                    {
+                        TransferId = transferResponse.Id,
+                        TransferCode = transferResponse.Code,
+                        FromBranchId = transferResponse.FromBranchId,
+                        ToBranchId = transferResponse.ToBranchId,
+                        Status = transferResponse.Status
+                    });
+                }
+
+                // Cập nhật UI
                 HandleTransferStatusUi(transferResponse);
                 SetStatusCheckboxStyle();
                 ResetStatusCheckboxes();
                 ProcessProductUnits(transferResponse.Details);
+
                 var userTransfer = await _userService.GetUserById(transferResponse.CreatedById);
                 txtToBranchName.Text = transferResponse.ToBranchName;
                 txtTranferName.Text = userTransfer?.FullName;
                 txtFromBranchName.Text = transferResponse.FromBranchName;
 
                 // Tổng hợp số lượng
-                var totalSend = transferResponse.Details
-                    .Where(p => !string.IsNullOrWhiteSpace(p.ProductCode))
-                    .Sum(p => p.TransferredQuantity);
-                txtTotalSend.Text = totalSend.ToString();
-
-                var totalReceived = transferResponse.Details
-                    .Where(p => !string.IsNullOrWhiteSpace(p.ProductCode))
-                    .Sum(p => p.ReceiveQuantity);
-                txtTotalReceivered.Text = totalReceived.ToString();
+                txtTotalSend.Text = transferResponse.Details.Sum(p => p.TransferredQuantity).ToString();
+                txtTotalReceivered.Text = transferResponse.Details.Sum(p => p.ReceiveQuantity).ToString();
 
                 _transferResponse = transferResponse;
 
-                txtScanNumber.ReadOnly = true;
-                txtScanNumber.Text = $"{_scannedBarcodeCount}/{transferResponse.Details.Count()}";
-
                 txtDispatchedDate.Text = transferResponse.DispatchedDate?.ToString("dd/MM/yyyy HH:mm:ss") ?? string.Empty;
                 txtReceivedDate.Text = transferResponse.ReceivedDate?.ToString("dd/MM/yyyy HH:mm:ss") ?? string.Empty;
+                txtNotes.Text = transferResponse.NoteBySource;
 
+                // Đổ dữ liệu vào grid 1 lần duy nhất
                 gridControlOrder.DataSource = _transferResponse.Details;
                 gridViewOrder.BestFitColumns();
 
-                var shouldLoadCheckedList = (Transfer && transferResponse.Status == (int)TransferStatusEnum.Draft) ||
-                                            (!Transfer && transferResponse.Status == (int)TransferStatusEnum.Transferred);
+                // Xử lý load những sản phẩm đã check
+                var shouldLoadCheckedList = (Transfer && transferResponse.Status == (int)TransferStatusEnum.Draft)
+                                            || (!Transfer && transferResponse.Status == (int)TransferStatusEnum.Transferred);
 
                 if (shouldLoadCheckedList)
                 {
-                    var transferCheckedList = await _transferService.GetTransferChecks(transferResponse.Code, _branchId, AppGlobals.UserInfo.UserName);
-                    var transferCheckedListDic = transferCheckedList.ToDictionary(p => p.ProductBarCode, p => p.Checked);
-                    if (transferCheckedList.Count > 0)
+                    var transferCheckedList = await _transferService.GetCheckedProductsByParentTransfer(
+                        transferId, transferResponse.Code, _branchId, AppGlobals.UserInfo.UserName, Transfer);
+
+                    if (transferCheckedList != null && transferCheckedList.Any())
                     {
                         if (MessageHelper.MsgBox("Tải lại những sản phẩm đã check mã", MsgType.YesNo) == DialogResult.Yes)
                         {
-                            foreach (var checkedProduct in _transferResponse.Details)
+                            var transferCheckedListDic = transferCheckedList
+                                .ToDictionary(p => p.ProductBarCode, p => p.Checked);
+
+                            foreach (var product in _transferResponse.Details)
                             {
-                                transferCheckedListDic.TryGetValue(checkedProduct.ProductCode, out var isChecked);
-                                if (!isChecked) continue;
-                                checkedProduct.Checked = true;
-                                gridControlOrder.RefreshDataSource();
+                                if (!transferCheckedListDic.TryGetValue(product.ProductCode, out var isChecked) ||
+                                    !isChecked) continue;
+                                product.Checked = true;
                                 _scannedBarcodeCount++;
                             }
+
+                            gridControlOrder.RefreshDataSource();
                         }
                     }
                 }
 
-                LoadProduct(_transferResponse.Details);
+                txtScanNumber.ReadOnly = true;
+                txtScanNumber.Text = $"{_scannedBarcodeCount}/{transferResponse.Details.Count()}";
 
+                LoadProduct(_transferResponse.Details);
                 SetOrderStatusUI(transferResponse.Status);
             }
             catch (Exception ex)
             {
-                MessageHelper.MsgBox("Có lỗi trong quá trình lấy dữ liệu", MsgType.Error_);
+                MessageHelper.MsgBox("Có lỗi trong quá trình lấy dữ liệu.\n" + ex.Message, MsgType.Error_);
             }
             finally
             {
                 SetControlEnable(true);
-                txtProductCode.Focus();
+                BeginInvoke(new Action(() => txtProductCode.Focus()));
             }
         }
+
 
         private async void LoadProduct(List<TransferDetail> transferDetails)
         {
@@ -221,20 +252,46 @@ namespace FrmMain
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void txtProductCode_KeyDown(object sender, KeyEventArgs e)
+        private async void txtProductCode_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode != Keys.Enter) return;
-            var searchBarcode = txtProductCode.Text.Trim();
-            txtProductCode.SelectAll();
-            if (string.IsNullOrEmpty(searchBarcode)) return;
-            var (isProductFound, productCode) = TryFindProductCode(searchBarcode);
-            e.Handled = true;
-            if (isProductFound)
+            try
             {
-                var findProduct = _transferResponse.Details.FirstOrDefault(p => p.ProductCode == productCode);
-                if (findProduct != null)
+                if (e.KeyCode != Keys.Enter) return;
+
+                var searchBarcode = txtProductCode.Text.Trim();
+                txtProductCode.SelectAll();
+
+                if (string.IsNullOrEmpty(searchBarcode)) return;
+
+                e.Handled = true;
+
+                var (isProductFound, productCode) = TryFindProductCode(searchBarcode);
+
+                if (!isProductFound)
                 {
-                    _transferService.AddOrUpdateProductCheck(new TransferChecked()
+                    MessageHelper.MsgBox("Không tìm thấy sản phẩm mã: " + searchBarcode, MsgType.Error_);
+                    return;
+                }
+
+                var findProduct = _transferResponse.Details.FirstOrDefault(p => p.ProductCode == productCode);
+                if (findProduct == null)
+                {
+                    MessageHelper.MsgBox("Không tìm thấy sản phẩm mã: " + searchBarcode + " trong đơn hàng", MsgType.Error_);
+                    return;
+                }
+
+                var productChecked = await _transferService.GetCheckedProductByTransfer(
+                        _transferResponse.Id,
+                        _transferResponse.Code,
+                        _branchId,
+                        AppGlobals.UserInfo.UserName,
+                        Transfer,
+                        findProduct.ProductCode
+                    );
+
+                if (productChecked == null)
+                {
+                    await _transferService.AddOrUpdateProductCheck(new TransferChecked()
                     {
                         TransferId = _transferResponse.Id,
                         TransferCode = _transferResponse.Code,
@@ -243,24 +300,29 @@ namespace FrmMain
                         UserName = AppGlobals.UserInfo.UserName,
                         Checked = true
                     });
-                    if (findProduct.Checked) return;
-                    _scannedBarcodeCount++;
-                    findProduct.Checked = true;
+                }
+
+                if (findProduct.Checked) return;
+
+                _scannedBarcodeCount++;
+                findProduct.Checked = true;
+
+                await InvokeAsync(() =>
+                {
                     gridControlOrder.RefreshDataSource();
                     var rowHandle = gridViewOrder.LocateByValue("ProductCode", productCode);
-                    if (rowHandle < 0) return;
-                    gridViewOrder.FocusedRowHandle = rowHandle;
-                    gridViewOrder.MakeRowVisible(rowHandle);
-                    txtScanNumber.Text = $"{_scannedBarcodeCount.ToString()}" + "/" + _transferResponse.Details.Count().ToString();
-                }
-                else
-                {
-                    MessageHelper.MsgBox("Không tìm thấy sản phẩm mã: " + searchBarcode + " trong đơn hàng", MsgType.Error_);
-                }
+                    if (rowHandle >= 0)
+                    {
+                        gridViewOrder.FocusedRowHandle = rowHandle;
+                        gridViewOrder.MakeRowVisible(rowHandle);
+                    }
+                    txtScanNumber.Text = $"{_scannedBarcodeCount}/{_transferResponse.Details.Count()}";
+                    txtProductCode.Focus();
+                });
             }
-            else
+            catch (Exception ex)
             {
-                MessageHelper.MsgBox("Không tìm thấy sản phẩm mã: " + searchBarcode, MsgType.Error_);
+                MessageHelper.MsgBox("Có lỗi trong quá trình lấy dữ liệu", MsgType.Error_);
             }
         }
 
@@ -279,15 +341,66 @@ namespace FrmMain
         private void gridViewOrder_ShownEditor(object sender, CancelEventArgs e)
         {
             var view = sender as GridView;
+            view?.ActiveEditor?.Focus();
             view?.ActiveEditor?.SelectAll();
+
+        }
+        private void gridViewOrder_ValidatingEditor(object sender, DevExpress.XtraEditors.Controls.BaseContainerValidateEditorEventArgs e)
+        {
+            if (sender is not GridView view) return;
+            if (view.FocusedColumn.FieldName != "ReceiveQuantity") return;
+
+            var transferredQuantityObj = view.GetRowCellValue(view.FocusedRowHandle, "TransferredQuantity");
+            if (transferredQuantityObj == null) return;
+
+            if (!int.TryParse(e.Value?.ToString(), out var receiveQuantity)) return;
+            if (!int.TryParse(transferredQuantityObj.ToString(), out var transferredQuantity)) return;
+
+            if (receiveQuantity <= 0)
+            {
+                e.Value = 0;
+            }
+            if (receiveQuantity > transferredQuantity)
+            {
+                e.Value = transferredQuantity;
+            }
         }
 
         #endregion
 
         private void btnFinish_Click(object sender, EventArgs e)
         {
-            if (_scannedBarcodeCount == _transferResponse.Details.Count())
+            if (_transferResponse != null && _scannedBarcodeCount == _transferResponse.Details.Count())
             {
+                // Kiểm tra: nếu số thực nhận: ReceiveQuantity # TransferredQuantity thì không cho hoàn thành
+                //Commnet lại sau khi thống nhất với Dũng: Nhỏ hơn SL chuyển cho nhận, vượt SL thì sao chép phiếu 
+                //Phải huỷ phiếu gốc.
+                //if (!Transfer)
+                //{
+                //    var hasMismatch =
+                //        _transferResponse.Details.Any(p => (int)p.ReceiveQuantity > p.TransferredQuantity);
+                //    if (hasMismatch)
+                //    {
+                //        var productsMismatch = _transferResponse.Details
+                //            .Where(p => (int)p.ReceiveQuantity != p.TransferredQuantity)
+                //            .Select(p => p.ProductCode)
+                //            .ToList();
+
+                //        var firstMismatchRow = _transferResponse.Details
+                //            .FindIndex(p => (int)p.ReceiveQuantity != p.TransferredQuantity);
+                //        if (firstMismatchRow >= 0)
+                //        {
+                //            gridViewOrder.FocusedRowHandle = firstMismatchRow;
+                //            gridViewOrder.MakeRowVisible(firstMismatchRow);
+                //        }
+
+                //        MessageHelper.MsgBox(
+                //        $"Mã SP {string.Join(", ", productsMismatch)} có Số lượng thực nhận không khớp với số lượng chuyển. Vui lòng kiểm tra lại.",
+                //        MsgType.Error_);
+                //        return;
+                //    }
+                //}
+
                 FinishOrder();
             }
             else
@@ -396,7 +509,7 @@ namespace FrmMain
                         productCode = product.ProductCode,
                         productName = product.ProductName,
                         sendQuantity = product.TransferredQuantity,
-                        receiveQuantity = Transfer? product.TransferredQuantity : product.ReceiveQuantity,
+                        receiveQuantity = Transfer ? product.TransferredQuantity : product.ReceiveQuantity,
                         price = product.Price
                     }).ToList(),
                 };
@@ -474,6 +587,8 @@ namespace FrmMain
         {
             ltCtlCode.Text = Transfer ? "Mã Phiếu Chuyển" : "Mã Phiếu Nhận";
             rpReceiveQuantity.ReadOnly = Transfer;
+            clmReceiveQuantity.Visible = !Transfer;
+            clmReceiveQuantity.OptionsColumn.AllowEdit = !Transfer;
             switch (transfer.Status)
             {
                 case (int)TransferStatusEnum.Draft:
@@ -550,8 +665,6 @@ namespace FrmMain
             chkCancel.Checked = false;
             chkDraft.Checked = false;
         }
-
-        
     }
 
 }

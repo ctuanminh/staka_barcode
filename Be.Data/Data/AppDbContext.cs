@@ -29,6 +29,8 @@ namespace Be.Data.Data
         public DbSet<AppSettingEntity> AppSettings { get; set; }        
         public DbSet<RequestEntity> Requests { get; set; }        
         public DbSet<TransferChecked> TransferCheckeds { get; set; }        
+        public DbSet<TransferEntity> Transfer { get; set; } 
+        public DbSet<SupplierEntity> Suppliers{ get; set; } 
         //Chưa cần tạo db
         //public DbSet<BankAccount> BankAccounts { get; set; }        
 

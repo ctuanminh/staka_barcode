@@ -34,7 +34,7 @@ namespace FrmMain
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public static string CurrentOrderId { get; set; }
-        private bool _isReloading = false;
+        private bool _isReloading;
         private readonly IKiotVietService _kiotVietService;
         private int _branchId;
         private int _scannedBarcodeCount;
@@ -42,10 +42,10 @@ namespace FrmMain
         private readonly IProductService _productService;
         private readonly IBranchService _branchService;
         private readonly ISystemService _systemService;
-        private Dictionary<string, string> productLookupDictionary;
+        private Dictionary<string, string> _productLookupDictionary;
         private Timer _reloadTimer;
         private DateTime _nextReloadTime;
-        private const int ReloadIntervalMinutes = 60;
+        private const int ReloadIntervalMinutes = 30;
         public FrmOrderProcess(IKiotVietService kiotVietService, IProductService productService, IBranchService branchService, 
             ISystemService systemService)
         {
@@ -78,17 +78,17 @@ namespace FrmMain
                     .Distinct()
                     .ToList();
                 var productCodeBarCode = await _productService.SynAndGetProductCodeBarCode(productCodes, _branchId);
-                productLookupDictionary = new Dictionary<string, string>();
+                _productLookupDictionary = new Dictionary<string, string>();
                 foreach (var product in productCodeBarCode)
                 {
                     if (!string.IsNullOrWhiteSpace(product.Code))
                     {
-                        productLookupDictionary.TryAdd(product.Code, product.Code);
+                        _productLookupDictionary.TryAdd(product.Code, product.Code);
                     }
 
                     if (!string.IsNullOrWhiteSpace(product.BarCode))
                     {
-                        productLookupDictionary.TryAdd(product.BarCode, product.Code);
+                        _productLookupDictionary.TryAdd(product.BarCode, product.Code);
                     }
                 }
             }
@@ -141,20 +141,6 @@ namespace FrmMain
 
                 // Xử lý trạng thái
                 var status = (OrderStatusEnum)orderApiResponse.Status;
-                switch (status)
-                {
-                    case OrderStatusEnum.Finished:
-                        if (!_isReloading)
-                            MessageHelper.MsgBox($"Đơn hàng: {code} đã Hoàn thành, vui lòng kiểm tra lại", MsgType.Information);
-                        break;
-
-                    case OrderStatusEnum.Cancel:
-                        if (!_isReloading)
-                            MessageHelper.MsgBox($"Đơn hàng: {code} đã Huỷ, vui lòng kiểm tra lại", MsgType.Information);
-                        break;
-                    case OrderStatusEnum.Draft:
-                        break;
-                }
 
                 // Nếu trạng thái khác Draft thì khoá luôn ProductCode
                 txtProductCode.ReadOnly = status != OrderStatusEnum.Draft;
@@ -368,7 +354,7 @@ namespace FrmMain
 
         private (bool check, string code) TryFindProductCode(string searchBarCode)
         {
-            return productLookupDictionary.TryGetValue(searchBarCode, out var codeValue) ? (true, codeValue) : (false, null);
+            return _productLookupDictionary.TryGetValue(searchBarCode, out var codeValue) ? (true, codeValue) : (false, null);
         }
 
         private void FrmOrderProcess_Shown(object sender, EventArgs e)

@@ -10,6 +10,7 @@ using Be.Services.KiotViet;
 using Be.Services.Order;
 using Be.Services.Pos;
 using Be.Services.PurchaseOrder;
+using Be.Services.Supplier;
 using Be.Services.System;
 using Be.Services.Transfer;
 using Microsoft.Extensions.DependencyInjection;
@@ -37,6 +38,7 @@ namespace Be.Services
 			services.AddScoped<IKiotVietService, KiotVietServiceImp>();
 			services.AddScoped<ISystemService, SystemServiceImp>();
 			services.AddScoped<ITransferService, TransferServiceImp>();
+			services.AddScoped<ISupplyService, SupplierServiceImp>();
 			return services;
 		}
 	}
