@@ -7,6 +7,10 @@
       "RelativeMoniker": "D:0:0:{E7EE7295-A665-B0D5-F69A-18F25EEE8274}|FrmMain\\FrmMain.csproj|solutionrelative:frmmain\\frmtransferprocess.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{E7EE7295-A665-B0D5-F69A-18F25EEE8274}|FrmMain\\FrmMain.csproj|d:\\trongcv\\dev\\pos\\stakapos\\frmmain\\frmorder.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E7EE7295-A665-B0D5-F69A-18F25EEE8274}|FrmMain\\FrmMain.csproj|solutionrelative:frmmain\\frmorder.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{4E9B0E1F-B88A-ABB7-B856-F6F655E9423C}|Be.Services\\Be.Services.csproj|d:\\trongcv\\dev\\pos\\stakapos\\be.services\\transfer\\itransferservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{4E9B0E1F-B88A-ABB7-B856-F6F655E9423C}|Be.Services\\Be.Services.csproj|solutionrelative:be.services\\transfer\\itransferservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -17,10 +21,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{E7EE7295-A665-B0D5-F69A-18F25EEE8274}|FrmMain\\FrmMain.csproj|d:\\trongcv\\dev\\pos\\stakapos\\frmmain\\frmsystem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{E7EE7295-A665-B0D5-F69A-18F25EEE8274}|FrmMain\\FrmMain.csproj|solutionrelative:frmmain\\frmsystem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E7EE7295-A665-B0D5-F69A-18F25EEE8274}|FrmMain\\FrmMain.csproj|d:\\trongcv\\dev\\pos\\stakapos\\frmmain\\frmorder.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E7EE7295-A665-B0D5-F69A-18F25EEE8274}|FrmMain\\FrmMain.csproj|solutionrelative:frmmain\\frmorder.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{E7EE7295-A665-B0D5-F69A-18F25EEE8274}|FrmMain\\FrmMain.csproj|d:\\trongcv\\dev\\pos\\stakapos\\frmmain\\frmorder.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
@@ -50,7 +50,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "ITransferService.cs",
               "DocumentMoniker": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\Be.Services\\Transfer\\ITransferService.cs",
               "RelativeDocumentMoniker": "Be.Services\\Transfer\\ITransferService.cs",
@@ -69,14 +69,14 @@
               "RelativeDocumentMoniker": "FrmMain\\FrmTransferProcess.cs",
               "ToolTip": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\FrmMain\\FrmTransferProcess.cs",
               "RelativeToolTip": "FrmMain\\FrmTransferProcess.cs",
-              "ViewState": "AgIAAGsAAAAAAAAAAAAzwHsAAAAQAAAAAAAAAA==",
+              "ViewState": "AgIAAGsAAAAAAAAAAAAzwIgAAABdAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-06-23T02:44:54.478Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "FrmSystem.cs",
               "DocumentMoniker": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\FrmMain\\FrmSystem.cs",
               "RelativeDocumentMoniker": "FrmMain\\FrmSystem.cs",
@@ -89,13 +89,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 1,
               "Title": "FrmOrder.cs",
               "DocumentMoniker": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\FrmMain\\FrmOrder.cs",
               "RelativeDocumentMoniker": "FrmMain\\FrmOrder.cs",
               "ToolTip": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\FrmMain\\FrmOrder.cs",
               "RelativeToolTip": "FrmMain\\FrmOrder.cs",
-              "ViewState": "AgIAAEkAAAAAAAAAAADwvxwBAAAYAAAAAAAAAA==",
+              "ViewState": "AgIAAKEAAAAAAAAAAAAvwB0BAAAQAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-06-23T10:06:42.244Z",
               "EditorCaption": ""
@@ -127,7 +127,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "TransferServiceImp.cs",
               "DocumentMoniker": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\Be.Services\\Transfer\\TransferServiceImp.cs",
               "RelativeDocumentMoniker": "Be.Services\\Transfer\\TransferServiceImp.cs",
