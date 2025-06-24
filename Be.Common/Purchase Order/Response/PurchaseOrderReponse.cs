@@ -21,7 +21,7 @@
                 return Status switch
                 {
                     1 => "Phiếu tạm",
-                    3 => "Hoàn thành",
+                    3 => "Đã nhập hàng",
                     _ => "Đã huỷ"
                 };
             }

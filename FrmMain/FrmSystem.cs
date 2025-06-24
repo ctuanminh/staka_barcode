@@ -2,21 +2,20 @@
 using Be.Common.Dtos.Identity;
 using Be.Common.Dtos.Product;
 using Be.Common.System;
-using Be.Core.Entities;
 using Be.Services.Catalog;
 using Be.Services.customer;
 using Be.Services.Identity;
 using Be.Services.Pos;
+using Be.Services.Supplier;
 using Be.Services.System;
 using DevExpress.XtraEditors;
 using DevExpress.XtraSplashScreen;
 using FrmMain.App;
 using FrmMain.Utils;
 using System;
-using System.Drawing;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using MassTransit;
 using Exception = System.Exception;
 
 namespace FrmMain
@@ -28,16 +27,18 @@ namespace FrmMain
         private readonly IUserService _userService;
         private readonly IProductService _productService;
         private readonly ISystemService _systemService;
+        private readonly ISupplyService _supplierService;
         private int _branchId;
 
         public FrmSystem(ICustomerService customerService, IBranchService branchService, IUserService userService,
-            IProductService productService, ISystemService systemService)
+            IProductService productService, ISystemService systemService, ISupplyService supplierService)
         {
             _customerService = customerService;
             _branchService = branchService;
             _userService = userService;
             _productService = productService;
             _systemService = systemService;
+            _supplierService = supplierService;
             InitializeComponent();
         }
 
@@ -180,7 +181,7 @@ namespace FrmMain
             lkpBranch.Properties.DataSource = branches;
         }
 
-        private void SetTextEditHeight(Control control, int height)
+        private static void SetTextEditHeight(Control control, int height)
         {
             foreach (Control c in control.Controls)
             {
@@ -248,7 +249,7 @@ namespace FrmMain
         {
             try
             {
-                var appSettingExist = await 
+                var appSettingExist = await
                     _systemService.GetAppSetting(Environment.MachineName, "Branch", "BranchId");
                 if (appSettingExist != null)
                 {
@@ -297,6 +298,20 @@ namespace FrmMain
             AppGlobals.AppSetting = setting;
             AppGlobals.BranchId = _branchId;
             AppGlobals.ComputerName = Environment.MachineName;
+        }
+
+        private async void btnSyncSupplier_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var success = await _supplierService.SynsSupplier();
+                if(success) MessageHelper.MsgBox("Đồng bộ nhà cung cấp thành công", MsgType.Information);
+                else MessageHelper.MsgBox("Không có nhà cung cấp nào để đồng bộ", MsgType.Error_);
+            }
+            catch (Exception ex)
+            {
+                MessageHelper.MsgBox($"Có lỗi trong quá trình lưu cài đặt: {ex}", MsgType.Error_);
+            }
         }
     }
 

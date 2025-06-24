@@ -11,6 +11,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Properties\licenses.licx" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\licenses.licx" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="DevExpress.Win.BonusSkins" Version="24.2.7" />
     <PackageReference Include="DevExpress.Win.Design" Version="24.2.7" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.6" />
@@ -28,6 +36,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="FrmAddPurchase.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="FrmReceiverList.cs">
       <SubType>Form</SubType>
     </Compile>

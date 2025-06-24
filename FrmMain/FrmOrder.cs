@@ -32,7 +32,7 @@ namespace FrmMain
         private readonly ISystemService _systemService;
         private Timer _reloadTimer;
         private DateTime _nextReloadTime;
-        private const int ReloadIntervalMinutes = 5;
+        private const int ReloadIntervalMinutes = 10;
         public FrmOrder(FrmMainF mainForm, IKiotVietService kiotVietService, IBranchService branchService, 
             ISystemService systemService)
         {

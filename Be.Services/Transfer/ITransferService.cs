@@ -4,7 +4,13 @@ namespace Be.Services.Transfer
 {
     public interface ITransferService
     {
+        Task<TransferEntity> GetTransferById(long transferId);
+        Task<TransferEntity> AddOrUpdateTransfer(TransferEntity transfer);
         Task<TransferChecked> AddOrUpdateProductCheck(TransferChecked transferChecked);
-        Task<List<TransferChecked>> GetTransferChecks(string transferCode, long branchId, string userName);
+
+        Task<List<TransferChecked>> GetCheckedProductsByParentTransfer(long transferId, string transferCode, long branchId,
+            string userName, bool transfer);
+        Task<TransferChecked> GetCheckedProductByTransfer(long transferId, string transferCode, long branchId,
+            string userName, bool transfer, string productBarCode);
     }
 }

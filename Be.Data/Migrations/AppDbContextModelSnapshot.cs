@@ -790,6 +790,91 @@ namespace Be.Data.Migrations
                     b.ToTable("Requests", "Catalog");
                 });
 
+            modelBuilder.Entity("Be.Core.Entities.SupplierEntity", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("Address")
+                        .HasColumnType("text");
+
+                    b.Property<long>("BranchId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Code")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Comments")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ContactNumber")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<decimal>("Debt")
+                        .HasColumnType("numeric");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Groups")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<long>("KiotId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("LocationName")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("ModifiedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Organization")
+                        .HasColumnType("text");
+
+                    b.Property<long>("RetailerId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("TaxCode")
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("TotalInvoiced")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal>("TotalInvoicedWithoutReturn")
+                        .HasColumnType("numeric");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<long>("UpdatedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("WardName")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Suppliers", "Catalog");
+                });
+
             modelBuilder.Entity("Be.Core.Entities.TransferChecked", b =>
                 {
                     b.Property<long>("Id")
@@ -813,6 +898,9 @@ namespace Be.Data.Migrations
                     b.Property<string>("ProductBarCode")
                         .HasColumnType("text");
 
+                    b.Property<bool>("Transfer")
+                        .HasColumnType("boolean");
+
                     b.Property<string>("TransferCode")
                         .HasColumnType("text");
 
@@ -831,6 +919,46 @@ namespace Be.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("TransferCheckeds", "Catalog");
+                });
+
+            modelBuilder.Entity("Be.Core.Entities.TransferEntity", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<long>("CreatedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("FromBranchId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
+                    b.Property<long>("ToBranchId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("TransferCode")
+                        .HasColumnType("text");
+
+                    b.Property<long>("TransferId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<long>("UpdatedBy")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Transfer", "Catalog");
                 });
 
             modelBuilder.Entity("Be.Core.Gateway.WorkQueue", b =>

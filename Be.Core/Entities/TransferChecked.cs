@@ -9,6 +9,7 @@ namespace Be.Core.Entities
         public string ProductBarCode { get; set; }
         public long BranchId { get; set; }
         public string  UserName { get; set; }
+        public bool Transfer { get; set; } = false;
         public bool Checked { get; set; }
     }
 }

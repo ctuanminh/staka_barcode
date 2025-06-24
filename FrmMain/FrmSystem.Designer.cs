@@ -30,6 +30,7 @@
         {
             groupControlTop = new DevExpress.XtraEditors.GroupControl();
             layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
+            btnSyncSupplier = new DevExpress.XtraEditors.SimpleButton();
             btnSave = new DevExpress.XtraEditors.SimpleButton();
             lkpBranch = new DevExpress.XtraEditors.LookUpEdit();
             btnSyncProduct = new DevExpress.XtraEditors.SimpleButton();
@@ -46,6 +47,7 @@
             layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
             layoutControlItem6 = new DevExpress.XtraLayout.LayoutControlItem();
             layoutControlItem7 = new DevExpress.XtraLayout.LayoutControlItem();
+            layoutControlItem8 = new DevExpress.XtraLayout.LayoutControlItem();
             ((System.ComponentModel.ISupportInitialize)groupControlTop).BeginInit();
             groupControlTop.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)layoutControl1).BeginInit();
@@ -60,6 +62,7 @@
             ((System.ComponentModel.ISupportInitialize)layoutControlItem5).BeginInit();
             ((System.ComponentModel.ISupportInitialize)layoutControlItem6).BeginInit();
             ((System.ComponentModel.ISupportInitialize)layoutControlItem7).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)layoutControlItem8).BeginInit();
             SuspendLayout();
             // 
             // groupControlTop
@@ -76,6 +79,7 @@
             // 
             // layoutControl1
             // 
+            layoutControl1.Controls.Add(btnSyncSupplier);
             layoutControl1.Controls.Add(btnSave);
             layoutControl1.Controls.Add(lkpBranch);
             layoutControl1.Controls.Add(btnSyncProduct);
@@ -91,11 +95,21 @@
             layoutControl1.TabIndex = 0;
             layoutControl1.Text = "layoutControl1";
             // 
+            // btnSyncSupplier
+            // 
+            btnSyncSupplier.Location = new System.Drawing.Point(1074, 12);
+            btnSyncSupplier.Name = "btnSyncSupplier";
+            btnSyncSupplier.Size = new System.Drawing.Size(87, 22);
+            btnSyncSupplier.StyleController = layoutControl1;
+            btnSyncSupplier.TabIndex = 8;
+            btnSyncSupplier.Text = "Đồng bộ NCC";
+            btnSyncSupplier.Click += this.btnSyncSupplier_Click;
+            // 
             // btnSave
             // 
-            btnSave.Location = new System.Drawing.Point(457, 11);
+            btnSave.Location = new System.Drawing.Point(452, 12);
             btnSave.Name = "btnSave";
-            btnSave.Size = new System.Drawing.Size(180, 22);
+            btnSave.Size = new System.Drawing.Size(93, 22);
             btnSave.StyleController = layoutControl1;
             btnSave.TabIndex = 7;
             btnSave.Text = "Lưu cài đặt";
@@ -103,7 +117,7 @@
             // 
             // lkpBranch
             // 
-            lkpBranch.Location = new System.Drawing.Point(115, 11);
+            lkpBranch.Location = new System.Drawing.Point(117, 12);
             lkpBranch.Name = "lkpBranch";
             lkpBranch.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
             lkpBranch.Properties.Columns.AddRange(new DevExpress.XtraEditors.Controls.LookUpColumnInfo[] { new DevExpress.XtraEditors.Controls.LookUpColumnInfo("BranchName", "", 17, DevExpress.Utils.FormatType.None, "", true, DevExpress.Utils.HorzAlignment.Default, DevExpress.Data.ColumnSortOrder.None, DevExpress.Utils.DefaultBoolean.Default) });
@@ -112,14 +126,14 @@
             lkpBranch.Properties.ShowFooter = false;
             lkpBranch.Properties.ShowHeader = false;
             lkpBranch.Properties.ValueMember = "BranchId";
-            lkpBranch.Size = new System.Drawing.Size(338, 20);
+            lkpBranch.Size = new System.Drawing.Size(331, 20);
             lkpBranch.StyleController = layoutControl1;
             lkpBranch.TabIndex = 0;
             lkpBranch.EditValueChanged += lkpBranch_EditValueChanged;
             // 
             // btnSyncProduct
             // 
-            btnSyncProduct.Location = new System.Drawing.Point(1050, 11);
+            btnSyncProduct.Location = new System.Drawing.Point(958, 12);
             btnSyncProduct.Name = "btnSyncProduct";
             btnSyncProduct.Size = new System.Drawing.Size(112, 22);
             btnSyncProduct.StyleController = layoutControl1;
@@ -129,7 +143,7 @@
             // 
             // btnSynBranch
             // 
-            btnSynBranch.Location = new System.Drawing.Point(932, 11);
+            btnSynBranch.Location = new System.Drawing.Point(840, 12);
             btnSynBranch.Name = "btnSynBranch";
             btnSynBranch.Size = new System.Drawing.Size(114, 22);
             btnSynBranch.StyleController = layoutControl1;
@@ -139,7 +153,7 @@
             // 
             // btnSyncRole
             // 
-            btnSyncRole.Location = new System.Drawing.Point(845, 11);
+            btnSyncRole.Location = new System.Drawing.Point(753, 12);
             btnSyncRole.Name = "btnSyncRole";
             btnSyncRole.Size = new System.Drawing.Size(83, 22);
             btnSyncRole.StyleController = layoutControl1;
@@ -149,7 +163,7 @@
             // 
             // btnSyncCustomer
             // 
-            btnSyncCustomer.Location = new System.Drawing.Point(729, 11);
+            btnSyncCustomer.Location = new System.Drawing.Point(637, 12);
             btnSyncCustomer.Name = "btnSyncCustomer";
             btnSyncCustomer.Size = new System.Drawing.Size(112, 22);
             btnSyncCustomer.StyleController = layoutControl1;
@@ -159,7 +173,7 @@
             // 
             // btnSyncUsers
             // 
-            btnSyncUsers.Location = new System.Drawing.Point(641, 11);
+            btnSyncUsers.Location = new System.Drawing.Point(549, 12);
             btnSyncUsers.Name = "btnSyncUsers";
             btnSyncUsers.Size = new System.Drawing.Size(84, 22);
             btnSyncUsers.StyleController = layoutControl1;
@@ -171,7 +185,7 @@
             // 
             Root.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.True;
             Root.GroupBordersVisible = false;
-            Root.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] { layoutControlItem1, emptySpaceItem1, layoutControlItem2, layoutControlItem3, layoutControlItem4, layoutControlItem5, layoutControlItem6, layoutControlItem7 });
+            Root.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] { layoutControlItem1, emptySpaceItem1, layoutControlItem2, layoutControlItem3, layoutControlItem4, layoutControlItem5, layoutControlItem6, layoutControlItem7, layoutControlItem8 });
             Root.Name = "Root";
             Root.Size = new System.Drawing.Size(1173, 458);
             Root.TextVisible = false;
@@ -179,7 +193,7 @@
             // layoutControlItem1
             // 
             layoutControlItem1.Control = btnSyncUsers;
-            layoutControlItem1.Location = new System.Drawing.Point(630, 0);
+            layoutControlItem1.Location = new System.Drawing.Point(537, 0);
             layoutControlItem1.Name = "layoutControlItem1";
             layoutControlItem1.Size = new System.Drawing.Size(88, 26);
             layoutControlItem1.TextVisible = false;
@@ -188,12 +202,12 @@
             // 
             emptySpaceItem1.Location = new System.Drawing.Point(0, 26);
             emptySpaceItem1.Name = "emptySpaceItem1";
-            emptySpaceItem1.Size = new System.Drawing.Size(1155, 414);
+            emptySpaceItem1.Size = new System.Drawing.Size(1153, 412);
             // 
             // layoutControlItem2
             // 
             layoutControlItem2.Control = btnSyncCustomer;
-            layoutControlItem2.Location = new System.Drawing.Point(718, 0);
+            layoutControlItem2.Location = new System.Drawing.Point(625, 0);
             layoutControlItem2.Name = "layoutControlItem2";
             layoutControlItem2.Size = new System.Drawing.Size(116, 26);
             layoutControlItem2.TextVisible = false;
@@ -201,7 +215,7 @@
             // layoutControlItem3
             // 
             layoutControlItem3.Control = btnSyncRole;
-            layoutControlItem3.Location = new System.Drawing.Point(834, 0);
+            layoutControlItem3.Location = new System.Drawing.Point(741, 0);
             layoutControlItem3.Name = "layoutControlItem3";
             layoutControlItem3.Size = new System.Drawing.Size(87, 26);
             layoutControlItem3.TextVisible = false;
@@ -209,7 +223,7 @@
             // layoutControlItem4
             // 
             layoutControlItem4.Control = btnSynBranch;
-            layoutControlItem4.Location = new System.Drawing.Point(921, 0);
+            layoutControlItem4.Location = new System.Drawing.Point(828, 0);
             layoutControlItem4.Name = "layoutControlItem4";
             layoutControlItem4.Size = new System.Drawing.Size(118, 26);
             layoutControlItem4.TextVisible = false;
@@ -217,7 +231,7 @@
             // layoutControlItem5
             // 
             layoutControlItem5.Control = btnSyncProduct;
-            layoutControlItem5.Location = new System.Drawing.Point(1039, 0);
+            layoutControlItem5.Location = new System.Drawing.Point(946, 0);
             layoutControlItem5.Name = "layoutControlItem5";
             layoutControlItem5.Size = new System.Drawing.Size(116, 26);
             layoutControlItem5.TextVisible = false;
@@ -227,17 +241,25 @@
             layoutControlItem6.Control = lkpBranch;
             layoutControlItem6.Location = new System.Drawing.Point(0, 0);
             layoutControlItem6.Name = "layoutControlItem6";
-            layoutControlItem6.Size = new System.Drawing.Size(446, 26);
+            layoutControlItem6.Size = new System.Drawing.Size(440, 26);
             layoutControlItem6.Text = "Chi nhánh làm việc";
             layoutControlItem6.TextSize = new System.Drawing.Size(101, 14);
             // 
             // layoutControlItem7
             // 
             layoutControlItem7.Control = btnSave;
-            layoutControlItem7.Location = new System.Drawing.Point(446, 0);
+            layoutControlItem7.Location = new System.Drawing.Point(440, 0);
             layoutControlItem7.Name = "layoutControlItem7";
-            layoutControlItem7.Size = new System.Drawing.Size(184, 26);
+            layoutControlItem7.Size = new System.Drawing.Size(97, 26);
             layoutControlItem7.TextVisible = false;
+            // 
+            // layoutControlItem8
+            // 
+            layoutControlItem8.Control = btnSyncSupplier;
+            layoutControlItem8.Location = new System.Drawing.Point(1062, 0);
+            layoutControlItem8.Name = "layoutControlItem8";
+            layoutControlItem8.Size = new System.Drawing.Size(91, 26);
+            layoutControlItem8.TextVisible = false;
             // 
             // FrmSystem
             // 
@@ -245,7 +267,6 @@
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             ClientSize = new System.Drawing.Size(1177, 462);
             Controls.Add(groupControlTop);
-            Font = new System.Drawing.Font("Tahoma", 9F);
             Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             Name = "FrmSystem";
             Text = "Hệ thống";
@@ -264,6 +285,7 @@
             ((System.ComponentModel.ISupportInitialize)layoutControlItem5).EndInit();
             ((System.ComponentModel.ISupportInitialize)layoutControlItem6).EndInit();
             ((System.ComponentModel.ISupportInitialize)layoutControlItem7).EndInit();
+            ((System.ComponentModel.ISupportInitialize)layoutControlItem8).EndInit();
             ResumeLayout(false);
         }
 
@@ -287,5 +309,7 @@
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem6;
         private DevExpress.XtraEditors.SimpleButton btnSave;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem7;
+        private DevExpress.XtraEditors.SimpleButton btnSyncSupplier;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem8;
     }
 }

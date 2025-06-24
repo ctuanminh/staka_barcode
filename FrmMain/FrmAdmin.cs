@@ -16,9 +16,9 @@ namespace FrmMain
         private void btnSubmit_Click(object sender, EventArgs e)
         {
             var password = txtPassword.Text;
-            if (password == "Tr0ngMynh132!@##@!")
+            if (password == "!@##@!")
             {
-                this.DialogResult = DialogResult.OK;
+                DialogResult = DialogResult.OK;
             }
             else
             {

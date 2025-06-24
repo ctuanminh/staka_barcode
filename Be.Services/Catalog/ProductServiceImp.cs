@@ -117,6 +117,19 @@ namespace Be.Services.Catalog
             return Ok(products);
         }
 
+        public async Task<List<Product>> GetProducts(long branchId)
+        {
+            var query = await repository.GetQueryable<Product>()
+                .Select(p => new Product()
+                {
+                    Id = p.Id,
+                    Code = p.Code,
+                    BarCode = p.BarCode,
+                })
+                .ToListAsync();
+            return query;
+        }
+
         public async Task<List<ProductCodeBarCode>> GetProductCodeBarCode()
         {
             var products = await repository.GetQueryable<Product>()
@@ -210,5 +223,6 @@ namespace Be.Services.Catalog
                 .ToDictionaryAsync(d => d.Code, d => d.BarCode);
             return productDictionary;
         }
+
     }
 }
