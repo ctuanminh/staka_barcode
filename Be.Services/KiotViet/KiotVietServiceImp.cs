@@ -82,14 +82,21 @@ namespace Be.Services.KiotViet
                 switch (method)
                 {
                     case "POST":
-                        var responseGet = await _httpClient.GetAsync(baseUrl);
-                        if (!responseGet.IsSuccessStatusCode)
+                        var jsonContentPost = JsonConvert.SerializeObject(request, new JsonSerializerSettings
                         {
-                            var error = await responseGet.Content.ReadAsStringAsync();
+                            ContractResolver = new CamelCasePropertyNamesContractResolver(),
+                            NullValueHandling = NullValueHandling.Ignore
+                        });
+                        var contentPost = new StringContent(jsonContentPost, Encoding.UTF8, "application/json");
+                        
+                        var responsePost = await _httpClient.PostAsync(baseUrl, contentPost);
+                        if (!responsePost.IsSuccessStatusCode)
+                        {
+                            var error = await responsePost.Content.ReadAsStringAsync();
                             return (false, error);
                         }
 
-                        var dataGetResponse = await responseGet.Content.ReadAsStringAsync();
+                        var dataGetResponse = await responsePost.Content.ReadAsStringAsync();
                         return (true, dataGetResponse);
                     case "PUT":
                         {

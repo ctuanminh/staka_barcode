@@ -86,5 +86,12 @@ namespace Be.Services.Supplier
             var result = Mapper.Map<List<SupplierDto>>(suppliers);
             return result;
         }
+
+        public async Task<SupplierEntity> GetSupplierByCode(long id)
+        {
+            var supplier = await repository.GetQueryable<SupplierEntity>()
+                .FirstOrDefaultAsync(s => s.KiotId == id);
+            return supplier;
+        }
     }
 }

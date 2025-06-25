@@ -1,4 +1,4 @@
-﻿namespace Be.Common.Purchase_Order.Response
+﻿namespace Be.Common.PurchaseOrder.Response
 {
     public partial class PurchaseOrderResponse
     {
@@ -21,7 +21,7 @@
                 return Status switch
                 {
                     1 => "Phiếu tạm",
-                    3 => "Đã nhập hàng",
+                    3 => "Đã nhận hàng",
                     _ => "Đã huỷ"
                 };
             }
@@ -44,6 +44,7 @@
     {
         public long ProductId { get; set; }
         public string ProductCode { get; set; }
+        public string ProductBarCode { get; set; }
         public string ProductName { get; set; }
         public int Quantity { get; set; }
         public decimal Price { get; set; }

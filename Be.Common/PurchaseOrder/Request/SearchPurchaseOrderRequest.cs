@@ -1,4 +1,4 @@
-﻿namespace Be.Common.Purchase_Order.Request
+﻿namespace Be.Common.PurchaseOrder.Request
 {
     public partial class SearchPurchaseOrderRequest
     {

@@ -295,8 +295,15 @@ namespace FrmMain
         }
         private void SetControlEnable(bool enable)
         {
-            layoutControlTop.Enabled = enable;
-            grdControlOrders.Enabled = enable;
+            if (InvokeRequired)
+            {
+                Invoke(new Action(() => SetControlEnable(enable)));
+            }
+            else
+            {
+                layoutControlTop.Enabled = enable;
+                grdControlOrders.Enabled = enable;
+            }
         }
 
         private static void SetTextEditHeight(Control control, int height)

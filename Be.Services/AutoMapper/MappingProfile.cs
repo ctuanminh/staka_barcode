@@ -2,6 +2,8 @@
 using Be.Common.Branch.Response;
 using Be.Common.Dtos.Category;
 using Be.Common.Dtos.Product;
+using Be.Common.PurchaseOrder.Dto;
+using Be.Common.PurchaseOrder.Response;
 using Be.Common.Supply.Dto;
 using Be.Common.Supply.Response;
 using Be.Common.System;
@@ -20,6 +22,8 @@ namespace Be.Services.AutoMapper
             CreateMap<BranchResponse, Branch>().ReverseMap();
             CreateMap<SupplierDto, SupplierEntity>().ReverseMap();
             CreateMap<SupplierResponse, SupplierEntity>().ReverseMap();
+            CreateMap<PurchaseOrderDetail, Product>().ReverseMap();
+            CreateMap<PurchaseCheckedDto, PurchaseCheckedEntity>().ReverseMap();
         }
     }
 }

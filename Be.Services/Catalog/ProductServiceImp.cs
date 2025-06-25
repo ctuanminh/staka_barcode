@@ -67,7 +67,7 @@ namespace Be.Services.Catalog
         {
             const string baseUrl = "https://public.kiotapi.com/products";
             request.PageSize = request.PageSize != 0 ? request.PageSize : 200;
-
+            request.includeInventory = true;
             var productList = new List<ProductDto>();
             var currentPage = 1;
             int totalPages;
@@ -99,6 +99,7 @@ namespace Be.Services.Catalog
                         Name = item.Name,
                         Unit = item.Unit,
                         IsActive = true,
+                        BasePrice = item.BasePrice,
                     };
                     products.Add(product);
                 }
@@ -108,6 +109,7 @@ namespace Be.Services.Catalog
                     productExist.Unit = item.Unit;
                     productExist.BarCode = string.IsNullOrEmpty(item.BarCode) ? item.Code : item.BarCode;
                     productExist.IsActive = true;
+                    productExist.BasePrice = item.BasePrice;
                     await repository.UpdateAsync(productExist);                    
                     await repository.SaveChangeAsync();
                 }
@@ -125,6 +127,8 @@ namespace Be.Services.Catalog
                     Id = p.Id,
                     Code = p.Code,
                     BarCode = p.BarCode,
+                    Name = p.Name,
+                    Unit = p.Unit,
                 })
                 .ToListAsync();
             return query;

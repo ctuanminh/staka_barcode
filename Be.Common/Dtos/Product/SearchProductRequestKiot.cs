@@ -12,6 +12,7 @@
         public bool includeRemoveIds { get; set; } = false; //Lấy thông tin hàng hoá xoá
         public bool includeQuantity { get; set; } = false;
         public bool includeMaterial { get; set; } = false;
+        public bool includeInventory { get; set; }
 
     }
 }
