@@ -1,11 +1,9 @@
-﻿using Be.Common.Purchase_Order.Response;
-using Be.Common.Tranfer.Response;
+﻿using Be.Common.Tranfer.Response;
 using Be.Core.Entities;
 using Be.Services.Catalog;
 using Be.Services.Identity;
 using Be.Services.KiotViet;
 using Be.Services.System;
-using DevExpress.LookAndFeel.Design;
 using DevExpress.XtraEditors;
 using DevExpress.XtraGrid.Views.Grid;
 using FrmMain.App;
@@ -16,10 +14,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Be.Services.Transfer;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using Exception = System.Exception;
 
 namespace FrmMain
@@ -213,7 +209,6 @@ namespace FrmMain
                 BeginInvoke(new Action(() => txtProductCode.Focus()));
             }
         }
-
 
         private async void LoadProduct(List<TransferDetail> transferDetails)
         {

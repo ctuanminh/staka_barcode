@@ -1,6 +1,6 @@
-﻿using Be.Common.Purchase_Order.Dto;
-using Be.Common.Purchase_Order.Request;
-using Be.Common.Purchase_Order.Response;
+﻿using Be.Common.PurchaseOrder.Dto;
+using Be.Common.PurchaseOrder.Request;
+using Be.Common.PurchaseOrder.Response;
 using Be.Common.Responses;
 using Be.Common.utils;
 using Be.Core.Entities;
@@ -11,6 +11,8 @@ using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using OfficeOpenXml;
 using System.IO;
+using AutoMapper;
+
 namespace Be.Services.PurchaseOrder
 {
     public partial class PurchaseOrderServiceImp : ServiceResponse, IPurchaseOrderService
@@ -21,22 +23,15 @@ namespace Be.Services.PurchaseOrder
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly IRepository _repository;
         private readonly IProductService _productService;
-        public PurchaseOrderServiceImp(IHttpClientFactory httpClientFactory, IRepository repository, IConfiguration config, IProductService productService)
+        private readonly IMapper _mapper;
+        public PurchaseOrderServiceImp(IHttpClientFactory httpClientFactory, IRepository repository, IConfiguration config, IProductService productService, IMapper mapper)
         {
             _config = config;
             _httpClientFactory = httpClientFactory;
             _httpClient = _httpClientFactory.CreateClient();
             _repository = repository;
             _productService = productService;
-        }
-        public Task<ApiResponse> CreatePurchaseOrder(PurchaseOrderDto purchaseOrderDto)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<ApiResponse> DeletePurchaseOrder(Guid id)
-        {
-            throw new NotImplementedException();
+            _mapper = mapper;
         }
 
         /// <summary>
@@ -162,5 +157,65 @@ namespace Be.Services.PurchaseOrder
         {
             throw new NotImplementedException();
         }
+
+        public Task<ApiResponse> CreatePurchaseOrder(PurchaseOrderDto purchaseOrderDto)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ApiResponse> DeletePurchaseOrder(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
+        #region PurchaseChecked
+        
+        public async Task<bool> AddPurchaseChecked(PurchaseCheckedDto purchaseCheckedDto)
+        {
+            var entity = _mapper.Map<PurchaseCheckedEntity>(purchaseCheckedDto);
+            await _repository.AddAsync(entity);
+            await _repository.SaveChangeAsync();
+            return true;
+        }
+
+        public async Task<bool> UpdatePurchaseChecked(long purchaseId, PurchaseCheckedDto purchaseCheckedDto)
+        {
+            var entity = _mapper.Map<PurchaseCheckedEntity>(purchaseCheckedDto);
+            entity.Id = purchaseId;
+            await _repository.UpdateAsync(entity);
+            await _repository.SaveChangeAsync();
+            return true;
+        }
+
+        public async Task<List<PurchaseCheckedDto>> GetPurchaseCheckedByPurchaseId(long purchaseId)
+        {
+            var query = await _repository.GetQueryable<PurchaseCheckedEntity>()
+                .Where(p => p.PurchaseId == purchaseId)
+                .Select(p => new PurchaseCheckedDto()
+                {
+                    ProductBarCode = p.ProductBarCode,
+                    ProductCode = p.ProductCode,
+                    PurchaseId = p.PurchaseId,
+                    PurchaseCode = p.PurchaseCode,
+                    Checked = p.Checked,
+                    BranchId = p.BranchId
+                })
+                .Distinct()
+                .ToListAsync();
+            var result = _mapper.Map<List<PurchaseCheckedDto>>(query);
+            return result;
+        }
+
+        public async Task<PurchaseCheckedDto> GetPurchaseCheckedByProduct(long purchaseId, string productBarCode, long branchId)
+        {
+            var productChecked = _repository.GetQueryable<PurchaseCheckedEntity>()
+                .Where(p => p.PurchaseId == purchaseId && p.ProductBarCode == productBarCode && p.BranchId == branchId)
+                .FirstOrDefault();
+            var result = _mapper.Map<PurchaseCheckedDto>(productChecked);
+            return result;
+        }
+
+        #endregion
+
     }
 }

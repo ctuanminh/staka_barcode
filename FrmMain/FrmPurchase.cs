@@ -1,5 +1,5 @@
-﻿using Be.Common.Purchase_Order.Request;
-using Be.Common.Purchase_Order.Response;
+﻿using Be.Common.PurchaseOrder.Request;
+using Be.Common.PurchaseOrder.Response;
 using Be.Core.Entities;
 using Be.Services.KiotViet;
 using Be.Services.Pos;
@@ -43,6 +43,11 @@ namespace FrmMain
             _systemService = systemService;
             InitializeComponent();
             StartCountdownTimer();
+        }
+
+        public async void ReloadData()
+        {
+            await LoadData();
         }
 
         private async Task LoadData()
@@ -112,7 +117,6 @@ namespace FrmMain
             }
         }
 
-
         private void grdViewOrders_DoubleClick(object sender, EventArgs e)
         {
             try
@@ -121,20 +125,23 @@ namespace FrmMain
                 var purchaseOrderId = Convert.ToInt64(view.GetRowCellValue(view.FocusedRowHandle, "Id"));
                 var purchaseOrderCode = view.GetRowCellValue(view.FocusedRowHandle, "Code");
                 if (purchaseOrderId <= 0) return;
-                if (FormHelper.OpenedForm(nameof(FrmPurchaseProcess), WuserControl.Order, out var openForm))
+                var tabKey = $"edit_purchase";
+                if (FormHelper.OpenedKeyForm(nameof(FrmAddPurchase),tabKey, out var openForm))
                 {
-                    if (openForm is FrmPurchaseProcess processForm)
+                    if (openForm is FrmAddPurchase processForm)
                     {
-                        processForm.ReloadData(purchaseOrderId);
+                        processForm.ReloadData(purchaseOrderId, purchaseOrderCode.ToString());
                     }
+                    openForm.Focus();
                 }
                 else
                 {
-                    FrmPurchaseProcess.CurrentCode = purchaseOrderCode.ToString();
-                    FrmPurchaseProcess.CurrentId = purchaseOrderId;
-                    var frmPurchaseInstance = _mainForm.ServiceProvider.GetRequiredService<FrmPurchaseProcess>();
+                    FrmAddPurchase.CurrentCode = purchaseOrderCode.ToString();
+                    FrmAddPurchase.CurrentId = purchaseOrderId;
+                    FrmAddPurchase.IsEditMode = true;
+                    var frmPurchaseInstance = _mainForm.ServiceProvider.GetRequiredService<FrmAddPurchase>();
                     Form frmPurchase = frmPurchaseInstance;
-                    FormHelper.NewFormNew(_mainForm, frmPurchase, WuserControl.Order, nameof(FrmPurchaseProcess));
+                    FormHelper.NewManyForm(_mainForm, frmPurchase, WuserControl.FrmPurchaseAdd, tabKey);
                 }
             }
             catch (Exception ex)
@@ -155,8 +162,8 @@ namespace FrmMain
                         textEdit.MaximumSize = new Size(0, height);
                         break;
                     case SimpleButton button:
-                        button.MinimumSize = new Size(0, height);
-                        button.MaximumSize = new Size(0, height);
+                        button.MinimumSize = new Size(0, 35);
+                        button.MaximumSize = new Size(0, 35);
                         break;
                     case CheckEdit checkEdit:
                         checkEdit.MinimumSize = new Size(0, height);
@@ -402,7 +409,17 @@ namespace FrmMain
 
         private void btnAddPurchase_Click(object sender, EventArgs e)
         {
-            if (FormHelper.OpenedForm(nameof(FrmAddPurchase), WuserControl.FrmReceiverList, out _)) return;
+            //if (FormHelper.OpenedForm(nameof(FrmAddPurchase), WuserControl.FrmPurchaseAdd, out var openForm))
+            //{
+            //    if (openForm is FrmAddPurchase processForm)
+            //    {
+            //        processForm.ReloadData(0);
+            //    }
+            //}
+            ;
+            FrmAddPurchase.CurrentCode = null;
+            FrmAddPurchase.CurrentId = 0;
+            FrmAddPurchase.IsEditMode = false;
             var frmAddPurchase = _mainForm.ServiceProvider.GetRequiredService<FrmAddPurchase>();
             FormHelper.NewFormNew(_mainForm, frmAddPurchase, WuserControl.FrmPurchaseAdd);
         }

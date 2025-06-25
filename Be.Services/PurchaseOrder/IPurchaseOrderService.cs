@@ -1,5 +1,5 @@
-﻿using Be.Common.Purchase_Order.Dto;
-using Be.Common.Purchase_Order.Request;
+﻿using Be.Common.PurchaseOrder.Dto;
+using Be.Common.PurchaseOrder.Request;
 using Be.Common.Responses;
 
 namespace Be.Services.PurchaseOrder
@@ -13,5 +13,9 @@ namespace Be.Services.PurchaseOrder
         Task<ApiResponse> CreatePurchaseOrder(PurchaseOrderDto purchaseOrderDto);
         Task<ApiResponse> UpdatePurchaseOrder(Guid id, PurchaseOrderDto purchaseOrderDto);
         Task<ApiResponse> DeletePurchaseOrder(Guid id);
+        Task<bool> AddPurchaseChecked(PurchaseCheckedDto purchaseCheckedDto);
+        Task<bool> UpdatePurchaseChecked(long purchaseId, PurchaseCheckedDto purchaseCheckedDto);
+        Task<List<PurchaseCheckedDto>> GetPurchaseCheckedByPurchaseId(long purchaseId);
+        Task<PurchaseCheckedDto> GetPurchaseCheckedByProduct(long purchaseId, string productBarCode, long branchId);
     }
 }

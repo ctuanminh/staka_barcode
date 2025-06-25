@@ -361,6 +361,8 @@
             // 
             // grdViewOrders
             // 
+            grdViewOrders.Appearance.HeaderPanel.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold);
+            grdViewOrders.Appearance.HeaderPanel.Options.UseFont = true;
             grdViewOrders.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] { grdClmCode, clmDispatchedDate, grdClmFromBranchName, grdClmTotal, grdClmToBranchName, grdClmStatusValue, clmSum, gridClmId, gridReceivedDate });
             grdViewOrders.GridControl = grdControlOrders;
             grdViewOrders.Name = "grdViewOrders";

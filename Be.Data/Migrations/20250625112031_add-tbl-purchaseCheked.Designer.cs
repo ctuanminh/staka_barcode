@@ -3,6 +3,7 @@ using System;
 using Be.Data.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Be.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250625112031_add-tbl-purchaseCheked")]
+    partial class addtblpurchaseCheked
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -774,9 +777,6 @@ namespace Be.Data.Migrations
                         .HasColumnType("bigint");
 
                     b.Property<string>("ProductBarCode")
-                        .HasColumnType("text");
-
-                    b.Property<string>("ProductCode")
                         .HasColumnType("text");
 
                     b.Property<string>("PurchaseCode")

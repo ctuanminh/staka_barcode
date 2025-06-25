@@ -1,4 +1,4 @@
-﻿using Be.Common.Purchase_Order.Response;
+﻿using Be.Common.PurchaseOrder.Response;
 using Be.Core.Entities;
 using Be.Services.Catalog;
 using Be.Services.KiotViet;
@@ -15,7 +15,6 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Be.Services.Pos;
 using FrmMain.App;
-using System.Text.Json;
 using Newtonsoft.Json;
 using Exception = System.Exception;
 

@@ -31,5 +31,29 @@ namespace FrmMain.Utils
             openForm.Close();
             return false;
         }
+        public static bool OpenedKeyForm(string formName, string tabKey, out Form openForm)
+        {
+            openForm = null;
+
+            foreach (Form frm in Application.OpenForms)
+            {
+                if (frm.Name == formName && frm.AccessibleDescription == tabKey)
+                {
+                    openForm = frm;
+                    openForm.BringToFront();
+                    return true;
+                }
+            }
+
+            return false;
+        }
+        public static void NewManyForm(Form mainForm, Form formToOpen, WuserControl wuser, string tabKey = "")
+        {
+            formToOpen.MdiParent = mainForm;
+            formToOpen.Name = formToOpen.GetType().Name;
+            formToOpen.AccessibleDescription = tabKey;
+            formToOpen.Dock = DockStyle.Fill;
+            formToOpen.Show();
+        }
     }
 }
