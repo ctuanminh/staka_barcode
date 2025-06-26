@@ -45,6 +45,11 @@ namespace FrmMain
             StartCountdownTimer();
         }
 
+        public async void ReloadData()
+        {
+            await LoadData();
+        }
+
         private async Task LoadData()
         {
             try

@@ -29,6 +29,8 @@ namespace FrmMain
 {
     public partial class FrmOrderProcess : XtraForm
     {
+        #region Fileds
+
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public static string CurrentCode { get; set; }
 
@@ -46,7 +48,11 @@ namespace FrmMain
         private Timer _reloadTimer;
         private DateTime _nextReloadTime;
         private const int ReloadIntervalMinutes = 30;
-        public FrmOrderProcess(IKiotVietService kiotVietService, IProductService productService, IBranchService branchService, 
+
+        #endregion
+
+        #region Ctor
+        public FrmOrderProcess(IKiotVietService kiotVietService, IProductService productService, IBranchService branchService,
             ISystemService systemService)
         {
             _kiotVietService = kiotVietService;
@@ -58,6 +64,9 @@ namespace FrmMain
             txtOrderCode.Text = CurrentCode;
             StartCountdownTimer();
         }
+
+        #endregion
+
 
         public void ReloadData(string code, string id)
         {
@@ -102,7 +111,8 @@ namespace FrmMain
         {
             try
             {
-                SetControlEnable(false);
+                if (!IsDisposed && !Disposing)
+                    SetControlEnable(false);
 
                 var orderUrl = $"https://public.kiotapi.com/orders/code/{code}";
                 var (success, content) = await _kiotVietService.CallApiAsync(orderUrl, (string)null, "GET");
@@ -146,12 +156,12 @@ namespace FrmMain
                 txtProductCode.ReadOnly = status != OrderStatusEnum.Draft;
 
                 // Load thông tin
-                txtCustomerName.Text = orderApiResponse.CustomerName;
+                txtCustomerName.Text = orderApiResponse.CustomerName?? "Khách lẻ";
                 txtSaleName.Text = orderApiResponse.SoldByName;
                 txtSumTotal.Text = NumberFormatter.FormatDecimal(orderApiResponse.Total);
                 txtTotalPayment.Text = NumberFormatter.FormatDecimal(orderApiResponse.TotalPayment);
                 txtTotal.Text = NumberFormatter.FormatDecimal(orderApiResponse.Total);
-
+                txtDiscount.Text = NumberFormatter.FormatDecimal(orderApiResponse.OrderDetails.Sum(p => p.ViewDiscount *Convert.ToDecimal(p.Quantity))).ToString();
                 _orderResponse = orderApiResponse;
                 txtScanNumber.ReadOnly = true;
                 txtScanNumber.Text = $"{_scannedBarcodeCount}/{orderApiResponse.OrderDetails.Count()}";
@@ -270,9 +280,16 @@ namespace FrmMain
                 var findProduct = _orderResponse.OrderDetails.FirstOrDefault(p => p.ProductCode == productCode);
                 if (findProduct != null)
                 {
-                    if (findProduct.Checked) return;
-                    _scannedBarcodeCount++;
                     findProduct.Checked = true;
+                    if(findProduct.ScanCount >= findProduct.Quantity)
+                    {
+                        MessageHelper.MsgBox($"Sản phẩm {findProduct.ProductName} đã quét đủ số lượng yêu cầu.", MsgType.Information);
+                    }
+                    else
+                    {
+                        findProduct.ScanCount++;
+                        _scannedBarcodeCount++;
+                    }
                     gridControlOrder.RefreshDataSource();
                     var rowHandle = gridViewOrder.LocateByValue("ProductCode", productCode);
                     if (rowHandle < 0) return;
@@ -290,13 +307,49 @@ namespace FrmMain
                 MessageHelper.MsgBox("Không tìm thấy sản phẩm mã: " + searchBarcode, MsgType.Error_);
             }
         }
+
+        private void gridViewOrder_ShowingEditor(object sender, CancelEventArgs e)
+        {
+            if (sender is not GridView view) return;
+            if (view.FocusedColumn.FieldName != "ScanCount") return;
+            if (view.GetRow(view.FocusedRowHandle) is not OrderDetailResponse row) return;
+
+            if (row.Checked) return;
+            e.Cancel = true;
+        }
+
+        private void gridViewOrder_ShownEditor(object sender, EventArgs e)
+        {
+            var view = sender as GridView;
+            view?.ActiveEditor?.Focus();
+            view?.ActiveEditor?.SelectAll();
+        }
+        private void gridViewOrder_ValidatingEditor(object sender, DevExpress.XtraEditors.Controls.BaseContainerValidateEditorEventArgs e)
+        {
+            if (sender is not GridView view) return;
+            if (view.FocusedColumn.FieldName != "ScanCount") return;
+            if (!int.TryParse(e.Value?.ToString(), out var scanCount))
+            {
+                e.Value = 0;
+                return;
+            }
+
+            e.Value = scanCount <= 0 ? 0 : scanCount;
+        }
         private void gridViewOrder_RowCellStyle(object sender, RowCellStyleEventArgs e)
         {
             if (sender is not GridView view) return;
 
             if (view.GetRow(e.RowHandle) is not OrderDetailResponse row) return;
-
+            var scanCount = Convert.ToInt32(view.GetRowCellValue(view.FocusedRowHandle, "ScanCount"));
+            var quantity = Convert.ToInt32(view.GetRowCellValue(view.FocusedRowHandle, "Quantity"));
             if (!row.Checked) return;
+            if (scanCount != quantity)
+            {
+                e.Appearance.BackColor = Color.LightCoral; // màu đỏ nhạt
+                e.Appearance.ForeColor = Color.Black;
+                return;
+            }
             e.Appearance.BackColor = Color.LightGreen; // Màu xanh nhạt
             e.Appearance.ForeColor = Color.Black;      // Text màu đen (tuỳ chọn)
         }
@@ -312,6 +365,12 @@ namespace FrmMain
                     MessageHelper.MsgBox("Đơn hàng đã huỷ, vui lòng kiểm tra lại", MsgType.Error_);
                     break;
                 default:
+                    // Nếu ScanCount != Quantity thì cảnh báo không cho hoàn thành.
+                    if (_orderResponse.OrderDetails.Any(p => p.ScanCount != p.Quantity))
+                    {
+                        MessageHelper.MsgBox("Vui lòng kiểm tra số lượng trước khi hoàn thành", MsgType.Error_);
+                        return;
+                    }
                     if (_scannedBarcodeCount == _orderResponse.OrderDetails.Count())
                     {
                         var confirm = MessageHelper.MsgBox("Hoàn thành đơn hàng", MsgType.YesNo);
@@ -535,7 +594,6 @@ namespace FrmMain
             chkDraft.ForeColor = Color.White;
             chkCancel.BackColor = Color.OrangeRed;
         }
-
         private async Task LoadDefaultSetting()
         {
             var setting = AppGlobals.AppSetting.FirstOrDefault(s =>

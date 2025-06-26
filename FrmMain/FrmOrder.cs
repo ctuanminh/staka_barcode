@@ -3,7 +3,6 @@ using Be.Services.Pos;
 using Be.Services.System;
 using DevExpress.XtraEditors;
 using DevExpress.XtraGrid.Views.Grid;
-using DevExpress.XtraSplashScreen;
 using FrmMain.App;
 using FrmMain.Dto.Request;
 using FrmMain.Dto.Response;
@@ -17,7 +16,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Be.Core.Entities;
-using static FrmMain.FrmMainF;
 using Exception = System.Exception;
 
 namespace FrmMain
@@ -52,7 +50,8 @@ namespace FrmMain
         {
             try
             {
-                SetControlEnable(false);
+                if (!IsDisposed && !Disposing)
+                    SetControlEnable(false);
                 const string orderUrl = $"https://public.kiotapi.com/orders";
                 var request = new SearchOrderRequest()
                 {
@@ -141,8 +140,8 @@ namespace FrmMain
                         textEdit.MaximumSize = new Size(0, height);
                         break;
                     case SimpleButton button:
-                        button.MinimumSize = new Size(0, height);
-                        button.MaximumSize = new Size(0, height);
+                        button.MinimumSize = new Size(0, 35);
+                        button.MaximumSize = new Size(0, 35);
                         break;
                     case CheckEdit checkEdit:
                         checkEdit.MinimumSize = new Size(0, height);

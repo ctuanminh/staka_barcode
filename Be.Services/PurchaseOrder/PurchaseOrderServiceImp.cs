@@ -190,7 +190,18 @@ namespace Be.Services.PurchaseOrder
         public async Task<List<PurchaseCheckedDto>> GetPurchaseCheckedByPurchaseId(long purchaseId)
         {
             var query = await _repository.GetQueryable<PurchaseCheckedEntity>()
-                .Where(p => p.PurchaseId == purchaseId).ToListAsync();
+                .Where(p => p.PurchaseId == purchaseId)
+                .Select(p => new PurchaseCheckedDto()
+                {
+                    ProductBarCode = p.ProductBarCode,
+                    ProductCode = p.ProductCode,
+                    PurchaseId = p.PurchaseId,
+                    PurchaseCode = p.PurchaseCode,
+                    Checked = p.Checked,
+                    BranchId = p.BranchId
+                })
+                .Distinct()
+                .ToListAsync();
             var result = _mapper.Map<List<PurchaseCheckedDto>>(query);
             return result;
         }

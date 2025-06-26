@@ -52,6 +52,7 @@
         public decimal Discount { get; set; }
         public double DiscountRatio { get; set; }
         public bool Checked { get; set; }
+        public bool IsNew { get; set; }
         private decimal _total;
         public decimal Total
         {

@@ -210,7 +210,6 @@ namespace FrmMain
             }
         }
 
-
         private async void LoadProduct(List<TransferDetail> transferDetails)
         {
             try
@@ -298,11 +297,16 @@ namespace FrmMain
                     });
                 }
 
-                if (findProduct.Checked) return;
-
-                _scannedBarcodeCount++;
+                if (!findProduct.Checked)
+                {
+                    _scannedBarcodeCount++;
+                }
                 findProduct.Checked = true;
-
+                if (findProduct.ReceiveQuantity < findProduct.TransferredQuantity)
+                {
+                    findProduct.ReceiveQuantity++;
+                }
+                
                 await InvokeAsync(() =>
                 {
                     gridControlOrder.RefreshDataSource();

@@ -103,6 +103,8 @@
             // 
             // groupControl1
             // 
+            groupControl1.AppearanceCaption.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold);
+            groupControl1.AppearanceCaption.Options.UseFont = true;
             groupControl1.Controls.Add(layoutControlTop);
             groupControl1.Dock = System.Windows.Forms.DockStyle.Left;
             groupControl1.Location = new System.Drawing.Point(0, 0);
@@ -337,6 +339,8 @@
             // 
             // groupControl2
             // 
+            groupControl2.AppearanceCaption.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold);
+            groupControl2.AppearanceCaption.Options.UseFont = true;
             groupControl2.Controls.Add(grdControlOrders);
             groupControl2.Dock = System.Windows.Forms.DockStyle.Fill;
             groupControl2.Location = new System.Drawing.Point(350, 0);
@@ -361,6 +365,8 @@
             // 
             // grdViewOrders
             // 
+            grdViewOrders.Appearance.HeaderPanel.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold);
+            grdViewOrders.Appearance.HeaderPanel.Options.UseFont = true;
             grdViewOrders.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] { grdClmCode, clmDispatchedDate, grdClmFromBranchName, grdClmTotal, grdClmToBranchName, grdClmStatusValue, clmSum, gridClmId, gridReceivedDate });
             grdViewOrders.GridControl = grdControlOrders;
             grdViewOrders.Name = "grdViewOrders";

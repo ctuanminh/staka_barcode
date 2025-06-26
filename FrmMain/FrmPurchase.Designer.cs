@@ -109,17 +109,20 @@
             // 
             grdControlOrders.Dock = System.Windows.Forms.DockStyle.Fill;
             grdControlOrders.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            grdControlOrders.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
             grdControlOrders.Location = new System.Drawing.Point(2, 22);
             grdControlOrders.MainView = grdViewOrders;
             grdControlOrders.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             grdControlOrders.Name = "grdControlOrders";
             grdControlOrders.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] { repositoryItemCheckEdit1, repositoryItemDateEdit1, repositoryItemDateEdit2, rpAction });
-            grdControlOrders.Size = new System.Drawing.Size(950, 584);
+            grdControlOrders.Size = new System.Drawing.Size(946, 584);
             grdControlOrders.TabIndex = 1;
             grdControlOrders.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] { grdViewOrders });
             // 
             // grdViewOrders
             // 
+            grdViewOrders.Appearance.HeaderPanel.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold);
+            grdViewOrders.Appearance.HeaderPanel.Options.UseFont = true;
             grdViewOrders.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] { grdClmCode, purchaseDate, grdClmSupplierName, grdClmTotal, grdClmStatusValue, clmQuantity, clmId, clmStatus });
             grdViewOrders.GridControl = grdControlOrders;
             grdViewOrders.Name = "grdViewOrders";
@@ -225,6 +228,8 @@
             // 
             // groupControl1
             // 
+            groupControl1.AppearanceCaption.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold);
+            groupControl1.AppearanceCaption.Options.UseFont = true;
             groupControl1.Controls.Add(layoutControlTop);
             groupControl1.Dock = System.Windows.Forms.DockStyle.Left;
             groupControl1.Location = new System.Drawing.Point(0, 0);
@@ -458,12 +463,14 @@
             // 
             // groupControl2
             // 
+            groupControl2.AppearanceCaption.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold);
+            groupControl2.AppearanceCaption.Options.UseFont = true;
             groupControl2.Controls.Add(grdControlOrders);
             groupControl2.Dock = System.Windows.Forms.DockStyle.Fill;
             groupControl2.Location = new System.Drawing.Point(350, 0);
             groupControl2.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             groupControl2.Name = "groupControl2";
-            groupControl2.Size = new System.Drawing.Size(954, 608);
+            groupControl2.Size = new System.Drawing.Size(950, 608);
             groupControl2.TabIndex = 3;
             groupControl2.Text = "Danh sách phiếu Nhập hàng";
             // 
@@ -472,7 +479,7 @@
             Appearance.Options.UseFont = true;
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(1304, 608);
+            ClientSize = new System.Drawing.Size(1300, 608);
             Controls.Add(groupControl2);
             Controls.Add(groupControl1);
             Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);

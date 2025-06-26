@@ -33,9 +33,11 @@
             groupControl1 = new DevExpress.XtraEditors.GroupControl();
             grpCtlButton = new DevExpress.XtraEditors.GroupControl();
             ltCtlButton = new DevExpress.XtraLayout.LayoutControl();
+            simpleButton1 = new DevExpress.XtraEditors.SimpleButton();
             btnFinish = new DevExpress.XtraEditors.SimpleButton();
             layoutControlGroup2 = new DevExpress.XtraLayout.LayoutControlGroup();
             layoutControlItem10 = new DevExpress.XtraLayout.LayoutControlItem();
+            layoutControlItem20 = new DevExpress.XtraLayout.LayoutControlItem();
             layoutControl2 = new DevExpress.XtraLayout.LayoutControl();
             txtDescription = new DevExpress.XtraEditors.TextEdit();
             txtPurchaseDate = new DevExpress.XtraEditors.TextEdit();
@@ -105,8 +107,6 @@
             Total = new DevExpress.XtraGrid.Columns.GridColumn();
             price = new DevExpress.XtraGrid.Columns.GridColumn();
             grdClmChecked = new DevExpress.XtraGrid.Columns.GridColumn();
-            simpleButton1 = new DevExpress.XtraEditors.SimpleButton();
-            layoutControlItem20 = new DevExpress.XtraLayout.LayoutControlItem();
             ((System.ComponentModel.ISupportInitialize)groupControl1).BeginInit();
             groupControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)grpCtlButton).BeginInit();
@@ -115,6 +115,7 @@
             ltCtlButton.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)layoutControlGroup2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)layoutControlItem10).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)layoutControlItem20).BeginInit();
             ((System.ComponentModel.ISupportInitialize)layoutControl2).BeginInit();
             layoutControl2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)txtDescription.Properties).BeginInit();
@@ -170,11 +171,12 @@
             ((System.ComponentModel.ISupportInitialize)layoutControlItem16).BeginInit();
             ((System.ComponentModel.ISupportInitialize)layoutControlItem17).BeginInit();
             ((System.ComponentModel.ISupportInitialize)behaviorManager1).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)layoutControlItem20).BeginInit();
             SuspendLayout();
             // 
             // groupControl1
             // 
+            groupControl1.AppearanceCaption.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold);
+            groupControl1.AppearanceCaption.Options.UseFont = true;
             groupControl1.Controls.Add(grpCtlButton);
             groupControl1.Controls.Add(layoutControl2);
             groupControl1.Dock = System.Windows.Forms.DockStyle.Right;
@@ -209,6 +211,18 @@
             ltCtlButton.TabIndex = 0;
             ltCtlButton.Text = "layoutControl3";
             // 
+            // simpleButton1
+            // 
+            simpleButton1.Appearance.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold);
+            simpleButton1.Appearance.Options.UseFont = true;
+            simpleButton1.ImageOptions.Image = (System.Drawing.Image)resources.GetObject("simpleButton1.ImageOptions.Image");
+            simpleButton1.Location = new System.Drawing.Point(12, 12);
+            simpleButton1.Name = "simpleButton1";
+            simpleButton1.Size = new System.Drawing.Size(159, 38);
+            simpleButton1.StyleController = ltCtlButton;
+            simpleButton1.TabIndex = 4;
+            simpleButton1.Text = "LƯU TẠM";
+            // 
             // btnFinish
             // 
             btnFinish.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
@@ -238,6 +252,14 @@
             layoutControlItem10.Name = "layoutControlItem10";
             layoutControlItem10.Size = new System.Drawing.Size(164, 46);
             layoutControlItem10.TextVisible = false;
+            // 
+            // layoutControlItem20
+            // 
+            layoutControlItem20.Control = simpleButton1;
+            layoutControlItem20.Location = new System.Drawing.Point(0, 0);
+            layoutControlItem20.Name = "layoutControlItem20";
+            layoutControlItem20.Size = new System.Drawing.Size(163, 46);
+            layoutControlItem20.TextVisible = false;
             // 
             // layoutControl2
             // 
@@ -551,6 +573,8 @@
             // 
             // groupControl2
             // 
+            groupControl2.AppearanceCaption.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold);
+            groupControl2.AppearanceCaption.Options.UseFont = true;
             groupControl2.Controls.Add(grdControlOrders);
             groupControl2.Controls.Add(layoutControlTop);
             groupControl2.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -576,6 +600,8 @@
             // 
             // grdViewOrder
             // 
+            grdViewOrder.Appearance.HeaderPanel.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold);
+            grdViewOrder.Appearance.HeaderPanel.Options.UseFont = true;
             grdViewOrder.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] { clmProductCode, clmProductName, clmQuantity, clmPrice, clmDiscount, clmTotal, clmChecked, clmUnit });
             grdViewOrder.GridControl = grdControlOrders;
             grdViewOrder.Name = "grdViewOrder";
@@ -921,26 +947,6 @@
             grdClmChecked.VisibleIndex = 7;
             grdClmChecked.Width = 89;
             // 
-            // simpleButton1
-            // 
-            simpleButton1.Appearance.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold);
-            simpleButton1.Appearance.Options.UseFont = true;
-            simpleButton1.ImageOptions.Image = (System.Drawing.Image)resources.GetObject("simpleButton1.ImageOptions.Image");
-            simpleButton1.Location = new System.Drawing.Point(12, 12);
-            simpleButton1.Name = "simpleButton1";
-            simpleButton1.Size = new System.Drawing.Size(159, 38);
-            simpleButton1.StyleController = ltCtlButton;
-            simpleButton1.TabIndex = 4;
-            simpleButton1.Text = "LƯU TẠM";
-            // 
-            // layoutControlItem20
-            // 
-            layoutControlItem20.Control = simpleButton1;
-            layoutControlItem20.Location = new System.Drawing.Point(0, 0);
-            layoutControlItem20.Name = "layoutControlItem20";
-            layoutControlItem20.Size = new System.Drawing.Size(163, 46);
-            layoutControlItem20.TextVisible = false;
-            // 
             // FrmPurchaseProcess
             // 
             Appearance.Options.UseFont = true;
@@ -965,6 +971,7 @@
             ltCtlButton.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)layoutControlGroup2).EndInit();
             ((System.ComponentModel.ISupportInitialize)layoutControlItem10).EndInit();
+            ((System.ComponentModel.ISupportInitialize)layoutControlItem20).EndInit();
             ((System.ComponentModel.ISupportInitialize)layoutControl2).EndInit();
             layoutControl2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)txtDescription.Properties).EndInit();
@@ -1021,7 +1028,6 @@
             ((System.ComponentModel.ISupportInitialize)layoutControlItem16).EndInit();
             ((System.ComponentModel.ISupportInitialize)layoutControlItem17).EndInit();
             ((System.ComponentModel.ISupportInitialize)behaviorManager1).EndInit();
-            ((System.ComponentModel.ISupportInitialize)layoutControlItem20).EndInit();
             ResumeLayout(false);
         }
 
