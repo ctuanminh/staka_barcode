@@ -40,7 +40,7 @@
         public string Note { get; set; }
         public decimal ViewDiscount { get; set; }
         public bool Checked { get; set; } = false;
-        public int ScanCount { get; set; }
+        public double ScanCount { get; set; }
 
         public string Unit { get; set; }
         private decimal _total;

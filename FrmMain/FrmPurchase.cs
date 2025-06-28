@@ -5,6 +5,7 @@ using Be.Services.KiotViet;
 using Be.Services.Pos;
 using Be.Services.System;
 using DevExpress.XtraEditors;
+using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraGrid.Views.Grid;
 using FrmMain.App;
 using FrmMain.Utils;
@@ -141,7 +142,7 @@ namespace FrmMain
                     FrmAddPurchase.IsEditMode = true;
                     var frmPurchaseInstance = _mainForm.ServiceProvider.GetRequiredService<FrmAddPurchase>();
                     Form frmPurchase = frmPurchaseInstance;
-                    FormHelper.NewManyForm(_mainForm, frmPurchase, WuserControl.FrmPurchaseAdd, tabKey);
+                    FormHelper.ShowManyForm(_mainForm, frmPurchase, WuserControl.FrmPurchaseAdd, tabKey);
                 }
             }
             catch (Exception ex)
@@ -192,6 +193,8 @@ namespace FrmMain
                 SetDefaultDatePurchase();
                 InitGridView();
                 await LoadData();
+                rpAction.ButtonClick += rpBtnAction_ButtonClick;
+                grdViewOrders.MouseMove += grdViewOrders_MouseMove;
             }
             catch (Exception exception)
             {
@@ -407,21 +410,49 @@ namespace FrmMain
             grdViewOrders.Columns["PurchaseDate"].DisplayFormat.FormatString = "dd/MM/yyyy HH:mm:ss";
         }
 
-        private void btnAddPurchase_Click(object sender, EventArgs e)
+        private async void btnAddPurchase_Click(object sender, EventArgs e)
         {
-            //if (FormHelper.OpenedForm(nameof(FrmAddPurchase), WuserControl.FrmPurchaseAdd, out var openForm))
-            //{
-            //    if (openForm is FrmAddPurchase processForm)
-            //    {
-            //        processForm.ReloadData(0);
-            //    }
-            //}
-            ;
-            FrmAddPurchase.CurrentCode = null;
-            FrmAddPurchase.CurrentId = 0;
-            FrmAddPurchase.IsEditMode = false;
-            var frmAddPurchase = _mainForm.ServiceProvider.GetRequiredService<FrmAddPurchase>();
-            FormHelper.NewFormNew(_mainForm, frmAddPurchase, WuserControl.FrmPurchaseAdd);
+            await FormHelper.OpenManyFormWithScope<FrmAddPurchase>(
+                _mainForm, _mainForm.ServiceProvider,
+                "", 0, 
+                "AddPurchase", WuserControl.FrmPurchase);
         }
+        private void grdViewOrders_MouseMove(object sender, MouseEventArgs e)
+        {
+            var view = sender as GridView;
+            var hitInfo = view.CalcHitInfo(e.Location);
+
+            if (hitInfo.InRowCell && hitInfo.Column.FieldName == "Action")
+            {
+                grdControlOrders.Cursor = Cursors.Hand;
+            }
+            else
+            {
+                grdControlOrders.Cursor = Cursors.Default;
+            }
+        }
+        private async void rpBtnAction_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (grdViewOrders.FocusedRowHandle < 0) return;
+
+                var orderCode = grdViewOrders.GetRowCellValue(grdViewOrders.FocusedRowHandle, "Code")?.ToString();
+                var orderId = grdViewOrders.GetRowCellValue(grdViewOrders.FocusedRowHandle, "Id")?.ToString();
+
+                if (string.IsNullOrEmpty(orderCode) || string.IsNullOrEmpty(orderId)) return;
+                await FormHelper.OpenFormWithScope<FrmPurchaseProcess>(_mainForm,
+                    _mainForm.ServiceProvider,
+                    orderCode,
+                    Convert.ToInt64( orderId),
+                    nameof(FrmPurchaseProcess),
+                    WuserControl.OrderProcess);
+            }
+            catch (Exception ex)
+            {
+                MessageHelper.MsgBox("Lỗi khi chuyển dữ liệu", MsgType.Error_);
+            }
+        }
+
     }
 }

@@ -32,6 +32,8 @@ namespace Be.Data.Data
         public DbSet<PurchaseCheckedEntity> PurchaseCheckeds { get; set; }        
         public DbSet<TransferEntity> Transfer { get; set; } 
         public DbSet<SupplierEntity> Suppliers{ get; set; } 
+        public DbSet<OrderCheckedEntity> OrderChecked{ get; set; } 
+
         //Chưa cần tạo db
         //public DbSet<BankAccount> BankAccounts { get; set; }        
 

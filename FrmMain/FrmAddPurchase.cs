@@ -32,7 +32,7 @@ using Exception = System.Exception;
 
 namespace FrmMain
 {
-    public partial class FrmAddPurchase : XtraForm
+    public partial class FrmAddPurchase : XtraForm, IReloadableForm
     {
         #region Ctor & Private Fields
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -69,7 +69,9 @@ namespace FrmMain
             InitializeComponent();
             txtOrderCode.Text = CurrentCode;
         }
-
+        public async Task ReloadData(string code, long id)
+        {
+        }
         private async void FrmPurchaseProcess_Load(object sender, EventArgs e)
         {
             try
@@ -749,6 +751,7 @@ namespace FrmMain
         {
             ReloadData(CurrentId, CurrentCode);
         }
+
     }
 
 }

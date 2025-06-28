@@ -51,7 +51,8 @@ namespace FrmMain
         {
             try
             {
-                SetControlEnable(false);
+                if (!IsDisposed && !Disposing)
+                    SetControlEnable(false);
                 var request = new SearchTranferRequest()
                 {
                     FromBranchIds = [_currentBranchId],
@@ -92,7 +93,8 @@ namespace FrmMain
             }
             finally
             {
-                SetControlEnable(true);
+                if (!IsDisposed && !Disposing)
+                    SetControlEnable(true);
             }
         }
 
@@ -384,8 +386,10 @@ namespace FrmMain
 
         private void SetControlEnable(bool enable)
         {
-            layoutControlTop.Enabled = enable;
-            grdControlOrders.Enabled = enable;
+            if (layoutControlTop != null)
+                layoutControlTop.Enabled = enable;
+            if (grdControlOrders != null)
+                grdControlOrders.Enabled = enable;
         }
     }
 }

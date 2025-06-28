@@ -39,6 +39,7 @@ namespace Be.Services
 			services.AddScoped<ISystemService, SystemServiceImp>();
 			services.AddScoped<ITransferService, TransferServiceImp>();
 			services.AddScoped<ISupplyService, SupplierServiceImp>();
+			services.AddScoped<IOrderCheckedService, OrderCheckedServiceImp>();
 			return services;
 		}
 	}

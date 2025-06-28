@@ -20,6 +20,8 @@ using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Be.Common.Order.Dto;
+using Be.Services.Order;
 using Exception = System.Exception;
 using OrderDetail = Be.Common.Order.Request.OrderDetail;
 using OrderResponse = Be.Common.Order.Response.OrderResponse;
@@ -27,16 +29,13 @@ using Size = System.Drawing.Size;
 
 namespace FrmMain
 {
-    public partial class FrmOrderProcess : XtraForm
+    public partial class FrmOrderProcess : XtraForm, IReloadableForm
     {
         #region Fileds
-
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public static string CurrentCode { get; set; }
-
+        public string CurrentCode { get; set; }
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public static string CurrentOrderId { get; set; }
-        private bool _isReloading;
+        public long CurrentOrderId { get; set; }
         private readonly IKiotVietService _kiotVietService;
         private int _branchId;
         private int _scannedBarcodeCount;
@@ -44,7 +43,8 @@ namespace FrmMain
         private readonly IProductService _productService;
         private readonly IBranchService _branchService;
         private readonly ISystemService _systemService;
-        private Dictionary<string, string> _productLookupDictionary;
+        private readonly IOrderCheckedService _orderCheckedService;
+        private Dictionary<string, string> _productCodeBarCdeDic;
         private Timer _reloadTimer;
         private DateTime _nextReloadTime;
         private const int ReloadIntervalMinutes = 30;
@@ -53,14 +53,14 @@ namespace FrmMain
 
         #region Ctor
         public FrmOrderProcess(IKiotVietService kiotVietService, IProductService productService, IBranchService branchService,
-            ISystemService systemService)
+            ISystemService systemService, IOrderCheckedService orderCheckedService)
         {
             _kiotVietService = kiotVietService;
             _productService = productService;
             _branchService = branchService;
             _systemService = systemService;
+            _orderCheckedService = orderCheckedService;
             InitializeComponent();
-            //ReloadData(CurrentCode);
             txtOrderCode.Text = CurrentCode;
             StartCountdownTimer();
         }
@@ -68,16 +68,16 @@ namespace FrmMain
         #endregion
 
 
-        public void ReloadData(string code, string id)
+        public virtual async Task ReloadData(string code, long id)
         {
             CurrentCode = code;
             CurrentOrderId = id;
             txtOrderCode.Text = code;
             _scannedBarcodeCount = 0;
-            LoadData(code);
+            await LoadData(code);
         }
 
-        private async void LoadProduct(List<OrderDetailResponse> orderDetailResponses)
+        private async Task LoadProduct(List<OrderDetailResponse> orderDetailResponses)
         {
             try
             {
@@ -87,17 +87,17 @@ namespace FrmMain
                     .Distinct()
                     .ToList();
                 var productCodeBarCode = await _productService.SynAndGetProductCodeBarCode(productCodes, _branchId);
-                _productLookupDictionary = new Dictionary<string, string>();
+                _productCodeBarCdeDic = new Dictionary<string, string>();
                 foreach (var product in productCodeBarCode)
                 {
                     if (!string.IsNullOrWhiteSpace(product.Code))
                     {
-                        _productLookupDictionary.TryAdd(product.Code, product.Code);
+                        _productCodeBarCdeDic.TryAdd(product.Code, product.Code);
                     }
 
                     if (!string.IsNullOrWhiteSpace(product.BarCode))
                     {
-                        _productLookupDictionary.TryAdd(product.BarCode, product.Code);
+                        _productCodeBarCdeDic.TryAdd(product.BarCode, product.Code);
                     }
                 }
             }
@@ -107,7 +107,7 @@ namespace FrmMain
             }
         }
 
-        private async void LoadData(string code)
+        private async Task LoadData(string code)
         {
             try
             {
@@ -146,9 +146,6 @@ namespace FrmMain
                     orderApi.ProductName = orderApi.ProductName[..start].Trim();
                 }
 
-                // Reset trạng thái check
-                chkFinish.Checked = chkCancel.Checked = chkDraft.Checked = false;
-
                 // Xử lý trạng thái
                 var status = (OrderStatusEnum)orderApiResponse.Status;
 
@@ -156,16 +153,14 @@ namespace FrmMain
                 txtProductCode.ReadOnly = status != OrderStatusEnum.Draft;
 
                 // Load thông tin
-                txtCustomerName.Text = orderApiResponse.CustomerName?? "Khách lẻ";
+                txtCustomerName.Text = orderApiResponse.CustomerName ?? "Khách lẻ";
                 txtSaleName.Text = orderApiResponse.SoldByName;
                 txtSumTotal.Text = NumberFormatter.FormatDecimal(orderApiResponse.Total);
                 txtTotalPayment.Text = NumberFormatter.FormatDecimal(orderApiResponse.TotalPayment);
                 txtTotal.Text = NumberFormatter.FormatDecimal(orderApiResponse.Total);
-                txtDiscount.Text = NumberFormatter.FormatDecimal(orderApiResponse.OrderDetails.Sum(p => p.ViewDiscount *Convert.ToDecimal(p.Quantity))).ToString();
+                txtDiscount.Text = NumberFormatter.FormatDecimal(orderApiResponse.OrderDetails.Sum(p => p.ViewDiscount * Convert.ToDecimal(p.Quantity))).ToString();
                 _orderResponse = orderApiResponse;
                 txtScanNumber.ReadOnly = true;
-                txtScanNumber.Text = $"{_scannedBarcodeCount}/{orderApiResponse.OrderDetails.Count()}";
-
                 foreach (var item in _orderResponse.OrderDetails)
                 {
                     item.DisplayDiscount = item.DiscountRatio > 0
@@ -173,9 +168,41 @@ namespace FrmMain
                         : $"{NumberFormatter.FormatDecimal(item.Discount)}%";
                 }
 
+                var orderIsChecked = await _orderCheckedService.IsOrderChecked(_orderResponse.Id, _branchId);
+                if (orderIsChecked)
+                {
+                   var result = MessageHelper.MsgBox("Tải dữ liệu đã quét trước đó?", MsgType.YesNo);
+                   if (result == DialogResult.Yes)
+                   {
+                       var orderCheckedList =
+                           await _orderCheckedService.GetOrderCheckedByOrderId(_orderResponse.Id, _branchId);
+                       var productCheckedInOrderDict = new Dictionary<string, double>();
+
+                       if (orderCheckedList.Any())
+                       {
+                           foreach (var checkedItem in orderCheckedList.Where(checkedItem =>
+                                        !string.IsNullOrWhiteSpace(checkedItem.ProductCode)))
+                           {
+                               productCheckedInOrderDict.TryAdd(checkedItem.ProductCode, checkedItem.Count);
+                           }
+                       }
+
+                       foreach (var item in _orderResponse.OrderDetails)
+                       {
+                           var productCheckedCount = productCheckedInOrderDict.GetValueOrDefault(item.ProductCode);
+                           if (productCheckedCount <= 0) continue;
+                           item.Checked = true;
+                           item.ScanCount = productCheckedCount > item.Quantity ? item.Quantity : productCheckedCount;
+                           _scannedBarcodeCount++;
+                       }
+                   }
+                }
+                txtScanNumber.Text = $"{_scannedBarcodeCount}/{orderApiResponse.OrderDetails.Count()}";
+
                 gridControlOrder.DataSource = _orderResponse.OrderDetails;
                 gridViewOrder.BestFitColumns();
-                LoadProduct(_orderResponse.OrderDetails);
+                await LoadProduct(_orderResponse.OrderDetails);
+                SetStatusControl(_orderResponse.Status);
             }
             catch (Exception ex)
             {
@@ -183,83 +210,20 @@ namespace FrmMain
             }
             finally
             {
-                SetControlEnable(true);
+                if (!IsDisposed && !Disposing)
+                    SetControlEnable(true);
                 txtProductCode.Focus();
-                SetStatusColor();
-                SetOrderStatusUI(_orderResponse);
             }
         }
 
-        private static void SetTextEditHeight(Control control, int height)
-        {
-            foreach (Control c in control.Controls)
-            {
-                switch (c)
-                {
-                    case TextEdit textEdit:
-                        textEdit.Properties.AutoHeight = false;
-                        textEdit.MinimumSize = new Size(0, height);
-                        textEdit.MaximumSize = new Size(0, height);
-                        break;
-                    case SimpleButton button:
-                        if (c.Name is nameof(btnFinish)) break;
-                        button.MinimumSize = new Size(0, height);
-                        button.MaximumSize = new Size(0, height);
-                        break;
-                    case CheckEdit checkEdit:
-                        checkEdit.MinimumSize = new Size(0, height);
-                        checkEdit.MaximumSize = new Size(0, height);
-                        break;
-                    default:
-                        {
-                            if (c.HasChildren)
-                            {
-                                SetTextEditHeight(c, height); // Đệ quy
-                            }
-                            break;
-                        }
-                }
-            }
-        }
-
-        private void SetControlEnable(bool enable)
-        {
-            layoutControlTop.Enabled = enable;
-            gridControlOrder.Enabled = enable;
-        }
-
-        private void SetStatusColor()
-        {
-            chkFinish.BackColor = Color.LightGreen;
-            chkCancel.BackColor = Color.OrangeRed;
-            chkCancel.ForeColor = Color.White;
-            chkDraft.BackColor = Color.Green;
-            chkDraft.ForeColor = Color.White;
-            switch (_orderResponse.Status)
-            {
-                case (int)OrderStatusEnum.Finished:
-                    txtOrderCode.ForeColor = Color.Black;
-                    txtOrderCode.BackColor = Color.LightGreen;
-                    break;
-                case (int)OrderStatusEnum.Cancel:
-                    txtOrderCode.BackColor = Color.OrangeRed;
-                    break;
-                default:
-                    txtOrderCode.BackColor = Color.Green;
-                    txtOrderCode.ForeColor = Color.White;
-                    break;
-            }
-        }
-
-        private void FrmOrderProcess_Load(object sender, EventArgs e)
+        private async void FrmOrderProcess_Load(object sender, EventArgs e)
         {
             try
             {
                 SetTextEditHeight(this, 25);
                 BeginInvoke(() => txtProductCode.Focus());
-                SetStatusCheckboxStyle();
-               _= LoadDefaultSetting();
-                ReloadData(CurrentCode, CurrentOrderId);
+                await LoadDefaultSetting();
+                await ReloadData(CurrentCode, CurrentOrderId);
             }
             catch (Exception exception)
             {
@@ -267,44 +231,73 @@ namespace FrmMain
             }
         }
 
-        private void txtProductCode_KeyDown(object sender, KeyEventArgs e)
+        private async void txtProductCode_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode != Keys.Enter) return;
-            var searchBarcode = txtProductCode.Text.Trim();
-            txtProductCode.SelectAll();
-            if (string.IsNullOrEmpty(searchBarcode)) return;
-            var (isProductFound, productCode) = TryFindProductCode(searchBarcode);
-            e.Handled = true;
-            if (isProductFound)
+            try
             {
-                var findProduct = _orderResponse.OrderDetails.FirstOrDefault(p => p.ProductCode == productCode);
-                if (findProduct != null)
+                if (e.KeyCode != Keys.Enter) return;
+                var searchBarcode = txtProductCode.Text.Trim();
+                txtProductCode.SelectAll();
+                e.Handled = true;
+                if (string.IsNullOrEmpty(searchBarcode)) return;
+                var (isProductFound, productCode) = TryFindProductCode(searchBarcode);
+                
+                if (!isProductFound)
                 {
-                    findProduct.Checked = true;
-                    if(findProduct.ScanCount >= findProduct.Quantity)
-                    {
-                        MessageHelper.MsgBox($"Sản phẩm {findProduct.ProductName} đã quét đủ số lượng yêu cầu.", MsgType.Information);
-                    }
-                    else
-                    {
-                        findProduct.ScanCount++;
-                        _scannedBarcodeCount++;
-                    }
-                    gridControlOrder.RefreshDataSource();
-                    var rowHandle = gridViewOrder.LocateByValue("ProductCode", productCode);
-                    if (rowHandle < 0) return;
-                    gridViewOrder.FocusedRowHandle = rowHandle;
-                    gridViewOrder.MakeRowVisible(rowHandle);
-                    txtScanNumber.Text = $"{_scannedBarcodeCount.ToString()}" + "/" + _orderResponse.OrderDetails.Count().ToString();
+                    MessageHelper.MsgBox($"Không tìm thấy sản phẩm mã: {searchBarcode}", MsgType.Error_);
+                    return;
+                }
+                var product = _orderResponse.OrderDetails.FirstOrDefault(p => p.ProductCode == productCode);
+                if (product == null)
+                {
+                    MessageHelper.MsgBox($"Không tìm thấy sản phẩm mã: {searchBarcode} trong đơn hàng", MsgType.Error_);
+                    return;
+                }
+                
+                if (!product.Checked) _scannedBarcodeCount++;
+                product.Checked = true;
+                if (product.ScanCount >= product.Quantity)
+                {
+                    MessageHelper.MsgBox($"Sản phẩm {product.ProductName} đã quét đủ số lượng yêu cầu.", MsgType.Information);
                 }
                 else
                 {
-                    MessageHelper.MsgBox("Không tìm thấy sản phẩm mã: " + searchBarcode + " trong đơn hàng", MsgType.Error_);
+                    product.ScanCount++;
+                    // Chỉ gọi service khi còn quét
+                    var productChecked =
+                        await _orderCheckedService.FindProductChecked(_orderResponse.Id, product.ProductCode,
+                            _branchId);
+                    if (productChecked == null)
+                    {
+                        await _orderCheckedService.AddOrderCheck(new OrderCheckedDto()
+                        {
+                            OrderId = _orderResponse.Id,
+                            OrderCode = _orderResponse.Code,
+                            ProductCode = product.ProductCode,
+                            ProductBarCode = searchBarcode,
+                            BranchId = _branchId,
+                            Count = product.ScanCount,
+                            UserName = AppGlobals.UserInfo.UserName,
+                        });
+                    }
+                    else
+                    {
+                        await _orderCheckedService.UpdateOrderCheck(productChecked.Id, product.ScanCount);
+                    }
                 }
+                // Refresh UI
+                gridControlOrder.RefreshDataSource();
+                var rowHandle = gridViewOrder.LocateByValue("ProductCode", productCode);
+                if (rowHandle >= 0)
+                {
+                    gridViewOrder.FocusedRowHandle = rowHandle;
+                    gridViewOrder.MakeRowVisible(rowHandle);
+                }
+                txtScanNumber.Text = $"{_scannedBarcodeCount}/{_orderResponse.OrderDetails.Count}";
             }
-            else
+            catch (Exception ex)
             {
-                MessageHelper.MsgBox("Không tìm thấy sản phẩm mã: " + searchBarcode, MsgType.Error_);
+                MessageHelper.MsgBox("Có lỗi trong quá trình thực hiện.", MsgType.Error_);
             }
         }
 
@@ -321,28 +314,72 @@ namespace FrmMain
         private void gridViewOrder_ShownEditor(object sender, EventArgs e)
         {
             var view = sender as GridView;
-            view?.ActiveEditor?.Focus();
-            view?.ActiveEditor?.SelectAll();
+            var editor = gridViewOrder.ActiveEditor;
+            if (editor == null) return;
+            editor.KeyDown += Editor_KeyDown;
+            editor.Focus();
+            editor.SelectAll();
         }
-        private void gridViewOrder_ValidatingEditor(object sender, DevExpress.XtraEditors.Controls.BaseContainerValidateEditorEventArgs e)
+        private async void gridViewOrder_ValidatingEditor(object sender, DevExpress.XtraEditors.Controls.BaseContainerValidateEditorEventArgs e)
         {
-            if (sender is not GridView view) return;
-            if (view.FocusedColumn.FieldName != "ScanCount") return;
-            if (!int.TryParse(e.Value?.ToString(), out var scanCount))
+            try
             {
-                e.Value = 0;
-                return;
-            }
+                if (sender is not GridView view || view.FocusedColumn.FieldName != "ScanCount") return;
 
-            e.Value = scanCount <= 0 ? 0 : scanCount;
+                if (!int.TryParse(e.Value?.ToString(), out var scanCount))
+                {
+                    e.Value = 0;
+                    return;
+                }
+
+                scanCount = Math.Max(0, scanCount);
+
+                if (gridViewOrder.GetRow(gridViewOrder.FocusedRowHandle) is not OrderDetailResponse row) return;
+
+                var validCount = Math.Min(scanCount, row.Quantity);
+                e.Value = scanCount;
+
+                var productChecked = await _orderCheckedService.FindProductChecked(_orderResponse.Id, row.ProductCode, _branchId);
+                if (productChecked == null)
+                {
+                    await _orderCheckedService.AddOrderCheck(new OrderCheckedDto
+                    {
+                        OrderId = _orderResponse.Id,
+                        OrderCode = _orderResponse.Code,
+                        ProductCode = row.ProductCode,
+                        ProductBarCode = "", // nhập tay không có barcode
+                        BranchId = _branchId,
+                        Count = validCount,
+                        UserName = AppGlobals.UserInfo.UserName,
+                    });
+                }
+                else
+                {
+                    await _orderCheckedService.UpdateOrderCheck(productChecked.Id, validCount);
+                }
+            }
+            catch
+            {
+                MessageHelper.MsgBox("Có lỗi khi cập nhật số lần quét.", MsgType.Error_);
+            }
+        }
+        private void Editor_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode != Keys.Enter) return;
+            gridViewOrder.CloseEditor();
+            gridViewOrder.UpdateCurrentRow();
+            BeginInvoke(() =>
+            {
+                txtProductCode.Focus();
+            });
         }
         private void gridViewOrder_RowCellStyle(object sender, RowCellStyleEventArgs e)
         {
             if (sender is not GridView view) return;
 
             if (view.GetRow(e.RowHandle) is not OrderDetailResponse row) return;
-            var scanCount = Convert.ToInt32(view.GetRowCellValue(view.FocusedRowHandle, "ScanCount"));
-            var quantity = Convert.ToInt32(view.GetRowCellValue(view.FocusedRowHandle, "Quantity"));
+            var scanCount = Convert.ToInt32(view.GetRowCellValue(e.RowHandle, "ScanCount"));
+            var quantity = Convert.ToInt32(view.GetRowCellValue(e.RowHandle, "Quantity"));
             if (!row.Checked) return;
             if (scanCount != quantity)
             {
@@ -371,7 +408,7 @@ namespace FrmMain
                         MessageHelper.MsgBox("Vui lòng kiểm tra số lượng trước khi hoàn thành", MsgType.Error_);
                         return;
                     }
-                    if (_scannedBarcodeCount == _orderResponse.OrderDetails.Count())
+                    if (_scannedBarcodeCount == _orderResponse.OrderDetails.Count)
                     {
                         var confirm = MessageHelper.MsgBox("Hoàn thành đơn hàng", MsgType.YesNo);
                         if (confirm != DialogResult.Yes) return;
@@ -386,34 +423,39 @@ namespace FrmMain
                             $"Còn {listNotScan.Count} sản phẩm chưa quét mã: {string.Join(", ", listNotScan)}.\nVui lòng thực hiện trước khi hoàn thành.";
                         MessageHelper.MsgBox(message, MsgType.Error_);
                         txtProductCode.Focus();
-                        return;
                     }
-
                     break;
             }
         }
 
-        private void txtOrderCode_KeyDown(object sender, KeyEventArgs e)
+        private async void txtOrderCode_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode != Keys.Enter) return;
-
-            var orderCode = txtOrderCode.Text.Trim();
-
-            if (_scannedBarcodeCount > 0 && _orderResponse.OrderDetails.Any(p => p.Checked))
+            try
             {
-                var result = MessageHelper.MsgBox("Bạn chắc chắn tải lại dữ liệu", MsgType.YesNo);
-                if (result != DialogResult.Yes) return;
-            }
+                if (e.KeyCode != Keys.Enter) return;
 
-            if (string.IsNullOrEmpty(orderCode)) return;
-            _scannedBarcodeCount = 0;
-            LoadData(orderCode);
-            txtProductCode.Focus();
+                var orderCode = txtOrderCode.Text.Trim();
+
+                if (_scannedBarcodeCount > 0 && _orderResponse.OrderDetails.Any(p => p.Checked))
+                {
+                    var result = MessageHelper.MsgBox("Bạn chắc chắn tải lại dữ liệu", MsgType.YesNo);
+                    if (result != DialogResult.Yes) return;
+                }
+
+                if (string.IsNullOrEmpty(orderCode)) return;
+                _scannedBarcodeCount = 0;
+                await LoadData(orderCode);
+                txtProductCode.Focus();
+            }
+            catch (Exception ex)
+            {
+                MessageHelper.MsgBox("Có lỗi trong quá trình thực hiện.", MsgType.Error_);
+            }
         }
 
         private (bool check, string code) TryFindProductCode(string searchBarCode)
         {
-            return _productLookupDictionary.TryGetValue(searchBarCode, out var codeValue) ? (true, codeValue) : (false, null);
+            return _productCodeBarCdeDic.TryGetValue(searchBarCode, out var codeValue) ? (true, codeValue) : (false, null);
         }
 
         private void FrmOrderProcess_Shown(object sender, EventArgs e)
@@ -454,21 +496,29 @@ namespace FrmMain
             _reloadTimer.Start();
         }
 
-        private void btnReloadOrder_Click(object sender, EventArgs e)
+        private async void btnReloadOrder_Click(object sender, EventArgs e)
         {
-            _reloadTimer?.Stop();
-            ReloadData(CurrentCode, CurrentOrderId);
-            btnReloadOrder.Text = "Đang tải dữ liệu...";
-            _nextReloadTime = DateTime.Now.AddMinutes(ReloadIntervalMinutes);
-            _reloadTimer?.Start();
+            try
+            {
+                CurrentCode = txtOrderCode.Text.Trim();
+                _reloadTimer?.Stop();
+                await ReloadData(CurrentCode, CurrentOrderId);
+                btnReloadOrder.Text = "Đang tải dữ liệu...";
+                _nextReloadTime = DateTime.Now.AddMinutes(ReloadIntervalMinutes);
+                _reloadTimer?.Start();
+            }
+            catch (Exception ex)
+            {
+                MessageHelper.MsgBox("Có lỗi trong quá trình xử lý đơn hàng.", MsgType.Error_);
+            }
         }
 
         private async void FinishOrder()
         {
             try
             {
-                layoutControlTop.Enabled = false;
-                gridControlOrder.Enabled = false;
+                if (!IsDisposed && !Disposing)
+                    SetControlEnable(false);
 
                 var orderUrl = $"https://public.kiotapi.com/orders/{CurrentOrderId}";
                 var (success, content) = await _kiotVietService.CallApiAsync(orderUrl, (string)null, "GET");
@@ -549,10 +599,8 @@ namespace FrmMain
                     MessageHelper.MsgBox($"Có lỗi khi cập nhật đơn hàng: {apiErrorResponse.ResponseStatus.Message}", MsgType.Error_);
                     return;
                 }
-
                 MessageHelper.MsgBox("Đơn hàng đã được hoàn thành thành công.", MsgType.Information);
-                _isReloading = true;
-                ReloadData(CurrentCode, CurrentOrderId);
+                await ReloadData(CurrentCode, CurrentOrderId);
             }
             catch (Exception ex)
             {
@@ -560,39 +608,9 @@ namespace FrmMain
             }
             finally
             {
-                layoutControlTop.Enabled = true;
-                gridControlOrder.Enabled = true;
+                if (!IsDisposed && !Disposing)
+                    SetControlEnable(true);
             }
-        }
-
-        private void btnPrintOrder_Click(object sender, EventArgs e)
-        {
-            PrintOrderGrid();
-        }
-        private void PrintOrderGrid()
-        {
-            var report = new OrderReport(_orderResponse);
-            report.ShowPreview();
-        }
-
-        private void SetOrderStatusUI(OrderResponse orderApiResponse)
-        {
-            chkFinish.Checked = orderApiResponse.Status == 3;
-            chkCancel.Checked = orderApiResponse.Status == 2;
-            chkDraft.Checked = orderApiResponse.Status == 1;
-
-            // Ẩn nút Draft nếu đã hoàn thành
-            if (orderApiResponse.Status != 1)
-                chkDraft.Visible = false;
-            chkDraft.Refresh();
-        }
-
-        private void SetStatusCheckboxStyle()
-        {
-            chkFinish.BackColor = Color.LightGreen;
-            chkDraft.BackColor = Color.Green;
-            chkDraft.ForeColor = Color.White;
-            chkCancel.BackColor = Color.OrangeRed;
         }
         private async Task LoadDefaultSetting()
         {
@@ -615,6 +633,73 @@ namespace FrmMain
 
             var branch = await _branchService.GetBranchById(branchId);
             _branchId = branch?.BranchId ?? 0;
+        }
+
+        private void SetStatusControl(int status = 1)
+        {
+            chkStatus.Checked = true;
+            switch (status)
+            {
+                case 1:
+                    chkStatus.Text = "Phiếu tạm";
+                    chkStatus.BackColor = Color.Green;
+                    chkStatus.ForeColor = Color.White;
+                    txtOrderCode.BackColor = Color.Green;
+                    txtOrderCode.ForeColor = Color.White;
+                    btnFinish.Enabled = true;
+                    break;
+                case 3:
+                    chkStatus.Text = "Hoàn thành";
+                    chkStatus.BackColor = Color.LightGreen;
+                    txtOrderCode.ForeColor = Color.Black;
+                    txtOrderCode.BackColor = Color.LightGreen;
+                    btnFinish.Enabled = false;
+                    break;
+                case 2:
+                    chkStatus.Text = "Đã huỷ";
+                    chkStatus.BackColor = Color.OrangeRed;
+                    txtOrderCode.BackColor = Color.OrangeRed;
+                    btnFinish.Enabled = false;
+                    break;
+            }
+        }
+
+        private static void SetTextEditHeight(Control control, int height)
+        {
+            foreach (Control c in control.Controls)
+            {
+                switch (c)
+                {
+                    case TextEdit textEdit:
+                        textEdit.Properties.AutoHeight = false;
+                        textEdit.MinimumSize = new Size(0, height);
+                        textEdit.MaximumSize = new Size(0, height);
+                        break;
+                    case SimpleButton button:
+                        if (c.Name is nameof(btnFinish)) break;
+                        button.MinimumSize = new Size(0, height);
+                        button.MaximumSize = new Size(0, height);
+                        break;
+                    case CheckEdit checkEdit:
+                        checkEdit.MinimumSize = new Size(0, height);
+                        checkEdit.MaximumSize = new Size(0, height);
+                        break;
+                    default:
+                        {
+                            if (c.HasChildren)
+                            {
+                                SetTextEditHeight(c, height); // Đệ quy
+                            }
+                            break;
+                        }
+                }
+            }
+        }
+
+        private void SetControlEnable(bool enable)
+        {
+            layoutControlTop.Enabled = enable;
+            gridControlOrder.Enabled = enable;
         }
     }
 

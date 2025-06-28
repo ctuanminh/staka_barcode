@@ -537,8 +537,10 @@ namespace FrmMain
 
         private void SetControlEnable(bool enable)
         {
-            layoutControlTop.Enabled = enable;
-            gridControlOrder.Enabled = enable;
+            if (layoutControlTop != null)
+                layoutControlTop.Enabled = enable;
+            if (gridControlOrder != null)
+                gridControlOrder.Enabled = enable;
         }
 
         private void SetStatusCheckboxStyle()

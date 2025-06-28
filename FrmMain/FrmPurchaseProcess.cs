@@ -20,7 +20,7 @@ using Exception = System.Exception;
 
 namespace FrmMain
 {
-    public partial class FrmPurchaseProcess : XtraForm
+    public partial class FrmPurchaseProcess : XtraForm, IReloadableForm
     {
         #region Ctor & Private Fields
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -50,14 +50,14 @@ namespace FrmMain
             StartCountdownTimer();
         }
 
-        public async void ReloadData(long purchaseId)
+        public async Task ReloadData(string code, long id)
         {
             try
             {
-                CurrentId = purchaseId;
+                CurrentId = id;
                 txtOrderCode.Text = CurrentCode;
                 _scannedBarcodeCount = 0;
-                await LoadData(purchaseId);
+                await LoadData(id);
             }
             catch (Exception ex)
             {
@@ -95,12 +95,12 @@ namespace FrmMain
             }
         }
 
-        private async Task LoadData(long purchaseId)
+        private async Task LoadData(long id)
         {
             try
             {
                 SetControlEnable(false);
-                var url = $"https://public.kiotapi.com/purchaseorders/{purchaseId}";
+                var url = $"https://public.kiotapi.com/purchaseorders/{id}";
                 var (success, content) = await _kiotVietService.CallApiAsync(url, (string)null, "GET");
                 // Log the request
                 await _systemService.AddRequest(new RequestEntity()
@@ -228,7 +228,6 @@ namespace FrmMain
                 BeginInvoke(() => txtProductCode.Focus());
                 SetStatusCheckboxStyle();
                 await LoadDefaultSetting();
-                ReloadData(CurrentId);
             }
             catch (Exception ex)
             {
@@ -388,10 +387,10 @@ namespace FrmMain
             _reloadTimer.Start();
         }
 
-        private void btnReloadOrder_Click(object sender, EventArgs e)
+        private async void btnReloadOrder_Click(object sender, EventArgs e)
         {
             _reloadTimer?.Stop();
-            ReloadData(CurrentId);
+            await ReloadData(CurrentCode, CurrentId);
             btnReloadOrder.Text = "Loading...";
             _nextReloadTime = DateTime.Now.AddMinutes(ReloadIntervalMinutes);
             _reloadTimer?.Start();
@@ -478,7 +477,7 @@ namespace FrmMain
                 }
 
                 MessageHelper.MsgBox("Nhập hàng thành thành công.", MsgType.Information);
-                ReloadData(CurrentId);
+                await ReloadData(CurrentCode, CurrentId);
             }
             catch (Exception ex)
             {

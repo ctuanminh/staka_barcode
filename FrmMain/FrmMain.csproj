@@ -89,4 +89,8 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="db\" />
+  </ItemGroup>
+
 </Project>

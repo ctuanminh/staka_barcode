@@ -44,9 +44,6 @@
             clmQuantity = new DevExpress.XtraGrid.Columns.GridColumn();
             clmId = new DevExpress.XtraGrid.Columns.GridColumn();
             clmStatus = new DevExpress.XtraGrid.Columns.GridColumn();
-            repositoryItemCheckEdit1 = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
-            repositoryItemDateEdit1 = new DevExpress.XtraEditors.Repository.RepositoryItemDateEdit();
-            repositoryItemDateEdit2 = new DevExpress.XtraEditors.Repository.RepositoryItemDateEdit();
             rpAction = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             groupControl1 = new DevExpress.XtraEditors.GroupControl();
             layoutControlTop = new DevExpress.XtraLayout.LayoutControl();
@@ -70,13 +67,9 @@
             layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
             layoutControlItem8 = new DevExpress.XtraLayout.LayoutControlItem();
             groupControl2 = new DevExpress.XtraEditors.GroupControl();
+            clmAction = new DevExpress.XtraGrid.Columns.GridColumn();
             ((System.ComponentModel.ISupportInitialize)grdControlOrders).BeginInit();
             ((System.ComponentModel.ISupportInitialize)grdViewOrders).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)repositoryItemCheckEdit1).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)repositoryItemDateEdit1).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)repositoryItemDateEdit1.CalendarTimeProperties).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)repositoryItemDateEdit2).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)repositoryItemDateEdit2.CalendarTimeProperties).BeginInit();
             ((System.ComponentModel.ISupportInitialize)rpAction).BeginInit();
             ((System.ComponentModel.ISupportInitialize)groupControl1).BeginInit();
             groupControl1.SuspendLayout();
@@ -114,7 +107,7 @@
             grdControlOrders.MainView = grdViewOrders;
             grdControlOrders.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             grdControlOrders.Name = "grdControlOrders";
-            grdControlOrders.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] { repositoryItemCheckEdit1, repositoryItemDateEdit1, repositoryItemDateEdit2, rpAction });
+            grdControlOrders.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] { rpAction });
             grdControlOrders.Size = new System.Drawing.Size(946, 584);
             grdControlOrders.TabIndex = 1;
             grdControlOrders.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] { grdViewOrders });
@@ -123,7 +116,7 @@
             // 
             grdViewOrders.Appearance.HeaderPanel.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold);
             grdViewOrders.Appearance.HeaderPanel.Options.UseFont = true;
-            grdViewOrders.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] { grdClmCode, purchaseDate, grdClmSupplierName, grdClmTotal, grdClmStatusValue, clmQuantity, clmId, clmStatus });
+            grdViewOrders.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] { grdClmCode, purchaseDate, grdClmSupplierName, grdClmTotal, grdClmStatusValue, clmQuantity, clmId, clmStatus, clmAction });
             grdViewOrders.GridControl = grdControlOrders;
             grdViewOrders.Name = "grdViewOrders";
             grdViewOrders.OptionsBehavior.Editable = false;
@@ -137,7 +130,7 @@
             grdClmCode.FieldName = "Code";
             grdClmCode.Name = "grdClmCode";
             grdClmCode.Visible = true;
-            grdClmCode.VisibleIndex = 0;
+            grdClmCode.VisibleIndex = 1;
             grdClmCode.Width = 87;
             // 
             // purchaseDate
@@ -146,7 +139,7 @@
             purchaseDate.FieldName = "PurchaseDate";
             purchaseDate.Name = "purchaseDate";
             purchaseDate.Visible = true;
-            purchaseDate.VisibleIndex = 1;
+            purchaseDate.VisibleIndex = 2;
             purchaseDate.Width = 101;
             // 
             // grdClmSupplierName
@@ -155,7 +148,7 @@
             grdClmSupplierName.FieldName = "SupplierName";
             grdClmSupplierName.Name = "grdClmSupplierName";
             grdClmSupplierName.Visible = true;
-            grdClmSupplierName.VisibleIndex = 2;
+            grdClmSupplierName.VisibleIndex = 3;
             grdClmSupplierName.Width = 122;
             // 
             // grdClmTotal
@@ -166,7 +159,7 @@
             grdClmTotal.FieldName = "Total";
             grdClmTotal.Name = "grdClmTotal";
             grdClmTotal.Visible = true;
-            grdClmTotal.VisibleIndex = 4;
+            grdClmTotal.VisibleIndex = 5;
             grdClmTotal.Width = 119;
             // 
             // grdClmStatusValue
@@ -175,7 +168,7 @@
             grdClmStatusValue.FieldName = "StatusValue";
             grdClmStatusValue.Name = "grdClmStatusValue";
             grdClmStatusValue.Visible = true;
-            grdClmStatusValue.VisibleIndex = 5;
+            grdClmStatusValue.VisibleIndex = 6;
             grdClmStatusValue.Width = 104;
             // 
             // clmQuantity
@@ -184,7 +177,7 @@
             clmQuantity.FieldName = "Quantity";
             clmQuantity.Name = "clmQuantity";
             clmQuantity.Visible = true;
-            clmQuantity.VisibleIndex = 3;
+            clmQuantity.VisibleIndex = 4;
             clmQuantity.Width = 224;
             // 
             // clmId
@@ -198,25 +191,6 @@
             clmStatus.Caption = "clmStatus";
             clmStatus.FieldName = "Status";
             clmStatus.Name = "clmStatus";
-            // 
-            // repositoryItemCheckEdit1
-            // 
-            repositoryItemCheckEdit1.AutoHeight = false;
-            repositoryItemCheckEdit1.Name = "repositoryItemCheckEdit1";
-            // 
-            // repositoryItemDateEdit1
-            // 
-            repositoryItemDateEdit1.AutoHeight = false;
-            repositoryItemDateEdit1.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
-            repositoryItemDateEdit1.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
-            repositoryItemDateEdit1.Name = "repositoryItemDateEdit1";
-            // 
-            // repositoryItemDateEdit2
-            // 
-            repositoryItemDateEdit2.AutoHeight = false;
-            repositoryItemDateEdit2.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
-            repositoryItemDateEdit2.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
-            repositoryItemDateEdit2.Name = "repositoryItemDateEdit2";
             // 
             // rpAction
             // 
@@ -474,6 +448,16 @@
             groupControl2.TabIndex = 3;
             groupControl2.Text = "Danh sách phiếu Nhập hàng";
             // 
+            // clmAction
+            // 
+            clmAction.Caption = "Action";
+            clmAction.ColumnEdit = rpAction;
+            clmAction.FieldName = "Action";
+            clmAction.Name = "clmAction";
+            clmAction.OptionsColumn.ShowCaption = false;
+            clmAction.Visible = true;
+            clmAction.VisibleIndex = 0;
+            // 
             // FrmPurchase
             // 
             Appearance.Options.UseFont = true;
@@ -490,11 +474,6 @@
             Load += FrmOrder_Load;
             ((System.ComponentModel.ISupportInitialize)grdControlOrders).EndInit();
             ((System.ComponentModel.ISupportInitialize)grdViewOrders).EndInit();
-            ((System.ComponentModel.ISupportInitialize)repositoryItemCheckEdit1).EndInit();
-            ((System.ComponentModel.ISupportInitialize)repositoryItemDateEdit1.CalendarTimeProperties).EndInit();
-            ((System.ComponentModel.ISupportInitialize)repositoryItemDateEdit1).EndInit();
-            ((System.ComponentModel.ISupportInitialize)repositoryItemDateEdit2.CalendarTimeProperties).EndInit();
-            ((System.ComponentModel.ISupportInitialize)repositoryItemDateEdit2).EndInit();
             ((System.ComponentModel.ISupportInitialize)rpAction).EndInit();
             ((System.ComponentModel.ISupportInitialize)groupControl1).EndInit();
             groupControl1.ResumeLayout(false);
@@ -533,9 +512,6 @@
         private DevExpress.XtraGrid.Columns.GridColumn grdClmSupplierName;
         private DevExpress.XtraGrid.Columns.GridColumn grdClmTotal;
         private DevExpress.XtraGrid.Columns.GridColumn grdClmStatusValue;
-        private DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit repositoryItemCheckEdit1;
-        private DevExpress.XtraEditors.Repository.RepositoryItemDateEdit repositoryItemDateEdit2;
-        private DevExpress.XtraEditors.Repository.RepositoryItemDateEdit repositoryItemDateEdit1;
         private DevExpress.XtraGrid.Columns.GridColumn clmQuantity;
         private DevExpress.XtraGrid.Columns.GridColumn clmId;
         private DevExpress.XtraEditors.GroupControl groupControl1;
@@ -562,5 +538,6 @@
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit rpAction;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem2;
         private DevExpress.XtraGrid.Columns.GridColumn clmStatus;
+        private DevExpress.XtraGrid.Columns.GridColumn clmAction;
     }
 }

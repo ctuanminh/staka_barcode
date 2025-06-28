@@ -1,4 +1,8 @@
-﻿using System.Windows.Forms;
+﻿using DevExpress.XtraEditors;
+using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 using static FrmMain.FrmMainF;
 
 namespace FrmMain.Utils
@@ -47,13 +51,65 @@ namespace FrmMain.Utils
 
             return false;
         }
-        public static void NewManyForm(Form mainForm, Form formToOpen, WuserControl wuser, string tabKey = "")
+        public static void ShowManyForm(Form mainForm, Form formToOpen, WuserControl wuser, string tabKey = "")
         {
             formToOpen.MdiParent = mainForm;
             formToOpen.Name = formToOpen.GetType().Name;
             formToOpen.AccessibleDescription = tabKey;
             formToOpen.Dock = DockStyle.Fill;
             formToOpen.Show();
+        }
+
+        //Mở 1 Form duy nhất
+        public static async Task OpenFormWithScope<TForm>(
+            Form mdiParent, IServiceProvider provider,
+            string code, long id,
+            string tabKey, WuserControl tabEnum)
+            where TForm : XtraForm, IReloadableForm
+        {
+            if (OpenedForm(typeof(TForm).Name, tabEnum, out var openForm))
+            {
+                if (openForm is TForm reloadable)
+                {
+                    await reloadable.ReloadData(code, id);
+                }
+                return;
+            }
+
+            var scope = provider.CreateScope();
+            var form = scope.ServiceProvider.GetRequiredService<TForm>();
+            form.Tag = scope;
+            await form.ReloadData(code, id);
+
+            form.FormClosed += (s, _) =>
+            {
+                if (s is Form { Tag: IServiceScope scopeToDispose })
+                    scopeToDispose.Dispose();
+            };
+
+            NewFormNew(mdiParent, form, tabEnum, typeof(TForm).Name);
+        }
+        //Mở nhiều Form thêm mới.
+        public static async Task OpenManyFormWithScope<TForm>(
+            Form mdiParent, IServiceProvider provider,
+            string code, long id,
+            string tabKeyPrefix, WuserControl tabEnum)
+            where TForm : XtraForm, IReloadableForm
+        {
+            var scope = provider.CreateScope();
+            var form = scope.ServiceProvider.GetRequiredService<TForm>();
+            form.Tag = scope;
+            await form.ReloadData(code, id);
+
+            form.FormClosed += (_, _) =>
+            {
+                if (form.Tag is IServiceScope scopeToDispose)
+                    scopeToDispose.Dispose();
+            };
+
+            var tabKey = $"{tabKeyPrefix}_{Guid.NewGuid():N}";
+
+            ShowManyForm(mdiParent, form, tabEnum, tabKey);
         }
     }
 }

@@ -53,8 +53,11 @@ namespace FrmMain
 
                 var isOrderFormOpened = MdiChildren.Any(f => f is FrmOrder);
                 if (isOrderFormOpened) return;
-                var frmOrder = ServiceProvider.GetRequiredService<FrmOrder>();
+                var scope = ServiceProvider.CreateScope();
+                var frmOrder = scope.ServiceProvider.GetRequiredService<FrmOrder>();
                 frmOrder.MdiParent = this;
+                frmOrder.Tag = scope;
+                frmOrder.FormClosed += (_, _) => scope.Dispose();
                 frmOrder.Show();
             }
             catch (Exception ex)
@@ -90,7 +93,7 @@ namespace FrmMain
 
                 bLblComputerName.Caption = $"Máy: {Environment.MachineName}";
                 var version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
-                bLblVersion.Caption = $"Ver: {version} - Build: 21/06/2025";
+                bLblVersion.Caption = $"Ver: {version} - Build: 27/06/2025";
                 if (branchSetting != null && int.TryParse(branchSetting.SettingValue, out var branchId))
                 {
                     AppGlobals.BranchId = branchId;

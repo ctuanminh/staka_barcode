@@ -1,7 +1,9 @@
-﻿using Be.Services.KiotViet;
+﻿using Be.Core.Entities;
+using Be.Services.KiotViet;
 using Be.Services.Pos;
 using Be.Services.System;
 using DevExpress.XtraEditors;
+using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraGrid.Views.Grid;
 using FrmMain.App;
 using FrmMain.Dto.Request;
@@ -15,7 +17,6 @@ using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Be.Core.Entities;
 using Exception = System.Exception;
 
 namespace FrmMain
@@ -31,7 +32,7 @@ namespace FrmMain
         private Timer _reloadTimer;
         private DateTime _nextReloadTime;
         private const int ReloadIntervalMinutes = 10;
-        public FrmOrder(FrmMainF mainForm, IKiotVietService kiotVietService, IBranchService branchService, 
+        public FrmOrder(FrmMainF mainForm, IKiotVietService kiotVietService, IBranchService branchService,
             ISystemService systemService)
         {
             _mainForm = mainForm;
@@ -62,19 +63,19 @@ namespace FrmMain
                     OrderDirection = "Desc"
                 };
                 var (success, content) = await _kiotVietService.CallApiAsync(orderUrl, request, "GET");
-                //Log request để the dõi số lượng gọi API lên kiotviet
-                await _systemService.AddRequest(new RequestEntity()
-                {
-                    Module = Name,
-                    Url = orderUrl,
-                    IsSuccess = success,
-                    BranchId = _branchId
-                });
+                ////Log request để the dõi số lượng gọi API lên kiotviet
+                //await _systemService.AddRequest(new RequestEntity()
+                //{
+                //    Module = Name,
+                //    Url = orderUrl,
+                //    IsSuccess = success,
+                //    BranchId = _branchId
+                //});
                 if (!success || string.IsNullOrWhiteSpace(content)) return;
                 var orderPagedResponse = JsonConvert.DeserializeObject<OrderPagedResponse>(content);
                 foreach (var order in orderPagedResponse.Data)
                 {
-                    if(string.IsNullOrWhiteSpace(order.CustomerName))
+                    if (string.IsNullOrWhiteSpace(order.CustomerName))
                         order.CustomerName = "Khách lẻ";
                 }
                 grdControlOrders.DataSource = orderPagedResponse.Data;
@@ -90,42 +91,7 @@ namespace FrmMain
                     SetControlEnable(true);
                 }
             }
-            
-        }
 
-        private void grdViewOrders_DoubleClick(object sender, EventArgs e)
-        {
-            try
-            {
-                if (sender is not GridView { FocusedRowHandle: >= 0 } view) return;
-                var code = view.GetRowCellValue(view.FocusedRowHandle, "Code");
-                var orderId = view.GetRowCellValue(view.FocusedRowHandle, "Id");
-
-                if (code == null || orderId == null)
-                {
-                    MessageHelper.MsgBox("Không tìm thấy đơn hàng", MsgType.Error_);
-                    return;
-                }
-                if (FormHelper.OpenedForm(nameof(FrmOrderProcess), WuserControl.Order, out var openForm))
-                {
-                    if (openForm is FrmOrderProcess processForm)
-                    {
-                        processForm.ReloadData(code.ToString(), orderId.ToString());
-                    }
-                }
-                else
-                {
-                    FrmOrderProcess.CurrentCode = code.ToString();
-                    FrmOrderProcess.CurrentOrderId = orderId.ToString();
-                    var frmOrderInstance = _mainForm.ServiceProvider.GetRequiredService<FrmOrderProcess>();
-                    Form frmOrder = frmOrderInstance;
-                    FormHelper.NewFormNew(_mainForm, frmOrder, WuserControl.Order, nameof(FrmOrderProcess));
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageHelper.MsgBox("Lỗi khi chuyển dữ liệu", MsgType.Error_);
-            }
         }
 
         private static void SetTextEditHeight(Control control, int height)
@@ -236,7 +202,7 @@ namespace FrmMain
                 {
                     _reloadTimer.Stop();
                     btnReloadOrder.Text = "Loading...";
-                    await LoadData(); 
+                    await LoadData();
                     // Khởi động lại đếm ngược
                     _nextReloadTime = DateTime.Now.AddMinutes(ReloadIntervalMinutes);
                     _reloadTimer.Start();
@@ -322,5 +288,43 @@ namespace FrmMain
             txtBranch.Text = branch?.BranchName ?? "Chưa chọn chi nhánh";
             txtBranch.ReadOnly = true;
         }
+
+        private void grdViewOrders_MouseMove(object sender, MouseEventArgs e)
+        {
+            var view = sender as GridView;
+            var hitInfo = view.CalcHitInfo(e.Location);
+
+            if (hitInfo.InRowCell && hitInfo.Column.FieldName == "Action")
+            {
+                grdControlOrders.Cursor = Cursors.Hand;
+            }
+            else
+            {
+                grdControlOrders.Cursor = Cursors.Default;
+            }
+        }
+        private async void rpBtnAction_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (grdViewOrders.FocusedRowHandle < 0) return;
+
+                var orderCode = grdViewOrders.GetRowCellValue(grdViewOrders.FocusedRowHandle, "Code")?.ToString();
+                var orderId = grdViewOrders.GetRowCellValue(grdViewOrders.FocusedRowHandle, "Id")?.ToString();
+
+                if (string.IsNullOrEmpty(orderCode) || string.IsNullOrEmpty(orderId)) return;
+                await FormHelper.OpenFormWithScope<FrmOrderProcess>(_mainForm,
+                    _mainForm.ServiceProvider,
+                    orderCode,
+                    Convert.ToInt64(orderId),
+                    nameof(FrmOrderProcess),
+                    WuserControl.OrderProcess);
+            }
+            catch (Exception ex)
+            {
+                MessageHelper.MsgBox("Lỗi khi chuyển dữ liệu", MsgType.Error_);
+            }
+        }
+
     }
 }
