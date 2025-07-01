@@ -46,7 +46,6 @@ namespace FrmMain
             _systemService = systemService;
             _branchService = branchService;
             InitializeComponent();
-            txtOrderCode.Text = CurrentCode;
             StartCountdownTimer();
         }
 
@@ -55,6 +54,7 @@ namespace FrmMain
             try
             {
                 CurrentId = id;
+                CurrentCode = code;
                 txtOrderCode.Text = CurrentCode;
                 _scannedBarcodeCount = 0;
                 await LoadData(id);

@@ -44,6 +44,7 @@
             clmQuantity = new DevExpress.XtraGrid.Columns.GridColumn();
             clmId = new DevExpress.XtraGrid.Columns.GridColumn();
             clmStatus = new DevExpress.XtraGrid.Columns.GridColumn();
+            clmAction = new DevExpress.XtraGrid.Columns.GridColumn();
             rpAction = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             groupControl1 = new DevExpress.XtraEditors.GroupControl();
             layoutControlTop = new DevExpress.XtraLayout.LayoutControl();
@@ -67,7 +68,6 @@
             layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
             layoutControlItem8 = new DevExpress.XtraLayout.LayoutControlItem();
             groupControl2 = new DevExpress.XtraEditors.GroupControl();
-            clmAction = new DevExpress.XtraGrid.Columns.GridColumn();
             ((System.ComponentModel.ISupportInitialize)grdControlOrders).BeginInit();
             ((System.ComponentModel.ISupportInitialize)grdViewOrders).BeginInit();
             ((System.ComponentModel.ISupportInitialize)rpAction).BeginInit();
@@ -119,7 +119,6 @@
             grdViewOrders.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] { grdClmCode, purchaseDate, grdClmSupplierName, grdClmTotal, grdClmStatusValue, clmQuantity, clmId, clmStatus, clmAction });
             grdViewOrders.GridControl = grdControlOrders;
             grdViewOrders.Name = "grdViewOrders";
-            grdViewOrders.OptionsBehavior.Editable = false;
             grdViewOrders.OptionsView.ShowButtonMode = DevExpress.XtraGrid.Views.Base.ShowButtonModeEnum.ShowAlways;
             grdViewOrders.OptionsView.ShowGroupPanel = false;
             grdViewOrders.DoubleClick += grdViewOrders_DoubleClick;
@@ -129,6 +128,7 @@
             grdClmCode.Caption = "Mã nhập hàng";
             grdClmCode.FieldName = "Code";
             grdClmCode.Name = "grdClmCode";
+            grdClmCode.OptionsColumn.AllowEdit = false;
             grdClmCode.Visible = true;
             grdClmCode.VisibleIndex = 1;
             grdClmCode.Width = 87;
@@ -138,6 +138,7 @@
             purchaseDate.Caption = "Thời gian";
             purchaseDate.FieldName = "PurchaseDate";
             purchaseDate.Name = "purchaseDate";
+            purchaseDate.OptionsColumn.AllowEdit = false;
             purchaseDate.Visible = true;
             purchaseDate.VisibleIndex = 2;
             purchaseDate.Width = 101;
@@ -147,6 +148,7 @@
             grdClmSupplierName.Caption = "Nhà cung cấp";
             grdClmSupplierName.FieldName = "SupplierName";
             grdClmSupplierName.Name = "grdClmSupplierName";
+            grdClmSupplierName.OptionsColumn.AllowEdit = false;
             grdClmSupplierName.Visible = true;
             grdClmSupplierName.VisibleIndex = 3;
             grdClmSupplierName.Width = 122;
@@ -158,6 +160,7 @@
             grdClmTotal.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
             grdClmTotal.FieldName = "Total";
             grdClmTotal.Name = "grdClmTotal";
+            grdClmTotal.OptionsColumn.AllowEdit = false;
             grdClmTotal.Visible = true;
             grdClmTotal.VisibleIndex = 5;
             grdClmTotal.Width = 119;
@@ -167,6 +170,7 @@
             grdClmStatusValue.Caption = "Trạng thái";
             grdClmStatusValue.FieldName = "StatusValue";
             grdClmStatusValue.Name = "grdClmStatusValue";
+            grdClmStatusValue.OptionsColumn.AllowEdit = false;
             grdClmStatusValue.Visible = true;
             grdClmStatusValue.VisibleIndex = 6;
             grdClmStatusValue.Width = 104;
@@ -176,6 +180,7 @@
             clmQuantity.Caption = "Tổng số mặt hàng";
             clmQuantity.FieldName = "Quantity";
             clmQuantity.Name = "clmQuantity";
+            clmQuantity.OptionsColumn.AllowEdit = false;
             clmQuantity.Visible = true;
             clmQuantity.VisibleIndex = 4;
             clmQuantity.Width = 224;
@@ -185,12 +190,24 @@
             clmId.Caption = "ID";
             clmId.FieldName = "Id";
             clmId.Name = "clmId";
+            clmId.OptionsColumn.AllowEdit = false;
             // 
             // clmStatus
             // 
             clmStatus.Caption = "clmStatus";
             clmStatus.FieldName = "Status";
             clmStatus.Name = "clmStatus";
+            clmStatus.OptionsColumn.AllowEdit = false;
+            // 
+            // clmAction
+            // 
+            clmAction.Caption = "Action";
+            clmAction.ColumnEdit = rpAction;
+            clmAction.FieldName = "Action";
+            clmAction.Name = "clmAction";
+            clmAction.OptionsColumn.ShowCaption = false;
+            clmAction.Visible = true;
+            clmAction.VisibleIndex = 0;
             // 
             // rpAction
             // 
@@ -199,6 +216,7 @@
             rpAction.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "Sửa", -1, true, true, false, editorButtonImageOptions1, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "Sửa phiếu nhận hàng", "Sửa", null, DevExpress.Utils.ToolTipAnchor.Default) });
             rpAction.Name = "rpAction";
             rpAction.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
+            rpAction.ButtonClick += rpBtnAction_ButtonClick;
             // 
             // groupControl1
             // 
@@ -447,16 +465,6 @@
             groupControl2.Size = new System.Drawing.Size(950, 608);
             groupControl2.TabIndex = 3;
             groupControl2.Text = "Danh sách phiếu Nhập hàng";
-            // 
-            // clmAction
-            // 
-            clmAction.Caption = "Action";
-            clmAction.ColumnEdit = rpAction;
-            clmAction.FieldName = "Action";
-            clmAction.Name = "clmAction";
-            clmAction.OptionsColumn.ShowCaption = false;
-            clmAction.Visible = true;
-            clmAction.VisibleIndex = 0;
             // 
             // FrmPurchase
             // 

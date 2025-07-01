@@ -34,7 +34,7 @@
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(790, 268);
+            ClientSize = new System.Drawing.Size(422, 155);
             Name = "FrmBase";
             Text = "FrmBase";
             ResumeLayout(false);

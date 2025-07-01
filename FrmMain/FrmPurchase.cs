@@ -17,7 +17,6 @@ using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static FrmMain.FrmMainF;
 using Exception = System.Exception;
 
 namespace FrmMain
@@ -48,7 +47,14 @@ namespace FrmMain
 
         public async void ReloadData()
         {
-            await LoadData();
+            try
+            {
+                await LoadData();
+            }
+            catch (Exception exception)
+            {
+                MessageHelper.MsgBox($"Có lỗi trong quá trình tải dữ liệu: {exception}", MsgType.Error_);
+            }
         }
 
         private async Task LoadData()
@@ -193,7 +199,6 @@ namespace FrmMain
                 SetDefaultDatePurchase();
                 InitGridView();
                 await LoadData();
-                rpAction.ButtonClick += rpBtnAction_ButtonClick;
                 grdViewOrders.MouseMove += grdViewOrders_MouseMove;
             }
             catch (Exception exception)

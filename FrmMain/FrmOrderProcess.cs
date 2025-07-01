@@ -7,10 +7,8 @@ using Be.Services.Pos;
 using Be.Services.System;
 using DevExpress.XtraEditors;
 using DevExpress.XtraGrid.Views.Grid;
-using DevExpress.XtraReports.UI;
 using FrmMain.App;
 using FrmMain.Dto.Response;
-using FrmMain.Report;
 using FrmMain.Utils;
 using Newtonsoft.Json;
 using System;
@@ -29,7 +27,7 @@ using Size = System.Drawing.Size;
 
 namespace FrmMain
 {
-    public partial class FrmOrderProcess : XtraForm, IReloadableForm
+    public partial class FrmOrderProcess : FrmBase, IReloadableForm
     {
         #region Fileds
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -37,7 +35,6 @@ namespace FrmMain
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public long CurrentOrderId { get; set; }
         private readonly IKiotVietService _kiotVietService;
-        private int _branchId;
         private int _scannedBarcodeCount;
         private OrderResponse _orderResponse;
         private readonly IProductService _productService;
@@ -45,15 +42,12 @@ namespace FrmMain
         private readonly ISystemService _systemService;
         private readonly IOrderCheckedService _orderCheckedService;
         private Dictionary<string, string> _productCodeBarCdeDic;
-        private Timer _reloadTimer;
-        private DateTime _nextReloadTime;
-        private const int ReloadIntervalMinutes = 30;
 
         #endregion
 
         #region Ctor
         public FrmOrderProcess(IKiotVietService kiotVietService, IProductService productService, IBranchService branchService,
-            ISystemService systemService, IOrderCheckedService orderCheckedService)
+            ISystemService systemService, IOrderCheckedService orderCheckedService) : base(branchService)
         {
             _kiotVietService = kiotVietService;
             _productService = productService;
@@ -61,12 +55,9 @@ namespace FrmMain
             _systemService = systemService;
             _orderCheckedService = orderCheckedService;
             InitializeComponent();
-            txtOrderCode.Text = CurrentCode;
-            StartCountdownTimer();
         }
 
         #endregion
-
 
         public virtual async Task ReloadData(string code, long id)
         {
@@ -86,7 +77,7 @@ namespace FrmMain
                     .Where(code => !string.IsNullOrWhiteSpace(code))
                     .Distinct()
                     .ToList();
-                var productCodeBarCode = await _productService.SynAndGetProductCodeBarCode(productCodes, _branchId);
+                var productCodeBarCode = await _productService.SynAndGetProductCodeBarCode(productCodes, BranchId);
                 _productCodeBarCdeDic = new Dictionary<string, string>();
                 foreach (var product in productCodeBarCode)
                 {
@@ -115,13 +106,13 @@ namespace FrmMain
                     SetControlEnable(false);
 
                 var orderUrl = $"https://public.kiotapi.com/orders/code/{code}";
-                var (success, content) = await _kiotVietService.CallApiAsync(orderUrl, (string)null, "GET");
+                var (success, content) = await _kiotVietService.CallApiAsync(orderUrl, (string)null);
                 await _systemService.AddRequest(new RequestEntity()
                 {
                     Module = "Order",
                     Url = orderUrl,
                     IsSuccess = success,
-                    BranchId = _branchId
+                    BranchId = BranchId
                 });
                 if (!success || string.IsNullOrWhiteSpace(content))
                 {
@@ -168,14 +159,14 @@ namespace FrmMain
                         : $"{NumberFormatter.FormatDecimal(item.Discount)}%";
                 }
 
-                var orderIsChecked = await _orderCheckedService.IsOrderChecked(_orderResponse.Id, _branchId);
+                var orderIsChecked = await _orderCheckedService.IsOrderChecked(_orderResponse.Id, BranchId);
                 if (orderIsChecked)
                 {
                    var result = MessageHelper.MsgBox("Tải dữ liệu đã quét trước đó?", MsgType.YesNo);
                    if (result == DialogResult.Yes)
                    {
                        var orderCheckedList =
-                           await _orderCheckedService.GetOrderCheckedByOrderId(_orderResponse.Id, _branchId);
+                           await _orderCheckedService.GetOrderCheckedByOrderId(_orderResponse.Id, BranchId);
                        var productCheckedInOrderDict = new Dictionary<string, double>();
 
                        if (orderCheckedList.Any())
@@ -266,7 +257,7 @@ namespace FrmMain
                     // Chỉ gọi service khi còn quét
                     var productChecked =
                         await _orderCheckedService.FindProductChecked(_orderResponse.Id, product.ProductCode,
-                            _branchId);
+                            BranchId);
                     if (productChecked == null)
                     {
                         await _orderCheckedService.AddOrderCheck(new OrderCheckedDto()
@@ -275,7 +266,7 @@ namespace FrmMain
                             OrderCode = _orderResponse.Code,
                             ProductCode = product.ProductCode,
                             ProductBarCode = searchBarcode,
-                            BranchId = _branchId,
+                            BranchId = BranchId,
                             Count = product.ScanCount,
                             UserName = AppGlobals.UserInfo.UserName,
                         });
@@ -339,7 +330,7 @@ namespace FrmMain
                 var validCount = Math.Min(scanCount, row.Quantity);
                 e.Value = scanCount;
 
-                var productChecked = await _orderCheckedService.FindProductChecked(_orderResponse.Id, row.ProductCode, _branchId);
+                var productChecked = await _orderCheckedService.FindProductChecked(_orderResponse.Id, row.ProductCode, BranchId);
                 if (productChecked == null)
                 {
                     await _orderCheckedService.AddOrderCheck(new OrderCheckedDto
@@ -348,7 +339,7 @@ namespace FrmMain
                         OrderCode = _orderResponse.Code,
                         ProductCode = row.ProductCode,
                         ProductBarCode = "", // nhập tay không có barcode
-                        BranchId = _branchId,
+                        BranchId = BranchId,
                         Count = validCount,
                         UserName = AppGlobals.UserInfo.UserName,
                     });
@@ -463,49 +454,12 @@ namespace FrmMain
             txtProductCode.Focus();
         }
 
-        // Tick mỗi giây
-        private void ReloadTimer_Tick(object sender, EventArgs e)
-        {
-            var remaining = _nextReloadTime - DateTime.Now;
-
-            if (remaining <= TimeSpan.Zero)
-            {
-                _reloadTimer.Stop();
-                btnReloadOrder.Text = "Loading...";
-
-                LoadData(CurrentCode); // gọi reload dữ liệu
-
-                // Khởi động lại đếm ngược
-                _nextReloadTime = DateTime.Now.AddMinutes(ReloadIntervalMinutes);
-                _reloadTimer.Start();
-            }
-            else
-            {
-                btnReloadOrder.Text = $"Tải lại sau: {remaining.Minutes:D2}:{remaining.Seconds:D2}";
-            }
-        }
-
-        // Hàm khởi động Timer đếm ngược
-        private void StartCountdownTimer()
-        {
-            _nextReloadTime = DateTime.Now.AddMinutes(ReloadIntervalMinutes);
-
-            _reloadTimer = new Timer();
-            _reloadTimer.Interval = 1000; // mỗi 1 giây
-            _reloadTimer.Tick += ReloadTimer_Tick;
-            _reloadTimer.Start();
-        }
-
         private async void btnReloadOrder_Click(object sender, EventArgs e)
         {
             try
             {
                 CurrentCode = txtOrderCode.Text.Trim();
-                _reloadTimer?.Stop();
                 await ReloadData(CurrentCode, CurrentOrderId);
-                btnReloadOrder.Text = "Đang tải dữ liệu...";
-                _nextReloadTime = DateTime.Now.AddMinutes(ReloadIntervalMinutes);
-                _reloadTimer?.Start();
             }
             catch (Exception ex)
             {
@@ -612,28 +566,6 @@ namespace FrmMain
                     SetControlEnable(true);
             }
         }
-        private async Task LoadDefaultSetting()
-        {
-            var setting = AppGlobals.AppSetting.FirstOrDefault(s =>
-                s.ComputerName == Environment.MachineName &&
-                s.ModuleName == "Branch" &&
-                s.SettingKey == "BranchId");
-
-            if (setting == null || string.IsNullOrWhiteSpace(setting.SettingValue))
-            {
-                MessageHelper.MsgBox("Không tìm thấy thông tin chi nhánh trên máy này.", MsgType.Error_);
-                return;
-            }
-
-            if (!long.TryParse(setting.SettingValue, out var branchId))
-            {
-                MessageHelper.MsgBox("Mã chi nhánh không hợp lệ.", MsgType.Error_);
-                return;
-            }
-
-            var branch = await _branchService.GetBranchById(branchId);
-            _branchId = branch?.BranchId ?? 0;
-        }
 
         private void SetStatusControl(int status = 1)
         {
@@ -644,21 +576,20 @@ namespace FrmMain
                     chkStatus.Text = "Phiếu tạm";
                     chkStatus.BackColor = Color.Green;
                     chkStatus.ForeColor = Color.White;
-                    txtOrderCode.BackColor = Color.Green;
-                    txtOrderCode.ForeColor = Color.White;
+                    txtOrderCode.ForeColor = Color.Green;
                     btnFinish.Enabled = true;
                     break;
                 case 3:
                     chkStatus.Text = "Hoàn thành";
                     chkStatus.BackColor = Color.LightGreen;
-                    txtOrderCode.ForeColor = Color.Black;
-                    txtOrderCode.BackColor = Color.LightGreen;
+                    chkStatus.ForeColor = Color.Black;
+                    txtOrderCode.ForeColor = Color.DarkGreen;
                     btnFinish.Enabled = false;
                     break;
                 case 2:
                     chkStatus.Text = "Đã huỷ";
                     chkStatus.BackColor = Color.OrangeRed;
-                    txtOrderCode.BackColor = Color.OrangeRed;
+                    txtOrderCode.ForeColor = Color.OrangeRed;
                     btnFinish.Enabled = false;
                     break;
             }

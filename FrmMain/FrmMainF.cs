@@ -110,7 +110,7 @@ namespace FrmMain
             }
         }
 
-        private void mButtonItem_ItemClick(object sender, ItemClickEventArgs e)
+        private async void mButtonItem_ItemClick(object sender, ItemClickEventArgs e)
         {
             if (AppGlobals.UserInfo.FullName == null)
             {
@@ -124,8 +124,10 @@ namespace FrmMain
                 case nameof(mbtnOrder):
                     if (!FormHelper.OpenedForm(nameof(FrmOrder), WuserControl.Order, out _))
                     {
-                        var frmOrder = ServiceProvider.GetRequiredService<FrmOrder>();
-                        FormHelper.NewFormNew(this, frmOrder, WuserControl.Order);
+                        await FormHelper.OpenFormWithScope<FrmOrder>(
+                            this, ServiceProvider,
+                            "", 0,
+                            "OpenFrmOrder", WuserControl.FrmPurchase);
                     }
                     break;
                 case nameof(mbtnSystem):

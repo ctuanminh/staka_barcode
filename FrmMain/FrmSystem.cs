@@ -179,6 +179,17 @@ namespace FrmMain
             SetTextEditHeight(this, 25);
             var branches = await _branchService.GetAllBranches();
             lkpBranch.Properties.DataSource = branches;
+            chkComboBoxBranch.Properties.DataSource = branches;
+            chkComboBoxBranch.Properties.DisplayMember = "BranchName";
+            chkComboBoxBranch.Properties.ValueMember = "BranchId";
+            var users = await _userService.GetAllUsers();
+            lkpUerList.Properties.DataSource = users;
+            lkpUerList.Properties.DisplayMember = "UserName";
+            lkpUerList.Properties.ValueMember = "Id";
+            lkpRolesList.Properties.DataSource = await _userService.GetAllRoles();
+            lkpRolesList.Properties.DisplayMember = "Name";
+            lkpRolesList.Properties.ValueMember = "Id";
+
         }
 
         private static void SetTextEditHeight(Control control, int height)
@@ -305,13 +316,17 @@ namespace FrmMain
             try
             {
                 var success = await _supplierService.SynsSupplier();
-                if(success) MessageHelper.MsgBox("Đồng bộ nhà cung cấp thành công", MsgType.Information);
+                if (success) MessageHelper.MsgBox("Đồng bộ nhà cung cấp thành công", MsgType.Information);
                 else MessageHelper.MsgBox("Không có nhà cung cấp nào để đồng bộ", MsgType.Error_);
             }
             catch (Exception ex)
             {
                 MessageHelper.MsgBox($"Có lỗi trong quá trình lưu cài đặt: {ex}", MsgType.Error_);
             }
+        }
+
+        private void btnSetRole_Click(object sender, EventArgs e)
+        {
         }
     }
 

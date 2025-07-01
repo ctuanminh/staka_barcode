@@ -1,49 +1,55 @@
-﻿using Be.Core.Entities;
-using Be.Services.KiotViet;
+﻿using Be.Services.KiotViet;
 using Be.Services.Pos;
 using Be.Services.System;
 using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraGrid.Views.Grid;
-using FrmMain.App;
 using FrmMain.Dto.Request;
 using FrmMain.Dto.Response;
 using FrmMain.Utils;
-using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Exception = System.Exception;
 
 namespace FrmMain
 {
-    public partial class FrmOrder : XtraForm
+    public partial class FrmOrder : FrmBase, IReloadableForm
     {
         private readonly FrmMainF _mainForm;
         private readonly IKiotVietService _kiotVietService;
         private List<int> _orderStatusList;
-        private int _branchId;
-        private readonly IBranchService _branchService;
-        private readonly ISystemService _systemService;
         private Timer _reloadTimer;
         private DateTime _nextReloadTime;
         private const int ReloadIntervalMinutes = 10;
-        public FrmOrder(FrmMainF mainForm, IKiotVietService kiotVietService, IBranchService branchService,
-            ISystemService systemService)
+
+        public FrmOrder(FrmMainF mainForm,
+            IKiotVietService kiotVietService,
+            IBranchService branchService,
+            ISystemService systemService) : base(branchService)
         {
             _mainForm = mainForm;
             _kiotVietService = kiotVietService;
-            _branchService = branchService;
-            _systemService = systemService;
             InitializeComponent();
             StartCountdownTimer();
         }
 
-        private void FrmOrder_Shown(object sender, EventArgs e)
+        private async void FrmOrder_Shown(object sender, EventArgs e)
+        {
+            try
+            {
+                await LoadDefaultSetting();
+            }
+            catch (Exception exception)
+            {
+                MessageHelper.MsgBox("Lỗi trong quá trình Khởi tạo giao diện: " + exception, MsgType.Error_);
+            }
+        }
+
+        public async Task ReloadData(string code, long id)
         {
         }
 
@@ -56,21 +62,14 @@ namespace FrmMain
                 const string orderUrl = $"https://public.kiotapi.com/orders";
                 var request = new SearchOrderRequest()
                 {
-                    BranchIds = [AppGlobals.BranchId],
+                    BranchIds = [BranchId],
                     Status = _orderStatusList.ToArray(),
                     PageSize = 200,
                     OrderBy = "purchaseDate",
                     OrderDirection = "Desc"
                 };
                 var (success, content) = await _kiotVietService.CallApiAsync(orderUrl, request, "GET");
-                ////Log request để the dõi số lượng gọi API lên kiotviet
-                //await _systemService.AddRequest(new RequestEntity()
-                //{
-                //    Module = Name,
-                //    Url = orderUrl,
-                //    IsSuccess = success,
-                //    BranchId = _branchId
-                //});
+                
                 if (!success || string.IsNullOrWhiteSpace(content)) return;
                 var orderPagedResponse = JsonConvert.DeserializeObject<OrderPagedResponse>(content);
                 foreach (var order in orderPagedResponse.Data)
@@ -134,6 +133,7 @@ namespace FrmMain
                 SetStatusCheckboxStyle();
                 _orderStatusList = [1];
                 await LoadData();
+                txtBranch.Text = BranchName;
             }
             catch (Exception ex)
             {
@@ -264,31 +264,6 @@ namespace FrmMain
             txtBranch.ForeColor = Color.OrangeRed;
         }
 
-        private async Task LoadDefaultSetting()
-        {
-            var setting = AppGlobals.AppSetting.FirstOrDefault(s =>
-                s.ComputerName == Environment.MachineName &&
-                s.ModuleName == "Branch" &&
-                s.SettingKey == "BranchId");
-
-            if (setting == null || string.IsNullOrWhiteSpace(setting.SettingValue))
-            {
-                MessageHelper.MsgBox("Không tìm thấy thông tin chi nhánh trên máy này.", MsgType.Error_);
-                return;
-            }
-
-            if (!long.TryParse(setting.SettingValue, out var branchId))
-            {
-                MessageHelper.MsgBox("Mã chi nhánh không hợp lệ.", MsgType.Error_);
-                return;
-            }
-
-            var branch = await _branchService.GetBranchById(branchId);
-            _branchId = branch?.BranchId ?? 0;
-            txtBranch.Text = branch?.BranchName ?? "Chưa chọn chi nhánh";
-            txtBranch.ReadOnly = true;
-        }
-
         private void grdViewOrders_MouseMove(object sender, MouseEventArgs e)
         {
             var view = sender as GridView;
@@ -303,6 +278,7 @@ namespace FrmMain
                 grdControlOrders.Cursor = Cursors.Default;
             }
         }
+        
         private async void rpBtnAction_ButtonClick(object sender, ButtonPressedEventArgs e)
         {
             try
@@ -325,6 +301,5 @@ namespace FrmMain
                 MessageHelper.MsgBox("Lỗi khi chuyển dữ liệu", MsgType.Error_);
             }
         }
-
     }
 }

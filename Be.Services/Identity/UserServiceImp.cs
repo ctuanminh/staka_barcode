@@ -144,21 +144,14 @@ namespace Be.Services.Identity
             }
         }
 
-        public async Task<ApiResponse> GetAllRoles()
+        public async Task<List<RoleModelResponse>> GetAllRoles()
         {
-            try
+            var roles = await _dbContext.Roles.Select(x => new RoleModelResponse
             {
-                var roles = await _dbContext.Roles.Select(x => new RoleModelResponse
-                {
-                    Id = x.Id,
-                    Name = x.Name
-                }).ToArrayAsync();
-                return Ok(roles);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.ToString());
-            }
+                Id = x.Id,
+                Name = x.Name
+            }).ToListAsync();
+            return roles;
         }
 
         public async Task<ApiResponse> GetAllUsers(SearchUserRequest request)
@@ -366,6 +359,20 @@ namespace Be.Services.Identity
         public Task<ApiResponse> GetInfo(string token)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<List<ApplicationUser>> GetAllUsers()
+        {
+            var users = await _userManager.Users.Select(u => new ApplicationUser
+            {
+                Id = u.Id,
+                UserName = u.UserName,
+                Email = u.Email,
+                PhoneNumber = u.PhoneNumber,
+                FullName = u.FullName,
+                CreatedAt = u.CreatedAt
+            }).ToListAsync();
+            return users;
         }
     }
 }

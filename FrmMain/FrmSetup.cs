@@ -19,7 +19,7 @@ namespace FrmMain
             try
             {
                 await LoadDefaultSetting();
-                if (_branchId != 0) return;
+                if (BranchId != 0) return;
                 MessageHelper.MsgBox("Không tìm thấy thông tin chi nhánh trên máy này.", MsgType.Error_);
             }
             catch (Exception exception)
