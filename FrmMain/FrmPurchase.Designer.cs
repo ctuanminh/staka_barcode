@@ -121,7 +121,6 @@
             grdViewOrders.Name = "grdViewOrders";
             grdViewOrders.OptionsView.ShowButtonMode = DevExpress.XtraGrid.Views.Base.ShowButtonModeEnum.ShowAlways;
             grdViewOrders.OptionsView.ShowGroupPanel = false;
-            grdViewOrders.DoubleClick += grdViewOrders_DoubleClick;
             // 
             // grdClmCode
             // 

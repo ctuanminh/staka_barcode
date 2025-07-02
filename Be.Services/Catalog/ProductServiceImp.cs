@@ -169,47 +169,53 @@ namespace Be.Services.Catalog
 
         public async Task<List<ProductCodeBarCode>> SynAndGetProductCodeBarCode(List<string> productCodes, int branchId)
         {
-            //Lấy code đã có trong db
-            var existCodes = await repository.GetQueryable<Product>()
-                .Where(p => productCodes.Contains(p.Code))
-                .Select(p => p.Code)
-                .ToListAsync();
-            //Lọc ra code chưa có
-            var missingCodes = productCodes.Except(existCodes).ToList();
-            
-            var products = new List<Product>();
-
-            //lấy sản phẩm code còn thiếu add vào db.
-            foreach (var code in missingCodes)
+            if (productCodes.Count >0)
             {
-                var productUrl = $"https://public.kiotapi.com/products/code/{code}";
-                var (success, content) = await kiotVietService.CallApiAsync(productUrl, (string)null);
-                await systemService.AddRequest(new RequestEntity()
+                //Lấy code đã có trong db
+                var existCodes = await repository.GetQueryable<Product>()
+                    .Where(p => productCodes.Contains(p.Code))
+                    .Select(p => p.Code)
+                    .ToListAsync();
+                //Lọc ra code chưa có
+                var missingCodes = productCodes.Except(existCodes).ToList();
+
+                var products = new List<Product>();
+
+                //lấy sản phẩm code còn thiếu add vào db.
+                foreach (var code in missingCodes)
                 {
-                    Module = "SyncProduct",
-                    Url = productUrl,
-                    IsSuccess = success,
-                    BranchId = branchId
-                });
-                if (!success || string.IsNullOrWhiteSpace(content)) continue;
-                var productKiotDto = JsonConvert.DeserializeObject<ProductDto>(content);
-                var product = new Product()
+                    var productUrl = $"https://public.kiotapi.com/products/code/{code}";
+                    var (success, content) = await kiotVietService.CallApiAsync(productUrl, (string)null);
+                    await systemService.AddRequest(new RequestEntity()
+                    {
+                        Module = "SyncProduct",
+                        Url = productUrl,
+                        IsSuccess = success,
+                        BranchId = branchId
+                    });
+                    if (!success || string.IsNullOrWhiteSpace(content)) continue;
+                    var productKiotDto = JsonConvert.DeserializeObject<ProductDto>(content);
+                    var product = new Product()
+                    {
+                        Id = productKiotDto.Id,
+                        Code = productKiotDto.Code,
+                        BarCode = string.IsNullOrEmpty(productKiotDto.BarCode)
+                            ? productKiotDto.Code
+                            : productKiotDto.BarCode,
+                        Name = productKiotDto.Name,
+                        Unit = productKiotDto.Unit,
+                        IsActive = true,
+                    };
+                    products.Add(product);
+                }
+
+                if (products.Any())
                 {
-                    Id = productKiotDto.Id,
-                    Code = productKiotDto.Code,
-                    BarCode = string.IsNullOrEmpty(productKiotDto.BarCode) ? productKiotDto.Code : productKiotDto.BarCode,
-                    Name = productKiotDto.Name,
-                    Unit = productKiotDto.Unit,
-                    IsActive = true,
-                };
-                products.Add(product);
+                    await repository.AddRangeAsync<Product, long>(products);
+                    await repository.SaveChangeAsync();
+                }
             }
 
-            if (products.Any())
-            {
-                await repository.AddRangeAsync<Product, long>(products);
-                await repository.SaveChangeAsync();
-            }
             var productCodeBarCodes = await repository.GetQueryable<Product>()
                 .Where(p => p.IsActive)
                 .Select(p => new ProductCodeBarCode

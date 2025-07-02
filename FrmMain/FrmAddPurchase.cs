@@ -27,7 +27,7 @@ using Exception = System.Exception;
 
 namespace FrmMain
 {
-    public partial class FrmAddPurchase : XtraForm, IReloadableForm
+    public partial class FrmAddPurchase : FrmBasePos, IReloadableForm
     {
         #region Ctor & Private Fields
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -42,7 +42,6 @@ namespace FrmMain
         private PurchaseOrderResponse _purchaseOrderResponse;
         private readonly IProductService _productService;
         private readonly ISystemService _systemService;
-        private readonly IBranchService _branchService;
         private readonly ISupplyService _supplyService;
         private readonly IPurchaseOrderService _purchaseOrderService;
         private Dictionary<string, string> _productLookupDictionary;
@@ -51,12 +50,13 @@ namespace FrmMain
         private List<PurchaseOrderDetail> _purchaseOrderDetails;
         private readonly IMapper _mapper;
         #endregion
-        public FrmAddPurchase(IKiotVietService kiotVietService, IProductService productService, ISystemService systemService, IBranchService branchService, ISupplyService supplyService, IMapper mapper, IPurchaseOrderService purchaseOrderService, FrmMainF mainForm)
+
+        public FrmAddPurchase(IKiotVietService kiotVietService, IProductService productService,
+            ISystemService systemService, IBranchService branchService, ISupplyService supplyService, IMapper mapper,
+            IPurchaseOrderService purchaseOrderService, FrmMainF mainForm) : base(branchService, systemService)
         {
             _kiotVietService = kiotVietService;
             _productService = productService;
-            _systemService = systemService;
-            _branchService = branchService;
             _supplyService = supplyService;
             _mapper = mapper;
             _purchaseOrderService = purchaseOrderService;
@@ -64,9 +64,7 @@ namespace FrmMain
             InitializeComponent();
             txtOrderCode.Text = CurrentCode;
         }
-        public async Task ReLoadData(string code, long id)
-        {
-        }
+
         private async void FrmPurchaseProcess_Load(object sender, EventArgs e)
         {
             try
@@ -74,12 +72,9 @@ namespace FrmMain
                 SetTextEditHeight(this, 25);
                 BeginInvoke(() => txtProductCode.Focus());
                 InitForm();
-                await LoadProduct();
-                await LoadSupplier();
-                await LoadDefaultSetting();
                 if (CurrentId > 0 && CurrentCode != null)
                 {
-                    ReloadData(CurrentId, CurrentCode);
+                    await ReLoadData(CurrentCode, CurrentId );
                     btnReload.Text = "Tải lại dữ liệu";
                     btnReload.Enabled = true;
                     layoutCtlReload.Enabled = true;
@@ -97,16 +92,30 @@ namespace FrmMain
             }
         }
 
-        public async void ReloadData(long purchaseId, string purchaseCode)
+        private void FrmOrderProcess_Shown(object sender, EventArgs e)
+        {
+            txtProductCode.Focus();
+        }
+        public async Task ReLoadData(string code, long id)
         {
             try
             {
-                CurrentCode = purchaseCode;
-                CurrentId = purchaseId;
+                CurrentCode = code;
+                CurrentId = id;
                 IsEditMode = true;
-                txtOrderCode.Text = purchaseCode;
+                txtOrderCode.Text = code;
                 _scannedBarcodeCount = 0;
-                await LoadData(CurrentId);
+                await LoadProduct();
+                await LoadSupplier();
+                await LoadDefaultSetting();
+                if (code != "" && id != 0)
+                {
+                    await LoadData(CurrentId);
+                }
+                else
+                {
+                    await SyncAndGetProductCodeBarCode(null);
+                }
                 Text = IsEditMode switch
                 {
                     false => "Thêm Nhận hàng",
@@ -264,10 +273,15 @@ namespace FrmMain
 
         private async Task SyncAndGetProductCodeBarCode(List<PurchaseOrderDetail> purchaseOrderDetails)
         {
-            var productCodes = purchaseOrderDetails
-                .Where(p => !string.IsNullOrWhiteSpace(p.ProductCode))
-                .Select(p => p.ProductCode)
-                .ToList();
+            var productCodes = new List<string>();
+            if (purchaseOrderDetails != null)
+            {
+                productCodes = purchaseOrderDetails
+                    .Where(p => !string.IsNullOrWhiteSpace(p.ProductCode))
+                    .Select(p => p.ProductCode)
+                    .ToList();
+            }
+            
             var productCodeBarCode = await _productService.SynAndGetProductCodeBarCode(productCodes, _branchId);
             _productLookupDictionary = new Dictionary<string, string>();
             foreach (var product in productCodeBarCode)
@@ -513,11 +527,6 @@ namespace FrmMain
 
         }
 
-        private void FrmOrderProcess_Shown(object sender, EventArgs e)
-        {
-            txtProductCode.Focus();
-        }
-
         private async void FinishOrder()
         {
             try
@@ -539,7 +548,7 @@ namespace FrmMain
                         txtPurchaseDate.Text.Trim(),
                         "dd/MM/yyyy HH:mm:ss",
                         CultureInfo.InvariantCulture),
-                    branchId = _branchId,
+                    branchId = BranchId,
                     supplier = new
                     {
                         code = supplier.Code,
@@ -586,7 +595,7 @@ namespace FrmMain
                 IsEditMode = true;
                 CurrentCode = purchase.Code;
                 CurrentId = purchase.Id;
-                ReloadData(CurrentId, CurrentCode);
+                await ReLoadData(CurrentCode, CurrentId);
                 await UpdateProductChecked(purchase.Code, purchase.Id, _purchaseOrderDetails);
             }
             catch (Exception ex)
@@ -661,28 +670,7 @@ namespace FrmMain
             checkEdit.BackColor = backColor;
             checkEdit.ForeColor = foreColor;
         }
-        private async Task LoadDefaultSetting()
-        {
-            var setting = AppGlobals.AppSetting.FirstOrDefault(s =>
-                s.ComputerName == Environment.MachineName &&
-                s.ModuleName == "Branch" &&
-                s.SettingKey == "BranchId");
-
-            if (setting == null || string.IsNullOrWhiteSpace(setting.SettingValue))
-            {
-                MessageHelper.MsgBox(this,"Không tìm thấy thông tin chi nhánh trên máy này.", MsgType.Error);
-                return;
-            }
-
-            if (!long.TryParse(setting.SettingValue, out var branchId))
-            {
-                MessageHelper.MsgBox(this,"Mã chi nhánh không hợp lệ.", MsgType.Error);
-                return;
-            }
-
-            var branch = await _branchService.GetBranchById(branchId);
-            _branchId = branch?.BranchId ?? 0;
-        }
+        
         private static void SetTextEditHeight(Control control, int height)
         {
             foreach (Control c in control.Controls)
@@ -719,9 +707,9 @@ namespace FrmMain
             return _productLookupDictionary.TryGetValue(searchBarCode.ToUpper(), out var codeValue) ? (true, codeValue) : (false, null);
         }
 
-        private void btnReload_Click(object sender, EventArgs e)
+        private async void btnReload_Click(object sender, EventArgs e)
         {
-            ReloadData(CurrentId, CurrentCode);
+            await ReLoadData(CurrentCode, CurrentId);
         }
 
     }

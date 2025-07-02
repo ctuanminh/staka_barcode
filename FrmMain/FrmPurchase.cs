@@ -112,39 +112,6 @@ namespace FrmMain
             }
         }
 
-        private void grdViewOrders_DoubleClick(object sender, EventArgs e)
-        {
-            try
-            {
-                if (sender is not GridView { FocusedRowHandle: >= 0 } view) return;
-                var purchaseOrderId = Convert.ToInt64(view.GetRowCellValue(view.FocusedRowHandle, "Id"));
-                var purchaseOrderCode = view.GetRowCellValue(view.FocusedRowHandle, "Code");
-                if (purchaseOrderId <= 0) return;
-                var tabKey = $"edit_purchase";
-                if (FormHelper.OpenedKeyForm(nameof(FrmAddPurchase),tabKey, out var openForm))
-                {
-                    if (openForm is FrmAddPurchase processForm)
-                    {
-                        processForm.ReloadData(purchaseOrderId, purchaseOrderCode.ToString());
-                    }
-                    openForm.Focus();
-                }
-                else
-                {
-                    FrmAddPurchase.CurrentCode = purchaseOrderCode.ToString();
-                    FrmAddPurchase.CurrentId = purchaseOrderId;
-                    FrmAddPurchase.IsEditMode = true;
-                    var frmPurchaseInstance = _mainForm.ServiceProvider.GetRequiredService<FrmAddPurchase>();
-                    Form frmPurchase = frmPurchaseInstance;
-                    FormHelper.ShowManyForm(_mainForm, frmPurchase, WuserControl.FrmPurchaseAdd, tabKey);
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageHelper.MsgBox(this,"Lỗi khi chuyển dữ liệu", MsgType.Error);
-            }
-        }
-
         private static void SetTextEditHeight(Control control, int height)
         {
             foreach (Control c in control.Controls)
