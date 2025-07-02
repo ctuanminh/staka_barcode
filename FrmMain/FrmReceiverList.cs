@@ -14,12 +14,12 @@ using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static FrmMain.FrmMainF;
+using Be.Services.System;
 using Exception = System.Exception;
 
 namespace FrmMain
 {
-    public partial class FrmReceiverList : XtraForm
+    public partial class FrmReceiverList : FrmBasePos, IReloadableForm
     {
         private readonly FrmMainF _mainForm;
         private readonly IKiotVietService _kiotVietService;
@@ -34,7 +34,9 @@ namespace FrmMain
         private Timer _reloadTimer;
         private DateTime _nextReloadTime;
         private const int ReloadIntervalMinutes = 5;
-        public FrmReceiverList(FrmMainF mainForm, IKiotVietService kiotVietService, IBranchService branchService)
+
+        public FrmReceiverList(FrmMainF mainForm, IKiotVietService kiotVietService, IBranchService branchService,
+            ISystemService systemService) : base(branchService, systemService)
         {
             _mainForm = mainForm;
             _kiotVietService = kiotVietService;
@@ -47,7 +49,12 @@ namespace FrmMain
             _statusFilter = 2;
         }
 
-        private async Task LoadData()
+        public async Task ReLoadData(string code, long id)
+        {
+            await LoadData(code, id);
+        }
+
+        private async Task LoadData(string code, long id)
         {
             try
             {
@@ -69,7 +76,7 @@ namespace FrmMain
 
                 if (!success || string.IsNullOrWhiteSpace(content))
                 {
-                    MessageHelper.MsgBox($"Có lỗi trong quá trình tải dữ liệu: {content}", MsgType.Error_);
+                    MessageHelper.MsgBox(this,$"Có lỗi trong quá trình tải dữ liệu: {content}", MsgType.Error);
                     grdControlOrders.DataSource = null;
                     return;
                 }
@@ -81,7 +88,7 @@ namespace FrmMain
                 if (transferPagedResponse?.Data == null)
                 {
                     grdControlOrders.DataSource = null;
-                    MessageHelper.MsgBox("Không có phiếu nhận nào.", MsgType.Information);
+                    MessageHelper.MsgBox(this,"Không có phiếu nhận nào.", MsgType.Information);
                     return;
                 }
 
@@ -95,7 +102,7 @@ namespace FrmMain
             }
             catch (Exception exception)
             {
-                MessageHelper.MsgBox($"Có lỗi trong quá trình tải dữ liệu: {exception}", MsgType.Error_);
+                MessageHelper.MsgBox(this,$"Có lỗi trong quá trình tải dữ liệu: {exception}", MsgType.Error);
             }
             finally
             {
@@ -132,7 +139,7 @@ namespace FrmMain
             }
             catch (Exception ex)
             {
-                MessageHelper.MsgBox("Lỗi khi chuyển dữ liệu", MsgType.Error_);
+                MessageHelper.MsgBox(this,"Lỗi khi chuyển dữ liệu", MsgType.Error);
             }
         }
 
@@ -147,13 +154,13 @@ namespace FrmMain
 
                 if (setting == null || string.IsNullOrWhiteSpace(setting.SettingValue))
                 {
-                    MessageHelper.MsgBox("Không tìm thấy thông tin chi nhánh trên máy này.", MsgType.Error_);
+                    MessageHelper.MsgBox(this,"Không tìm thấy thông tin chi nhánh trên máy này.", MsgType.Error);
                     return;
                 }
 
                 if (!long.TryParse(setting.SettingValue, out var branchId))
                 {
-                    MessageHelper.MsgBox("Mã chi nhánh không hợp lệ.", MsgType.Error_);
+                    MessageHelper.MsgBox(this,"Mã chi nhánh không hợp lệ.", MsgType.Error);
                     return;
                 }
                 var branch = await _branchService.GetBranchById(branchId);
@@ -163,14 +170,14 @@ namespace FrmMain
                 SetStatusCheckboxStyle();
                 StartCountdownTimer();
                 SetDefaultDatePurchase();
-                await LoadData();
+                await LoadData("", 0);
             }
             catch (Exception exception)
             {
-                MessageHelper.MsgBox($"Có lỗi trong quá trình tải dữ liệu: {exception}", MsgType.Error_);
+                MessageHelper.MsgBox(this,$"Có lỗi trong quá trình tải dữ liệu: {exception}", MsgType.Error);
             }
         }
-        private void Handler_CheckedChanged(object sender, EventArgs e)
+        private async void Handler_CheckedChanged(object sender, EventArgs e)
         {
             if (sender is not CheckEdit checkEdit) return;
             var checkedValue = checkEdit.Checked;
@@ -218,7 +225,7 @@ namespace FrmMain
             chkTransfer.CheckedChanged += Handler_CheckedChanged;
             chkFinish.CheckedChanged += Handler_CheckedChanged;
             chkCancel.CheckedChanged += Handler_CheckedChanged;
-            _ = LoadData();
+            await LoadData("", 0);
         }
 
         private void fromPurchaseDate_EditValueChanged(object sender, EventArgs e)
@@ -348,7 +355,7 @@ namespace FrmMain
                 {
                     _reloadTimer.Stop();
                     btnReload.Text = "Tải dữ liệu...";
-                    await LoadData();
+                    await LoadData("", 0);
                     // Khởi động lại đếm ngược
                     _nextReloadTime = DateTime.Now.AddMinutes(ReloadIntervalMinutes);
                     _reloadTimer.Start();
@@ -360,7 +367,7 @@ namespace FrmMain
             }
             catch (Exception exception)
             {
-                MessageHelper.MsgBox($"Có lỗi trong quá trình tải dữ liệu: {exception}", MsgType.Error_);
+                MessageHelper.MsgBox(this,$"Có lỗi trong quá trình tải dữ liệu: {exception}", MsgType.Error);
             }
         }
 
@@ -379,16 +386,15 @@ namespace FrmMain
             try
             {
                 _reloadTimer?.Stop();
-                await LoadData();
+                await LoadData("", 0);
                 btnReload.Text = "Tải dữ liệu...";
                 _nextReloadTime = DateTime.Now.AddMinutes(ReloadIntervalMinutes);
                 _reloadTimer?.Start();
             }
             catch (Exception exception)
             {
-                MessageHelper.MsgBox($"Có lỗi trong quá trình tải dữ liệu: {exception}", MsgType.Error_);
+                MessageHelper.MsgBox(this,$"Có lỗi trong quá trình tải dữ liệu: {exception}", MsgType.Error);
             }
         }
-
     }
 }

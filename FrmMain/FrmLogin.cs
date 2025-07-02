@@ -14,13 +14,15 @@ using System.Windows.Forms;
 
 namespace FrmMain
 {
-    public partial class FrmLogin : XtraForm
+    public partial class FrmLogin : FrmBasePos
     {
         private readonly IUserService _userService;
         private readonly IBranchService _branchService;
         private readonly ISystemService _systemService;
         private AppSettingDto _appSetting;
-        public FrmLogin(IUserService userService, IBranchService branchService, ISystemService systemService)
+
+        public FrmLogin(IUserService userService, IBranchService branchService, ISystemService systemService) : base(
+            branchService, systemService)
         {
             _userService = userService;
             _branchService = branchService;
@@ -47,7 +49,7 @@ namespace FrmMain
             }
             catch (Exception ex)
             {
-                MessageHelper.MsgBox($"Có lỗi trong quá trình lưu cài đặt: {ex}", MsgType.Error_);
+                MessageHelper.MsgBox(this,$"Có lỗi trong quá trình lưu cài đặt: {ex}", MsgType.Error);
             }
         }
 
@@ -57,13 +59,13 @@ namespace FrmMain
             {
                 if (string.IsNullOrEmpty(txtUserName.Text) || string.IsNullOrEmpty(txtPassword.Text))
                 {
-                    MessageHelper.MsgBox("Tên đăng nhập/Mật khẩu không được trống", MsgType.Error_);
+                    MessageHelper.MsgBox(this,"Tên đăng nhập/Mật khẩu không được trống", MsgType.Error);
                     return;
                 }
 
                 if (lkpBranchInit.EditValue == null)
                 {
-                    MessageHelper.MsgBox("Chọn Chi nhánh làm việc", MsgType.Error_);
+                    MessageHelper.MsgBox(this,"Chọn Chi nhánh làm việc", MsgType.Error);
                     return;
                 }
 
@@ -90,7 +92,7 @@ namespace FrmMain
             }
             catch (Exception ex)
             {
-                MessageHelper.MsgBox($"Có lỗi trong quá trình lưu cài đặt: {ex}", MsgType.Error_);
+                MessageHelper.MsgBox(this,$"Có lỗi trong quá trình lưu cài đặt: {ex}", MsgType.Error);
             }
         }
 
@@ -110,7 +112,7 @@ namespace FrmMain
                     var result = await _systemService.AddAppSetting(appSetting);
                     if (result == null)
                     {
-                        MessageHelper.MsgBox("Lưu cài đặt thất bại", MsgType.Error_);
+                        MessageHelper.MsgBox(this,"Lưu cài đặt thất bại", MsgType.Error);
                     }
                 }
                 else
@@ -123,14 +125,14 @@ namespace FrmMain
                         var result = await _systemService.UpdateAppSetting(appSettingExist);
                         if (!result)
                         {
-                            MessageHelper.MsgBox("Cập nhật cài đặt thất bại", MsgType.Error_);
+                            MessageHelper.MsgBox(this,"Cập nhật cài đặt thất bại", MsgType.Error);
                         }
                     }
                 }
             }
             catch (Exception ex)
             {
-                MessageHelper.MsgBox($"Có lỗi trong quá trình lưu cài đặt: {ex}", MsgType.Error_);
+                MessageHelper.MsgBox(this,$"Có lỗi trong quá trình lưu cài đặt: {ex}", MsgType.Error);
             }
         }
 

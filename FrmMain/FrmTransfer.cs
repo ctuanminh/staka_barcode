@@ -13,18 +13,18 @@ using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Be.Services.System;
 using FrmMain.App;
-using static FrmMain.FrmMainF;
 using Exception = System.Exception;
 
 namespace FrmMain
 {
-    public partial class FrmTransfer : XtraForm
+    public partial class FrmTransfer : FrmBasePos, IReloadableForm
     {
         private readonly FrmMainF _mainForm;
         private readonly IKiotVietService _kiotVietService;
         private const string TransferUrl = "https://public.kiotapi.com/transfers";
-        private int _statusFilter;
+        private int _statusFilter = 1;
         private readonly IBranchService _branchService;
         private int _currentBranchId;
         private DateTime _searchFromTransferDate;
@@ -33,7 +33,9 @@ namespace FrmMain
         private Timer _reloadTimer;
         private DateTime _nextReloadTime;
         private const int ReloadIntervalMinutes = 5;
-        public FrmTransfer(FrmMainF mainForm, IKiotVietService kiotVietService, IBranchService branchService)
+
+        public FrmTransfer(FrmMainF mainForm, IKiotVietService kiotVietService, IBranchService branchService,
+            ISystemService systemService) : base(branchService, systemService)
         {
             _mainForm = mainForm;
             _kiotVietService = kiotVietService;
@@ -42,12 +44,16 @@ namespace FrmMain
             StartCountdownTimer();
         }
 
-        private void FrmOrder_Shown(object sender, EventArgs e)
+        public async Task ReLoadData(string code, long id)
         {
-            _statusFilter = 1;
+            await LoadData(code, id);
         }
 
-        private async Task LoadData()
+        private void FrmOrder_Shown(object sender, EventArgs e)
+        {
+        }
+
+        private async Task LoadData(string code, long id)
         {
             try
             {
@@ -89,7 +95,7 @@ namespace FrmMain
             }
             catch (Exception exception)
             {
-                MessageHelper.MsgBox("Lỗi gọi API: " + exception, MsgType.Error_);
+                MessageHelper.MsgBox(this,"Lỗi gọi API: " + exception, MsgType.Error);
             }
             finally
             {
@@ -127,7 +133,7 @@ namespace FrmMain
             }
             catch (Exception ex)
             {
-                MessageHelper.MsgBox("Lỗi khi chuyển dữ liệu", MsgType.Error_);
+                MessageHelper.MsgBox(this,"Lỗi khi chuyển dữ liệu", MsgType.Error);
             }
         }
 
@@ -174,13 +180,13 @@ namespace FrmMain
 
                 if (setting == null || string.IsNullOrWhiteSpace(setting.SettingValue))
                 {
-                    MessageHelper.MsgBox("Không tìm thấy thông tin chi nhánh trên máy này.", MsgType.Error_);
+                    MessageHelper.MsgBox(this,"Không tìm thấy thông tin chi nhánh trên máy này.", MsgType.Error);
                     return;
                 }
 
                 if (!long.TryParse(setting.SettingValue, out var branchId))
                 {
-                    MessageHelper.MsgBox("Mã chi nhánh không hợp lệ.", MsgType.Error_);
+                    MessageHelper.MsgBox(this,"Mã chi nhánh không hợp lệ.", MsgType.Error);
                     return;
                 }
                 // 2. Lấy thông tin chi nhánh từ service
@@ -198,15 +204,15 @@ namespace FrmMain
                 // 5. Cài ngày mặc định (nên trước khi load data)
                 SetDefaultDatePurchase();
                 // 6. Load dữ liệu
-                await LoadData();
+                await LoadData("", 0);
             }
             catch (Exception exception)
             {
-                MessageHelper.MsgBox($"Có lỗi trong quá trình tải dữ liệu: {exception}", MsgType.Error_);
+                MessageHelper.MsgBox(this,$"Có lỗi trong quá trình tải dữ liệu: {exception}", MsgType.Error);
             }
         }
 
-        private void Handler_CheckedChanged(object sender, EventArgs e)
+        private async void Handler_CheckedChanged(object sender, EventArgs e)
         {
             if (sender is not CheckEdit checkEdit) return;
             var checkedValue = checkEdit.Checked;
@@ -256,7 +262,7 @@ namespace FrmMain
             chkDraft.CheckedChanged += Handler_CheckedChanged;
             chkTransfer.CheckedChanged += Handler_CheckedChanged;
             chkCancel.CheckedChanged += Handler_CheckedChanged;
-            _ = LoadData();
+            await LoadData("", 0);
         }
 
         private void fromPurchaseDate_EditValueChanged(object sender, EventArgs e)
@@ -328,7 +334,7 @@ namespace FrmMain
                 {
                     _reloadTimer.Stop();
                     btnReloadPurchase.Text = "Tải dữ liệu...";
-                    await LoadData();
+                    await LoadData("", 0);
                     _nextReloadTime = DateTime.Now.AddMinutes(ReloadIntervalMinutes);
                     _reloadTimer.Start();
                 }
@@ -339,7 +345,7 @@ namespace FrmMain
             }
             catch (Exception exception)
             {
-                MessageHelper.MsgBox($"Có lỗi trong quá trình tải dữ liệu: {exception}", MsgType.Error_);
+                MessageHelper.MsgBox(this,$"Có lỗi trong quá trình tải dữ liệu: {exception}", MsgType.Error);
             }
         }
 
@@ -358,14 +364,14 @@ namespace FrmMain
             try
             {
                 _reloadTimer?.Stop();
-                await LoadData();
+                await LoadData("", 0);
                 btnReloadPurchase.Text = "Tải dữ liệu...";
                 _nextReloadTime = DateTime.Now.AddMinutes(ReloadIntervalMinutes);
                 _reloadTimer?.Start();
             }
             catch (Exception exception)
             {
-                MessageHelper.MsgBox($"Có lỗi trong quá trình tải dữ liệu: {exception}", MsgType.Error_);
+                MessageHelper.MsgBox(this,$"Có lỗi trong quá trình tải dữ liệu: {exception}", MsgType.Error);
             }
         }
 

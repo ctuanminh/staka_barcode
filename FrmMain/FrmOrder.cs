@@ -17,7 +17,7 @@ using Exception = System.Exception;
 
 namespace FrmMain
 {
-    public partial class FrmOrder : FrmBase, IReloadableForm
+    public partial class FrmOrder : FrmBasePos, IReloadableForm
     {
         private readonly FrmMainF _mainForm;
         private readonly IKiotVietService _kiotVietService;
@@ -29,7 +29,7 @@ namespace FrmMain
         public FrmOrder(FrmMainF mainForm,
             IKiotVietService kiotVietService,
             IBranchService branchService,
-            ISystemService systemService) : base(branchService)
+            ISystemService systemService) : base(branchService, systemService)
         {
             _mainForm = mainForm;
             _kiotVietService = kiotVietService;
@@ -37,23 +37,17 @@ namespace FrmMain
             StartCountdownTimer();
         }
 
-        private async void FrmOrder_Shown(object sender, EventArgs e)
+        public async Task ReLoadData(string code, long id)
         {
-            try
+            _orderStatusList = [1];
+            await LoadDefaultSetting();
+            if (IsHandleCreated && Visible)
             {
-                await LoadDefaultSetting();
-            }
-            catch (Exception exception)
-            {
-                MessageHelper.MsgBox("Lỗi trong quá trình Khởi tạo giao diện: " + exception, MsgType.Error_);
+                await LoadData("", 0);
             }
         }
 
-        public async Task ReloadData(string code, long id)
-        {
-        }
-
-        private async Task LoadData()
+        private async Task LoadData(string code, long id)
         {
             try
             {
@@ -68,7 +62,7 @@ namespace FrmMain
                     OrderBy = "purchaseDate",
                     OrderDirection = "Desc"
                 };
-                var (success, content) = await _kiotVietService.CallApiAsync(orderUrl, request, "GET");
+                var (success, content) = await _kiotVietService.CallApiAsync(orderUrl, request);
                 
                 if (!success || string.IsNullOrWhiteSpace(content)) return;
                 var orderPagedResponse = JsonConvert.DeserializeObject<OrderPagedResponse>(content);
@@ -81,7 +75,7 @@ namespace FrmMain
             }
             catch (Exception exception)
             {
-                MessageHelper.MsgBox("Lỗi trong quá trình lấy dữ liệu: " + exception, MsgType.Error_);
+                MessageHelper.MsgBox(this,"Lỗi trong quá trình lấy dữ liệu: " + exception, MsgType.Error);
             }
             finally
             {
@@ -124,20 +118,18 @@ namespace FrmMain
             }
         }
 
-        private async void FrmOrder_Load(object sender, EventArgs e)
+        private void FrmOrder_Load(object sender, EventArgs e)
         {
             try
             {
                 SetTextEditHeight(this, 25);
-                await LoadDefaultSetting();
                 SetStatusCheckboxStyle();
                 _orderStatusList = [1];
-                await LoadData();
                 txtBranch.Text = BranchName;
             }
             catch (Exception ex)
             {
-                MessageHelper.MsgBox($"Có lỗi trong quá trình lấy dữ liệu: {ex}", MsgType.Error_);
+                MessageHelper.MsgBox(this,$"Có lỗi trong quá trình lấy dữ liệu: {ex}", MsgType.Error);
             }
             finally
             {
@@ -148,6 +140,18 @@ namespace FrmMain
                 chkDraft.CheckedChanged += Handler_CheckedChanged;
                 chkFinish.CheckedChanged += Handler_CheckedChanged;
                 chkCancel.CheckedChanged += Handler_CheckedChanged;
+            }
+        }
+        private async void FrmOrder_Shown(object sender, EventArgs e)
+        {
+            try
+            {
+                await LoadData("", 0);
+                txtBranch.Text = BranchName;
+            }
+            catch (Exception exception)
+            {
+                MessageHelper.MsgBox(this, "Lỗi trong quá trình Khởi tạo giao diện: " + exception, MsgType.Error);
             }
         }
 
@@ -183,11 +187,11 @@ namespace FrmMain
                         chkDraft.CheckedChanged += Handler_CheckedChanged;
                     }
                 }
-                await LoadData();
+                await LoadData("", 0);
             }
             catch (Exception ex)
             {
-                MessageHelper.MsgBox($"Có lỗi trong quá trình lấy dữ liệu: {ex}", MsgType.Error_);
+                MessageHelper.MsgBox(this,$"Có lỗi trong quá trình lấy dữ liệu: {ex}", MsgType.Error);
             }
         }
 
@@ -202,7 +206,7 @@ namespace FrmMain
                 {
                     _reloadTimer.Stop();
                     btnReloadOrder.Text = "Loading...";
-                    await LoadData();
+                    await LoadData("", 0);
                     // Khởi động lại đếm ngược
                     _nextReloadTime = DateTime.Now.AddMinutes(ReloadIntervalMinutes);
                     _reloadTimer.Start();
@@ -214,7 +218,7 @@ namespace FrmMain
             }
             catch (Exception ex)
             {
-                MessageHelper.MsgBox($"Có lỗi trong quá trình lấy dữ liệu: {ex}", MsgType.Error_);
+                MessageHelper.MsgBox(this,$"Có lỗi trong quá trình lấy dữ liệu: {ex}", MsgType.Error);
             }
         }
 
@@ -234,14 +238,14 @@ namespace FrmMain
             try
             {
                 _reloadTimer?.Stop();
-                await LoadData();
+                await LoadData("", 0);
                 btnReloadOrder.Text = "Loading...";
                 _nextReloadTime = DateTime.Now.AddMinutes(ReloadIntervalMinutes);
                 _reloadTimer?.Start();
             }
             catch (Exception ex)
             {
-                MessageHelper.MsgBox($"Có lỗi trong quá trình lấy dữ liệu: {ex}", MsgType.Error_);
+                MessageHelper.MsgBox(this,$"Có lỗi trong quá trình lấy dữ liệu: {ex}", MsgType.Error);
             }
         }
 
@@ -298,7 +302,7 @@ namespace FrmMain
             }
             catch (Exception ex)
             {
-                MessageHelper.MsgBox("Lỗi khi chuyển dữ liệu", MsgType.Error_);
+                MessageHelper.MsgBox(this,"Lỗi khi chuyển dữ liệu", MsgType.Error);
             }
         }
     }

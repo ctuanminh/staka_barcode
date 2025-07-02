@@ -15,12 +15,13 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using Be.Services.Pos;
 using Be.Services.Transfer;
 using Exception = System.Exception;
 
 namespace FrmMain
 {
-    public partial class FrmTransferProcess : XtraForm
+    public partial class FrmTransferProcess : FrmBasePos
     {
         #region Fields
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -45,7 +46,11 @@ namespace FrmMain
         #endregion
 
         #region Form
-        public FrmTransferProcess(IKiotVietService kiotVietService, IProductService productService, IUserService userService, ISystemService systemService, ITransferService transferService)
+
+        public FrmTransferProcess(IKiotVietService kiotVietService,
+            IProductService productService, IUserService userService,
+            ISystemService systemService, ITransferService transferService,
+            IBranchService branchService) : base(branchService, systemService)
         {
             _kiotVietService = kiotVietService;
             _productService = productService;
@@ -59,7 +64,7 @@ namespace FrmMain
         private void FrmTransferProcess_Load(object sender, EventArgs e)
         {
             SetTextEditHeight(this, 25);
-            BeginInvoke(new Action(() => txtProductCode.Focus()));
+            BeginInvoke(() => txtProductCode.Focus());
             SetStatusCheckboxStyle();
             var setting = AppGlobals.AppSetting.FirstOrDefault(s =>
                 s.ComputerName == Environment.MachineName &&
@@ -108,7 +113,7 @@ namespace FrmMain
 
                 if (!success || string.IsNullOrWhiteSpace(content))
                 {
-                    MessageHelper.MsgBox("Không tìm thấy dữ liệu phiếu chuyển hàng", MsgType.Error_);
+                    MessageHelper.MsgBox(this,"Không tìm thấy dữ liệu phiếu chuyển hàng", MsgType.Error);
                     return;
                 }
 
@@ -119,7 +124,7 @@ namespace FrmMain
                 }
                 catch (Exception ex)
                 {
-                    MessageHelper.MsgBox("Lỗi đọc dữ liệu trả về từ API.", MsgType.Error_);
+                    MessageHelper.MsgBox(this,"Lỗi đọc dữ liệu trả về từ API.", MsgType.Error);
                     return;
                 }
 
@@ -175,7 +180,7 @@ namespace FrmMain
 
                     if (transferCheckedList != null && transferCheckedList.Any())
                     {
-                        if (MessageHelper.MsgBox("Tải lại những sản phẩm đã check mã", MsgType.YesNo) == DialogResult.Yes)
+                        if (MessageHelper.MsgBox(this, "Tải lại những sản phẩm đã check mã", MsgType.YesNo) == DialogResult.Yes)
                         {
                             var transferCheckedListDic = transferCheckedList
                                 .ToDictionary(p => p.ProductBarCode, p => p.Checked);
@@ -201,7 +206,7 @@ namespace FrmMain
             }
             catch (Exception ex)
             {
-                MessageHelper.MsgBox("Có lỗi trong quá trình lấy dữ liệu.\n" + ex.Message, MsgType.Error_);
+                MessageHelper.MsgBox(this,"Có lỗi trong quá trình lấy dữ liệu.\n" + ex.Message, MsgType.Error);
             }
             finally
             {
@@ -236,7 +241,7 @@ namespace FrmMain
             }
             catch (Exception ex)
             {
-                MessageHelper.MsgBox($"Có lỗi trong quá trình lấy dữ liệu: {ex}", MsgType.Error_);
+                MessageHelper.MsgBox(this,$"Có lỗi trong quá trình lấy dữ liệu: {ex}", MsgType.Error);
             }
         }
 
@@ -264,14 +269,14 @@ namespace FrmMain
 
                 if (!isProductFound)
                 {
-                    MessageHelper.MsgBox("Không tìm thấy sản phẩm mã: " + searchBarcode, MsgType.Error_);
+                    MessageHelper.MsgBox(this,"Không tìm thấy sản phẩm mã: " + searchBarcode, MsgType.Error);
                     return;
                 }
 
                 var findProduct = _transferResponse.Details.FirstOrDefault(p => p.ProductCode == productCode);
                 if (findProduct == null)
                 {
-                    MessageHelper.MsgBox("Không tìm thấy sản phẩm mã: " + searchBarcode + " trong đơn hàng", MsgType.Error_);
+                    MessageHelper.MsgBox(this,"Không tìm thấy sản phẩm mã: " + searchBarcode + " trong đơn hàng", MsgType.Error);
                     return;
                 }
 
@@ -322,7 +327,7 @@ namespace FrmMain
             }
             catch (Exception ex)
             {
-                MessageHelper.MsgBox("Có lỗi trong quá trình lấy dữ liệu", MsgType.Error_);
+                MessageHelper.MsgBox(this,"Có lỗi trong quá trình lấy dữ liệu", MsgType.Error);
             }
         }
 
@@ -394,7 +399,7 @@ namespace FrmMain
                 //            gridViewOrder.MakeRowVisible(firstMismatchRow);
                 //        }
 
-                //        MessageHelper.MsgBox(
+                //        MessageHelper.MsgBox(this,
                 //        $"Mã SP {string.Join(", ", productsMismatch)} có Số lượng thực nhận không khớp với số lượng chuyển. Vui lòng kiểm tra lại.",
                 //        MsgType.Error_);
                 //        return;
@@ -410,7 +415,7 @@ namespace FrmMain
                     .ToList();
                 var message =
                     $"Còn {listNotScan.Count} sản phẩm chưa quét mã: {string.Join(", ", listNotScan)}.\nVui lòng thực hiện trước khi hoàn thành.";
-                MessageHelper.MsgBox(message, MsgType.Error_);
+                MessageHelper.MsgBox(this,message, MsgType.Error);
                 txtProductCode.Focus();
             }
         }
@@ -471,20 +476,20 @@ namespace FrmMain
                 var (success, content) = await _kiotVietService.CallApiAsync(orderUrl, (string)null, "GET");
                 if (!success || string.IsNullOrEmpty(content))
                 {
-                    MessageHelper.MsgBox("Lỗi khi lấy dữ liệu Kiotviet", MsgType.Error_);
+                    MessageHelper.MsgBox(this,"Lỗi khi lấy dữ liệu Kiotviet", MsgType.Error);
                     return;
                 }
 
                 var transferResponse = JsonConvert.DeserializeObject<TransferResponse>(content);
                 if (transferResponse == null)
                 {
-                    MessageHelper.MsgBox("Dữ liệu đơn hàng trả về không hợp lệ", MsgType.Error_);
+                    MessageHelper.MsgBox(this,"Dữ liệu đơn hàng trả về không hợp lệ", MsgType.Error);
                     return;
                 }
 
                 if (!CanComplete(transferResponse))
                 {
-                    MessageHelper.MsgBox("Kiểm tra dữ liệu trước khi thực hiện", MsgType.Error_);
+                    MessageHelper.MsgBox(this,"Kiểm tra dữ liệu trước khi thực hiện", MsgType.Error);
                 }
 
                 // Xác định trạng thái kế tiếp
@@ -518,16 +523,16 @@ namespace FrmMain
 
                 if (!updateSuccess || string.IsNullOrEmpty(updateContent))
                 {
-                    MessageHelper.MsgBox($"Có lỗi khi cập nhật đơn hàng: {updateContent}", MsgType.Error_);
+                    MessageHelper.MsgBox(this,$"Có lỗi khi cập nhật đơn hàng: {updateContent}", MsgType.Error);
                     return;
                 }
 
-                MessageHelper.MsgBox("Thao tác được thực hiện thành công.", MsgType.Information);
+                MessageHelper.MsgBox(this,"Thao tác được thực hiện thành công.", MsgType.Information);
                 ReloadData(CurrentCode, CurrentId, Transfer);
             }
             catch (Exception ex)
             {
-                MessageHelper.MsgBox("Có lỗi trong quá trình xử lý đơn hàng.", MsgType.Error_);
+                MessageHelper.MsgBox(this,"Có lỗi trong quá trình xử lý đơn hàng.", MsgType.Error);
             }
             finally
             {

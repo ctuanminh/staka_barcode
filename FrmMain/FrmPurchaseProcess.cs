@@ -2,10 +2,14 @@
 using Be.Core.Entities;
 using Be.Services.Catalog;
 using Be.Services.KiotViet;
+using Be.Services.Pos;
 using Be.Services.System;
 using DevExpress.XtraEditors;
 using DevExpress.XtraGrid.Views.Grid;
+using DocumentFormat.OpenXml.Office2010.Excel;
+using FrmMain.App;
 using FrmMain.Utils;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,43 +17,40 @@ using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Be.Services.Pos;
-using FrmMain.App;
-using Newtonsoft.Json;
+using Color = System.Drawing.Color;
 using Exception = System.Exception;
 
 namespace FrmMain
 {
-    public partial class FrmPurchaseProcess : XtraForm, IReloadableForm
+    public partial class FrmPurchaseProcess : FrmBasePos, IReloadableForm
     {
         #region Ctor & Private Fields
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public static string CurrentCode { get; set; }
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public static long CurrentId { get; set; }
-        private int _branchId;
         private readonly IKiotVietService _kiotVietService;
         private int _scannedBarcodeCount;
         private PurchaseOrderResponse _orderResponse;
         private readonly IProductService _productService;
         private readonly ISystemService _systemService;
-        private readonly IBranchService _branchService;
         private Dictionary<string, string> _productLookupDictionary;
         private Timer _reloadTimer;
         private DateTime _nextReloadTime;
         private const int ReloadIntervalMinutes = 60;
         #endregion
-        public FrmPurchaseProcess(IKiotVietService kiotVietService, IProductService productService, ISystemService systemService, IBranchService branchService)
+
+        public FrmPurchaseProcess(IKiotVietService kiotVietService, IProductService productService,
+            ISystemService systemService, IBranchService branchService) : base(branchService, systemService)
         {
             _kiotVietService = kiotVietService;
             _productService = productService;
             _systemService = systemService;
-            _branchService = branchService;
             InitializeComponent();
             StartCountdownTimer();
         }
 
-        public async Task ReloadData(string code, long id)
+        public async Task ReLoadData(string code, long id)
         {
             try
             {
@@ -57,11 +58,14 @@ namespace FrmMain
                 CurrentCode = code;
                 txtOrderCode.Text = CurrentCode;
                 _scannedBarcodeCount = 0;
-                await LoadData(id);
+                if (IsHandleCreated && Visible)
+                {
+                    await LoadData(CurrentCode, CurrentId);
+                }
             }
             catch (Exception ex)
             {
-                MessageHelper.MsgBox("Có lỗi trong quá trình lấy dữ liệu", MsgType.Error_);
+                MessageHelper.MsgBox(this, "Có lỗi trong quá trình lấy dữ liệu", MsgType.Error);
             }
         }
 
@@ -74,7 +78,7 @@ namespace FrmMain
                     .Where(code => !string.IsNullOrWhiteSpace(code))
                     .Distinct()
                     .ToList();
-                var productCodeBarCode = await _productService.SynAndGetProductCodeBarCode(productCodes, _branchId);
+                var productCodeBarCode = await _productService.SynAndGetProductCodeBarCode(productCodes, BranchId);
                 _productLookupDictionary = new Dictionary<string, string>();
                 foreach (var product in productCodeBarCode)
                 {
@@ -91,11 +95,11 @@ namespace FrmMain
             }
             catch (Exception ex)
             {
-                MessageHelper.MsgBox($"Có lỗi trong quá trình lấy dữ liệu: {ex}", MsgType.Error_);
+                MessageHelper.MsgBox(this,$"Có lỗi trong quá trình lấy dữ liệu: {ex}", MsgType.Error);
             }
         }
 
-        private async Task LoadData(long id)
+        private async Task LoadData(string code, long id)
         {
             try
             {
@@ -108,7 +112,7 @@ namespace FrmMain
                     Module = Name,
                     Url = url,
                     IsSuccess = success,
-                    BranchId = _branchId
+                    BranchId = BranchId
                 });
                 if (!success && content == null) MessageBox.Show("Lỗi khi lấy dữ liệu Kiotviet");
 
@@ -179,7 +183,7 @@ namespace FrmMain
             }
             catch (Exception ex)
             {
-                MessageHelper.MsgBox("Có lỗi trong quá trình lấy dữ liệu", MsgType.Error_);
+                MessageHelper.MsgBox(this,"Có lỗi trong quá trình lấy dữ liệu", MsgType.Error);
             }
             finally
             {
@@ -231,7 +235,7 @@ namespace FrmMain
             }
             catch (Exception ex)
             {
-                MessageHelper.MsgBox("Có lỗi trong quá trình lấy dữ liệu", MsgType.Error_);
+                MessageHelper.MsgBox(this,"Có lỗi trong quá trình lấy dữ liệu", MsgType.Error);
             }
         }
 
@@ -260,12 +264,12 @@ namespace FrmMain
                 }
                 else
                 {
-                    MessageHelper.MsgBox("Không tìm thấy sản phẩm mã: " + searchBarcode + " trong đơn hàng", MsgType.Error_);
+                    MessageHelper.MsgBox(this,"Không tìm thấy sản phẩm mã: " + searchBarcode + " trong đơn hàng", MsgType.Error);
                 }
             }
             else
             {
-                MessageHelper.MsgBox("Không tìm thấy sản phẩm mã: " + searchBarcode, MsgType.Error_);
+                MessageHelper.MsgBox(this,"Không tìm thấy sản phẩm mã: " + searchBarcode, MsgType.Error);
             }
         }
         private void gridViewOrder_RowCellStyle(object sender, RowCellStyleEventArgs e)
@@ -284,15 +288,15 @@ namespace FrmMain
             switch (_orderResponse.Status)
             {
                 case (int)OrderStatusEnum.Finished:
-                    MessageHelper.MsgBox("Đơn Nhập hàng đã hoàn thành, vui lòng kiểm tra lại", MsgType.Error_);
+                    MessageHelper.MsgBox(this,"Đơn Nhập hàng đã hoàn thành, vui lòng kiểm tra lại", MsgType.Error);
                     break;
                 case (int)OrderStatusEnum.Cancel:
-                    MessageHelper.MsgBox("Đơn Nhập hàng đã huỷ, vui lòng kiểm tra lại", MsgType.Error_);
+                    MessageHelper.MsgBox(this,"Đơn Nhập hàng đã huỷ, vui lòng kiểm tra lại", MsgType.Error);
                     break;
                 default:
                     if (_scannedBarcodeCount == _orderResponse.PurchaseOrderDetails.Count())
                     {
-                        var confirm = MessageHelper.MsgBox("Chắc chắn hoàn thành đơn Nhập hàng", MsgType.YesNo);
+                        var confirm = MessageHelper.MsgBox(this,"Chắc chắn hoàn thành đơn Nhập hàng", MsgType.YesNo);
                         if (confirm != DialogResult.Yes) return;
                         FinishOrder();
                     }
@@ -303,7 +307,7 @@ namespace FrmMain
                             .ToList();
                         var message =
                             $"Còn {listNotScan.Count} sản phẩm chưa quét mã: {string.Join(", ", listNotScan)}.\nVui lòng thực hiện trước khi hoàn thành.";
-                        MessageHelper.MsgBox(message, MsgType.Error_);
+                        MessageHelper.MsgBox(this,message, MsgType.Error);
                         txtProductCode.Focus();
                     }
 
@@ -322,18 +326,18 @@ namespace FrmMain
 
                 if (_scannedBarcodeCount > 0 && _orderResponse.PurchaseOrderDetails.Any(p => p.Checked))
                 {
-                    var result = MessageHelper.MsgBox("Bạn chắc chắn tải lại dữ liệu", MsgType.YesNo);
+                    var result = MessageHelper.MsgBox(this,"Bạn chắc chắn tải lại dữ liệu", MsgType.YesNo);
                     if (result != DialogResult.Yes) return;
                 }
 
                 if (string.IsNullOrEmpty(orderCode)) return;
                 _scannedBarcodeCount = 0;
-                await LoadData(CurrentId);
+                await LoadData(CurrentCode, CurrentId);
                 txtProductCode.Focus();
             }
             catch (Exception ex)
             {
-                MessageHelper.MsgBox("Có lỗi trong quá trình lấy dữ liệu", MsgType.Error_);
+                MessageHelper.MsgBox(this,"Có lỗi trong quá trình lấy dữ liệu", MsgType.Error);
             }
         }
 
@@ -342,9 +346,17 @@ namespace FrmMain
             return _productLookupDictionary.TryGetValue(searchBarCode, out var codeValue) ? (true, codeValue) : (false, null);
         }
 
-        private void FrmOrderProcess_Shown(object sender, EventArgs e)
+        private async void FrmOrderProcess_Shown(object sender, EventArgs e)
         {
-            txtProductCode.Focus();
+            try
+            {
+                await LoadData(CurrentCode, CurrentId);
+                txtProductCode.Focus();
+            }
+            catch (Exception ex)
+            {
+                MessageHelper.MsgBox(this, "Có lỗi trong quá trình thực hiện.", MsgType.Error);
+            }
         }
 
         // Tick mỗi giây
@@ -359,7 +371,7 @@ namespace FrmMain
                     _reloadTimer.Stop();
                     btnReloadOrder.Text = "Loading...";
 
-                    await LoadData(CurrentId); // gọi reload dữ liệu
+                    await LoadData(CurrentCode, CurrentId); // gọi reload dữ liệu
 
                     // Khởi động lại đếm ngược
                     _nextReloadTime = DateTime.Now.AddMinutes(ReloadIntervalMinutes);
@@ -372,7 +384,7 @@ namespace FrmMain
             }
             catch (Exception ex)
             {
-                MessageHelper.MsgBox("Có lỗi trong quá trình lấy dữ liệu", MsgType.Error_);
+                MessageHelper.MsgBox(this,"Có lỗi trong quá trình lấy dữ liệu", MsgType.Error);
             }
         }
 
@@ -390,7 +402,7 @@ namespace FrmMain
         private async void btnReloadOrder_Click(object sender, EventArgs e)
         {
             _reloadTimer?.Stop();
-            await ReloadData(CurrentCode, CurrentId);
+            await ReLoadData(CurrentCode, CurrentId);
             btnReloadOrder.Text = "Loading...";
             _nextReloadTime = DateTime.Now.AddMinutes(ReloadIntervalMinutes);
             _reloadTimer?.Start();
@@ -407,32 +419,32 @@ namespace FrmMain
 
                 if (!success || string.IsNullOrWhiteSpace(content))
                 {
-                    MessageHelper.MsgBox("Lỗi khi lấy dữ liệu Kiotviet", MsgType.Error_);
+                    MessageHelper.MsgBox(this,"Lỗi khi lấy dữ liệu Kiotviet", MsgType.Error);
                     return;
                 }
 
                 var purchaseOrderResponse = JsonConvert.DeserializeObject<PurchaseOrderResponse>(content);
                 if (purchaseOrderResponse == null)
                 {
-                    MessageHelper.MsgBox("Dữ liệu đơn hàng trả về không hợp lệ", MsgType.Error_);
+                    MessageHelper.MsgBox(this,"Dữ liệu đơn hàng trả về không hợp lệ", MsgType.Error);
                     return;
                 }
 
                 switch ((OrderStatusEnum)purchaseOrderResponse.Status)
                 {
                     case OrderStatusEnum.Finished:
-                        MessageHelper.MsgBox($"Đơn hàng: {CurrentCode} đã Hoàn thành", MsgType.Information);
+                        MessageHelper.MsgBox(this,$"Đơn hàng: {CurrentCode} đã Hoàn thành", MsgType.Information);
                         return;
 
                     case OrderStatusEnum.Cancel:
-                        MessageHelper.MsgBox($"Đơn hàng: {CurrentCode} đã Huỷ", MsgType.Information);
+                        MessageHelper.MsgBox(this,$"Đơn hàng: {CurrentCode} đã Huỷ", MsgType.Information);
                         return;
 
                     case OrderStatusEnum.Draft:
                         break;
 
                     default:
-                        MessageHelper.MsgBox($"Trạng thái đơn hàng không hợp lệ", MsgType.Error_);
+                        MessageHelper.MsgBox(this,$"Trạng thái đơn hàng không hợp lệ", MsgType.Error);
                         return;
                 }
 
@@ -472,16 +484,16 @@ namespace FrmMain
 
                 if (!updateSuccess || string.IsNullOrEmpty(updateContent))
                 {
-                    MessageHelper.MsgBox($"Có lỗi khi cập nhật đơn hàng: {updateContent}", MsgType.Error_);
+                    MessageHelper.MsgBox(this,$"Có lỗi khi cập nhật đơn hàng: {updateContent}", MsgType.Error);
                     return;
                 }
 
-                MessageHelper.MsgBox("Nhập hàng thành thành công.", MsgType.Information);
-                await ReloadData(CurrentCode, CurrentId);
+                MessageHelper.MsgBox(this,"Nhập hàng thành thành công.", MsgType.Information);
+                await ReLoadData(CurrentCode, CurrentId);
             }
             catch (Exception ex)
             {
-                MessageHelper.MsgBox("Có lỗi trong quá trình xử lý đơn hàng.", MsgType.Error_);
+                MessageHelper.MsgBox(this,"Có lỗi trong quá trình xử lý đơn hàng.", MsgType.Error);
             }
             finally
             {
@@ -507,29 +519,6 @@ namespace FrmMain
        {
            checkEdit.BackColor = backColor;
            checkEdit.ForeColor = foreColor;
-       }
-
-       private async Task LoadDefaultSetting()
-       {
-           var setting = AppGlobals.AppSetting.FirstOrDefault(s =>
-               s.ComputerName == Environment.MachineName &&
-               s.ModuleName == "Branch" &&
-               s.SettingKey == "BranchId");
-
-           if (setting == null || string.IsNullOrWhiteSpace(setting.SettingValue))
-           {
-               MessageHelper.MsgBox("Không tìm thấy thông tin chi nhánh trên máy này.", MsgType.Error_);
-               return;
-           }
-
-           if (!long.TryParse(setting.SettingValue, out var branchId))
-           {
-               MessageHelper.MsgBox("Mã chi nhánh không hợp lệ.", MsgType.Error_);
-               return;
-           }
-
-           var branch = await _branchService.GetBranchById(branchId);
-           _branchId = branch?.BranchId ?? 0;
        }
 
     }

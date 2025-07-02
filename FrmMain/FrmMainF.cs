@@ -51,18 +51,12 @@ namespace FrmMain
 
                 await LoadSetting();
 
-                var isOrderFormOpened = MdiChildren.Any(f => f is FrmOrder);
-                if (isOrderFormOpened) return;
-                var scope = ServiceProvider.CreateScope();
-                var frmOrder = scope.ServiceProvider.GetRequiredService<FrmOrder>();
-                frmOrder.MdiParent = this;
-                frmOrder.Tag = scope;
-                frmOrder.FormClosed += (_, _) => scope.Dispose();
-                frmOrder.Show();
+                await FormHelper.OpenFormWithScope<FrmOrder>(this, ServiceProvider, "", 0, "OpenFrmOrder",
+                    WuserControl.Order);
             }
             catch (Exception ex)
             {
-                MessageHelper.MsgBox($"Có lỗi trong quá tải dữ liệu: {ex}", MsgType.Error_);
+                MessageHelper.MsgBox(this,$"Có lỗi trong quá tải dữ liệu: {ex}", MsgType.Error);
             }
         }
 
@@ -76,24 +70,16 @@ namespace FrmMain
             try
             {
                 var branches = await _branchService.GetAllBranches();
-                rpLkpBranch.DataSource = branches;
-                rpLkpBranch.ReadOnly = true; 
+                var settings = await _systemService.GetAppSettingBuyComputer(Environment.MachineName);
+                AppGlobals.AppSetting = settings;
 
-                var setting = await _systemService.GetAppSettingBuyComputer(Environment.MachineName);
-                AppGlobals.AppSetting = setting;
                 var branchSetting = AppGlobals.AppSetting.FirstOrDefault(s =>
-                    s.ComputerName == Environment.MachineName && 
-                    s.ModuleName == "Branch" && 
+                    s.ComputerName == Environment.MachineName &&
+                    s.ModuleName == "Branch" &&
                     s.SettingKey == "BranchId" &&
                     !string.IsNullOrWhiteSpace(s.SettingValue));
-                var attributes = Assembly.GetExecutingAssembly().GetCustomAttributes<AssemblyMetadataAttribute>();
-                
-                var buildDate = attributes
-                    .FirstOrDefault(attr => attr.Key == "BuildDate")?.Value ?? "Unknown";
-
-                bLblComputerName.Caption = $"Máy: {Environment.MachineName}";
-                var version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
-                bLblVersion.Caption = $"Ver: {version} - Build: 27/06/2025";
+                rpLkpBranch.DataSource = branches;
+                rpLkpBranch.ReadOnly = true;
                 if (branchSetting != null && int.TryParse(branchSetting.SettingValue, out var branchId))
                 {
                     AppGlobals.BranchId = branchId;
@@ -101,12 +87,16 @@ namespace FrmMain
                 }
                 else
                 {
-                    MessageHelper.MsgBox("Kiểm tra lại dữ liệu mặc định Chi nhánh/Tài khoản", MsgType.Error_);
+                    MessageHelper.MsgBox(this, "Kiểm tra lại dữ liệu mặc định Chi nhánh/Tài khoản", MsgType.Error);
                 }
+
+                bLblComputerName.Caption = $"Máy: {Environment.MachineName}";
+                var version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+                bLblVersion.Caption = $"Ver: {version} - Build: 27/06/2025";
             }
             catch (Exception e)
             {
-                MessageHelper.MsgBox("Có lỗi trong quá trình tải dữ liệu", MsgType.Error_);
+                MessageHelper.MsgBox(this,"Có lỗi trong quá trình tải dữ liệu", MsgType.Error);
             }
         }
 
@@ -122,13 +112,10 @@ namespace FrmMain
             switch (e.Item.Name)
             {
                 case nameof(mbtnOrder):
-                    if (!FormHelper.OpenedForm(nameof(FrmOrder), WuserControl.Order, out _))
-                    {
-                        await FormHelper.OpenFormWithScope<FrmOrder>(
-                            this, ServiceProvider,
-                            "", 0,
-                            "OpenFrmOrder", WuserControl.FrmPurchase);
-                    }
+                    await FormHelper.OpenFormWithScope<FrmOrder>(
+                        this, ServiceProvider,
+                        "", 0,
+                        "OpenFrmOrder", WuserControl.FrmPurchase);
                     break;
                 case nameof(mbtnSystem):
                     if (!FormHelper.OpenedForm(nameof(FrmSystem), WuserControl.FrmSystem, out _))
@@ -136,34 +123,34 @@ namespace FrmMain
                         var frmAdmin = new FrmAdmin();
                         if (frmAdmin.ShowDialog() == DialogResult.OK)
                         {
-                            var frmSystem = ServiceProvider.GetRequiredService<FrmSystem>();
-                            FormHelper.NewFormNew(this, frmSystem, WuserControl.FrmSystem);
+                            await FormHelper.OpenFormWithScope<FrmSystem>(
+                                this, ServiceProvider,
+                                "", 0,
+                                "OpenFrmSystem", WuserControl.FrmPurchase);
                         }
                     }
                     break;
+
                 case nameof(mbtcPurchase):
-                    if (!FormHelper.OpenedForm(nameof(FrmPurchase), WuserControl.FrmPurchase, out _))
-                    {
-                        var frmSystem = ServiceProvider.GetRequiredService<FrmPurchase>();
-                        FormHelper.NewFormNew(this,frmSystem, WuserControl.FrmPurchase);
-                    }
+                    await FormHelper.OpenFormWithScope<FrmPurchase>(
+                        this, ServiceProvider,
+                        "", 0,
+                        "OpenFrmPurchase", WuserControl.FrmPurchase);
                     break;
                 case nameof(mbtnTranfer):
-                    if (!FormHelper.OpenedForm(nameof(FrmTransfer), WuserControl.FrmTransfer, out _))
-                    {
-                        var frmSystem = ServiceProvider.GetRequiredService<FrmTransfer>();
-                        FormHelper.NewFormNew(this, frmSystem, WuserControl.FrmTransfer);
-                    }
+                    await FormHelper.OpenFormWithScope<FrmTransfer>(
+                        this, ServiceProvider,
+                        "", 0,
+                        "OpenFrmPurchase", WuserControl.FrmPurchase);
                     break;
                 case nameof(mbtnReceiver):
-                    if (!FormHelper.OpenedForm(nameof(FrmReceiverList), WuserControl.FrmReceiverList, out _))
-                    {
-                        var frmReceiverList = ServiceProvider.GetRequiredService<FrmReceiverList>();
-                        FormHelper.NewFormNew(this,frmReceiverList, WuserControl.FrmReceiverList);
-                    }
+                    await FormHelper.OpenFormWithScope<FrmReceiverList>(
+                        this, ServiceProvider,
+                        "", 0,
+                        "OpenFrmPurchase", WuserControl.FrmPurchase);
                     break;
                 case nameof(mbtnLogout):
-                    if (MessageHelper.MsgBox("Bạn muốn thoát tài khoản?", MsgType.YesNo) == DialogResult.Yes)
+                    if (MessageHelper.MsgBox(this, "Bạn muốn thoát tài khoản?", MsgType.YesNo) == DialogResult.Yes)
                     {
                         AppGlobals.UserInfo = new UserInfo();
 
@@ -177,11 +164,8 @@ namespace FrmMain
                             Close();
                             return;
                         }
-                        var isOrderFormOpened = this.MdiChildren.Any(f => f is FrmOrder);
-                        if (isOrderFormOpened) return;
-                        var frmOrder = ServiceProvider.GetRequiredService<FrmOrder>();
-                        frmOrder.MdiParent = this;
-                        frmOrder.Show();
+                        await FormHelper.OpenFormWithScope<FrmOrder>(this, ServiceProvider, "", 0, "OpenFrmOrder",
+                            WuserControl.Order);
                     }
                     break;
             }

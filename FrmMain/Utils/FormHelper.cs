@@ -65,13 +65,13 @@ namespace FrmMain.Utils
             Form mdiParent, IServiceProvider provider,
             string code, long id,
             string tabKey, WuserControl tabEnum)
-            where TForm : XtraForm, IReloadableForm
+            where TForm : FrmBasePos, IReloadableForm
         {
             if (OpenedForm(typeof(TForm).Name, tabEnum, out var openForm))
             {
                 if (openForm is TForm reloadable)
                 {
-                    await reloadable.ReloadData(code, id);
+                    await reloadable.ReLoadData(code, id);
                 }
                 return;
             }
@@ -79,7 +79,7 @@ namespace FrmMain.Utils
             var scope = provider.CreateScope();
             var form = scope.ServiceProvider.GetRequiredService<TForm>();
             form.Tag = scope;
-            await form.ReloadData(code, id);
+            await form.ReLoadData(code, id);
 
             form.FormClosed += (s, _) =>
             {
@@ -99,7 +99,7 @@ namespace FrmMain.Utils
             var scope = provider.CreateScope();
             var form = scope.ServiceProvider.GetRequiredService<TForm>();
             form.Tag = scope;
-            await form.ReloadData(code, id);
+            await form.ReLoadData(code, id);
 
             form.FormClosed += (_, _) =>
             {

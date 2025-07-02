@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Be.Common.PurchaseOrder.Dto;
 using Be.Common.PurchaseOrder.Response;
-using Be.Common.Tranfer.Response;
 using Be.Core.Entities;
 using Be.Services.Catalog;
 using Be.Services.KiotViet;
@@ -10,14 +9,10 @@ using Be.Services.PurchaseOrder;
 using Be.Services.Supplier;
 using Be.Services.System;
 using DevExpress.XtraEditors;
-using DevExpress.XtraEditors.Repository;
-using DevExpress.XtraGrid;
-using DevExpress.XtraGrid.Columns;
 using DevExpress.XtraGrid.Views.Base;
 using DevExpress.XtraGrid.Views.Grid;
 using FrmMain.App;
 using FrmMain.Utils;
-using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -69,7 +64,7 @@ namespace FrmMain
             InitializeComponent();
             txtOrderCode.Text = CurrentCode;
         }
-        public async Task ReloadData(string code, long id)
+        public async Task ReLoadData(string code, long id)
         {
         }
         private async void FrmPurchaseProcess_Load(object sender, EventArgs e)
@@ -98,7 +93,7 @@ namespace FrmMain
             }
             catch (Exception ex)
             {
-                MessageHelper.MsgBox("Có lỗi trong quá trình lấy dữ liệu" + ex, MsgType.Error_);
+                MessageHelper.MsgBox(this,"Có lỗi trong quá trình lấy dữ liệu" + ex, MsgType.Error);
             }
         }
 
@@ -120,7 +115,7 @@ namespace FrmMain
             }
             catch (Exception ex)
             {
-                MessageHelper.MsgBox("Có lỗi trong quá trình lấy dữ liệu", MsgType.Error_);
+                MessageHelper.MsgBox(this,"Có lỗi trong quá trình lấy dữ liệu", MsgType.Error);
             }
         }
 
@@ -130,22 +125,10 @@ namespace FrmMain
             {
                 _products = [];
                 _products = await _productService.GetProducts(_branchId);
-                //_productLookupDictionary = new Dictionary<string, string>();
-                //foreach (var product in _products)
-                //{
-                //    if (product.Code != product.BarCode)
-                //    {
-                //        _productLookupDictionary.TryAdd(product.BarCode, product.Code);
-                //    }
-                //    else
-                //    {
-                //        _productLookupDictionary.TryAdd(product.Code, product.Code);
-                //    }
-                //}
             }
             catch (Exception ex)
             {
-                MessageHelper.MsgBox($"Có lỗi trong quá trình lấy dữ liệu: {ex}", MsgType.Error_);
+                MessageHelper.MsgBox(this,$"Có lỗi trong quá trình lấy dữ liệu: {ex}", MsgType.Error);
             }
         }
 
@@ -158,7 +141,7 @@ namespace FrmMain
             }
             catch (Exception ex)
             {
-                MessageHelper.MsgBox("Có lỗi trong quá trình lấy dữ liệu", MsgType.Error_);
+                MessageHelper.MsgBox(this,"Có lỗi trong quá trình lấy dữ liệu", MsgType.Error);
             }
         }
 
@@ -270,7 +253,7 @@ namespace FrmMain
             }
             catch (Exception ex)
             {
-                MessageHelper.MsgBox("Có lỗi trong quá trình lấy dữ liệu", MsgType.Error_);
+                MessageHelper.MsgBox(this,"Có lỗi trong quá trình lấy dữ liệu", MsgType.Error);
             }
             finally
             {
@@ -317,7 +300,7 @@ namespace FrmMain
                 var foundProductCode = _productLookupDictionary.TryGetValue(searchBarcode, out var productCode);
                 if (!foundProductCode)
                 {
-                    MessageHelper.MsgBox("Không tìm thấy sản phẩm với mã vạch đã nhập.", MsgType.Error_);
+                    MessageHelper.MsgBox(this,"Không tìm thấy sản phẩm với mã vạch đã nhập.", MsgType.Error);
                     return;
                 }
 
@@ -335,14 +318,14 @@ namespace FrmMain
                 {
                     if (_products == null || _products.Count == 0)
                     {
-                        MessageHelper.MsgBox("Danh sách sản phẩm rỗng.", MsgType.Error_);
+                        MessageHelper.MsgBox(this,"Danh sách sản phẩm rỗng.", MsgType.Error);
                         return;
                     }
 
                     var product = _products.FirstOrDefault(p => p.BarCode == searchBarcode);
                     if (product == null)
                     {
-                        MessageHelper.MsgBox("Không tìm thấy sản phẩm với mã vạch đã nhập.", MsgType.Error_);
+                        MessageHelper.MsgBox(this,"Không tìm thấy sản phẩm với mã vạch đã nhập.", MsgType.Error);
                         return;
                     }
 
@@ -394,7 +377,7 @@ namespace FrmMain
             }
             catch (Exception ex)
             {
-                MessageHelper.MsgBox($"Có lỗi trong quá trình lấy dữ liệu: {ex}", MsgType.Error_);
+                MessageHelper.MsgBox(this,$"Có lỗi trong quá trình lấy dữ liệu: {ex}", MsgType.Error);
             }
         }
 
@@ -510,19 +493,19 @@ namespace FrmMain
                     .ToList();
                 var message =
                     $"Còn {listNotScan.Count} sản phẩm chưa quét mã: {string.Join(", ", listNotScan)}.\nVui lòng thực hiện trước khi hoàn thành.";
-                MessageHelper.MsgBox(message, MsgType.Error_);
+                MessageHelper.MsgBox(this,message, MsgType.Error);
                 txtProductCode.Focus();
                 return;
             }
             if (_purchaseOrderDetails == null || _purchaseOrderDetails.Count == 0)
             {
-                MessageHelper.MsgBox("Chưa có sản phẩm nào trong phiếu nhập", MsgType.Error_);
+                MessageHelper.MsgBox(this,"Chưa có sản phẩm nào trong phiếu nhập", MsgType.Error);
                 return;
             }
 
             if (lkpSupplier.EditValue == null)
             {
-                MessageHelper.MsgBox("Chưa chọn nhà cung cấp", MsgType.Error_);
+                MessageHelper.MsgBox(this,"Chưa chọn nhà cung cấp", MsgType.Error);
                 lkpSupplier.Focus();
                 return;
             }
@@ -547,7 +530,7 @@ namespace FrmMain
                 var supplier = await _supplyService.GetSupplierByCode(supplierId);
                 if (supplier == null)
                 {
-                    MessageHelper.MsgBox("Nhà cung cấp không tồn tại.", MsgType.Error_);
+                    MessageHelper.MsgBox(this,"Nhà cung cấp không tồn tại.", MsgType.Error);
                     return;
                 }
                 var purchaseRequest = new
@@ -592,11 +575,11 @@ namespace FrmMain
                 var purchase = JsonConvert.DeserializeObject<PurchaseOrderResponse>(updateContent);
                 if (!updateSuccess || string.IsNullOrEmpty(updateContent))
                 {
-                    MessageHelper.MsgBox($"Có lỗi khi tạo đơn Nhập hàng: {updateContent}", MsgType.Error_);
+                    MessageHelper.MsgBox(this,$"Có lỗi khi tạo đơn Nhập hàng: {updateContent}", MsgType.Error);
                     return;
                 }
 
-                MessageHelper.MsgBox(
+                MessageHelper.MsgBox(this,
                     CurrentCode != null ? "Lưu phiếu nhập hàng thành công." : "Tạo đơn Nhập hàng công.",
                     MsgType.Information);
 
@@ -608,25 +591,14 @@ namespace FrmMain
             }
             catch (Exception ex)
             {
-                MessageHelper.MsgBox("Có lỗi trong quá trình xử lý đơn hàng.", MsgType.Error_);
+                MessageHelper.MsgBox(this,"Có lỗi trong quá trình xử lý đơn hàng.", MsgType.Error);
             }
             finally
             {
                 SetControlEnable(true);
-                if (FormHelper.OpenedForm(nameof(FrmPurchase), WuserControl.FrmPurchase, out var openForm))
-                {
-                    if (openForm is FrmPurchase processForm)
-                    {
-                        processForm.ReloadData();
-                        openForm.Focus();
-                    }
-                }
-                else
-                {
-                    var frmPurchase = _mainForm.ServiceProvider.GetRequiredService<FrmPurchase>();
-                    FormHelper.NewFormNew(_mainForm, frmPurchase, WuserControl.FrmPurchase);
-                }
-                Close();
+                await FormHelper.OpenFormWithScope<FrmPurchase>(_mainForm, _mainForm.ServiceProvider, "", 0,
+                    nameof(FrmPurchase), WuserControl.FrmPurchase);
+               Close();
             }
         }
 
@@ -698,13 +670,13 @@ namespace FrmMain
 
             if (setting == null || string.IsNullOrWhiteSpace(setting.SettingValue))
             {
-                MessageHelper.MsgBox("Không tìm thấy thông tin chi nhánh trên máy này.", MsgType.Error_);
+                MessageHelper.MsgBox(this,"Không tìm thấy thông tin chi nhánh trên máy này.", MsgType.Error);
                 return;
             }
 
             if (!long.TryParse(setting.SettingValue, out var branchId))
             {
-                MessageHelper.MsgBox("Mã chi nhánh không hợp lệ.", MsgType.Error_);
+                MessageHelper.MsgBox(this,"Mã chi nhánh không hợp lệ.", MsgType.Error);
                 return;
             }
 

@@ -1,16 +1,15 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Be.Services.Pos;
 using Be.Services.System;
 using FrmMain.Utils;
 
 namespace FrmMain
 {
-    public partial class FrmSetup : FrmBase
+    public partial class FrmSetup : FrmBasePos
     {
-        private readonly ISystemService _systemService;
-        public FrmSetup(IBranchService branchService, ISystemService systemService) : base(branchService)
+        public FrmSetup(IBranchService branchService, ISystemService systemService) : base(branchService, systemService)
         {
-            _systemService = systemService;
             InitializeComponent();
         }
 
@@ -20,13 +19,12 @@ namespace FrmMain
             {
                 await LoadDefaultSetting();
                 if (BranchId != 0) return;
-                MessageHelper.MsgBox("Không tìm thấy thông tin chi nhánh trên máy này.", MsgType.Error_);
+                MessageHelper.MsgBox(this,"Không tìm thấy thông tin chi nhánh trên máy này.", MsgType.Error);
             }
             catch (Exception exception)
             {
-                MessageHelper.MsgBox("Không tìm thấy thông tin chi nhánh trên máy này.", MsgType.Error_);
+                MessageHelper.MsgBox(this,"Không tìm thấy thông tin chi nhánh trên máy này.", MsgType.Error);
             }
         }
-
     }
 }

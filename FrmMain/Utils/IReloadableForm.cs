@@ -4,6 +4,6 @@ namespace FrmMain.Utils
 {
     public interface IReloadableForm
     {
-        Task ReloadData(string code, long id);
+        Task ReLoadData(string code, long id);
     }
 }

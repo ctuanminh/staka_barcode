@@ -10,17 +10,15 @@ using Be.Services.Supplier;
 using Be.Services.System;
 using DevExpress.XtraEditors;
 using DevExpress.XtraSplashScreen;
-using FrmMain.App;
 using FrmMain.Utils;
 using System;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using MassTransit;
 using Exception = System.Exception;
 
 namespace FrmMain
 {
-    public partial class FrmSystem : XtraForm
+    public partial class FrmSystem : FrmBasePos, IReloadableForm
     {
         private readonly IBranchService _branchService;
         private readonly ICustomerService _customerService;
@@ -31,7 +29,8 @@ namespace FrmMain
         private int _branchId;
 
         public FrmSystem(ICustomerService customerService, IBranchService branchService, IUserService userService,
-            IProductService productService, ISystemService systemService, ISupplyService supplierService)
+            IProductService productService, ISystemService systemService, ISupplyService supplierService) : base(
+            branchService, systemService)
         {
             _customerService = customerService;
             _branchService = branchService;
@@ -57,16 +56,16 @@ namespace FrmMain
                 var syncUserExist = await _userService.SyncUser(request);
                 if (syncUserExist)
                 {
-                    MessageHelper.MsgBox($"Đồng bộ người dùng thành công", MsgType.Information);
+                    MessageHelper.MsgBox(this,$"Đồng bộ người dùng thành công", MsgType.Information);
                 }
                 else
                 {
-                    MessageHelper.MsgBox("Không có người dùng nào để đồng bộ", MsgType.Error_);
+                    MessageHelper.MsgBox(this,"Không có người dùng nào để đồng bộ", MsgType.Error);
                 }
             }
             catch (Exception exception)
             {
-                MessageHelper.MsgBox($"Có lỗi trong quá trình đồng bộ dữ liệu: {exception}", MsgType.Error_);
+                MessageHelper.MsgBox(this,$"Có lỗi trong quá trình đồng bộ dữ liệu: {exception}", MsgType.Error);
             }
             finally
             {
@@ -89,16 +88,16 @@ namespace FrmMain
                 var success = await _customerService.SyncCustomer();
                 if (success)
                 {
-                    MessageHelper.MsgBox($"Đồng bộ Khách hàng thành công", MsgType.Information);
+                    MessageHelper.MsgBox(this,$"Đồng bộ Khách hàng thành công", MsgType.Information);
                 }
                 else
                 {
-                    MessageHelper.MsgBox("Không có Khách hàng nào để đồng bộ", MsgType.Error_);
+                    MessageHelper.MsgBox(this,"Không có Khách hàng nào để đồng bộ", MsgType.Error);
                 }
             }
             catch (Exception exception)
             {
-                MessageHelper.MsgBox($"Có lỗi trong quá trình đồng bộ dữ liệu: {exception}", MsgType.Error_);
+                MessageHelper.MsgBox(this,$"Có lỗi trong quá trình đồng bộ dữ liệu: {exception}", MsgType.Error);
             }
             finally
             {
@@ -121,7 +120,7 @@ namespace FrmMain
             }
             catch (Exception ex)
             {
-                MessageHelper.MsgBox($"Có lỗi trong quá trình đồng bộ dữ liệu: {ex}", MsgType.Error_);
+                MessageHelper.MsgBox(this,$"Có lỗi trong quá trình đồng bộ dữ liệu: {ex}", MsgType.Error);
             }
             finally
             {
@@ -141,7 +140,7 @@ namespace FrmMain
             }
             catch (Exception exception)
             {
-                MessageHelper.MsgBox($"Có lỗi trong quá trình đồng bộ dữ liệu: {exception}", MsgType.Error_);
+                MessageHelper.MsgBox(this,$"Có lỗi trong quá trình đồng bộ dữ liệu: {exception}", MsgType.Error);
             }
             finally
             {
@@ -164,7 +163,7 @@ namespace FrmMain
             }
             catch (Exception ex)
             {
-                MessageHelper.MsgBox($"Có lỗi trong quá trình đồng bộ dữ liệu: {ex}", MsgType.Error_);
+                MessageHelper.MsgBox(this,$"Có lỗi trong quá trình đồng bộ dữ liệu: {ex}", MsgType.Error);
             }
             finally
             {
@@ -175,7 +174,7 @@ namespace FrmMain
         private async void FrmSystem_Load(object sender, EventArgs e)
         {
             var computerName = Environment.MachineName;
-            MessageHelper.MsgBox(computerName, MsgType.Information);
+            MessageHelper.MsgBox(this,computerName, MsgType.Information);
             SetTextEditHeight(this, 25);
             var branches = await _branchService.GetAllBranches();
             lkpBranch.Properties.DataSource = branches;
@@ -224,33 +223,6 @@ namespace FrmMain
             }
         }
 
-        private async void DefautlSetting()
-        {
-            try
-            {
-                var appSetting = new AppSettingDto()
-                {
-                    ComputerName = Environment.MachineName,
-                    ModuleName = "Branch",
-                    SettingKey = "BranchId",
-                    SettingValue = "631782",
-                };
-                var result = await _systemService.AddAppSetting(appSetting);
-                if (result != null)
-                {
-                    MessageHelper.MsgBox("Lưu cài đặt thành công", MsgType.Information);
-                }
-                else
-                {
-                    MessageHelper.MsgBox("Lưu cài đặt thất bại", MsgType.Error_);
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageHelper.MsgBox($"Có lỗi trong quá trình lưu cài đặt: {ex}", MsgType.Error_);
-            }
-        }
-
         private void lkpBranch_EditValueChanged(object sender, EventArgs e)
         {
             _branchId = (int)lkpBranch.EditValue;
@@ -268,11 +240,11 @@ namespace FrmMain
                     var result = await _systemService.UpdateAppSetting(appSettingExist);
                     if (result)
                     {
-                        MessageHelper.MsgBox("Cập nhật cài đặt thành công", MsgType.Information);
+                        MessageHelper.MsgBox(this,"Cập nhật cài đặt thành công", MsgType.Information);
                     }
                     else
                     {
-                        MessageHelper.MsgBox("Cập nhật cài đặt thất bại", MsgType.Error_);
+                        MessageHelper.MsgBox(this,"Cập nhật cài đặt thất bại", MsgType.Error);
                     }
                 }
                 else
@@ -287,28 +259,18 @@ namespace FrmMain
                     var result = await _systemService.AddAppSetting(appSetting);
                     if (result != null)
                     {
-                        MessageHelper.MsgBox("Lưu cài đặt thành công", MsgType.Information);
+                        MessageHelper.MsgBox(this,"Lưu cài đặt thành công", MsgType.Information);
                     }
                     else
                     {
-                        MessageHelper.MsgBox("Lưu cài đặt thất bại", MsgType.Error_);
+                        MessageHelper.MsgBox(this,"Lưu cài đặt thất bại", MsgType.Error);
                     }
                 }
-
-                LoadDefaultSetting();
             }
             catch (Exception ex)
             {
-                MessageHelper.MsgBox($"Có lỗi trong quá trình lưu cài đặt: {ex}", MsgType.Error_);
+                MessageHelper.MsgBox(this,$"Có lỗi trong quá trình lưu cài đặt: {ex}", MsgType.Error);
             }
-        }
-
-        protected async Task LoadDefaultSetting()
-        {
-            var setting = await _systemService.GetAppSettingBuyComputer(Environment.MachineName);
-            AppGlobals.AppSetting = setting;
-            AppGlobals.BranchId = _branchId;
-            AppGlobals.ComputerName = Environment.MachineName;
         }
 
         private async void btnSyncSupplier_Click(object sender, EventArgs e)
@@ -316,17 +278,22 @@ namespace FrmMain
             try
             {
                 var success = await _supplierService.SynsSupplier();
-                if (success) MessageHelper.MsgBox("Đồng bộ nhà cung cấp thành công", MsgType.Information);
-                else MessageHelper.MsgBox("Không có nhà cung cấp nào để đồng bộ", MsgType.Error_);
+                if (success) MessageHelper.MsgBox(this,"Đồng bộ nhà cung cấp thành công", MsgType.Information);
+                else MessageHelper.MsgBox(this,"Không có nhà cung cấp nào để đồng bộ", MsgType.Error);
             }
             catch (Exception ex)
             {
-                MessageHelper.MsgBox($"Có lỗi trong quá trình lưu cài đặt: {ex}", MsgType.Error_);
+                MessageHelper.MsgBox(this,$"Có lỗi trong quá trình lưu cài đặt: {ex}", MsgType.Error);
             }
         }
 
         private void btnSetRole_Click(object sender, EventArgs e)
         {
+        }
+
+        public async Task ReLoadData(string code, long id)
+        {
+            throw new NotImplementedException();
         }
     }
 

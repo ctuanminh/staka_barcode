@@ -1,63 +1,59 @@
 ﻿using Be.Common.PurchaseOrder.Request;
 using Be.Common.PurchaseOrder.Response;
-using Be.Core.Entities;
 using Be.Services.KiotViet;
 using Be.Services.Pos;
 using Be.Services.System;
 using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraGrid.Views.Grid;
-using FrmMain.App;
 using FrmMain.Utils;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Exception = System.Exception;
 
 namespace FrmMain
 {
-    public partial class FrmPurchase : XtraForm
+    public partial class FrmPurchase : FrmBasePos, IReloadableForm
     {
         private readonly FrmMainF _mainForm;
         private readonly IKiotVietService _kiotVietService;
         private const string PurchaseOrderUrl = "https://public.kiotapi.com/purchaseorders";
         private List<int> _purchaseStatusList;
-        private int _branchId;
-        private readonly IBranchService _branchService;
-        private readonly ISystemService _systemService;
         private DateTime _searchFromPurchase;
         private DateTime _searchToPurchase;
         private Timer _reloadTimer;
         private DateTime _nextReloadTime;
         private const int ReloadIntervalMinutes = 60;
-        public FrmPurchase(FrmMainF mainForm, IKiotVietService kiotVietService, IBranchService branchService, ISystemService systemService)
+
+        public FrmPurchase(FrmMainF mainForm, IKiotVietService kiotVietService, IBranchService branchService,
+            ISystemService systemService)
+            : base(branchService, systemService)
         {
             _mainForm = mainForm;
             _kiotVietService = kiotVietService;
-            _branchService = branchService;
-            _systemService = systemService;
             InitializeComponent();
             StartCountdownTimer();
         }
 
-        public async void ReloadData()
+        public async Task ReLoadData(string code, long id)
         {
             try
             {
-                await LoadData();
+                _purchaseStatusList = [1];
+                await LoadData("", 0);
             }
             catch (Exception exception)
             {
-                MessageHelper.MsgBox($"Có lỗi trong quá trình tải dữ liệu: {exception}", MsgType.Error_);
+                MessageHelper.MsgBox(this,$"Có lỗi trong quá trình tải dữ liệu: {exception}", MsgType.Error);
             }
         }
 
-        private async Task LoadData()
+        private async Task LoadData(string code, long id)
         {
             try
             {
@@ -66,7 +62,7 @@ namespace FrmMain
 
                 var request = new SearchPurchaseOrderRequest
                 {
-                    BranchIds = [AppGlobals.BranchId],
+                    BranchIds = [BranchId],
                     Status = _purchaseStatusList.ToArray(),
                     PageSize = 100,
                     OrderBy = "purchaseDate",
@@ -75,19 +71,11 @@ namespace FrmMain
                     ToPurchaseDate = _searchToPurchase
                 };
 
-                var (success, content) = await _kiotVietService.CallApiAsync(PurchaseOrderUrl, request, "GET");
-
-                await _systemService.AddRequest(new RequestEntity
-                {
-                    Module = Name,
-                    Url = PurchaseOrderUrl,
-                    IsSuccess = success,
-                    BranchId = _branchId
-                });
+                var (success, content) = await _kiotVietService.CallApiAsync(PurchaseOrderUrl, request);
 
                 if (!success || string.IsNullOrWhiteSpace(content))
                 {
-                    MessageHelper.MsgBox("Không thể tải dữ liệu từ hệ thống.", MsgType.Error_);
+                    MessageHelper.MsgBox(this,"Không thể tải dữ liệu từ hệ thống.", MsgType.Error);
                     grdControlOrders.DataSource = null;
                     return;
                 }
@@ -99,7 +87,7 @@ namespace FrmMain
                 }
                 catch
                 {
-                    MessageHelper.MsgBox("Dữ liệu trả về không hợp lệ.", MsgType.Error_);
+                    MessageHelper.MsgBox(this,"Dữ liệu trả về không hợp lệ.", MsgType.Error);
                     grdControlOrders.DataSource = null;
                     return;
                 }
@@ -116,7 +104,7 @@ namespace FrmMain
             }
             catch (Exception ex)
             {
-                MessageHelper.MsgBox("Có lỗi xảy ra trong quá trình tải dữ liệu.", MsgType.Error_);
+                MessageHelper.MsgBox(this,"Có lỗi xảy ra trong quá trình tải dữ liệu.", MsgType.Error);
             }
             finally
             {
@@ -153,7 +141,7 @@ namespace FrmMain
             }
             catch (Exception ex)
             {
-                MessageHelper.MsgBox("Lỗi khi chuyển dữ liệu", MsgType.Error_);
+                MessageHelper.MsgBox(this,"Lỗi khi chuyển dữ liệu", MsgType.Error);
             }
         }
 
@@ -189,21 +177,20 @@ namespace FrmMain
             }
         }
 
-        private async void FrmOrder_Load(object sender, EventArgs e)
+        private void FrmOrder_Load(object sender, EventArgs e)
         {
             try
             {
-                _purchaseStatusList = [1];
                 SetTextEditHeight(this, 25);
                 SetStatusCheckboxStyle();
                 SetDefaultDatePurchase();
                 InitGridView();
-                await LoadData();
+                txtBranchName.Text = BranchName;
                 grdViewOrders.MouseMove += grdViewOrders_MouseMove;
             }
             catch (Exception exception)
             {
-                MessageHelper.MsgBox($"Có lỗi trong quá trình tải dữ liệu: {exception}", MsgType.Error_);
+                MessageHelper.MsgBox(this,$"Có lỗi trong quá trình tải dữ liệu: {exception}", MsgType.Error);
             }
         }
 
@@ -240,11 +227,11 @@ namespace FrmMain
                     }
                 }
 
-                await LoadData();
+                await LoadData("", 0);
             }
             catch (Exception exception)
             {
-                MessageHelper.MsgBox($"Có lỗi trong quá trình tải dữ liệu: {exception}", MsgType.Error_);
+                MessageHelper.MsgBox(this,$"Có lỗi trong quá trình tải dữ liệu: {exception}", MsgType.Error);
             }
         }
 
@@ -319,7 +306,7 @@ namespace FrmMain
                 {
                     _reloadTimer.Stop();
                     btnReloadPurchase.Text = "Loading...";
-                    await LoadData();
+                    await LoadData("", 0);
                     // Khởi động lại đếm ngược
                     _nextReloadTime = DateTime.Now.AddMinutes(ReloadIntervalMinutes);
                     _reloadTimer.Start();
@@ -331,7 +318,7 @@ namespace FrmMain
             }
             catch (Exception exception)
             {
-                MessageHelper.MsgBox($"Có lỗi trong quá trình tải dữ liệu: {exception}", MsgType.Error_);
+                MessageHelper.MsgBox(this,$"Có lỗi trong quá trình tải dữ liệu: {exception}", MsgType.Error);
             }
         }
 
@@ -351,14 +338,14 @@ namespace FrmMain
             try
             {
                 _reloadTimer?.Stop();
-                await LoadData();
+                await LoadData("", 0);
                 btnReloadPurchase.Text = "Loading...";
                 _nextReloadTime = DateTime.Now.AddMinutes(ReloadIntervalMinutes);
                 _reloadTimer?.Start();
             }
             catch (Exception exception)
             {
-                MessageHelper.MsgBox($"Có lỗi trong quá trình tải dữ liệu: {exception}", MsgType.Error_);
+                MessageHelper.MsgBox(this,$"Có lỗi trong quá trình tải dữ liệu: {exception}", MsgType.Error);
             }
         }
 
@@ -380,32 +367,6 @@ namespace FrmMain
         {
             layoutControlTop.Enabled = enable;
             grdControlOrders.Enabled = enable;
-        }
-
-        private async Task LoadDefaultSetting()
-        {
-            var setting = AppGlobals.AppSetting.FirstOrDefault(s =>
-                s.ComputerName == Environment.MachineName &&
-                s.ModuleName == "Branch" &&
-                s.SettingKey == "BranchId");
-
-            if (setting == null || string.IsNullOrWhiteSpace(setting.SettingValue))
-            {
-                MessageHelper.MsgBox("Không tìm thấy thông tin chi nhánh trên máy này.", MsgType.Error_);
-                return;
-            }
-
-            if (!long.TryParse(setting.SettingValue, out var branchId))
-            {
-                MessageHelper.MsgBox("Mã chi nhánh không hợp lệ.", MsgType.Error_);
-                return;
-            }
-
-            var branch = await _branchService.GetBranchById(branchId);
-            _branchId = branch?.BranchId ?? 0;
-
-            txtBranchName.Text = branch?.BranchName ?? "Chưa chọn chi nhánh";
-            txtBranchName.ReadOnly = true;
         }
 
         private void InitGridView()
@@ -455,9 +416,8 @@ namespace FrmMain
             }
             catch (Exception ex)
             {
-                MessageHelper.MsgBox("Lỗi khi chuyển dữ liệu", MsgType.Error_);
+                MessageHelper.MsgBox(this,"Lỗi khi chuyển dữ liệu", MsgType.Error);
             }
         }
-
     }
 }

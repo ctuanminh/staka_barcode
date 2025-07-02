@@ -1,6 +1,6 @@
 ﻿namespace FrmMain
 {
-    partial class FrmBase
+    partial class FrmBasePos
     {
         /// <summary>
         /// Required designer variable.
@@ -28,16 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            SuspendLayout();
-            // 
-            // FrmBase
-            // 
-            AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
-            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(422, 155);
-            Name = "FrmBase";
-            Text = "FrmBase";
-            ResumeLayout(false);
+            this.components = new System.ComponentModel.Container();
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Text = "FrmBasePosPos";
         }
 
         #endregion

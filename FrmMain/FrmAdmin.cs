@@ -22,7 +22,7 @@ namespace FrmMain
             }
             else
             {
-                MessageHelper.MsgBox("Không có quyền truy cập", MsgType.Error_);
+                MessageHelper.MsgBox(this,"Không có quyền truy cập", MsgType.Error);
             }
         }
         private void txtPassword_KeyDown(object sender, KeyEventArgs e)
