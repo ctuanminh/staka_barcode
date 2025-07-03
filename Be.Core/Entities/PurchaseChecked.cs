@@ -11,5 +11,6 @@ namespace Be.Core.Entities
         public long BranchId { get; set; }
         public string UserName { get; set; }
         public bool Checked { get; set; }
+        public int ScanCount { get; set; }
     }
 }

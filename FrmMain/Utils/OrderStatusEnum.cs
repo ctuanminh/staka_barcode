@@ -1,6 +1,6 @@
 ﻿namespace FrmMain.Utils
 {
-     public enum OrderStatusEnum
+    public enum OrderStatusEnum
     {
         Finished = 3,
         Cancel = 4,

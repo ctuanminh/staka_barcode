@@ -46,17 +46,18 @@
         public string ProductCode { get; set; }
         public string ProductBarCode { get; set; }
         public string ProductName { get; set; }
-        public int Quantity { get; set; }
+        public double Quantity { get; set; }
         public decimal Price { get; set; }
         public string Unit { get; set; }
         public decimal Discount { get; set; }
         public double DiscountRatio { get; set; }
         public bool Checked { get; set; }
         public bool IsNew { get; set; }
+        public double ScanCount { get; set; }
         private decimal _total;
         public decimal Total
         {
-            get => (Price * Quantity) - Discount;
+            get => (Price * (decimal)Quantity) - Discount;
             set => _total = value;
         }
     }

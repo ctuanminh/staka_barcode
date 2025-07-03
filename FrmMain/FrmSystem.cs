@@ -293,7 +293,6 @@ namespace FrmMain
 
         public async Task ReLoadData(string code, long id)
         {
-            throw new NotImplementedException();
         }
     }
 

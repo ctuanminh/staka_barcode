@@ -305,5 +305,6 @@ namespace FrmMain
                 MessageHelper.MsgBox(this,"Lỗi khi chuyển dữ liệu", MsgType.Error);
             }
         }
+
     }
 }

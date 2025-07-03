@@ -115,7 +115,7 @@ namespace Be.Services.PurchaseOrder
                     worksheet.Cells[currentRow, 25].Value = productUnitDict.TryGetValue(purchaseOrderDetail.ProductId, out var unit)? unit : ""; // Đơn vị tính
                     worksheet.Cells[currentRow, 26].Value = purchaseOrderDetail.Quantity; // Số lượng
                     worksheet.Cells[currentRow, 27].Value = purchaseOrderDetail.Price; // Đơn giá
-                    worksheet.Cells[currentRow, 28].Value = purchaseOrderDetail.Price * purchaseOrderDetail.Quantity; // Thành tiền
+                    worksheet.Cells[currentRow, 28].Value = purchaseOrderDetail.Price * (decimal) purchaseOrderDetail.Quantity; // Thành tiền
                 }
             }
             return package.GetAsByteArray();
@@ -198,7 +198,8 @@ namespace Be.Services.PurchaseOrder
                     PurchaseId = p.PurchaseId,
                     PurchaseCode = p.PurchaseCode,
                     Checked = p.Checked,
-                    BranchId = p.BranchId
+                    BranchId = p.BranchId,
+                    ScanCount = p.ScanCount
                 })
                 .Distinct()
                 .ToListAsync();
@@ -209,10 +210,18 @@ namespace Be.Services.PurchaseOrder
         public async Task<PurchaseCheckedDto> GetPurchaseCheckedByProduct(long purchaseId, string productBarCode, long branchId)
         {
             var productChecked = _repository.GetQueryable<PurchaseCheckedEntity>()
+                .AsNoTracking()
                 .Where(p => p.PurchaseId == purchaseId && p.ProductBarCode == productBarCode && p.BranchId == branchId)
                 .FirstOrDefault();
             var result = _mapper.Map<PurchaseCheckedDto>(productChecked);
             return result;
+        }
+
+        public async Task<bool> IsPurchaseChecked(long purchaseId, long branchId)
+        {
+            var existing = _repository.GetQueryable<PurchaseCheckedEntity>()
+                .Any(p => p.PurchaseId == purchaseId && p.BranchId == branchId);
+            return existing;
         }
 
         #endregion

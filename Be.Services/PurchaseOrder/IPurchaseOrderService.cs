@@ -17,5 +17,6 @@ namespace Be.Services.PurchaseOrder
         Task<bool> UpdatePurchaseChecked(long purchaseId, PurchaseCheckedDto purchaseCheckedDto);
         Task<List<PurchaseCheckedDto>> GetPurchaseCheckedByPurchaseId(long purchaseId);
         Task<PurchaseCheckedDto> GetPurchaseCheckedByProduct(long purchaseId, string productBarCode, long branchId);
+        Task<bool> IsPurchaseChecked(long purchaseId, long branchId);
     }
 }

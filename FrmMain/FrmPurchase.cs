@@ -7,7 +7,6 @@ using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraGrid.Views.Grid;
 using FrmMain.Utils;
-using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -44,6 +43,7 @@ namespace FrmMain
         {
             try
             {
+                SetDefaultDatePurchase();
                 _purchaseStatusList = [1];
                 await LoadData("", 0);
             }

@@ -7,9 +7,11 @@ namespace Be.Core.Entities
         public long TransferId { get; set; }
         public string TransferCode { get; set; }
         public string ProductBarCode { get; set; }
+        public string ProductCode { get; set; }
         public long BranchId { get; set; }
         public string  UserName { get; set; }
         public bool Transfer { get; set; } = false;
         public bool Checked { get; set; }
+        public double ScanCount { get; set; }
     }
 }

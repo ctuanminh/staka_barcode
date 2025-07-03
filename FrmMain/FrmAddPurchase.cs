@@ -48,7 +48,7 @@ namespace FrmMain
         private readonly FrmMainF _mainForm;
         private List<Product> _products;
         private List<PurchaseOrderDetail> _purchaseOrderDetails;
-        private readonly IMapper _mapper;
+
         #endregion
 
         public FrmAddPurchase(IKiotVietService kiotVietService, IProductService productService,
@@ -58,38 +58,20 @@ namespace FrmMain
             _kiotVietService = kiotVietService;
             _productService = productService;
             _supplyService = supplyService;
-            _mapper = mapper;
             _purchaseOrderService = purchaseOrderService;
             _mainForm = mainForm;
             InitializeComponent();
             txtOrderCode.Text = CurrentCode;
         }
 
-        private async void FrmPurchaseProcess_Load(object sender, EventArgs e)
+        private void FrmPurchaseProcess_Load(object sender, EventArgs e)
         {
-            try
-            {
-                SetTextEditHeight(this, 25);
-                BeginInvoke(() => txtProductCode.Focus());
-                InitForm();
-                if (CurrentId > 0 && CurrentCode != null)
-                {
-                    await ReLoadData(CurrentCode, CurrentId );
-                    btnReload.Text = "Tải lại dữ liệu";
-                    btnReload.Enabled = true;
-                    layoutCtlReload.Enabled = true;
-                }
-                else
-                {
-                    layoutCtlReload.Enabled = false;
-                    btnReload.Enabled = false;
-                    SetStatusCheckboxStyle(1);
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageHelper.MsgBox(this,"Có lỗi trong quá trình lấy dữ liệu" + ex, MsgType.Error);
-            }
+            SetTextEditHeight(this, 25);
+            BeginInvoke(() => txtProductCode.Focus());
+            InitForm();
+            layoutCtlReload.Enabled = false;
+            btnReload.Enabled = false;
+            SetStatusCheckboxStyle(1);
         }
 
         private void FrmOrderProcess_Shown(object sender, EventArgs e)
@@ -102,25 +84,13 @@ namespace FrmMain
             {
                 CurrentCode = code;
                 CurrentId = id;
-                IsEditMode = true;
                 txtOrderCode.Text = code;
                 _scannedBarcodeCount = 0;
                 await LoadProduct();
                 await LoadSupplier();
                 await LoadDefaultSetting();
-                if (code != "" && id != 0)
-                {
-                    await LoadData(CurrentId);
-                }
-                else
-                {
-                    await SyncAndGetProductCodeBarCode(null);
-                }
-                Text = IsEditMode switch
-                {
-                    false => "Thêm Nhận hàng",
-                    true => $"Sửa Nhận hàng: {CurrentCode}"
-                };
+                await SyncAndGetProductCodeBarCode(null);
+                Text = "Thêm Nhận hàng";
             }
             catch (Exception ex)
             {
@@ -178,14 +148,7 @@ namespace FrmMain
                 SetControlEnable(false);
                 var url = $"https://public.kiotapi.com/purchaseorders/{purchaseId}";
                 var (success, content) = await _kiotVietService.CallApiAsync(url, (string)null, "GET");
-                // Log the request
-                await _systemService.AddRequest(new RequestEntity()
-                {
-                    Module = Name,
-                    Url = url,
-                    IsSuccess = success,
-                    BranchId = _branchId
-                });
+                
                 if (!success && content == null) MessageBox.Show("Lỗi khi lấy dữ liệu Kiotviet");
 
                 var purchaseOrderResponse = JsonConvert.DeserializeObject<PurchaseOrderResponse>(content);
@@ -325,6 +288,7 @@ namespace FrmMain
                 if (existingItem != null)
                 {
                     existingItem.Quantity++;
+                    existingItem.ScanCount++;
                     if (!existingItem.Checked) _scannedBarcodeCount++;
                     existingItem.Checked = true;
                 }
@@ -336,7 +300,8 @@ namespace FrmMain
                         return;
                     }
 
-                    var product = _products.FirstOrDefault(p => p.BarCode == searchBarcode);
+                    var product = _products.FirstOrDefault(p => p.BarCode == searchBarcode) ??
+                                  _products.FirstOrDefault(p => p.Code == searchBarcode);
                     if (product == null)
                     {
                         MessageHelper.MsgBox(this,"Không tìm thấy sản phẩm với mã vạch đã nhập.", MsgType.Error);
@@ -354,6 +319,7 @@ namespace FrmMain
                         Unit = product.Unit ?? "Cái",
                         Discount = 0,
                         DiscountRatio = 0,
+                        ScanCount = 1,
                         Checked = true,
                         IsNew = true,
                     });
@@ -368,16 +334,6 @@ namespace FrmMain
 
                 grdControlOrders.DataSource = null;
                 grdControlOrders.DataSource = _purchaseOrderDetails;
-
-                // Cập nhật tình trạng đã quét nếu là phiếu sửa
-                if (_purchaseOrderResponse?.Id > 0)
-                {
-                    await UpdateProductChecked(
-                        _purchaseOrderResponse.Code,
-                        _purchaseOrderResponse.Id,
-                        _purchaseOrderResponse.PurchaseOrderDetails
-                    );
-                }
 
                 // Tìm dòng trong Grid
                 var rowHandle = grdViewOrder.LocateByValue("ProductCode", searchBarcode);
@@ -425,17 +381,9 @@ namespace FrmMain
             if (view.GetRow(e.RowHandle) is not PurchaseOrderDetail row) return;
 
             if (!row.Checked) return;
-            if (row.IsNew)
-            {
-                e.Appearance.BackColor = Color.LightCoral; // Màu đỏ nhạt
-                e.Appearance.ForeColor = Color.Black;
-            }
-            else
-            {
-                e.Appearance.BackColor = Color.LightGreen; // Màu xanh nhạt
-                e.Appearance.ForeColor = Color.Black;      // Text màu đen (tuỳ chọn)
-                e.Appearance.Font = new Font(e.Appearance.Font, FontStyle.Bold);
-            }
+            e.Appearance.BackColor = Color.LightGreen;
+            e.Appearance.ForeColor = Color.Black;    
+            e.Appearance.Font = new Font(e.Appearance.Font, FontStyle.Bold);
         }
 
         private void SetStyleGridView()
@@ -458,7 +406,7 @@ namespace FrmMain
                 .FirstOrDefault(p => p.ProductBarCode == productCode.ToString()) ?? _purchaseOrderDetails
                 .FirstOrDefault(p => p.ProductId == Convert.ToInt64(productId));
             if (existingItem == null) return;
-            existingItem.Quantity = (int)newValue;
+            existingItem.Quantity = (double)newValue;
             txtProductCount.Text = newValue.ToString();
         }
 
@@ -500,6 +448,12 @@ namespace FrmMain
 
         private void btnFinish_Click(object sender, EventArgs e)
         {
+            if (_purchaseOrderDetails == null || _purchaseOrderDetails.Count == 0)
+            {
+                MessageHelper.MsgBox(this, "Chưa có sản phẩm nào trong phiếu nhập", MsgType.Error);
+                return;
+            }
+
             if (_scannedBarcodeCount != _purchaseOrderDetails.Count)
             {
                 var listNotScan = _purchaseOrderDetails.Where(p => !p.Checked)
@@ -511,23 +465,18 @@ namespace FrmMain
                 txtProductCode.Focus();
                 return;
             }
-            if (_purchaseOrderDetails == null || _purchaseOrderDetails.Count == 0)
-            {
-                MessageHelper.MsgBox(this,"Chưa có sản phẩm nào trong phiếu nhập", MsgType.Error);
-                return;
-            }
-
+            
             if (lkpSupplier.EditValue == null)
             {
                 MessageHelper.MsgBox(this,"Chưa chọn nhà cung cấp", MsgType.Error);
                 lkpSupplier.Focus();
                 return;
             }
-            FinishOrder();
 
+            SaveDraftOrder(sender != btnFinish);
         }
 
-        private async void FinishOrder()
+        private async void SaveDraftOrder(bool draft)
         {
             try
             {
@@ -557,11 +506,10 @@ namespace FrmMain
                         address = supplier.Address,
                     },
                     description = AppGlobals.UserInfo.UserName + "/" + AppGlobals.ComputerName,
-                    isDraft = 1,
+                    isDraft = draft? 1 : 3,
                     discount = 0,
                     discountRatio = 0,
                     paidAmount = 0,
-                    //paymentMethod = null,
                     surcharges = new List<object>(),
                     totalPayment = 0,
                     makeInvoice = true,
@@ -576,11 +524,8 @@ namespace FrmMain
                         DiscountRatio = product.DiscountRatio
                     }).ToList(),
                 };
-                if (CurrentCode != null)
-                {
-                    orderUrl = orderUrl + '/' + CurrentId;
-                }
-                var (updateSuccess, updateContent) = await _kiotVietService.CallApiAsync(orderUrl, purchaseRequest, CurrentCode == null ? "POST" : "PUT");
+                
+                var (updateSuccess, updateContent) = await _kiotVietService.CallApiAsync(orderUrl, purchaseRequest, CurrentCode == "" ? "POST" : "PUT");
                 var purchase = JsonConvert.DeserializeObject<PurchaseOrderResponse>(updateContent);
                 if (!updateSuccess || string.IsNullOrEmpty(updateContent))
                 {
@@ -588,14 +533,9 @@ namespace FrmMain
                     return;
                 }
 
-                MessageHelper.MsgBox(this,
-                    CurrentCode != null ? "Lưu phiếu nhập hàng thành công." : "Tạo đơn Nhập hàng công.",
-                    MsgType.Information);
-
-                IsEditMode = true;
+                MessageHelper.MsgBox(this, draft? "Thao tác tạo đơn Nhập hàng thành công." : "Thao tác Nhập hàng thành công", MsgType.Information);
                 CurrentCode = purchase.Code;
                 CurrentId = purchase.Id;
-                await ReLoadData(CurrentCode, CurrentId);
                 await UpdateProductChecked(purchase.Code, purchase.Id, _purchaseOrderDetails);
             }
             catch (Exception ex)
@@ -626,11 +566,12 @@ namespace FrmMain
                 {
                     PurchaseId = purchaseId,
                     PurchaseCode = purchaseCode,
-                    BranchId = _branchId,
+                    BranchId = BranchId,
                     ProductCode = orderDetail.ProductCode,
                     ProductBarCode = !string.IsNullOrEmpty(orderDetail.ProductBarCode) ? orderDetail.ProductBarCode : orderDetail.ProductCode,
                     UserName = AppGlobals.UserInfo.UserName,
-                    Checked = true
+                    Checked = true,
+                    ScanCount = orderDetail.Quantity
                 };
                 await _purchaseOrderService.AddPurchaseChecked(purchaseCheckedDto);
             }
@@ -646,7 +587,7 @@ namespace FrmMain
             chkStatus.Checked = true;
             txtProductCode.ReadOnly = status != 1;
             txtProductCode.BackColor = Color.White;
-            btnFinish.Enabled = status == 1;
+            btnSaveDraft.Enabled = status == 1;
             clmQuantity.OptionsColumn.AllowEdit = status == 1;
             switch (status)
             {
@@ -683,7 +624,7 @@ namespace FrmMain
                         textEdit.MaximumSize = new Size(0, height);
                         break;
                     case SimpleButton button:
-                        if (c.Name is nameof(btnFinish)) break;
+                        if (c.Name is nameof(btnSaveDraft) or nameof(btnFinish)) break;
                         button.MinimumSize = new Size(0, height);
                         button.MaximumSize = new Size(0, height);
                         break;
