@@ -211,6 +211,7 @@ namespace Be.Services.Identity
             try
             {
                 var user = await _userManager.Users.FirstOrDefaultAsync(u => u.KiotId == id);
+                if (user == null) return null;
                 return new UserDto()
                 {
                     Id = user.Id,

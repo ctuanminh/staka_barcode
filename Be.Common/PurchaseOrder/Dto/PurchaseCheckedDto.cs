@@ -4,6 +4,7 @@ namespace Be.Common.PurchaseOrder.Dto
 {
     public class PurchaseCheckedDto
     {
+        public long Id { get; set; }
         public long PurchaseId { get; set; }
         public string PurchaseCode { get; set; }
         public string ProductBarCode { get; set; }
@@ -11,5 +12,7 @@ namespace Be.Common.PurchaseOrder.Dto
         public long BranchId { get; set; }
         public string UserName { get; set; }
         public bool Checked { get; set; }
+        public double ScanCount { get; set; }
+
     }
 }

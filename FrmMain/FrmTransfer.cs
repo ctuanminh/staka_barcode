@@ -2,10 +2,12 @@
 using Be.Common.Tranfer.Response;
 using Be.Services.KiotViet;
 using Be.Services.Pos;
+using Be.Services.System;
 using DevExpress.XtraEditors;
+using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraGrid.Views.Grid;
+using FrmMain.App;
 using FrmMain.Utils;
-using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -13,8 +15,6 @@ using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Be.Services.System;
-using FrmMain.App;
 using Exception = System.Exception;
 
 namespace FrmMain
@@ -103,37 +103,41 @@ namespace FrmMain
                     SetControlEnable(true);
             }
         }
+        private void grdViewOrders_MouseMove(object sender, MouseEventArgs e)
+        {
+            var view = sender as GridView;
+            var hitInfo = view.CalcHitInfo(e.Location);
 
-        private void grdViewOrders_DoubleClick(object sender, EventArgs e)
+            if (hitInfo.InRowCell && hitInfo.Column.FieldName == "Action")
+            {
+                grdControlOrders.Cursor = Cursors.Hand;
+            }
+            else
+            {
+                grdControlOrders.Cursor = Cursors.Default;
+            }
+        }
+
+        private async void rpBtnAction_ButtonClick(object sender, ButtonPressedEventArgs e)
         {
             try
             {
-                if (sender is not GridView { FocusedRowHandle: >= 0 } view) return;
-                var code = view.GetRowCellValue(view.FocusedRowHandle, "Code");
-                var id = view.GetRowCellValue(view.FocusedRowHandle, "Id");
-                if (code == null) return;
-                {
-                    if (FormHelper.OpenedForm(nameof(FrmTransferProcess), WuserControl.Order, out var openForm))
-                    {
-                        if (openForm is FrmTransferProcess processForm)
-                        {
-                            processForm.ReloadData(code.ToString(), Convert.ToInt64(id), true);
-                        }
-                    }
-                    else
-                    {
-                        FrmTransferProcess.CurrentCode = code.ToString();
-                        FrmTransferProcess.CurrentId = Convert.ToInt64(id);
-                        FrmTransferProcess.Transfer = true;
-                        var frmOrderInstance = _mainForm.ServiceProvider.GetRequiredService<FrmTransferProcess>();
-                        Form frmOrder = frmOrderInstance;
-                        FormHelper.NewFormNew(_mainForm, frmOrder, WuserControl.Order, nameof(FrmTransferProcess));
-                    }
-                }
+                if (grdViewOrders.FocusedRowHandle < 0) return;
+
+                var transferCode = grdViewOrders.GetRowCellValue(grdViewOrders.FocusedRowHandle, "Code")?.ToString();
+                var transferId = grdViewOrders.GetRowCellValue(grdViewOrders.FocusedRowHandle, "Id")?.ToString();
+
+                if (string.IsNullOrEmpty(transferCode) || string.IsNullOrEmpty(transferId)) return;
+                await FormHelper.OpenFormWithScope<FrmTransferProcess>(_mainForm,
+                    _mainForm.ServiceProvider,
+                    transferCode,
+                    Convert.ToInt64(transferId),
+                    nameof(FrmTransferProcess),
+                    WuserControl.OrderProcess);
             }
             catch (Exception ex)
             {
-                MessageHelper.MsgBox(this,"Lỗi khi chuyển dữ liệu", MsgType.Error);
+                MessageHelper.MsgBox(this, "Lỗi khi chuyển dữ liệu", MsgType.Error);
             }
         }
 

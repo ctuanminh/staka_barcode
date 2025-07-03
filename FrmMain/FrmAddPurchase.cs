@@ -27,7 +27,7 @@ using Exception = System.Exception;
 
 namespace FrmMain
 {
-    public partial class FrmAddPurchase : XtraForm, IReloadableForm
+    public partial class FrmAddPurchase : FrmBasePos, IReloadableForm
     {
         #region Ctor & Private Fields
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -42,76 +42,55 @@ namespace FrmMain
         private PurchaseOrderResponse _purchaseOrderResponse;
         private readonly IProductService _productService;
         private readonly ISystemService _systemService;
-        private readonly IBranchService _branchService;
         private readonly ISupplyService _supplyService;
         private readonly IPurchaseOrderService _purchaseOrderService;
         private Dictionary<string, string> _productLookupDictionary;
         private readonly FrmMainF _mainForm;
         private List<Product> _products;
         private List<PurchaseOrderDetail> _purchaseOrderDetails;
-        private readonly IMapper _mapper;
+
         #endregion
-        public FrmAddPurchase(IKiotVietService kiotVietService, IProductService productService, ISystemService systemService, IBranchService branchService, ISupplyService supplyService, IMapper mapper, IPurchaseOrderService purchaseOrderService, FrmMainF mainForm)
+
+        public FrmAddPurchase(IKiotVietService kiotVietService, IProductService productService,
+            ISystemService systemService, IBranchService branchService, ISupplyService supplyService, IMapper mapper,
+            IPurchaseOrderService purchaseOrderService, FrmMainF mainForm) : base(branchService, systemService)
         {
             _kiotVietService = kiotVietService;
             _productService = productService;
-            _systemService = systemService;
-            _branchService = branchService;
             _supplyService = supplyService;
-            _mapper = mapper;
             _purchaseOrderService = purchaseOrderService;
             _mainForm = mainForm;
             InitializeComponent();
             txtOrderCode.Text = CurrentCode;
         }
-        public async Task ReLoadData(string code, long id)
+
+        private void FrmPurchaseProcess_Load(object sender, EventArgs e)
         {
+            SetTextEditHeight(this, 25);
+            BeginInvoke(() => txtProductCode.Focus());
+            InitForm();
+            layoutCtlReload.Enabled = false;
+            btnReload.Enabled = false;
+            SetStatusCheckboxStyle(1);
         }
-        private async void FrmPurchaseProcess_Load(object sender, EventArgs e)
+
+        private void FrmOrderProcess_Shown(object sender, EventArgs e)
+        {
+            txtProductCode.Focus();
+        }
+        public async Task ReLoadData(string code, long id)
         {
             try
             {
-                SetTextEditHeight(this, 25);
-                BeginInvoke(() => txtProductCode.Focus());
-                InitForm();
+                CurrentCode = code;
+                CurrentId = id;
+                txtOrderCode.Text = code;
+                _scannedBarcodeCount = 0;
                 await LoadProduct();
                 await LoadSupplier();
                 await LoadDefaultSetting();
-                if (CurrentId > 0 && CurrentCode != null)
-                {
-                    ReloadData(CurrentId, CurrentCode);
-                    btnReload.Text = "Tải lại dữ liệu";
-                    btnReload.Enabled = true;
-                    layoutCtlReload.Enabled = true;
-                }
-                else
-                {
-                    layoutCtlReload.Enabled = false;
-                    btnReload.Enabled = false;
-                    SetStatusCheckboxStyle(1);
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageHelper.MsgBox(this,"Có lỗi trong quá trình lấy dữ liệu" + ex, MsgType.Error);
-            }
-        }
-
-        public async void ReloadData(long purchaseId, string purchaseCode)
-        {
-            try
-            {
-                CurrentCode = purchaseCode;
-                CurrentId = purchaseId;
-                IsEditMode = true;
-                txtOrderCode.Text = purchaseCode;
-                _scannedBarcodeCount = 0;
-                await LoadData(CurrentId);
-                Text = IsEditMode switch
-                {
-                    false => "Thêm Nhận hàng",
-                    true => $"Sửa Nhận hàng: {CurrentCode}"
-                };
+                await SyncAndGetProductCodeBarCode(null);
+                Text = "Thêm Nhận hàng";
             }
             catch (Exception ex)
             {
@@ -169,14 +148,7 @@ namespace FrmMain
                 SetControlEnable(false);
                 var url = $"https://public.kiotapi.com/purchaseorders/{purchaseId}";
                 var (success, content) = await _kiotVietService.CallApiAsync(url, (string)null, "GET");
-                // Log the request
-                await _systemService.AddRequest(new RequestEntity()
-                {
-                    Module = Name,
-                    Url = url,
-                    IsSuccess = success,
-                    BranchId = _branchId
-                });
+                
                 if (!success && content == null) MessageBox.Show("Lỗi khi lấy dữ liệu Kiotviet");
 
                 var purchaseOrderResponse = JsonConvert.DeserializeObject<PurchaseOrderResponse>(content);
@@ -264,10 +236,15 @@ namespace FrmMain
 
         private async Task SyncAndGetProductCodeBarCode(List<PurchaseOrderDetail> purchaseOrderDetails)
         {
-            var productCodes = purchaseOrderDetails
-                .Where(p => !string.IsNullOrWhiteSpace(p.ProductCode))
-                .Select(p => p.ProductCode)
-                .ToList();
+            var productCodes = new List<string>();
+            if (purchaseOrderDetails != null)
+            {
+                productCodes = purchaseOrderDetails
+                    .Where(p => !string.IsNullOrWhiteSpace(p.ProductCode))
+                    .Select(p => p.ProductCode)
+                    .ToList();
+            }
+            
             var productCodeBarCode = await _productService.SynAndGetProductCodeBarCode(productCodes, _branchId);
             _productLookupDictionary = new Dictionary<string, string>();
             foreach (var product in productCodeBarCode)
@@ -311,6 +288,7 @@ namespace FrmMain
                 if (existingItem != null)
                 {
                     existingItem.Quantity++;
+                    existingItem.ScanCount++;
                     if (!existingItem.Checked) _scannedBarcodeCount++;
                     existingItem.Checked = true;
                 }
@@ -340,6 +318,7 @@ namespace FrmMain
                         Unit = product.Unit ?? "Cái",
                         Discount = 0,
                         DiscountRatio = 0,
+                        ScanCount = 1,
                         Checked = true,
                         IsNew = true,
                     });
@@ -354,16 +333,6 @@ namespace FrmMain
 
                 grdControlOrders.DataSource = null;
                 grdControlOrders.DataSource = _purchaseOrderDetails;
-
-                // Cập nhật tình trạng đã quét nếu là phiếu sửa
-                if (_purchaseOrderResponse?.Id > 0)
-                {
-                    await UpdateProductChecked(
-                        _purchaseOrderResponse.Code,
-                        _purchaseOrderResponse.Id,
-                        _purchaseOrderResponse.PurchaseOrderDetails
-                    );
-                }
 
                 // Tìm dòng trong Grid
                 var rowHandle = grdViewOrder.LocateByValue("ProductCode", searchBarcode);
@@ -411,17 +380,9 @@ namespace FrmMain
             if (view.GetRow(e.RowHandle) is not PurchaseOrderDetail row) return;
 
             if (!row.Checked) return;
-            if (row.IsNew)
-            {
-                e.Appearance.BackColor = Color.LightCoral; // Màu đỏ nhạt
-                e.Appearance.ForeColor = Color.Black;
-            }
-            else
-            {
-                e.Appearance.BackColor = Color.LightGreen; // Màu xanh nhạt
-                e.Appearance.ForeColor = Color.Black;      // Text màu đen (tuỳ chọn)
-                e.Appearance.Font = new Font(e.Appearance.Font, FontStyle.Bold);
-            }
+            e.Appearance.BackColor = Color.LightGreen;
+            e.Appearance.ForeColor = Color.Black;    
+            e.Appearance.Font = new Font(e.Appearance.Font, FontStyle.Bold);
         }
 
         private void SetStyleGridView()
@@ -444,7 +405,7 @@ namespace FrmMain
                 .FirstOrDefault(p => p.ProductBarCode == productCode.ToString()) ?? _purchaseOrderDetails
                 .FirstOrDefault(p => p.ProductId == Convert.ToInt64(productId));
             if (existingItem == null) return;
-            existingItem.Quantity = (int)newValue;
+            existingItem.Quantity = (double)newValue;
             txtProductCount.Text = newValue.ToString();
         }
 
@@ -486,6 +447,12 @@ namespace FrmMain
 
         private void btnFinish_Click(object sender, EventArgs e)
         {
+            if (_purchaseOrderDetails == null || _purchaseOrderDetails.Count == 0)
+            {
+                MessageHelper.MsgBox(this, "Chưa có sản phẩm nào trong phiếu nhập", MsgType.Error);
+                return;
+            }
+
             if (_scannedBarcodeCount != _purchaseOrderDetails.Count)
             {
                 var listNotScan = _purchaseOrderDetails.Where(p => !p.Checked)
@@ -497,28 +464,18 @@ namespace FrmMain
                 txtProductCode.Focus();
                 return;
             }
-            if (_purchaseOrderDetails == null || _purchaseOrderDetails.Count == 0)
-            {
-                MessageHelper.MsgBox(this,"Chưa có sản phẩm nào trong phiếu nhập", MsgType.Error);
-                return;
-            }
-
+            
             if (lkpSupplier.EditValue == null)
             {
                 MessageHelper.MsgBox(this,"Chưa chọn nhà cung cấp", MsgType.Error);
                 lkpSupplier.Focus();
                 return;
             }
-            FinishOrder();
 
+            SaveDraftOrder(sender != btnFinish);
         }
 
-        private void FrmOrderProcess_Shown(object sender, EventArgs e)
-        {
-            txtProductCode.Focus();
-        }
-
-        private async void FinishOrder()
+        private async void SaveDraftOrder(bool draft)
         {
             try
             {
@@ -539,7 +496,7 @@ namespace FrmMain
                         txtPurchaseDate.Text.Trim(),
                         "dd/MM/yyyy HH:mm:ss",
                         CultureInfo.InvariantCulture),
-                    branchId = _branchId,
+                    branchId = BranchId,
                     supplier = new
                     {
                         code = supplier.Code,
@@ -548,11 +505,10 @@ namespace FrmMain
                         address = supplier.Address,
                     },
                     description = AppGlobals.UserInfo.UserName + "/" + AppGlobals.ComputerName,
-                    isDraft = 1,
+                    isDraft = draft == false? 1 : 3,
                     discount = 0,
                     discountRatio = 0,
                     paidAmount = 0,
-                    //paymentMethod = null,
                     surcharges = new List<object>(),
                     totalPayment = 0,
                     makeInvoice = true,
@@ -567,11 +523,8 @@ namespace FrmMain
                         DiscountRatio = product.DiscountRatio
                     }).ToList(),
                 };
-                if (CurrentCode != null)
-                {
-                    orderUrl = orderUrl + '/' + CurrentId;
-                }
-                var (updateSuccess, updateContent) = await _kiotVietService.CallApiAsync(orderUrl, purchaseRequest, CurrentCode == null ? "POST" : "PUT");
+                
+                var (updateSuccess, updateContent) = await _kiotVietService.CallApiAsync(orderUrl, purchaseRequest, CurrentCode == "" ? "POST" : "PUT");
                 var purchase = JsonConvert.DeserializeObject<PurchaseOrderResponse>(updateContent);
                 if (!updateSuccess || string.IsNullOrEmpty(updateContent))
                 {
@@ -579,14 +532,9 @@ namespace FrmMain
                     return;
                 }
 
-                MessageHelper.MsgBox(this,
-                    CurrentCode != null ? "Lưu phiếu nhập hàng thành công." : "Tạo đơn Nhập hàng công.",
-                    MsgType.Information);
-
-                IsEditMode = true;
+                MessageHelper.MsgBox(this, draft? "Thao tác tạo đơn Nhập hàng thành công." : "Thao tác Nhập hàng thành công", MsgType.Information);
                 CurrentCode = purchase.Code;
                 CurrentId = purchase.Id;
-                ReloadData(CurrentId, CurrentCode);
                 await UpdateProductChecked(purchase.Code, purchase.Id, _purchaseOrderDetails);
             }
             catch (Exception ex)
@@ -617,11 +565,12 @@ namespace FrmMain
                 {
                     PurchaseId = purchaseId,
                     PurchaseCode = purchaseCode,
-                    BranchId = _branchId,
+                    BranchId = BranchId,
                     ProductCode = orderDetail.ProductCode,
                     ProductBarCode = !string.IsNullOrEmpty(orderDetail.ProductBarCode) ? orderDetail.ProductBarCode : orderDetail.ProductCode,
                     UserName = AppGlobals.UserInfo.UserName,
-                    Checked = true
+                    Checked = true,
+                    ScanCount = orderDetail.Quantity
                 };
                 await _purchaseOrderService.AddPurchaseChecked(purchaseCheckedDto);
             }
@@ -637,7 +586,7 @@ namespace FrmMain
             chkStatus.Checked = true;
             txtProductCode.ReadOnly = status != 1;
             txtProductCode.BackColor = Color.White;
-            btnFinish.Enabled = status == 1;
+            btnSaveDraft.Enabled = status == 1;
             clmQuantity.OptionsColumn.AllowEdit = status == 1;
             switch (status)
             {
@@ -661,28 +610,7 @@ namespace FrmMain
             checkEdit.BackColor = backColor;
             checkEdit.ForeColor = foreColor;
         }
-        private async Task LoadDefaultSetting()
-        {
-            var setting = AppGlobals.AppSetting.FirstOrDefault(s =>
-                s.ComputerName == Environment.MachineName &&
-                s.ModuleName == "Branch" &&
-                s.SettingKey == "BranchId");
-
-            if (setting == null || string.IsNullOrWhiteSpace(setting.SettingValue))
-            {
-                MessageHelper.MsgBox(this,"Không tìm thấy thông tin chi nhánh trên máy này.", MsgType.Error);
-                return;
-            }
-
-            if (!long.TryParse(setting.SettingValue, out var branchId))
-            {
-                MessageHelper.MsgBox(this,"Mã chi nhánh không hợp lệ.", MsgType.Error);
-                return;
-            }
-
-            var branch = await _branchService.GetBranchById(branchId);
-            _branchId = branch?.BranchId ?? 0;
-        }
+        
         private static void SetTextEditHeight(Control control, int height)
         {
             foreach (Control c in control.Controls)
@@ -695,7 +623,7 @@ namespace FrmMain
                         textEdit.MaximumSize = new Size(0, height);
                         break;
                     case SimpleButton button:
-                        if (c.Name is nameof(btnFinish)) break;
+                        if (c.Name is nameof(btnSaveDraft) or nameof(btnFinish)) break;
                         button.MinimumSize = new Size(0, height);
                         button.MaximumSize = new Size(0, height);
                         break;
@@ -719,9 +647,9 @@ namespace FrmMain
             return _productLookupDictionary.TryGetValue(searchBarCode.ToUpper(), out var codeValue) ? (true, codeValue) : (false, null);
         }
 
-        private void btnReload_Click(object sender, EventArgs e)
+        private async void btnReload_Click(object sender, EventArgs e)
         {
-            ReloadData(CurrentId, CurrentCode);
+            await ReLoadData(CurrentCode, CurrentId);
         }
 
     }

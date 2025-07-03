@@ -2,11 +2,12 @@
 using Be.Common.Tranfer.Response;
 using Be.Services.KiotViet;
 using Be.Services.Pos;
+using Be.Services.System;
 using DevExpress.XtraEditors;
+using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraGrid.Views.Grid;
 using FrmMain.App;
 using FrmMain.Utils;
-using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -14,7 +15,6 @@ using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Be.Services.System;
 using Exception = System.Exception;
 
 namespace FrmMain
@@ -46,12 +46,12 @@ namespace FrmMain
 
         private void FrmOrder_Shown(object sender, EventArgs e)
         {
-            _statusFilter = 2;
         }
 
         public async Task ReLoadData(string code, long id)
         {
-            await LoadData(code, id);
+            _statusFilter = 2;
+            await LoadDefaultSetting();
         }
 
         private async Task LoadData(string code, long id)
@@ -62,7 +62,7 @@ namespace FrmMain
                 var request = new SearchTranferRequest()
                 {
                     FromBranchIds = null,
-                    ToBranchIds = [_currentBranchId],
+                    ToBranchIds = [BranchId],
                     Status = [_statusFilter],
                     PageSize = 100,
                     CurrentItem = 0,
@@ -98,7 +98,7 @@ namespace FrmMain
                     transfer.ToBranchName = branchDict.GetValueOrDefault(transfer.ToBranchId, "");
                 }
                 grdControlOrders.DataSource = transferPagedResponse.Data;
-                grdViewOrders.BestFitColumns();
+                grdViewReceiver.BestFitColumns();
             }
             catch (Exception exception)
             {
@@ -110,36 +110,41 @@ namespace FrmMain
             }
         }
 
-        private void grdViewOrders_DoubleClick(object sender, EventArgs e)
+        private void grdViewReceiver_MouseMove(object sender, MouseEventArgs e)
+        {
+            var view = sender as GridView;
+            var hitInfo = view.CalcHitInfo(e.Location);
+
+            if (hitInfo.InRowCell && hitInfo.Column.FieldName == "Action")
+            {
+                grdControlOrders.Cursor = Cursors.Hand;
+            }
+            else
+            {
+                grdControlOrders.Cursor = Cursors.Default;
+            }
+        }
+
+        private async void rpBtnAction_ButtonClick(object sender, ButtonPressedEventArgs e)
         {
             try
             {
-                if (sender is not GridView { FocusedRowHandle: >= 0 } view) return;
-                var code = view.GetRowCellValue(view.FocusedRowHandle, "Code");
-                var id = view.GetRowCellValue(view.FocusedRowHandle, "Id");
-                if (code == null) return;
-                {
-                    if (FormHelper.OpenedForm(nameof(FrmTransferProcess), WuserControl.Order, out var openForm))
-                    {
-                        if (openForm is FrmTransferProcess processForm)
-                        {
-                            processForm.ReloadData(code.ToString(), Convert.ToInt64(id), false);
-                        }
-                    }
-                    else
-                    {
-                        FrmTransferProcess.CurrentCode = code.ToString();
-                        FrmTransferProcess.CurrentId = Convert.ToInt64(id);
-                        FrmTransferProcess.Transfer = false;
-                        var frmOrderInstance = _mainForm.ServiceProvider.GetRequiredService<FrmTransferProcess>();
-                        Form frmOrder = frmOrderInstance;
-                        FormHelper.NewFormNew(_mainForm, frmOrder, WuserControl.Order, nameof(FrmTransferProcess));
-                    }
-                }
+                if (grdViewReceiver.FocusedRowHandle < 0) return;
+
+                var transferCode = grdViewReceiver.GetRowCellValue(grdViewReceiver.FocusedRowHandle, "Code")?.ToString();
+                var transferId = grdViewReceiver.GetRowCellValue(grdViewReceiver.FocusedRowHandle, "Id")?.ToString();
+
+                if (string.IsNullOrEmpty(transferCode) || string.IsNullOrEmpty(transferId)) return;
+                await FormHelper.OpenFormWithScope<FrmTransferProcess>(_mainForm,
+                    _mainForm.ServiceProvider,
+                    transferCode,
+                    Convert.ToInt64(transferId),
+                    nameof(FrmTransferProcess),
+                    WuserControl.OrderProcess);
             }
             catch (Exception ex)
             {
-                MessageHelper.MsgBox(this,"Lỗi khi chuyển dữ liệu", MsgType.Error);
+                MessageHelper.MsgBox(this, "Lỗi khi chuyển dữ liệu", MsgType.Error);
             }
         }
 
@@ -147,25 +152,7 @@ namespace FrmMain
         {
             try
             {
-                var setting = AppGlobals.AppSetting.FirstOrDefault(s =>
-                    s.ComputerName == Environment.MachineName &&
-                    s.ModuleName == "Branch" &&
-                    s.SettingKey == "BranchId");
-
-                if (setting == null || string.IsNullOrWhiteSpace(setting.SettingValue))
-                {
-                    MessageHelper.MsgBox(this,"Không tìm thấy thông tin chi nhánh trên máy này.", MsgType.Error);
-                    return;
-                }
-
-                if (!long.TryParse(setting.SettingValue, out var branchId))
-                {
-                    MessageHelper.MsgBox(this,"Mã chi nhánh không hợp lệ.", MsgType.Error);
-                    return;
-                }
-                var branch = await _branchService.GetBranchById(branchId);
-                _currentBranchId = branch?.BranchId ?? 0;
-                txtBranchName.Text = branch?.BranchName ?? "Chưa chọn chi nhánh";
+                txtBranchName.Text = BranchName;
                 txtBranchName.ReadOnly = true;
                 SetStatusCheckboxStyle();
                 StartCountdownTimer();

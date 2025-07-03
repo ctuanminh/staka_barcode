@@ -22,6 +22,7 @@
         public decimal ReceivePrice { get; set; } // Giá nhận
         public bool Checked { get; set; }
         public string Unit { get; set; }
+        public double ScanCount { get; set; }
     }
 
     public class TransferResponse

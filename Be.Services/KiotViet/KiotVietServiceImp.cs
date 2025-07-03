@@ -82,11 +82,7 @@ namespace Be.Services.KiotViet
                 switch (method)
                 {
                     case "POST":
-                        var jsonContentPost = JsonConvert.SerializeObject(request, new JsonSerializerSettings
-                        {
-                            ContractResolver = new CamelCasePropertyNamesContractResolver(),
-                            NullValueHandling = NullValueHandling.Ignore
-                        });
+                        var jsonContentPost = JsonConvert.SerializeObject(request);
                         var contentPost = new StringContent(jsonContentPost, Encoding.UTF8, "application/json");
                         
                         var responsePost = await _httpClient.PostAsync(baseUrl, contentPost);

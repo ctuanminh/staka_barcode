@@ -60,12 +60,9 @@
             clmProductCode = new DevExpress.XtraGrid.Columns.GridColumn();
             clmProductName = new DevExpress.XtraGrid.Columns.GridColumn();
             clmTransferredQuantity = new DevExpress.XtraGrid.Columns.GridColumn();
-            clmPrice = new DevExpress.XtraGrid.Columns.GridColumn();
-            clmDiscount = new DevExpress.XtraGrid.Columns.GridColumn();
-            clmTotalTransfer = new DevExpress.XtraGrid.Columns.GridColumn();
             clmChecked = new DevExpress.XtraGrid.Columns.GridColumn();
             clmUnit = new DevExpress.XtraGrid.Columns.GridColumn();
-            clmReceiveQuantity = new DevExpress.XtraGrid.Columns.GridColumn();
+            clmScanCount = new DevExpress.XtraGrid.Columns.GridColumn();
             rpReceiveQuantity = new DevExpress.XtraEditors.Repository.RepositoryItemTextEdit();
             layoutControlTop = new DevExpress.XtraLayout.LayoutControl();
             layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
@@ -160,7 +157,7 @@
             groupControl1.Controls.Add(grpCtlButton);
             groupControl1.Controls.Add(layoutControl2);
             groupControl1.Dock = System.Windows.Forms.DockStyle.Right;
-            groupControl1.Location = new System.Drawing.Point(873, 0);
+            groupControl1.Location = new System.Drawing.Point(869, 0);
             groupControl1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             groupControl1.Name = "groupControl1";
             groupControl1.Size = new System.Drawing.Size(355, 769);
@@ -422,7 +419,7 @@
             grpCtlFilter.Location = new System.Drawing.Point(0, 0);
             grpCtlFilter.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             grpCtlFilter.Name = "grpCtlFilter";
-            grpCtlFilter.Size = new System.Drawing.Size(873, 769);
+            grpCtlFilter.Size = new System.Drawing.Size(869, 769);
             grpCtlFilter.TabIndex = 1;
             grpCtlFilter.Text = "Nhập hàng";
             // 
@@ -435,7 +432,7 @@
             gridControlOrder.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             gridControlOrder.Name = "gridControlOrder";
             gridControlOrder.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] { rpReceiveQuantity });
-            gridControlOrder.Size = new System.Drawing.Size(869, 675);
+            gridControlOrder.Size = new System.Drawing.Size(865, 675);
             gridControlOrder.TabIndex = 1;
             gridControlOrder.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] { gridViewOrder });
             // 
@@ -443,13 +440,14 @@
             // 
             gridViewOrder.Appearance.HeaderPanel.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold);
             gridViewOrder.Appearance.HeaderPanel.Options.UseFont = true;
-            gridViewOrder.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] { clmProductCode, clmProductName, clmTransferredQuantity, clmPrice, clmDiscount, clmTotalTransfer, clmChecked, clmUnit, clmReceiveQuantity });
+            gridViewOrder.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] { clmProductCode, clmProductName, clmTransferredQuantity, clmChecked, clmUnit, clmScanCount });
             gridViewOrder.GridControl = gridControlOrder;
             gridViewOrder.Name = "gridViewOrder";
             gridViewOrder.OptionsDetail.EnableMasterViewMode = false;
             gridViewOrder.OptionsView.ShowGroupPanel = false;
             gridViewOrder.RowCellStyle += gridViewOrder_RowCellStyle;
-            gridViewOrder.ShowingEditor += gridViewOrder_ShownEditor;
+            gridViewOrder.ShowingEditor += gridViewOrder_ShowingEditor;
+            gridViewOrder.ShownEditor += gridViewOrder_ShownEditor;
             gridViewOrder.ValidatingEditor += gridViewOrder_ValidatingEditor;
             // 
             // clmProductCode
@@ -479,37 +477,6 @@
             clmTransferredQuantity.Visible = true;
             clmTransferredQuantity.VisibleIndex = 3;
             // 
-            // clmPrice
-            // 
-            clmPrice.Caption = "Đơn giá";
-            clmPrice.DisplayFormat.FormatString = "n0";
-            clmPrice.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
-            clmPrice.FieldName = "Price";
-            clmPrice.Name = "clmPrice";
-            clmPrice.OptionsColumn.AllowEdit = false;
-            clmPrice.Visible = true;
-            clmPrice.VisibleIndex = 4;
-            // 
-            // clmDiscount
-            // 
-            clmDiscount.Caption = "Giảm giá";
-            clmDiscount.FieldName = "DisplayDiscount";
-            clmDiscount.Name = "clmDiscount";
-            clmDiscount.OptionsColumn.AllowEdit = false;
-            clmDiscount.Visible = true;
-            clmDiscount.VisibleIndex = 6;
-            // 
-            // clmTotalTransfer
-            // 
-            clmTotalTransfer.Caption = "Thành tiền";
-            clmTotalTransfer.DisplayFormat.FormatString = "n0";
-            clmTotalTransfer.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
-            clmTotalTransfer.FieldName = "TotalTransfer";
-            clmTotalTransfer.Name = "clmTotalTransfer";
-            clmTotalTransfer.OptionsColumn.AllowEdit = false;
-            clmTotalTransfer.Visible = true;
-            clmTotalTransfer.VisibleIndex = 7;
-            // 
             // clmChecked
             // 
             clmChecked.Caption = "Đã quét mã";
@@ -517,7 +484,7 @@
             clmChecked.Name = "clmChecked";
             clmChecked.OptionsColumn.AllowEdit = false;
             clmChecked.Visible = true;
-            clmChecked.VisibleIndex = 8;
+            clmChecked.VisibleIndex = 5;
             // 
             // clmUnit
             // 
@@ -528,14 +495,14 @@
             clmUnit.Visible = true;
             clmUnit.VisibleIndex = 2;
             // 
-            // clmReceiveQuantity
+            // clmScanCount
             // 
-            clmReceiveQuantity.Caption = "Thực nhận";
-            clmReceiveQuantity.ColumnEdit = rpReceiveQuantity;
-            clmReceiveQuantity.FieldName = "ReceiveQuantity";
-            clmReceiveQuantity.Name = "clmReceiveQuantity";
-            clmReceiveQuantity.Visible = true;
-            clmReceiveQuantity.VisibleIndex = 5;
+            clmScanCount.Caption = "SL đã kiểm";
+            clmScanCount.ColumnEdit = rpReceiveQuantity;
+            clmScanCount.FieldName = "ScanCount";
+            clmScanCount.Name = "clmScanCount";
+            clmScanCount.Visible = true;
+            clmScanCount.VisibleIndex = 4;
             // 
             // rpReceiveQuantity
             // 
@@ -561,13 +528,13 @@
             layoutControlTop.Location = new System.Drawing.Point(2, 22);
             layoutControlTop.Name = "layoutControlTop";
             layoutControlTop.Root = Root;
-            layoutControlTop.Size = new System.Drawing.Size(869, 70);
+            layoutControlTop.Size = new System.Drawing.Size(865, 70);
             layoutControlTop.TabIndex = 0;
             layoutControlTop.Text = "layoutControl1";
             // 
             // layoutControl1
             // 
-            layoutControl1.Location = new System.Drawing.Point(799, 12);
+            layoutControl1.Location = new System.Drawing.Point(795, 12);
             layoutControl1.Name = "layoutControl1";
             layoutControl1.Root = layoutControlGroup3;
             layoutControl1.Size = new System.Drawing.Size(58, 22);
@@ -584,7 +551,7 @@
             // 
             // chkTranfered
             // 
-            chkTranfered.Location = new System.Drawing.Point(548, 12);
+            chkTranfered.Location = new System.Drawing.Point(546, 12);
             chkTranfered.Name = "chkTranfered";
             chkTranfered.Properties.Caption = "Đang chuyển";
             chkTranfered.Size = new System.Drawing.Size(102, 19);
@@ -600,7 +567,7 @@
             btnReloadOrder.Appearance.Options.UseFont = true;
             btnReloadOrder.Appearance.Options.UseForeColor = true;
             btnReloadOrder.ImageOptions.Image = (System.Drawing.Image)resources.GetObject("btnReloadOrder.ImageOptions.Image");
-            btnReloadOrder.Location = new System.Drawing.Point(390, 12);
+            btnReloadOrder.Location = new System.Drawing.Point(388, 12);
             btnReloadOrder.Name = "btnReloadOrder";
             btnReloadOrder.Size = new System.Drawing.Size(69, 22);
             btnReloadOrder.StyleController = layoutControlTop;
@@ -611,17 +578,17 @@
             // 
             // chkCancel
             // 
-            chkCancel.Location = new System.Drawing.Point(734, 12);
+            chkCancel.Location = new System.Drawing.Point(732, 12);
             chkCancel.Name = "chkCancel";
             chkCancel.Properties.Caption = "Đã huỷ";
             chkCancel.Properties.ReadOnly = true;
-            chkCancel.Size = new System.Drawing.Size(61, 19);
+            chkCancel.Size = new System.Drawing.Size(59, 19);
             chkCancel.StyleController = layoutControlTop;
             chkCancel.TabIndex = 9;
             // 
             // chkFinish
             // 
-            chkFinish.Location = new System.Drawing.Point(654, 12);
+            chkFinish.Location = new System.Drawing.Point(652, 12);
             chkFinish.Name = "chkFinish";
             chkFinish.Properties.Caption = "Đã nhận";
             chkFinish.Properties.ReadOnly = true;
@@ -631,7 +598,7 @@
             // 
             // chkDraft
             // 
-            chkDraft.Location = new System.Drawing.Point(463, 12);
+            chkDraft.Location = new System.Drawing.Point(461, 12);
             chkDraft.Name = "chkDraft";
             chkDraft.Properties.Caption = "Phiếu tạm";
             chkDraft.Properties.ReadOnly = true;
@@ -641,13 +608,13 @@
             // 
             // txtScanNumber
             // 
-            txtScanNumber.Location = new System.Drawing.Point(592, 38);
+            txtScanNumber.Location = new System.Drawing.Point(590, 38);
             txtScanNumber.Name = "txtScanNumber";
             txtScanNumber.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold);
             txtScanNumber.Properties.Appearance.ForeColor = System.Drawing.Color.Brown;
             txtScanNumber.Properties.Appearance.Options.UseFont = true;
             txtScanNumber.Properties.Appearance.Options.UseForeColor = true;
-            txtScanNumber.Size = new System.Drawing.Size(265, 20);
+            txtScanNumber.Size = new System.Drawing.Size(263, 20);
             txtScanNumber.StyleController = layoutControlTop;
             txtScanNumber.TabIndex = 6;
             // 
@@ -655,7 +622,7 @@
             // 
             txtProductCode.Location = new System.Drawing.Point(141, 38);
             txtProductCode.Name = "txtProductCode";
-            txtProductCode.Size = new System.Drawing.Size(318, 20);
+            txtProductCode.Size = new System.Drawing.Size(316, 20);
             txtProductCode.StyleController = layoutControlTop;
             txtProductCode.TabIndex = 1;
             txtProductCode.KeyDown += txtProductCode_KeyDown;
@@ -669,7 +636,7 @@
             txtTranferCode.Properties.Appearance.Options.UseBackColor = true;
             txtTranferCode.Properties.Appearance.Options.UseFont = true;
             txtTranferCode.Properties.ReadOnly = true;
-            txtTranferCode.Size = new System.Drawing.Size(245, 20);
+            txtTranferCode.Size = new System.Drawing.Size(243, 20);
             txtTranferCode.StyleController = layoutControlTop;
             txtTranferCode.TabIndex = 2;
             // 
@@ -679,7 +646,7 @@
             Root.GroupBordersVisible = false;
             Root.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] { ltCtlCode, layoutControlItem2, layoutControlItem12, layoutControlItem13, layoutControlItem14, layoutControlItem15, layoutControlItem17, layoutControlItem16, layoutControlItem11 });
             Root.Name = "Root";
-            Root.Size = new System.Drawing.Size(869, 70);
+            Root.Size = new System.Drawing.Size(865, 70);
             Root.TextVisible = false;
             // 
             // ltCtlCode
@@ -687,7 +654,7 @@
             ltCtlCode.Control = txtTranferCode;
             ltCtlCode.Location = new System.Drawing.Point(0, 0);
             ltCtlCode.Name = "ltCtlCode";
-            ltCtlCode.Size = new System.Drawing.Size(378, 26);
+            ltCtlCode.Size = new System.Drawing.Size(376, 26);
             ltCtlCode.Text = "Mã Phiếu Chuyển hàng";
             ltCtlCode.TextSize = new System.Drawing.Size(125, 14);
             // 
@@ -697,23 +664,23 @@
             layoutControlItem2.CustomizationFormText = "Tìm Sản phẩm";
             layoutControlItem2.Location = new System.Drawing.Point(0, 26);
             layoutControlItem2.Name = "layoutControlItem2";
-            layoutControlItem2.Size = new System.Drawing.Size(451, 24);
+            layoutControlItem2.Size = new System.Drawing.Size(449, 24);
             layoutControlItem2.Text = "Tìm Sản phẩm";
             layoutControlItem2.TextSize = new System.Drawing.Size(125, 14);
             // 
             // layoutControlItem12
             // 
             layoutControlItem12.Control = txtScanNumber;
-            layoutControlItem12.Location = new System.Drawing.Point(451, 26);
+            layoutControlItem12.Location = new System.Drawing.Point(449, 26);
             layoutControlItem12.Name = "layoutControlItem12";
-            layoutControlItem12.Size = new System.Drawing.Size(398, 24);
+            layoutControlItem12.Size = new System.Drawing.Size(396, 24);
             layoutControlItem12.Text = "Đã quét mã:";
             layoutControlItem12.TextSize = new System.Drawing.Size(125, 14);
             // 
             // layoutControlItem13
             // 
             layoutControlItem13.Control = chkDraft;
-            layoutControlItem13.Location = new System.Drawing.Point(451, 0);
+            layoutControlItem13.Location = new System.Drawing.Point(449, 0);
             layoutControlItem13.Name = "layoutControlItem13";
             layoutControlItem13.Size = new System.Drawing.Size(85, 26);
             layoutControlItem13.TextVisible = false;
@@ -721,7 +688,7 @@
             // layoutControlItem14
             // 
             layoutControlItem14.Control = chkFinish;
-            layoutControlItem14.Location = new System.Drawing.Point(642, 0);
+            layoutControlItem14.Location = new System.Drawing.Point(640, 0);
             layoutControlItem14.Name = "layoutControlItem14";
             layoutControlItem14.Size = new System.Drawing.Size(80, 26);
             layoutControlItem14.TextVisible = false;
@@ -729,15 +696,15 @@
             // layoutControlItem15
             // 
             layoutControlItem15.Control = chkCancel;
-            layoutControlItem15.Location = new System.Drawing.Point(722, 0);
+            layoutControlItem15.Location = new System.Drawing.Point(720, 0);
             layoutControlItem15.Name = "layoutControlItem15";
-            layoutControlItem15.Size = new System.Drawing.Size(65, 26);
+            layoutControlItem15.Size = new System.Drawing.Size(63, 26);
             layoutControlItem15.TextVisible = false;
             // 
             // layoutControlItem17
             // 
             layoutControlItem17.Control = btnReloadOrder;
-            layoutControlItem17.Location = new System.Drawing.Point(378, 0);
+            layoutControlItem17.Location = new System.Drawing.Point(376, 0);
             layoutControlItem17.Name = "layoutControlItem17";
             layoutControlItem17.Size = new System.Drawing.Size(73, 26);
             layoutControlItem17.TextVisible = false;
@@ -745,7 +712,7 @@
             // layoutControlItem16
             // 
             layoutControlItem16.Control = layoutControl1;
-            layoutControlItem16.Location = new System.Drawing.Point(787, 0);
+            layoutControlItem16.Location = new System.Drawing.Point(783, 0);
             layoutControlItem16.Name = "layoutControlItem16";
             layoutControlItem16.Size = new System.Drawing.Size(62, 26);
             layoutControlItem16.TextVisible = false;
@@ -753,7 +720,7 @@
             // layoutControlItem11
             // 
             layoutControlItem11.Control = chkTranfered;
-            layoutControlItem11.Location = new System.Drawing.Point(536, 0);
+            layoutControlItem11.Location = new System.Drawing.Point(534, 0);
             layoutControlItem11.Name = "layoutControlItem11";
             layoutControlItem11.Size = new System.Drawing.Size(106, 26);
             layoutControlItem11.TextVisible = false;
@@ -835,7 +802,7 @@
             Appearance.Options.UseFont = true;
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(1228, 769);
+            ClientSize = new System.Drawing.Size(1224, 769);
             Controls.Add(grpCtlFilter);
             Controls.Add(groupControl1);
             Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
@@ -941,9 +908,6 @@
         private DevExpress.XtraGrid.Columns.GridColumn clmProductCode;
         private DevExpress.XtraGrid.Columns.GridColumn clmProductName;
         private DevExpress.XtraGrid.Columns.GridColumn clmTransferredQuantity;
-        private DevExpress.XtraGrid.Columns.GridColumn clmPrice;
-        private DevExpress.XtraGrid.Columns.GridColumn clmDiscount;
-        private DevExpress.XtraGrid.Columns.GridColumn clmTotalTransfer;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem10;
         private DevExpress.XtraEditors.TextEdit txtScanNumber;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem12;
@@ -972,7 +936,7 @@
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem9;
         private DevExpress.XtraEditors.TextEdit txtReceivedDate;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem6;
-        private DevExpress.XtraGrid.Columns.GridColumn clmReceiveQuantity;
+        private DevExpress.XtraGrid.Columns.GridColumn clmScanCount;
         private DevExpress.XtraEditors.Repository.RepositoryItemTextEdit rpReceiveQuantity;
     }
 }

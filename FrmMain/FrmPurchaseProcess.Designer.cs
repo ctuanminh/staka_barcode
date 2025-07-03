@@ -30,10 +30,15 @@
         {
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmPurchaseProcess));
+            DevExpress.XtraEditors.Controls.EditorButtonImageOptions editorButtonImageOptions1 = new DevExpress.XtraEditors.Controls.EditorButtonImageOptions();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject4 = new DevExpress.Utils.SerializableAppearanceObject();
             groupControl1 = new DevExpress.XtraEditors.GroupControl();
             grpCtlButton = new DevExpress.XtraEditors.GroupControl();
             ltCtlButton = new DevExpress.XtraLayout.LayoutControl();
-            simpleButton1 = new DevExpress.XtraEditors.SimpleButton();
+            btnDraf = new DevExpress.XtraEditors.SimpleButton();
             btnFinish = new DevExpress.XtraEditors.SimpleButton();
             layoutControlGroup2 = new DevExpress.XtraLayout.LayoutControlGroup();
             layoutControlItem10 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -73,11 +78,10 @@
             clmProductCode = new DevExpress.XtraGrid.Columns.GridColumn();
             clmProductName = new DevExpress.XtraGrid.Columns.GridColumn();
             clmQuantity = new DevExpress.XtraGrid.Columns.GridColumn();
-            clmPrice = new DevExpress.XtraGrid.Columns.GridColumn();
-            clmDiscount = new DevExpress.XtraGrid.Columns.GridColumn();
-            clmTotal = new DevExpress.XtraGrid.Columns.GridColumn();
             clmChecked = new DevExpress.XtraGrid.Columns.GridColumn();
             clmUnit = new DevExpress.XtraGrid.Columns.GridColumn();
+            clmAction = new DevExpress.XtraGrid.Columns.GridColumn();
+            rpAction = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             repositoryItemCheckEdit1 = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
             layoutControlTop = new DevExpress.XtraLayout.LayoutControl();
             btnReloadOrder = new DevExpress.XtraEditors.SimpleButton();
@@ -150,6 +154,7 @@
             groupControl2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)grdControlOrders).BeginInit();
             ((System.ComponentModel.ISupportInitialize)grdViewOrder).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)rpAction).BeginInit();
             ((System.ComponentModel.ISupportInitialize)repositoryItemCheckEdit1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)layoutControlTop).BeginInit();
             layoutControlTop.SuspendLayout();
@@ -180,7 +185,7 @@
             groupControl1.Controls.Add(grpCtlButton);
             groupControl1.Controls.Add(layoutControl2);
             groupControl1.Dock = System.Windows.Forms.DockStyle.Right;
-            groupControl1.Location = new System.Drawing.Point(913, 0);
+            groupControl1.Location = new System.Drawing.Point(905, 0);
             groupControl1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             groupControl1.Name = "groupControl1";
             groupControl1.Size = new System.Drawing.Size(355, 769);
@@ -201,7 +206,7 @@
             // 
             // ltCtlButton
             // 
-            ltCtlButton.Controls.Add(simpleButton1);
+            ltCtlButton.Controls.Add(btnDraf);
             ltCtlButton.Controls.Add(btnFinish);
             ltCtlButton.Dock = System.Windows.Forms.DockStyle.Fill;
             ltCtlButton.Location = new System.Drawing.Point(2, 2);
@@ -211,17 +216,18 @@
             ltCtlButton.TabIndex = 0;
             ltCtlButton.Text = "layoutControl3";
             // 
-            // simpleButton1
+            // btnDraf
             // 
-            simpleButton1.Appearance.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold);
-            simpleButton1.Appearance.Options.UseFont = true;
-            simpleButton1.ImageOptions.Image = (System.Drawing.Image)resources.GetObject("simpleButton1.ImageOptions.Image");
-            simpleButton1.Location = new System.Drawing.Point(12, 12);
-            simpleButton1.Name = "simpleButton1";
-            simpleButton1.Size = new System.Drawing.Size(159, 38);
-            simpleButton1.StyleController = ltCtlButton;
-            simpleButton1.TabIndex = 4;
-            simpleButton1.Text = "LƯU TẠM";
+            btnDraf.Appearance.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold);
+            btnDraf.Appearance.Options.UseFont = true;
+            btnDraf.ImageOptions.Image = (System.Drawing.Image)resources.GetObject("btnDraf.ImageOptions.Image");
+            btnDraf.Location = new System.Drawing.Point(12, 12);
+            btnDraf.Name = "btnDraf";
+            btnDraf.Size = new System.Drawing.Size(159, 38);
+            btnDraf.StyleController = ltCtlButton;
+            btnDraf.TabIndex = 4;
+            btnDraf.Text = "LƯU TẠM";
+            btnDraf.Click += btnDraft_Click;
             // 
             // btnFinish
             // 
@@ -255,7 +261,7 @@
             // 
             // layoutControlItem20
             // 
-            layoutControlItem20.Control = simpleButton1;
+            layoutControlItem20.Control = btnDraf;
             layoutControlItem20.Location = new System.Drawing.Point(0, 0);
             layoutControlItem20.Name = "layoutControlItem20";
             layoutControlItem20.Size = new System.Drawing.Size(163, 46);
@@ -581,7 +587,7 @@
             groupControl2.Location = new System.Drawing.Point(0, 0);
             groupControl2.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             groupControl2.Name = "groupControl2";
-            groupControl2.Size = new System.Drawing.Size(913, 769);
+            groupControl2.Size = new System.Drawing.Size(905, 769);
             groupControl2.TabIndex = 1;
             groupControl2.Text = "Nhập hàng";
             // 
@@ -593,8 +599,8 @@
             grdControlOrders.MainView = grdViewOrder;
             grdControlOrders.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             grdControlOrders.Name = "grdControlOrders";
-            grdControlOrders.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] { repositoryItemCheckEdit1 });
-            grdControlOrders.Size = new System.Drawing.Size(909, 675);
+            grdControlOrders.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] { repositoryItemCheckEdit1, rpAction });
+            grdControlOrders.Size = new System.Drawing.Size(901, 675);
             grdControlOrders.TabIndex = 1;
             grdControlOrders.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] { grdViewOrder });
             // 
@@ -602,10 +608,9 @@
             // 
             grdViewOrder.Appearance.HeaderPanel.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold);
             grdViewOrder.Appearance.HeaderPanel.Options.UseFont = true;
-            grdViewOrder.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] { clmProductCode, clmProductName, clmQuantity, clmPrice, clmDiscount, clmTotal, clmChecked, clmUnit });
+            grdViewOrder.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] { clmProductCode, clmProductName, clmQuantity, clmChecked, clmUnit, clmAction });
             grdViewOrder.GridControl = grdControlOrders;
             grdViewOrder.Name = "grdViewOrder";
-            grdViewOrder.OptionsBehavior.Editable = false;
             grdViewOrder.OptionsView.ShowGroupPanel = false;
             grdViewOrder.RowCellStyle += gridViewOrder_RowCellStyle;
             // 
@@ -614,68 +619,68 @@
             clmProductCode.Caption = "Mã Sản phẩm";
             clmProductCode.FieldName = "ProductCode";
             clmProductCode.Name = "clmProductCode";
+            clmProductCode.OptionsColumn.AllowEdit = false;
             clmProductCode.Visible = true;
-            clmProductCode.VisibleIndex = 0;
+            clmProductCode.VisibleIndex = 1;
+            clmProductCode.Width = 103;
             // 
             // clmProductName
             // 
             clmProductName.Caption = "Tên Sản phẩm";
             clmProductName.FieldName = "ProductName";
             clmProductName.Name = "clmProductName";
+            clmProductName.OptionsColumn.AllowEdit = false;
             clmProductName.Visible = true;
-            clmProductName.VisibleIndex = 1;
+            clmProductName.VisibleIndex = 2;
+            clmProductName.Width = 103;
             // 
             // clmQuantity
             // 
             clmQuantity.Caption = "Số lượng";
             clmQuantity.FieldName = "Quantity";
             clmQuantity.Name = "clmQuantity";
+            clmQuantity.OptionsColumn.AllowEdit = false;
             clmQuantity.Visible = true;
-            clmQuantity.VisibleIndex = 3;
-            // 
-            // clmPrice
-            // 
-            clmPrice.Caption = "Đơn giá";
-            clmPrice.DisplayFormat.FormatString = "n0";
-            clmPrice.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
-            clmPrice.FieldName = "Price";
-            clmPrice.Name = "clmPrice";
-            clmPrice.Visible = true;
-            clmPrice.VisibleIndex = 4;
-            // 
-            // clmDiscount
-            // 
-            clmDiscount.Caption = "Giảm giá";
-            clmDiscount.FieldName = "DisplayDiscount";
-            clmDiscount.Name = "clmDiscount";
-            clmDiscount.Visible = true;
-            clmDiscount.VisibleIndex = 5;
-            // 
-            // clmTotal
-            // 
-            clmTotal.Caption = "Thành tiền";
-            clmTotal.DisplayFormat.FormatString = "n0";
-            clmTotal.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
-            clmTotal.FieldName = "Total";
-            clmTotal.Name = "clmTotal";
-            clmTotal.Visible = true;
-            clmTotal.VisibleIndex = 6;
+            clmQuantity.VisibleIndex = 4;
+            clmQuantity.Width = 103;
             // 
             // clmChecked
             // 
             clmChecked.Caption = "Đã quét mã";
             clmChecked.FieldName = "Checked";
             clmChecked.Name = "clmChecked";
+            clmChecked.OptionsColumn.AllowEdit = false;
             clmChecked.Visible = true;
-            clmChecked.VisibleIndex = 7;
+            clmChecked.VisibleIndex = 5;
+            clmChecked.Width = 106;
             // 
             // clmUnit
             // 
             clmUnit.Caption = "ĐVT";
             clmUnit.FieldName = "Unit";
             clmUnit.Name = "clmUnit";
+            clmUnit.OptionsColumn.AllowEdit = false;
             clmUnit.Visible = true;
-            clmUnit.VisibleIndex = 2;
+            clmUnit.VisibleIndex = 3;
+            clmUnit.Width = 103;
+            // 
+            // clmAction
+            // 
+            clmAction.ColumnEdit = rpAction;
+            clmAction.FieldName = "Action";
+            clmAction.Name = "clmAction";
+            clmAction.OptionsColumn.ShowCaption = false;
+            clmAction.Visible = true;
+            clmAction.VisibleIndex = 0;
+            clmAction.Width = 65;
+            // 
+            // rpAction
+            // 
+            rpAction.AutoHeight = false;
+            editorButtonImageOptions1.Image = (System.Drawing.Image)resources.GetObject("editorButtonImageOptions1.Image");
+            rpAction.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, editorButtonImageOptions1, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "", null, null, DevExpress.Utils.ToolTipAnchor.Default) });
+            rpAction.Name = "rpAction";
+            rpAction.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
             // repositoryItemCheckEdit1
             // 
@@ -697,7 +702,7 @@
             layoutControlTop.Location = new System.Drawing.Point(2, 22);
             layoutControlTop.Name = "layoutControlTop";
             layoutControlTop.Root = Root;
-            layoutControlTop.Size = new System.Drawing.Size(909, 70);
+            layoutControlTop.Size = new System.Drawing.Size(901, 70);
             layoutControlTop.TabIndex = 0;
             layoutControlTop.Text = "layoutControl1";
             // 
@@ -710,7 +715,7 @@
             btnReloadOrder.Appearance.Options.UseFont = true;
             btnReloadOrder.Appearance.Options.UseForeColor = true;
             btnReloadOrder.ImageOptions.Image = (System.Drawing.Image)resources.GetObject("btnReloadOrder.ImageOptions.Image");
-            btnReloadOrder.Location = new System.Drawing.Point(413, 12);
+            btnReloadOrder.Location = new System.Drawing.Point(409, 12);
             btnReloadOrder.Name = "btnReloadOrder";
             btnReloadOrder.Size = new System.Drawing.Size(66, 22);
             btnReloadOrder.StyleController = layoutControlTop;
@@ -721,10 +726,10 @@
             // 
             // layoutControl3
             // 
-            layoutControl3.Location = new System.Drawing.Point(773, 12);
+            layoutControl3.Location = new System.Drawing.Point(767, 12);
             layoutControl3.Name = "layoutControl3";
             layoutControl3.Root = layoutControlGroup3;
-            layoutControl3.Size = new System.Drawing.Size(124, 22);
+            layoutControl3.Size = new System.Drawing.Size(122, 22);
             layoutControl3.TabIndex = 10;
             layoutControl3.Text = "layoutControl3";
             // 
@@ -733,12 +738,12 @@
             layoutControlGroup3.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.True;
             layoutControlGroup3.GroupBordersVisible = false;
             layoutControlGroup3.Name = "layoutControlGroup3";
-            layoutControlGroup3.Size = new System.Drawing.Size(124, 22);
+            layoutControlGroup3.Size = new System.Drawing.Size(122, 22);
             layoutControlGroup3.TextVisible = false;
             // 
             // chkCancel
             // 
-            chkCancel.Location = new System.Drawing.Point(693, 12);
+            chkCancel.Location = new System.Drawing.Point(687, 12);
             chkCancel.Name = "chkCancel";
             chkCancel.Properties.Caption = "Đã huỷ";
             chkCancel.Properties.ReadOnly = true;
@@ -748,33 +753,33 @@
             // 
             // chkFinish
             // 
-            chkFinish.Location = new System.Drawing.Point(586, 12);
+            chkFinish.Location = new System.Drawing.Point(581, 12);
             chkFinish.Name = "chkFinish";
             chkFinish.Properties.Caption = "Đã nhập hàng";
             chkFinish.Properties.ReadOnly = true;
-            chkFinish.Size = new System.Drawing.Size(103, 19);
+            chkFinish.Size = new System.Drawing.Size(102, 19);
             chkFinish.StyleController = layoutControlTop;
             chkFinish.TabIndex = 8;
             // 
             // chkDraft
             // 
-            chkDraft.Location = new System.Drawing.Point(483, 12);
+            chkDraft.Location = new System.Drawing.Point(479, 12);
             chkDraft.Name = "chkDraft";
             chkDraft.Properties.Caption = "Phiếu tạm";
             chkDraft.Properties.ReadOnly = true;
-            chkDraft.Size = new System.Drawing.Size(99, 19);
+            chkDraft.Size = new System.Drawing.Size(98, 19);
             chkDraft.StyleController = layoutControlTop;
             chkDraft.TabIndex = 7;
             // 
             // txtScanNumber
             // 
-            txtScanNumber.Location = new System.Drawing.Point(565, 38);
+            txtScanNumber.Location = new System.Drawing.Point(561, 38);
             txtScanNumber.Name = "txtScanNumber";
             txtScanNumber.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold);
             txtScanNumber.Properties.Appearance.ForeColor = System.Drawing.Color.Brown;
             txtScanNumber.Properties.Appearance.Options.UseFont = true;
             txtScanNumber.Properties.Appearance.Options.UseForeColor = true;
-            txtScanNumber.Size = new System.Drawing.Size(332, 20);
+            txtScanNumber.Size = new System.Drawing.Size(328, 20);
             txtScanNumber.StyleController = layoutControlTop;
             txtScanNumber.TabIndex = 6;
             // 
@@ -782,7 +787,7 @@
             // 
             txtProductCode.Location = new System.Drawing.Point(94, 38);
             txtProductCode.Name = "txtProductCode";
-            txtProductCode.Size = new System.Drawing.Size(385, 20);
+            txtProductCode.Size = new System.Drawing.Size(381, 20);
             txtProductCode.StyleController = layoutControlTop;
             txtProductCode.TabIndex = 1;
             txtProductCode.KeyDown += txtProductCode_KeyDown;
@@ -793,7 +798,7 @@
             txtOrderCode.Name = "txtOrderCode";
             txtOrderCode.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold);
             txtOrderCode.Properties.Appearance.Options.UseFont = true;
-            txtOrderCode.Size = new System.Drawing.Size(315, 20);
+            txtOrderCode.Size = new System.Drawing.Size(311, 20);
             txtOrderCode.StyleController = layoutControlTop;
             txtOrderCode.TabIndex = 2;
             txtOrderCode.KeyDown += txtOrderCode_KeyDown;
@@ -804,7 +809,7 @@
             Root.GroupBordersVisible = false;
             Root.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] { layoutControlItem1, layoutControlItem2, layoutControlItem12, layoutControlItem13, layoutControlItem14, layoutControlItem15, layoutControlItem16, layoutControlItem17 });
             Root.Name = "Root";
-            Root.Size = new System.Drawing.Size(909, 70);
+            Root.Size = new System.Drawing.Size(901, 70);
             Root.TextVisible = false;
             // 
             // layoutControlItem1
@@ -812,7 +817,7 @@
             layoutControlItem1.Control = txtOrderCode;
             layoutControlItem1.Location = new System.Drawing.Point(0, 0);
             layoutControlItem1.Name = "layoutControlItem1";
-            layoutControlItem1.Size = new System.Drawing.Size(401, 26);
+            layoutControlItem1.Size = new System.Drawing.Size(397, 26);
             layoutControlItem1.Text = "Mã Nhập hàng";
             layoutControlItem1.TextSize = new System.Drawing.Size(78, 14);
             // 
@@ -822,39 +827,39 @@
             layoutControlItem2.CustomizationFormText = "Tìm Sản phẩm";
             layoutControlItem2.Location = new System.Drawing.Point(0, 26);
             layoutControlItem2.Name = "layoutControlItem2";
-            layoutControlItem2.Size = new System.Drawing.Size(471, 24);
+            layoutControlItem2.Size = new System.Drawing.Size(467, 24);
             layoutControlItem2.Text = "Tìm Sản phẩm";
             layoutControlItem2.TextSize = new System.Drawing.Size(78, 14);
             // 
             // layoutControlItem12
             // 
             layoutControlItem12.Control = txtScanNumber;
-            layoutControlItem12.Location = new System.Drawing.Point(471, 26);
+            layoutControlItem12.Location = new System.Drawing.Point(467, 26);
             layoutControlItem12.Name = "layoutControlItem12";
-            layoutControlItem12.Size = new System.Drawing.Size(418, 24);
+            layoutControlItem12.Size = new System.Drawing.Size(414, 24);
             layoutControlItem12.Text = "Đã quét mã:";
             layoutControlItem12.TextSize = new System.Drawing.Size(78, 14);
             // 
             // layoutControlItem13
             // 
             layoutControlItem13.Control = chkDraft;
-            layoutControlItem13.Location = new System.Drawing.Point(471, 0);
+            layoutControlItem13.Location = new System.Drawing.Point(467, 0);
             layoutControlItem13.Name = "layoutControlItem13";
-            layoutControlItem13.Size = new System.Drawing.Size(103, 26);
+            layoutControlItem13.Size = new System.Drawing.Size(102, 26);
             layoutControlItem13.TextVisible = false;
             // 
             // layoutControlItem14
             // 
             layoutControlItem14.Control = chkFinish;
-            layoutControlItem14.Location = new System.Drawing.Point(574, 0);
+            layoutControlItem14.Location = new System.Drawing.Point(569, 0);
             layoutControlItem14.Name = "layoutControlItem14";
-            layoutControlItem14.Size = new System.Drawing.Size(107, 26);
+            layoutControlItem14.Size = new System.Drawing.Size(106, 26);
             layoutControlItem14.TextVisible = false;
             // 
             // layoutControlItem15
             // 
             layoutControlItem15.Control = chkCancel;
-            layoutControlItem15.Location = new System.Drawing.Point(681, 0);
+            layoutControlItem15.Location = new System.Drawing.Point(675, 0);
             layoutControlItem15.Name = "layoutControlItem15";
             layoutControlItem15.Size = new System.Drawing.Size(80, 26);
             layoutControlItem15.TextVisible = false;
@@ -862,15 +867,15 @@
             // layoutControlItem16
             // 
             layoutControlItem16.Control = layoutControl3;
-            layoutControlItem16.Location = new System.Drawing.Point(761, 0);
+            layoutControlItem16.Location = new System.Drawing.Point(755, 0);
             layoutControlItem16.Name = "layoutControlItem16";
-            layoutControlItem16.Size = new System.Drawing.Size(128, 26);
+            layoutControlItem16.Size = new System.Drawing.Size(126, 26);
             layoutControlItem16.TextVisible = false;
             // 
             // layoutControlItem17
             // 
             layoutControlItem17.Control = btnReloadOrder;
-            layoutControlItem17.Location = new System.Drawing.Point(401, 0);
+            layoutControlItem17.Location = new System.Drawing.Point(397, 0);
             layoutControlItem17.Name = "layoutControlItem17";
             layoutControlItem17.Size = new System.Drawing.Size(70, 26);
             layoutControlItem17.TextVisible = false;
@@ -952,16 +957,17 @@
             Appearance.Options.UseFont = true;
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(1268, 769);
+            ClientSize = new System.Drawing.Size(1260, 769);
             Controls.Add(groupControl2);
             Controls.Add(groupControl1);
+            Font = new System.Drawing.Font("Tahoma", 9F);
             Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             MaximizeBox = false;
             MinimizeBox = false;
             Name = "FrmPurchaseProcess";
             Text = "Xử lý Phiếu Nhập hàng";
             Load += FrmPurchaseProcess_Load;
-            Shown += FrmOrderProcess_Shown;
+            Shown += FrmPurchaseOrderProcess_Shown;
             ((System.ComponentModel.ISupportInitialize)groupControl1).EndInit();
             groupControl1.ResumeLayout(false);
             groupControl1.PerformLayout();
@@ -1007,6 +1013,7 @@
             groupControl2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)grdControlOrders).EndInit();
             ((System.ComponentModel.ISupportInitialize)grdViewOrder).EndInit();
+            ((System.ComponentModel.ISupportInitialize)rpAction).EndInit();
             ((System.ComponentModel.ISupportInitialize)repositoryItemCheckEdit1).EndInit();
             ((System.ComponentModel.ISupportInitialize)layoutControlTop).EndInit();
             layoutControlTop.ResumeLayout(false);
@@ -1077,9 +1084,6 @@
         private DevExpress.XtraGrid.Columns.GridColumn clmProductCode;
         private DevExpress.XtraGrid.Columns.GridColumn clmProductName;
         private DevExpress.XtraGrid.Columns.GridColumn clmQuantity;
-        private DevExpress.XtraGrid.Columns.GridColumn clmPrice;
-        private DevExpress.XtraGrid.Columns.GridColumn clmDiscount;
-        private DevExpress.XtraGrid.Columns.GridColumn clmTotal;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem10;
         private DevExpress.XtraEditors.TextEdit txtScanNumber;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem12;
@@ -1109,7 +1113,9 @@
         private DevExpress.XtraEditors.TextEdit txtNeedPayment;
         private DevExpress.XtraEditors.TextEdit txtDescription;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem11;
-        private DevExpress.XtraEditors.SimpleButton simpleButton1;
+        private DevExpress.XtraEditors.SimpleButton btnDraf;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem20;
+        private DevExpress.XtraGrid.Columns.GridColumn clmAction;
+        private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit rpAction;
     }
 }

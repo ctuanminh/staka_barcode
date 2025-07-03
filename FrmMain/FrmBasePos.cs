@@ -11,7 +11,7 @@ namespace FrmMain
 {
     public partial class FrmBasePos : XtraForm
     {
-        public FrmBasePos(ISystemService systemService)
+        public FrmBasePos()
         {
             InitializeComponent();
         }
