@@ -290,7 +290,7 @@ namespace FrmMain
         /// </summary>
         /// <param name="purchaseOrderResponse"></param>
         /// <returns></returns>
-        private object BuildPurchaseRequest(PurchaseOrderResponse purchaseOrderResponse, PurchaseStatusEnum status)
+        private static object BuildPurchaseRequest(PurchaseOrderResponse purchaseOrderResponse, PurchaseStatusEnum status)
         {
             return new
             {
@@ -333,7 +333,6 @@ namespace FrmMain
                         textEdit.MaximumSize = new Size(0, height);
                         break;
                     case SimpleButton button:
-                        if (c.Name is nameof(btnFinish)) break;
                         if (c.Name is nameof(btnDraf)) break;
                         button.MinimumSize = new Size(0, height);
                         button.MaximumSize = new Size(0, height);
@@ -502,7 +501,7 @@ namespace FrmMain
             }
         }
 
-        private void gridViewOrder_ValidatingEditor(object sender, DevExpress.XtraEditors.Controls.BaseContainerValidateEditorEventArgs e)
+        private void gridViewOrder_ValidatingEditor(object sender, BaseContainerValidateEditorEventArgs e)
         {
             if (sender is not GridView view) return;
             if (view.FocusedColumn.FieldName != "Quantity") return;
@@ -512,10 +511,8 @@ namespace FrmMain
 
             if (!int.TryParse(transferredQuantityObj.ToString(), out var transferredQuantity)) return;
 
-            if (transferredQuantity <= 0)
-            {
-                e.Value = 0;
-            }
+            var scanCount = Math.Max(0, transferredQuantity);
+            e.Value = scanCount;
         }
 
         private void grdViewOrder_ShowingEditor(object sender, CancelEventArgs e)
@@ -552,8 +549,14 @@ namespace FrmMain
                 .FirstOrDefault(p => p.ProductId == Convert.ToInt64(productId));
             if (existingItem == null) return;
             existingItem.Quantity = (double)newValue;
+            existingItem.ScanCount = (double)newValue;
             txtProductCount.Text = newValue.ToString();
         }
+        /// <summary>
+        /// Nhân viên kho lên đơn nhập hàng, kế toán hoàn thành đơn nhập hàng
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private async void btnFinish_Click(object sender, EventArgs e)
         {
             try
@@ -647,7 +650,7 @@ namespace FrmMain
                 var purchaseOrderResponse = await GetPurchaseOrderFromApi(CurrentId);
 
                 // Build purchaseOrderRequest từ dữ liệu hiện tại
-                var purchaseRequest = BuildPurchaseRequest(purchaseOrderResponse, PurchaseStatusEnum.Draft);
+                var purchaseRequest = BuildPurchaseRequest(_purchaseOrder, PurchaseStatusEnum.Draft);
                 var purchaseUrl = $"https://public.kiotapi.com/purchaseorders/{CurrentId}";
                 var (updateSuccess, updateContent) = await _kiotVietService.CallApiAsync(purchaseUrl, purchaseRequest, "PUT");
 
@@ -670,7 +673,8 @@ namespace FrmMain
             }
             finally
             {
-                SetControlEnable(true);
+                if (!IsDisposed && !Disposing)
+                    SetControlEnable(true);
             }
         }
 
@@ -690,13 +694,14 @@ namespace FrmMain
                 .Where(p => p.ScanCount != p.Quantity)
                 .ToList();
 
-            if (quantityMismatch.Any())
-            {
-                var message = $"Còn {quantityMismatch.Count} sản phẩm chưa đủ số lượng quét:\n" +
-                              string.Join(", ", quantityMismatch.Select(p => $"{p.ProductCode} ({p.ScanCount}/{p.Quantity})"));
-                MessageHelper.MsgBox(this, message, MsgType.Error);
-                return false;
-            }
+            //Comment lại: Phiếu nhập không cần đối chiếu số lượng.
+            //if (quantityMismatch.Any())
+            //{
+            //    var message = $"Còn {quantityMismatch.Count} sản phẩm chưa đủ số lượng quét:\n" +
+            //                  string.Join(", ", quantityMismatch.Select(p => $"{p.ProductCode} ({p.ScanCount}/{p.Quantity})"));
+            //    MessageHelper.MsgBox(this, message, MsgType.Error);
+            //    return false;
+            //}
 
             // Gọi API lấy trạng thái đơn hàng từ KiotViet
             var purchaseOrderResponse = await GetPurchaseOrderFromApi(CurrentId);

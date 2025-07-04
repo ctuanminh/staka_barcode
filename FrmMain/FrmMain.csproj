@@ -32,7 +32,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Be.Services\Be.Services.csproj" />
-    <ProjectReference Include="..\Services\Services.csproj" />
   </ItemGroup>
 
   <ItemGroup>

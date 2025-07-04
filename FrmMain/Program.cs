@@ -4,11 +4,9 @@ using Be.Data.Data;
 using Be.Services;
 using Be.Services.AutoMapper;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Services;
 using System;
 using System.Windows.Forms;
 
@@ -34,10 +32,10 @@ namespace FrmMain
 
             services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connectionString));
 
-            services.AddDbContext<Be.Data.Data.IdentityDbContext>(options => options.UseNpgsql(connectionString));
+            services.AddDbContext<IdentityDbContext>(options => options.UseNpgsql(connectionString));
             
             services.AddIdentity<ApplicationUser, IdentityRole<long>>()
-                .AddEntityFrameworkStores<Be.Data.Data.IdentityDbContext>()
+                .AddEntityFrameworkStores<IdentityDbContext>()
                 .AddRoleManager<RoleManager<IdentityRole<long>>>()
                 .AddDefaultTokenProviders();
 

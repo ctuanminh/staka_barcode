@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Be.Common.PurchaseOrder.Dto;
 using Be.Common.PurchaseOrder.Response;
+using Be.Common.Tranfer.Response;
 using Be.Core.Entities;
 using Be.Services.Catalog;
 using Be.Services.KiotViet;
@@ -9,6 +10,7 @@ using Be.Services.PurchaseOrder;
 using Be.Services.Supplier;
 using Be.Services.System;
 using DevExpress.XtraEditors;
+using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraGrid.Views.Base;
 using DevExpress.XtraGrid.Views.Grid;
 using FrmMain.App;
@@ -22,7 +24,6 @@ using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using DevExpress.XtraEditors.Controls;
 using Exception = System.Exception;
 
 namespace FrmMain
@@ -139,99 +140,6 @@ namespace FrmMain
             SetStyleGridView();
             grdControlOrders.DataSource = null;
             grdControlOrders.RefreshDataSource();
-        }
-
-        private async Task LoadData(long purchaseId)
-        {
-            try
-            {
-                SetControlEnable(false);
-                var url = $"https://public.kiotapi.com/purchaseorders/{purchaseId}";
-                var (success, content) = await _kiotVietService.CallApiAsync(url, (string)null, "GET");
-                
-                if (!success && content == null) MessageBox.Show("Lỗi khi lấy dữ liệu Kiotviet");
-
-                var purchaseOrderResponse = JsonConvert.DeserializeObject<PurchaseOrderResponse>(content);
-                if (purchaseOrderResponse == null) return;
-                foreach (var purchaseOrderDetail in purchaseOrderResponse.PurchaseOrderDetails)
-                {
-                    var start = purchaseOrderDetail.ProductName.LastIndexOf('(');
-                    var end = purchaseOrderDetail.ProductName.LastIndexOf(')');
-
-                    if (start == -1 || end <= start) continue;
-                    purchaseOrderDetail.Unit = purchaseOrderDetail.ProductName.Substring(start + 1, end - start - 1).Trim();
-                    purchaseOrderDetail.ProductName = purchaseOrderDetail.ProductName[..start].Trim();
-                }
-                _purchaseOrderResponse = purchaseOrderResponse;
-                SetStatusCheckboxStyle(_purchaseOrderResponse.Status);
-
-                txtSaleName.Text = purchaseOrderResponse.PurchaseName; // Tên nhà cung cấp.
-                txtPurchaseDate.Text = purchaseOrderResponse.PurchaseDate.ToString("dd/MM/yyyy HH:mm:ss");
-                txtTotal.Text = NumberFormatter.FormatDecimal(purchaseOrderResponse.Total, 0);
-                txtDiscount.Text = NumberFormatter.FormatDecimal(purchaseOrderResponse.Discount, 0);
-                txtNeedPayment.Text =
-                    NumberFormatter.FormatDecimal(purchaseOrderResponse.Total - purchaseOrderResponse.Discount, 0);
-                txtTotalPayment.Text = NumberFormatter.FormatDecimal(purchaseOrderResponse.TotalPayment, 0);
-                txtTotalItems.Text = purchaseOrderResponse.PurchaseOrderDetails.Count().ToString();
-
-                // Đếm tổng số sản phẩm
-                txtProductCount.Text = purchaseOrderResponse.PurchaseOrderDetails
-                    .Where(p => !string.IsNullOrWhiteSpace(p.ProductCode))
-                    .Select(p => p.Quantity)
-                    .Sum().ToString();
-                txtDescription.Text = purchaseOrderResponse.Description; // Ghi chú
-                if (purchaseOrderResponse.Id > 0) txtDescription.ReadOnly = true;
-                lkpSupplier.EditValue = purchaseOrderResponse.SupplierId;
-
-                var purchaseCheckedDic = new Dictionary<string, string>();
-                var purchaseCheckedList = await _purchaseOrderService.GetPurchaseCheckedByPurchaseId(CurrentId);
-                foreach (var item in purchaseCheckedList)
-                {
-                    if (item.ProductBarCode == item.ProductCode)
-                    {
-                        purchaseCheckedDic.TryAdd(item.ProductBarCode, item.ProductCode);
-                    }
-                    else
-                    {
-                        purchaseCheckedDic.TryAdd(item.ProductCode, item.ProductBarCode);
-                    }
-                }
-
-                if (purchaseCheckedList.Any())
-                {
-                    foreach (var detail in purchaseOrderResponse.PurchaseOrderDetails)
-                    {
-                        if (detail.ProductBarCode != null)
-                        {
-                            if (!purchaseCheckedDic.TryGetValue(detail.ProductBarCode, out var code)) continue;
-                        }
-                        else
-                        {
-                            if (!purchaseCheckedDic.TryGetValue(detail.ProductCode, out var code)) continue;
-                        }
-
-                        detail.Checked = true;
-                        _scannedBarcodeCount++;
-                    }
-                }
-                txtScanNumber.Text = $"{_scannedBarcodeCount.ToString()}" + "/" +
-                                     purchaseOrderResponse.PurchaseOrderDetails.Count();
-                _purchaseOrderDetails = purchaseOrderResponse.PurchaseOrderDetails;
-                grdControlOrders.DataSource = _purchaseOrderDetails;
-                grdViewOrder.BestFitColumns();
-                txtOrderCode.Focus();
-                SetStatusCheckboxStyle(_purchaseOrderResponse.Status);
-                await SyncAndGetProductCodeBarCode(_purchaseOrderDetails);
-            }
-            catch (Exception ex)
-            {
-                MessageHelper.MsgBox(this,"Có lỗi trong quá trình lấy dữ liệu", MsgType.Error);
-            }
-            finally
-            {
-                txtProductCode.Focus();
-                SetControlEnable(true);
-            }
         }
 
         private async Task SyncAndGetProductCodeBarCode(List<PurchaseOrderDetail> purchaseOrderDetails)
@@ -368,11 +276,8 @@ namespace FrmMain
             if (transferredQuantityObj == null) return;
 
             if (!int.TryParse(transferredQuantityObj.ToString(), out var transferredQuantity)) return;
-
-            if (transferredQuantity <= 0)
-            {
-                e.Value = 0;
-            }
+            var scanCount = Math.Max(0, transferredQuantity);
+            e.Value = scanCount;
         }
         private void gridViewOrder_RowCellStyle(object sender, RowCellStyleEventArgs e)
         {
@@ -425,6 +330,25 @@ namespace FrmMain
             }
         }
 
+        private void grdViewOrder_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode != Keys.Enter) return;
+            grdViewOrder.CloseEditor();
+            grdViewOrder.UpdateCurrentRow();
+            BeginInvoke(() =>
+            {
+                txtProductCode.Focus();
+            });
+        }
+        private void grdViewOrder_ShowingEditor(object sender, CancelEventArgs e)
+        {
+            if (sender is not GridView view) return;
+            if (view.FocusedColumn.FieldName != "Quantity") return;
+            if (view.GetRow(view.FocusedRowHandle) is not TransferDetail row) return;
+            if (row.Checked) return;
+            e.Cancel = true;
+        }
+
         private void rpBtnDelete_ButtonClick(object sender, ButtonPressedEventArgs e)
         {
             if (grdViewOrder.FocusedRowHandle < 0) return;
@@ -446,6 +370,11 @@ namespace FrmMain
 
         #endregion
 
+        /// <summary>
+        /// Nhân viên kho lên phiếu tạm, kế toán hoàn thành đơn.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnFinish_Click(object sender, EventArgs e)
         {
             if (_purchaseOrderDetails == null || _purchaseOrderDetails.Count == 0)
@@ -461,19 +390,19 @@ namespace FrmMain
                     .ToList();
                 var message =
                     $"Còn {listNotScan.Count} sản phẩm chưa quét mã: {string.Join(", ", listNotScan)}.\nVui lòng thực hiện trước khi hoàn thành.";
-                MessageHelper.MsgBox(this,message, MsgType.Error);
+                MessageHelper.MsgBox(this, message, MsgType.Error);
                 txtProductCode.Focus();
                 return;
             }
-            
+
             if (lkpSupplier.EditValue == null)
             {
-                MessageHelper.MsgBox(this,"Chưa chọn nhà cung cấp", MsgType.Error);
+                MessageHelper.MsgBox(this, "Chưa chọn nhà cung cấp", MsgType.Error);
                 lkpSupplier.Focus();
                 return;
             }
 
-            SaveDraftOrder(sender != btnFinish);
+            SaveDraftOrder(true);
         }
 
         private async void SaveDraftOrder(bool draft)
@@ -482,7 +411,7 @@ namespace FrmMain
             {
                 SetControlEnable(false);
 
-                var orderUrl = $"https://public.kiotapi.com/purchaseorders";
+                const string orderUrl = $"https://public.kiotapi.com/purchaseorders";
                 var supplierId = Convert.ToInt64(lkpSupplier.EditValue);
 
                 var supplier = await _supplyService.GetSupplierByCode(supplierId);
@@ -624,7 +553,7 @@ namespace FrmMain
                         textEdit.MaximumSize = new Size(0, height);
                         break;
                     case SimpleButton button:
-                        if (c.Name is nameof(btnSaveDraft) or nameof(btnFinish)) break;
+                        if (c.Name is nameof(btnSaveDraft)) break;
                         button.MinimumSize = new Size(0, height);
                         button.MaximumSize = new Size(0, height);
                         break;

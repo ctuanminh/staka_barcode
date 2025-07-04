@@ -39,9 +39,7 @@
             grpCtlButton = new DevExpress.XtraEditors.GroupControl();
             ltCtlButton = new DevExpress.XtraLayout.LayoutControl();
             btnDraf = new DevExpress.XtraEditors.SimpleButton();
-            btnFinish = new DevExpress.XtraEditors.SimpleButton();
             layoutControlGroup2 = new DevExpress.XtraLayout.LayoutControlGroup();
-            layoutControlItem10 = new DevExpress.XtraLayout.LayoutControlItem();
             layoutControlItem20 = new DevExpress.XtraLayout.LayoutControlItem();
             layoutControl2 = new DevExpress.XtraLayout.LayoutControl();
             txtDescription = new DevExpress.XtraEditors.TextEdit();
@@ -119,7 +117,6 @@
             ((System.ComponentModel.ISupportInitialize)ltCtlButton).BeginInit();
             ltCtlButton.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)layoutControlGroup2).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)layoutControlItem10).BeginInit();
             ((System.ComponentModel.ISupportInitialize)layoutControlItem20).BeginInit();
             ((System.ComponentModel.ISupportInitialize)layoutControl2).BeginInit();
             layoutControl2.SuspendLayout();
@@ -187,7 +184,7 @@
             groupControl1.Controls.Add(grpCtlButton);
             groupControl1.Controls.Add(layoutControl2);
             groupControl1.Dock = System.Windows.Forms.DockStyle.Right;
-            groupControl1.Location = new System.Drawing.Point(905, 0);
+            groupControl1.Location = new System.Drawing.Point(901, 0);
             groupControl1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             groupControl1.Name = "groupControl1";
             groupControl1.Size = new System.Drawing.Size(355, 769);
@@ -209,7 +206,6 @@
             // ltCtlButton
             // 
             ltCtlButton.Controls.Add(btnDraf);
-            ltCtlButton.Controls.Add(btnFinish);
             ltCtlButton.Dock = System.Windows.Forms.DockStyle.Fill;
             ltCtlButton.Location = new System.Drawing.Point(2, 2);
             ltCtlButton.Name = "ltCtlButton";
@@ -223,50 +219,29 @@
             btnDraf.Appearance.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold);
             btnDraf.Appearance.Options.UseFont = true;
             btnDraf.ImageOptions.Image = (System.Drawing.Image)resources.GetObject("btnDraf.ImageOptions.Image");
-            btnDraf.Location = new System.Drawing.Point(12, 12);
+            btnDraf.Location = new System.Drawing.Point(11, 11);
             btnDraf.Name = "btnDraf";
-            btnDraf.Size = new System.Drawing.Size(159, 38);
+            btnDraf.Size = new System.Drawing.Size(325, 38);
             btnDraf.StyleController = ltCtlButton;
             btnDraf.TabIndex = 4;
-            btnDraf.Text = "LƯU TẠM";
+            btnDraf.Text = "LƯU PHIẾU NHẬP HÀNG";
             btnDraf.Click += btnDraft_Click;
-            // 
-            // btnFinish
-            // 
-            btnFinish.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
-            btnFinish.Appearance.Options.UseFont = true;
-            btnFinish.ImageOptions.Image = (System.Drawing.Image)resources.GetObject("btnFinish.ImageOptions.Image");
-            btnFinish.Location = new System.Drawing.Point(175, 12);
-            btnFinish.Name = "btnFinish";
-            btnFinish.Size = new System.Drawing.Size(160, 38);
-            btnFinish.StyleController = ltCtlButton;
-            btnFinish.TabIndex = 2;
-            btnFinish.Text = "NHẬP HÀNG";
-            btnFinish.Click += btnFinish_Click;
             // 
             // layoutControlGroup2
             // 
             layoutControlGroup2.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.True;
             layoutControlGroup2.GroupBordersVisible = false;
-            layoutControlGroup2.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] { layoutControlItem10, layoutControlItem20 });
+            layoutControlGroup2.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] { layoutControlItem20 });
             layoutControlGroup2.Name = "layoutControlGroup2";
             layoutControlGroup2.Size = new System.Drawing.Size(347, 66);
             layoutControlGroup2.TextVisible = false;
-            // 
-            // layoutControlItem10
-            // 
-            layoutControlItem10.Control = btnFinish;
-            layoutControlItem10.Location = new System.Drawing.Point(163, 0);
-            layoutControlItem10.Name = "layoutControlItem10";
-            layoutControlItem10.Size = new System.Drawing.Size(164, 46);
-            layoutControlItem10.TextVisible = false;
             // 
             // layoutControlItem20
             // 
             layoutControlItem20.Control = btnDraf;
             layoutControlItem20.Location = new System.Drawing.Point(0, 0);
             layoutControlItem20.Name = "layoutControlItem20";
-            layoutControlItem20.Size = new System.Drawing.Size(163, 46);
+            layoutControlItem20.Size = new System.Drawing.Size(329, 48);
             layoutControlItem20.TextVisible = false;
             // 
             // layoutControl2
@@ -289,160 +264,160 @@
             layoutControl2.Location = new System.Drawing.Point(2, 22);
             layoutControl2.Name = "layoutControl2";
             layoutControl2.Root = layoutControlGroup1;
-            layoutControl2.Size = new System.Drawing.Size(351, 342);
+            layoutControl2.Size = new System.Drawing.Size(351, 340);
             layoutControl2.TabIndex = 0;
             layoutControl2.Text = "layoutControl2";
             // 
             // txtDescription
             // 
-            txtDescription.Location = new System.Drawing.Point(119, 300);
+            txtDescription.Location = new System.Drawing.Point(117, 299);
             txtDescription.Name = "txtDescription";
             txtDescription.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold);
             txtDescription.Properties.Appearance.Options.UseFont = true;
-            txtDescription.Size = new System.Drawing.Size(220, 20);
+            txtDescription.Size = new System.Drawing.Size(223, 20);
             txtDescription.StyleController = layoutControl2;
             txtDescription.TabIndex = 15;
             // 
             // txtPurchaseDate
             // 
-            txtPurchaseDate.Location = new System.Drawing.Point(119, 36);
+            txtPurchaseDate.Location = new System.Drawing.Point(117, 35);
             txtPurchaseDate.Name = "txtPurchaseDate";
             txtPurchaseDate.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold);
             txtPurchaseDate.Properties.Appearance.Options.UseFont = true;
             txtPurchaseDate.Properties.DisplayFormat.FormatString = "dd/MM/yyyy HH:mm:ss";
             txtPurchaseDate.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
-            txtPurchaseDate.Size = new System.Drawing.Size(220, 20);
+            txtPurchaseDate.Size = new System.Drawing.Size(223, 20);
             txtPurchaseDate.StyleController = layoutControl2;
             txtPurchaseDate.TabIndex = 2;
             // 
             // txtProductCount
             // 
-            txtProductCount.Location = new System.Drawing.Point(119, 156);
+            txtProductCount.Location = new System.Drawing.Point(117, 155);
             txtProductCount.Name = "txtProductCount";
             txtProductCount.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold);
             txtProductCount.Properties.Appearance.Options.UseFont = true;
-            txtProductCount.Size = new System.Drawing.Size(220, 20);
+            txtProductCount.Size = new System.Drawing.Size(223, 20);
             txtProductCount.StyleController = layoutControl2;
             txtProductCount.TabIndex = 14;
             // 
             // txtTotalItems
             // 
-            txtTotalItems.Location = new System.Drawing.Point(119, 132);
+            txtTotalItems.Location = new System.Drawing.Point(117, 131);
             txtTotalItems.Name = "txtTotalItems";
             txtTotalItems.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold);
             txtTotalItems.Properties.Appearance.Options.UseFont = true;
-            txtTotalItems.Size = new System.Drawing.Size(220, 20);
+            txtTotalItems.Size = new System.Drawing.Size(223, 20);
             txtTotalItems.StyleController = layoutControl2;
             txtTotalItems.TabIndex = 13;
             // 
             // txtNeedPayment
             // 
-            txtNeedPayment.Location = new System.Drawing.Point(119, 252);
+            txtNeedPayment.Location = new System.Drawing.Point(117, 251);
             txtNeedPayment.Name = "txtNeedPayment";
             txtNeedPayment.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold);
             txtNeedPayment.Properties.Appearance.Options.UseFont = true;
-            txtNeedPayment.Size = new System.Drawing.Size(220, 20);
+            txtNeedPayment.Size = new System.Drawing.Size(223, 20);
             txtNeedPayment.StyleController = layoutControl2;
             txtNeedPayment.TabIndex = 10;
             // 
             // textEdit1
             // 
-            textEdit1.Location = new System.Drawing.Point(119, 228);
+            textEdit1.Location = new System.Drawing.Point(117, 227);
             textEdit1.Name = "textEdit1";
             textEdit1.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold);
             textEdit1.Properties.Appearance.Options.UseFont = true;
-            textEdit1.Size = new System.Drawing.Size(220, 20);
+            textEdit1.Size = new System.Drawing.Size(223, 20);
             textEdit1.StyleController = layoutControl2;
             textEdit1.TabIndex = 9;
             // 
             // txtTotalPayment
             // 
-            txtTotalPayment.Location = new System.Drawing.Point(119, 276);
+            txtTotalPayment.Location = new System.Drawing.Point(117, 275);
             txtTotalPayment.Name = "txtTotalPayment";
             txtTotalPayment.Properties.Appearance.BackColor = System.Drawing.Color.White;
             txtTotalPayment.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold);
             txtTotalPayment.Properties.Appearance.Options.UseBackColor = true;
             txtTotalPayment.Properties.Appearance.Options.UseFont = true;
             txtTotalPayment.Properties.ReadOnly = true;
-            txtTotalPayment.Size = new System.Drawing.Size(220, 20);
+            txtTotalPayment.Size = new System.Drawing.Size(223, 20);
             txtTotalPayment.StyleController = layoutControl2;
             txtTotalPayment.TabIndex = 8;
             // 
             // txtTotal
             // 
-            txtTotal.Location = new System.Drawing.Point(119, 180);
+            txtTotal.Location = new System.Drawing.Point(117, 179);
             txtTotal.Name = "txtTotal";
             txtTotal.Properties.Appearance.BackColor = System.Drawing.Color.White;
             txtTotal.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold);
             txtTotal.Properties.Appearance.Options.UseBackColor = true;
             txtTotal.Properties.Appearance.Options.UseFont = true;
             txtTotal.Properties.ReadOnly = true;
-            txtTotal.Size = new System.Drawing.Size(220, 20);
+            txtTotal.Size = new System.Drawing.Size(223, 20);
             txtTotal.StyleController = layoutControl2;
             txtTotal.TabIndex = 6;
             // 
             // textEdit7
             // 
-            textEdit7.Location = new System.Drawing.Point(119, 108);
+            textEdit7.Location = new System.Drawing.Point(117, 107);
             textEdit7.Name = "textEdit7";
             textEdit7.Properties.Appearance.BackColor = System.Drawing.Color.White;
             textEdit7.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold);
             textEdit7.Properties.Appearance.Options.UseBackColor = true;
             textEdit7.Properties.Appearance.Options.UseFont = true;
             textEdit7.Properties.ReadOnly = true;
-            textEdit7.Size = new System.Drawing.Size(220, 20);
+            textEdit7.Size = new System.Drawing.Size(223, 20);
             textEdit7.StyleController = layoutControl2;
             textEdit7.TabIndex = 5;
             // 
             // txtDiscount
             // 
-            txtDiscount.Location = new System.Drawing.Point(119, 204);
+            txtDiscount.Location = new System.Drawing.Point(117, 203);
             txtDiscount.Name = "txtDiscount";
             txtDiscount.Properties.Appearance.BackColor = System.Drawing.Color.White;
             txtDiscount.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold);
             txtDiscount.Properties.Appearance.Options.UseBackColor = true;
             txtDiscount.Properties.Appearance.Options.UseFont = true;
             txtDiscount.Properties.ReadOnly = true;
-            txtDiscount.Size = new System.Drawing.Size(220, 20);
+            txtDiscount.Size = new System.Drawing.Size(223, 20);
             txtDiscount.StyleController = layoutControl2;
             txtDiscount.TabIndex = 7;
             // 
             // txtSumTotal
             // 
-            txtSumTotal.Location = new System.Drawing.Point(119, 84);
+            txtSumTotal.Location = new System.Drawing.Point(117, 83);
             txtSumTotal.Name = "txtSumTotal";
             txtSumTotal.Properties.Appearance.BackColor = System.Drawing.Color.White;
             txtSumTotal.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold);
             txtSumTotal.Properties.Appearance.Options.UseBackColor = true;
             txtSumTotal.Properties.Appearance.Options.UseFont = true;
             txtSumTotal.Properties.ReadOnly = true;
-            txtSumTotal.Size = new System.Drawing.Size(220, 20);
+            txtSumTotal.Size = new System.Drawing.Size(223, 20);
             txtSumTotal.StyleController = layoutControl2;
             txtSumTotal.TabIndex = 4;
             // 
             // txtCustomerName
             // 
-            txtCustomerName.Location = new System.Drawing.Point(119, 60);
+            txtCustomerName.Location = new System.Drawing.Point(117, 59);
             txtCustomerName.Name = "txtCustomerName";
             txtCustomerName.Properties.Appearance.BackColor = System.Drawing.Color.White;
             txtCustomerName.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold);
             txtCustomerName.Properties.Appearance.Options.UseBackColor = true;
             txtCustomerName.Properties.Appearance.Options.UseFont = true;
             txtCustomerName.Properties.ReadOnly = true;
-            txtCustomerName.Size = new System.Drawing.Size(220, 20);
+            txtCustomerName.Size = new System.Drawing.Size(223, 20);
             txtCustomerName.StyleController = layoutControl2;
             txtCustomerName.TabIndex = 3;
             // 
             // txtSaleName
             // 
-            txtSaleName.Location = new System.Drawing.Point(119, 12);
+            txtSaleName.Location = new System.Drawing.Point(117, 11);
             txtSaleName.Name = "txtSaleName";
             txtSaleName.Properties.Appearance.BackColor = System.Drawing.Color.White;
             txtSaleName.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold);
             txtSaleName.Properties.Appearance.Options.UseBackColor = true;
             txtSaleName.Properties.Appearance.Options.UseFont = true;
             txtSaleName.Properties.ReadOnly = true;
-            txtSaleName.Size = new System.Drawing.Size(220, 20);
+            txtSaleName.Size = new System.Drawing.Size(223, 20);
             txtSaleName.StyleController = layoutControl2;
             txtSaleName.TabIndex = 0;
             // 
@@ -452,7 +427,7 @@
             layoutControlGroup1.GroupBordersVisible = false;
             layoutControlGroup1.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] { layoutControlItem3, emptySpaceItem1, layoutControlItem4, layoutControlItem5, layoutControlItem7, layoutControlItem8, layoutControlItem9, layoutControlItem24, layoutControlItem6, layoutControlItem23, layoutControlItem18, layoutControlItem19, layoutControlItem22, layoutControlItem11 });
             layoutControlGroup1.Name = "layoutControlGroup1";
-            layoutControlGroup1.Size = new System.Drawing.Size(351, 342);
+            layoutControlGroup1.Size = new System.Drawing.Size(351, 340);
             layoutControlGroup1.TextVisible = false;
             // 
             // layoutControlItem3
@@ -460,7 +435,7 @@
             layoutControlItem3.Control = txtSaleName;
             layoutControlItem3.Location = new System.Drawing.Point(0, 0);
             layoutControlItem3.Name = "layoutControlItem3";
-            layoutControlItem3.Size = new System.Drawing.Size(331, 24);
+            layoutControlItem3.Size = new System.Drawing.Size(333, 24);
             layoutControlItem3.Text = "Người nhập hàng";
             layoutControlItem3.TextSize = new System.Drawing.Size(103, 14);
             // 
@@ -468,14 +443,14 @@
             // 
             emptySpaceItem1.Location = new System.Drawing.Point(0, 312);
             emptySpaceItem1.Name = "emptySpaceItem1";
-            emptySpaceItem1.Size = new System.Drawing.Size(331, 10);
+            emptySpaceItem1.Size = new System.Drawing.Size(333, 10);
             // 
             // layoutControlItem4
             // 
             layoutControlItem4.Control = txtCustomerName;
             layoutControlItem4.Location = new System.Drawing.Point(0, 48);
             layoutControlItem4.Name = "layoutControlItem4";
-            layoutControlItem4.Size = new System.Drawing.Size(331, 24);
+            layoutControlItem4.Size = new System.Drawing.Size(333, 24);
             layoutControlItem4.Text = "Nhà cung cấp";
             layoutControlItem4.TextSize = new System.Drawing.Size(103, 14);
             // 
@@ -484,7 +459,7 @@
             layoutControlItem5.Control = txtSumTotal;
             layoutControlItem5.Location = new System.Drawing.Point(0, 72);
             layoutControlItem5.Name = "layoutControlItem5";
-            layoutControlItem5.Size = new System.Drawing.Size(331, 24);
+            layoutControlItem5.Size = new System.Drawing.Size(333, 24);
             layoutControlItem5.Text = "Nợ";
             layoutControlItem5.TextSize = new System.Drawing.Size(103, 14);
             // 
@@ -493,7 +468,7 @@
             layoutControlItem7.Control = textEdit7;
             layoutControlItem7.Location = new System.Drawing.Point(0, 96);
             layoutControlItem7.Name = "layoutControlItem7";
-            layoutControlItem7.Size = new System.Drawing.Size(331, 24);
+            layoutControlItem7.Size = new System.Drawing.Size(333, 24);
             layoutControlItem7.Text = "Mã đặt hàng nhập";
             layoutControlItem7.TextSize = new System.Drawing.Size(103, 14);
             // 
@@ -502,7 +477,7 @@
             layoutControlItem8.Control = txtTotal;
             layoutControlItem8.Location = new System.Drawing.Point(0, 168);
             layoutControlItem8.Name = "layoutControlItem8";
-            layoutControlItem8.Size = new System.Drawing.Size(331, 24);
+            layoutControlItem8.Size = new System.Drawing.Size(333, 24);
             layoutControlItem8.Text = "Tổng tiền hàng";
             layoutControlItem8.TextSize = new System.Drawing.Size(103, 14);
             // 
@@ -511,7 +486,7 @@
             layoutControlItem9.Control = txtTotalPayment;
             layoutControlItem9.Location = new System.Drawing.Point(0, 264);
             layoutControlItem9.Name = "layoutControlItem9";
-            layoutControlItem9.Size = new System.Drawing.Size(331, 24);
+            layoutControlItem9.Size = new System.Drawing.Size(333, 24);
             layoutControlItem9.Text = "Tiền đã trả NCC";
             layoutControlItem9.TextSize = new System.Drawing.Size(103, 14);
             // 
@@ -520,7 +495,7 @@
             layoutControlItem24.Control = txtPurchaseDate;
             layoutControlItem24.Location = new System.Drawing.Point(0, 24);
             layoutControlItem24.Name = "layoutControlItem24";
-            layoutControlItem24.Size = new System.Drawing.Size(331, 24);
+            layoutControlItem24.Size = new System.Drawing.Size(333, 24);
             layoutControlItem24.Text = "Ngày nhập hàng";
             layoutControlItem24.TextSize = new System.Drawing.Size(103, 14);
             // 
@@ -529,7 +504,7 @@
             layoutControlItem6.Control = txtDiscount;
             layoutControlItem6.Location = new System.Drawing.Point(0, 192);
             layoutControlItem6.Name = "layoutControlItem6";
-            layoutControlItem6.Size = new System.Drawing.Size(331, 24);
+            layoutControlItem6.Size = new System.Drawing.Size(333, 24);
             layoutControlItem6.Text = "Giảm giá";
             layoutControlItem6.TextSize = new System.Drawing.Size(103, 14);
             // 
@@ -538,7 +513,7 @@
             layoutControlItem23.Control = txtProductCount;
             layoutControlItem23.Location = new System.Drawing.Point(0, 144);
             layoutControlItem23.Name = "layoutControlItem23";
-            layoutControlItem23.Size = new System.Drawing.Size(331, 24);
+            layoutControlItem23.Size = new System.Drawing.Size(333, 24);
             layoutControlItem23.Text = "Tổng số lượng";
             layoutControlItem23.TextSize = new System.Drawing.Size(103, 14);
             // 
@@ -548,7 +523,7 @@
             layoutControlItem18.CustomizationFormText = "Chi phí nhập trả NCC";
             layoutControlItem18.Location = new System.Drawing.Point(0, 216);
             layoutControlItem18.Name = "layoutControlItem18";
-            layoutControlItem18.Size = new System.Drawing.Size(331, 24);
+            layoutControlItem18.Size = new System.Drawing.Size(333, 24);
             layoutControlItem18.Text = "Chi phí vận chuyển";
             layoutControlItem18.TextSize = new System.Drawing.Size(103, 14);
             // 
@@ -557,7 +532,7 @@
             layoutControlItem19.Control = txtNeedPayment;
             layoutControlItem19.Location = new System.Drawing.Point(0, 240);
             layoutControlItem19.Name = "layoutControlItem19";
-            layoutControlItem19.Size = new System.Drawing.Size(331, 24);
+            layoutControlItem19.Size = new System.Drawing.Size(333, 24);
             layoutControlItem19.Text = "Cần trả NCC";
             layoutControlItem19.TextSize = new System.Drawing.Size(103, 14);
             // 
@@ -566,7 +541,7 @@
             layoutControlItem22.Control = txtTotalItems;
             layoutControlItem22.Location = new System.Drawing.Point(0, 120);
             layoutControlItem22.Name = "layoutControlItem22";
-            layoutControlItem22.Size = new System.Drawing.Size(331, 24);
+            layoutControlItem22.Size = new System.Drawing.Size(333, 24);
             layoutControlItem22.Text = "Tổng số mặt hàng";
             layoutControlItem22.TextSize = new System.Drawing.Size(103, 14);
             // 
@@ -575,7 +550,7 @@
             layoutControlItem11.Control = txtDescription;
             layoutControlItem11.Location = new System.Drawing.Point(0, 288);
             layoutControlItem11.Name = "layoutControlItem11";
-            layoutControlItem11.Size = new System.Drawing.Size(331, 24);
+            layoutControlItem11.Size = new System.Drawing.Size(333, 24);
             layoutControlItem11.Text = "Ghi chú";
             layoutControlItem11.TextSize = new System.Drawing.Size(103, 14);
             // 
@@ -589,7 +564,7 @@
             groupControl2.Location = new System.Drawing.Point(0, 0);
             groupControl2.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             groupControl2.Name = "groupControl2";
-            groupControl2.Size = new System.Drawing.Size(905, 769);
+            groupControl2.Size = new System.Drawing.Size(901, 769);
             groupControl2.TabIndex = 1;
             groupControl2.Text = "Nhập hàng";
             // 
@@ -597,12 +572,12 @@
             // 
             grdControlOrders.Dock = System.Windows.Forms.DockStyle.Fill;
             grdControlOrders.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            grdControlOrders.Location = new System.Drawing.Point(2, 92);
+            grdControlOrders.Location = new System.Drawing.Point(2, 90);
             grdControlOrders.MainView = grdViewOrder;
             grdControlOrders.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             grdControlOrders.Name = "grdControlOrders";
             grdControlOrders.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] { repositoryItemCheckEdit1, rpAction, rpQuantity });
-            grdControlOrders.Size = new System.Drawing.Size(901, 675);
+            grdControlOrders.Size = new System.Drawing.Size(897, 677);
             grdControlOrders.TabIndex = 1;
             grdControlOrders.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] { grdViewOrder });
             // 
@@ -618,6 +593,7 @@
             grdViewOrder.ShowingEditor += grdViewOrder_ShowingEditor;
             grdViewOrder.CellValueChanged += grdViewOrder_CellValueChanged;
             grdViewOrder.KeyDown += grdViewOrder_KeyDown;
+            grdViewOrder.ValidatingEditor += gridViewOrder_ValidatingEditor;
             // 
             // clmProductCode
             // 
@@ -714,7 +690,7 @@
             layoutControlTop.Location = new System.Drawing.Point(2, 22);
             layoutControlTop.Name = "layoutControlTop";
             layoutControlTop.Root = Root;
-            layoutControlTop.Size = new System.Drawing.Size(901, 70);
+            layoutControlTop.Size = new System.Drawing.Size(897, 68);
             layoutControlTop.TabIndex = 0;
             layoutControlTop.Text = "layoutControl1";
             // 
@@ -727,7 +703,7 @@
             btnReloadOrder.Appearance.Options.UseFont = true;
             btnReloadOrder.Appearance.Options.UseForeColor = true;
             btnReloadOrder.ImageOptions.Image = (System.Drawing.Image)resources.GetObject("btnReloadOrder.ImageOptions.Image");
-            btnReloadOrder.Location = new System.Drawing.Point(409, 12);
+            btnReloadOrder.Location = new System.Drawing.Point(407, 11);
             btnReloadOrder.Name = "btnReloadOrder";
             btnReloadOrder.Size = new System.Drawing.Size(66, 22);
             btnReloadOrder.StyleController = layoutControlTop;
@@ -738,10 +714,10 @@
             // 
             // layoutControl3
             // 
-            layoutControl3.Location = new System.Drawing.Point(767, 12);
+            layoutControl3.Location = new System.Drawing.Point(765, 11);
             layoutControl3.Name = "layoutControl3";
             layoutControl3.Root = layoutControlGroup3;
-            layoutControl3.Size = new System.Drawing.Size(122, 22);
+            layoutControl3.Size = new System.Drawing.Size(121, 22);
             layoutControl3.TabIndex = 10;
             layoutControl3.Text = "layoutControl3";
             // 
@@ -750,12 +726,12 @@
             layoutControlGroup3.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.True;
             layoutControlGroup3.GroupBordersVisible = false;
             layoutControlGroup3.Name = "layoutControlGroup3";
-            layoutControlGroup3.Size = new System.Drawing.Size(122, 22);
+            layoutControlGroup3.Size = new System.Drawing.Size(121, 22);
             layoutControlGroup3.TextVisible = false;
             // 
             // chkCancel
             // 
-            chkCancel.Location = new System.Drawing.Point(687, 12);
+            chkCancel.Location = new System.Drawing.Point(685, 11);
             chkCancel.Name = "chkCancel";
             chkCancel.Properties.Caption = "Đã huỷ";
             chkCancel.Properties.ReadOnly = true;
@@ -765,7 +741,7 @@
             // 
             // chkFinish
             // 
-            chkFinish.Location = new System.Drawing.Point(581, 12);
+            chkFinish.Location = new System.Drawing.Point(579, 11);
             chkFinish.Name = "chkFinish";
             chkFinish.Properties.Caption = "Đã nhập hàng";
             chkFinish.Properties.ReadOnly = true;
@@ -775,7 +751,7 @@
             // 
             // chkDraft
             // 
-            chkDraft.Location = new System.Drawing.Point(479, 12);
+            chkDraft.Location = new System.Drawing.Point(477, 11);
             chkDraft.Name = "chkDraft";
             chkDraft.Properties.Caption = "Phiếu tạm";
             chkDraft.Properties.ReadOnly = true;
@@ -785,7 +761,7 @@
             // 
             // txtScanNumber
             // 
-            txtScanNumber.Location = new System.Drawing.Point(561, 38);
+            txtScanNumber.Location = new System.Drawing.Point(558, 37);
             txtScanNumber.Name = "txtScanNumber";
             txtScanNumber.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold);
             txtScanNumber.Properties.Appearance.ForeColor = System.Drawing.Color.Brown;
@@ -797,7 +773,7 @@
             // 
             // txtProductCode
             // 
-            txtProductCode.Location = new System.Drawing.Point(94, 38);
+            txtProductCode.Location = new System.Drawing.Point(92, 37);
             txtProductCode.Name = "txtProductCode";
             txtProductCode.Size = new System.Drawing.Size(381, 20);
             txtProductCode.StyleController = layoutControlTop;
@@ -806,7 +782,7 @@
             // 
             // txtOrderCode
             // 
-            txtOrderCode.Location = new System.Drawing.Point(94, 12);
+            txtOrderCode.Location = new System.Drawing.Point(92, 11);
             txtOrderCode.Name = "txtOrderCode";
             txtOrderCode.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold);
             txtOrderCode.Properties.Appearance.Options.UseFont = true;
@@ -821,7 +797,7 @@
             Root.GroupBordersVisible = false;
             Root.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] { layoutControlItem1, layoutControlItem2, layoutControlItem12, layoutControlItem13, layoutControlItem14, layoutControlItem15, layoutControlItem16, layoutControlItem17 });
             Root.Name = "Root";
-            Root.Size = new System.Drawing.Size(901, 70);
+            Root.Size = new System.Drawing.Size(897, 68);
             Root.TextVisible = false;
             // 
             // layoutControlItem1
@@ -829,7 +805,7 @@
             layoutControlItem1.Control = txtOrderCode;
             layoutControlItem1.Location = new System.Drawing.Point(0, 0);
             layoutControlItem1.Name = "layoutControlItem1";
-            layoutControlItem1.Size = new System.Drawing.Size(397, 26);
+            layoutControlItem1.Size = new System.Drawing.Size(396, 26);
             layoutControlItem1.Text = "Mã Nhập hàng";
             layoutControlItem1.TextSize = new System.Drawing.Size(78, 14);
             // 
@@ -839,23 +815,23 @@
             layoutControlItem2.CustomizationFormText = "Tìm Sản phẩm";
             layoutControlItem2.Location = new System.Drawing.Point(0, 26);
             layoutControlItem2.Name = "layoutControlItem2";
-            layoutControlItem2.Size = new System.Drawing.Size(467, 24);
+            layoutControlItem2.Size = new System.Drawing.Size(466, 24);
             layoutControlItem2.Text = "Tìm Sản phẩm";
             layoutControlItem2.TextSize = new System.Drawing.Size(78, 14);
             // 
             // layoutControlItem12
             // 
             layoutControlItem12.Control = txtScanNumber;
-            layoutControlItem12.Location = new System.Drawing.Point(467, 26);
+            layoutControlItem12.Location = new System.Drawing.Point(466, 26);
             layoutControlItem12.Name = "layoutControlItem12";
-            layoutControlItem12.Size = new System.Drawing.Size(414, 24);
+            layoutControlItem12.Size = new System.Drawing.Size(413, 24);
             layoutControlItem12.Text = "Đã quét mã:";
             layoutControlItem12.TextSize = new System.Drawing.Size(78, 14);
             // 
             // layoutControlItem13
             // 
             layoutControlItem13.Control = chkDraft;
-            layoutControlItem13.Location = new System.Drawing.Point(467, 0);
+            layoutControlItem13.Location = new System.Drawing.Point(466, 0);
             layoutControlItem13.Name = "layoutControlItem13";
             layoutControlItem13.Size = new System.Drawing.Size(102, 26);
             layoutControlItem13.TextVisible = false;
@@ -863,7 +839,7 @@
             // layoutControlItem14
             // 
             layoutControlItem14.Control = chkFinish;
-            layoutControlItem14.Location = new System.Drawing.Point(569, 0);
+            layoutControlItem14.Location = new System.Drawing.Point(568, 0);
             layoutControlItem14.Name = "layoutControlItem14";
             layoutControlItem14.Size = new System.Drawing.Size(106, 26);
             layoutControlItem14.TextVisible = false;
@@ -871,7 +847,7 @@
             // layoutControlItem15
             // 
             layoutControlItem15.Control = chkCancel;
-            layoutControlItem15.Location = new System.Drawing.Point(675, 0);
+            layoutControlItem15.Location = new System.Drawing.Point(674, 0);
             layoutControlItem15.Name = "layoutControlItem15";
             layoutControlItem15.Size = new System.Drawing.Size(80, 26);
             layoutControlItem15.TextVisible = false;
@@ -879,15 +855,15 @@
             // layoutControlItem16
             // 
             layoutControlItem16.Control = layoutControl3;
-            layoutControlItem16.Location = new System.Drawing.Point(755, 0);
+            layoutControlItem16.Location = new System.Drawing.Point(754, 0);
             layoutControlItem16.Name = "layoutControlItem16";
-            layoutControlItem16.Size = new System.Drawing.Size(126, 26);
+            layoutControlItem16.Size = new System.Drawing.Size(125, 26);
             layoutControlItem16.TextVisible = false;
             // 
             // layoutControlItem17
             // 
             layoutControlItem17.Control = btnReloadOrder;
-            layoutControlItem17.Location = new System.Drawing.Point(397, 0);
+            layoutControlItem17.Location = new System.Drawing.Point(396, 0);
             layoutControlItem17.Name = "layoutControlItem17";
             layoutControlItem17.Size = new System.Drawing.Size(70, 26);
             layoutControlItem17.TextVisible = false;
@@ -969,9 +945,10 @@
             Appearance.Options.UseFont = true;
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(1260, 769);
+            ClientSize = new System.Drawing.Size(1256, 769);
             Controls.Add(groupControl2);
             Controls.Add(groupControl1);
+            Font = new System.Drawing.Font("Tahoma", 9F);
             Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             MaximizeBox = false;
             MinimizeBox = false;
@@ -987,7 +964,6 @@
             ((System.ComponentModel.ISupportInitialize)ltCtlButton).EndInit();
             ltCtlButton.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)layoutControlGroup2).EndInit();
-            ((System.ComponentModel.ISupportInitialize)layoutControlItem10).EndInit();
             ((System.ComponentModel.ISupportInitialize)layoutControlItem20).EndInit();
             ((System.ComponentModel.ISupportInitialize)layoutControl2).EndInit();
             layoutControl2.ResumeLayout(false);
@@ -1078,7 +1054,6 @@
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem8;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem9;
         private DevExpress.Utils.Behaviors.BehaviorManager behaviorManager1;
-        private DevExpress.XtraEditors.SimpleButton btnFinish;
         private DevExpress.XtraEditors.GroupControl grpCtlButton;
         private DevExpress.XtraLayout.LayoutControl ltCtlButton;
         private DevExpress.XtraLayout.LayoutControlGroup layoutControlGroup2;
@@ -1096,7 +1071,6 @@
         private DevExpress.XtraGrid.Columns.GridColumn clmProductCode;
         private DevExpress.XtraGrid.Columns.GridColumn clmProductName;
         private DevExpress.XtraGrid.Columns.GridColumn clmQuantity;
-        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem10;
         private DevExpress.XtraEditors.TextEdit txtScanNumber;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem12;
         private DevExpress.XtraGrid.Columns.GridColumn clmChecked;
