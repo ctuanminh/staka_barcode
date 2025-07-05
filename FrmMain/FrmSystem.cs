@@ -153,11 +153,10 @@ namespace FrmMain
             try
             {
                 SplashScreenManager.ShowForm(this, typeof(LoadingForm), true, true);
-                SplashScreenManager.Default.SetWaitFormCaption("Đang lấy Đơn hàng");
+                SplashScreenManager.Default.SetWaitFormCaption("Đang cập nhật sản phẩm");
                 SplashScreenManager.Default.SetWaitFormDescription("Vui lòng đợi...");
                 var request = new SearchProductRequestKiot()
                 {
-                    IsActive = true,
                 };
                 var result = await _productService.SyncProduct(request);
             }

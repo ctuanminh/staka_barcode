@@ -95,7 +95,7 @@ namespace Be.Services.Pos
                         BranchName = item.BranchName,
                         Address = item.Address,
                         ContactNumber = item.ContactNumber,
-                        Status = item.Status,
+                        Status = 1,
                         CreatedAt = item.CreatedDate,
                         UpdatedAt = item.ModifiedDate
                     };
@@ -106,7 +106,7 @@ namespace Be.Services.Pos
                     branchExist.BranchName = item.BranchName;
                     branchExist.Address = item.Address;
                     branchExist.ContactNumber = item.ContactNumber;
-                    branchExist.Status = item.Status;
+                    branchExist.Status = 1;
                     branchExist.UpdatedAt = item.ModifiedDate;
                     await repository.UpdateAsync(branchExist);
                     await repository.SaveChangeAsync();
