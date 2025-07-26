@@ -218,7 +218,7 @@ namespace FrmMain
                 MessageHelper.MsgBox(this, "Có lỗi trong quá trình thực hiện.", MsgType.Error);
             }
         }
-        private async void FrmOrderProcess_Load(object sender, EventArgs e)
+        private void FrmOrderProcess_Load(object sender, EventArgs e)
         {
             try
             {
@@ -227,7 +227,7 @@ namespace FrmMain
             }
             catch (Exception exception)
             {
-                MessageHelper.MsgBox(this,"Có lỗi trong quá trình tải dữ liệu.", MsgType.Error);
+                MessageHelper.MsgBox(this, "Có lỗi trong quá trình tải dữ liệu.", MsgType.Error);
             }
         }
         private async void txtProductCode_KeyDown(object sender, KeyEventArgs e)
@@ -246,44 +246,53 @@ namespace FrmMain
                     MessageHelper.MsgBox(this,$"Không tìm thấy sản phẩm mã: {searchBarcode}", MsgType.Error);
                     return;
                 }
-                var product = _orderResponse.OrderDetails.FirstOrDefault(p => p.ProductCode == productCode);
-                if (product == null)
+                // Đếm số lượng của sản phẩm trong đơn hàng
+                var products = _orderResponse.OrderDetails.Where(p => p.ProductCode == productCode);
+                if (!products.Any())
                 {
-                    MessageHelper.MsgBox(this,$"Không tìm thấy sản phẩm mã: {searchBarcode} trong đơn hàng", MsgType.Error);
+                    MessageHelper.MsgBox(this, $"Không tìm thấy sản phẩm mã: {searchBarcode} trong đơn hàng", MsgType.Error);
                     return;
                 }
-                
-                if (!product.Checked) _scannedBarcodeCount++;
-                product.Checked = true;
-                if (product.ScanCount >= product.Quantity)
+                var totalQuantity = products.Sum(p => p.Quantity);     
+                var totalScanCount = products.Sum(p => p.ScanCount);
+                if(totalScanCount >= totalQuantity)
                 {
-                    MessageHelper.MsgBox(this,$"Sản phẩm {product.ProductName} đã quét đủ số lượng yêu cầu.", MsgType.Information);
+                    MessageHelper.MsgBox(this,$"Sản phẩm {productCode} đã quét đủ số lượng yêu cầu.", MsgType.Error);
+                    return;
                 }
-                else
+                foreach (var product in products)
                 {
-                    product.ScanCount++;
-                    // Chỉ gọi service khi còn quét
-                    var productChecked =
-                        await _orderCheckedService.FindProductChecked(_orderResponse.Id, product.ProductCode,
-                            BranchId);
-                    if (productChecked == null)
+                    if (!product.Checked)
                     {
-                        await _orderCheckedService.AddOrderCheck(new OrderCheckedDto()
+                        _scannedBarcodeCount++;
+                        product.Checked = true;
+                    }
+                    
+                    if(product.ScanCount < product.Quantity)
+                    {
+                        product.ScanCount++;
+                        // Chỉ gọi service khi còn quét
+                        var productChecked = await _orderCheckedService.FindProductChecked(_orderResponse.Id, product.ProductCode, BranchId);
+                        if (productChecked == null)
                         {
-                            OrderId = _orderResponse.Id,
-                            OrderCode = _orderResponse.Code,
-                            ProductCode = product.ProductCode,
-                            ProductBarCode = searchBarcode,
-                            BranchId = BranchId,
-                            Count = product.ScanCount,
-                            UserName = AppGlobals.UserInfo.UserName,
-                        });
+                            await _orderCheckedService.AddOrderCheck(new OrderCheckedDto()
+                            {
+                                OrderId = _orderResponse.Id,
+                                OrderCode = _orderResponse.Code,
+                                ProductCode = product.ProductCode,
+                                ProductBarCode = searchBarcode,
+                                BranchId = BranchId,
+                                Count = product.ScanCount,
+                                UserName = AppGlobals.UserInfo.UserName,
+                            });
+                        }
+                        else
+                        {
+                            await _orderCheckedService.UpdateOrderCheck(productChecked.Id, product.ScanCount);
+                        }
+                        break; // Chỉ quét 1 lần cho mỗi sản phẩm
                     }
-                    else
-                    {
-                        await _orderCheckedService.UpdateOrderCheck(productChecked.Id, product.ScanCount);
-                    }
-                }
+                }                
                 // Refresh UI
                 gridControlOrder.RefreshDataSource();
                 var rowHandle = gridViewOrder.LocateByValue("ProductCode", productCode);
@@ -325,7 +334,7 @@ namespace FrmMain
             {
                 if (sender is not GridView view || view.FocusedColumn.FieldName != "ScanCount") return;
 
-                if (!int.TryParse(e.Value?.ToString(), out var scanCount))
+                if (!double.TryParse(e.Value?.ToString(), out var scanCount))
                 {
                     e.Value = 0;
                     return;
@@ -377,8 +386,8 @@ namespace FrmMain
             if (sender is not GridView view) return;
 
             if (view.GetRow(e.RowHandle) is not OrderDetailResponse row) return;
-            var scanCount = Convert.ToInt32(view.GetRowCellValue(e.RowHandle, "ScanCount"));
-            var quantity = Convert.ToInt32(view.GetRowCellValue(e.RowHandle, "Quantity"));
+            var scanCount = Convert.ToDouble(view.GetRowCellValue(e.RowHandle, "ScanCount"));
+            var quantity = Convert.ToDouble(view.GetRowCellValue(e.RowHandle, "Quantity"));
             if (!row.Checked) return;
             if (scanCount != quantity)
             {

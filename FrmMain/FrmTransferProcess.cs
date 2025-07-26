@@ -543,20 +543,20 @@ namespace FrmMain
 
                 var transferRequest = new
                 {
-                    fromBranchId = transferResponse.FromBranchId,
-                    toBranchId = transferResponse.ToBranchId,
-                    code = transferResponse.Code,
+                    fromBranchId = _transferResponse.FromBranchId,
+                    toBranchId = _transferResponse.ToBranchId,
+                    code = _transferResponse.Code,
                     status = nextStatus,
                     isDraft = false,
-                    dispatchedDate = transferResponse.DispatchedDate,
-                    transferDetails = transferResponse.Details.Select(product => new
+                    dispatchedDate = _transferResponse.DispatchedDate,
+                    transferDetails = _transferResponse.Details.Select(product => new
                     {
-                        transferId = transferResponse.Id,
+                        transferId = _transferResponse.Id,
                         productId = product.ProductId,
                         productCode = product.ProductCode,
                         productName = product.ProductName,
                         sendQuantity = product.TransferredQuantity,
-                        receiveQuantity = _transfer ? product.TransferredQuantity : product.ReceiveQuantity,
+                        receiveQuantity = _transfer ? product.TransferredQuantity : product.ScanCount,
                         price = product.Price
                     }).ToList(),
                 };

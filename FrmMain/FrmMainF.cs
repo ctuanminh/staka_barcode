@@ -92,7 +92,7 @@ namespace FrmMain
 
                 bLblComputerName.Caption = $"Máy: {Environment.MachineName}";
                 var version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
-                bLblVersion.Caption = $"Ver: {version} - Build: 27/06/2025";
+                bLblVersion.Caption = $"Ver: {version} - Build: 26/07/2025";
             }
             catch (Exception e)
             {
