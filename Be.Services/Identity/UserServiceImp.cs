@@ -314,7 +314,7 @@ namespace Be.Services.Identity
                 if (!success || string.IsNullOrEmpty(content))
                 {
                     return false;
-                }                
+                }
                 kiotVietUserApiList.AddRange(JsonConvert.DeserializeObject<KiotVietUserApiResponse>(content).Data);                                
                 request.CurrentItem = (i) * request.PageSize;
             }

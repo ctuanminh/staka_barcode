@@ -221,7 +221,9 @@ namespace Be.Services.Catalog
                 .Select(p => new ProductCodeBarCode
                 {
                     Code = p.Code,
-                    BarCode = p.BarCode
+                    BarCode = p.BarCode,
+                    Unit= p.Unit
+
                 }).ToListAsync();
             return productCodeBarCodes;
         }

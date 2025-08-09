@@ -24,7 +24,7 @@ namespace FrmMain
         private List<int> _orderStatusList;
         private Timer _reloadTimer;
         private DateTime _nextReloadTime;
-        private const int ReloadIntervalMinutes = 10;
+        private const int ReloadIntervalMinutes = 30;
 
         public FrmOrder(FrmMainF mainForm,
             IKiotVietService kiotVietService,

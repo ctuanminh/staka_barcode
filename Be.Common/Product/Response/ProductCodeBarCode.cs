@@ -4,6 +4,7 @@
     {
         public string Code { get; set; }
         public string BarCode { get; set; }
+        public string Unit { get; set; }
 
     }
 }

@@ -7,6 +7,7 @@ using Be.Services.KiotViet;
 using Be.Services.Order;
 using Be.Services.Pos;
 using Be.Services.System;
+using DevExpress.DirectX.Common;
 using DevExpress.XtraEditors;
 using DevExpress.XtraGrid.Views.Grid;
 using FrmMain.App;
@@ -41,6 +42,7 @@ namespace FrmMain
         private readonly ISystemService _systemService;
         private readonly IOrderCheckedService _orderCheckedService;
         private Dictionary<string, string> _productCodeBarCdeDic;
+        private Dictionary<string, string> _productCodeUnit;
 
         #endregion
 
@@ -72,18 +74,20 @@ namespace FrmMain
         {
             try
             {
-                var productCodes = orderDetailResponses
-                    .Select(p => p.ProductCode)
-                    .Where(code => !string.IsNullOrWhiteSpace(code))
-                    .Distinct()
-                    .ToList();
-                var productCodeBarCode = await _productService.SynAndGetProductCodeBarCode(productCodes, BranchId);
-                _productCodeBarCdeDic = new Dictionary<string, string>();
-                foreach (var product in productCodeBarCode)
+                var productCodes = new HashSet<string>(
+                    orderDetailResponses
+                        .Select(p => p.ProductCode)
+                        .Where(code => !string.IsNullOrWhiteSpace(code))
+                );
+                var productCodeBarCodeUnit = await _productService.SynAndGetProductCodeBarCode(productCodes.ToList(), BranchId);                
+                (_productCodeBarCdeDic ??= []).Clear();
+                (_productCodeUnit ??= []).Clear();
+                foreach (var product in productCodeBarCodeUnit)
                 {
                     if (!string.IsNullOrWhiteSpace(product.Code))
                     {
                         _productCodeBarCdeDic.TryAdd(product.Code, product.Code);
+                        _productCodeUnit.TryAdd(product.Code, product.Unit);
                     }
 
                     if (!string.IsNullOrWhiteSpace(product.BarCode))
@@ -91,6 +95,13 @@ namespace FrmMain
                         _productCodeBarCdeDic.TryAdd(product.BarCode, product.Code);
                     }
                 }
+                // Xử lý tên sản phẩm tách đơn vị
+                foreach (var orderDetail in orderDetailResponses)
+                {
+                    _productCodeUnit.TryGetValue(orderDetail.ProductCode, out var unit);
+                    orderDetail.Unit = unit;
+                }
+                gridControlOrder.RefreshDataSource();
             }
             catch (Exception ex)
             {
@@ -125,17 +136,7 @@ namespace FrmMain
                 {
                     MessageHelper.MsgBox(this,"Không có dữ liệu trả về từ API", MsgType.Error);
                     return;
-                }
-
-                // Xử lý tên sản phẩm tách đơn vị
-                foreach (var orderApi in orderApiResponse.OrderDetails)
-                {
-                    var start = orderApi.ProductName.LastIndexOf('(');
-                    var end = orderApi.ProductName.LastIndexOf(')');
-                    if (start == -1 || end <= start) continue;
-                    orderApi.Unit = orderApi.ProductName.Substring(start + 1, end - start - 1).Trim();
-                    orderApi.ProductName = orderApi.ProductName[..start].Trim();
-                }
+                }                
 
                 // Xử lý trạng thái
                 var status = (OrderStatusEnum)orderApiResponse.Status;
