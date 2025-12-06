@@ -157,6 +157,7 @@ namespace FrmMain
                 SplashScreenManager.Default.SetWaitFormDescription("Vui lòng đợi...");
                 var request = new SearchProductRequestKiot()
                 {
+                    IsActive = true,
                 };
                 var result = await _productService.SyncProduct(request);
             }
