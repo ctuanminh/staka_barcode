@@ -62,12 +62,14 @@ namespace FrmMain
             services.AddSingleton<FrmMainF>();
             services.AddTransient<FrmSystem>(); 
             services.AddTransient<FrmLogin>(); 
-            services.AddTransient<FrmPurchase>(); 
+            services.AddTransient<FrmProduct>(); 
             services.AddTransient<FrmTransfer>(); 
             services.AddTransient<FrmPurchaseProcess>();
             services.AddTransient<FrmTransferProcess>();
             services.AddTransient<FrmReceiverList>();
+            services.AddTransient<FrmPurchase>();
             services.AddTransient<FrmAddPurchase>();
+            services.AddTransient<FrmInvoiceList>();
             // Auto Mapper Configurations
             
 

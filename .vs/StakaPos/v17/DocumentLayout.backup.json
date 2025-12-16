@@ -3,76 +3,64 @@
   "WorkspaceRootPath": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{E7EE7295-A665-B0D5-F69A-18F25EEE8274}|FrmMain\\FrmMain.csproj|d:\\trongcv\\dev\\pos\\stakapos\\frmmain\\frmorderprocess.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E7EE7295-A665-B0D5-F69A-18F25EEE8274}|FrmMain\\FrmMain.csproj|solutionrelative:frmmain\\frmorderprocess.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{E7EE7295-A665-B0D5-F69A-18F25EEE8274}|FrmMain\\FrmMain.csproj|d:\\trongcv\\dev\\pos\\stakapos\\frmmain\\frmhoadondientu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{E7EE7295-A665-B0D5-F69A-18F25EEE8274}|FrmMain\\FrmMain.csproj|solutionrelative:frmmain\\frmhoadondientu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{E7EE7295-A665-B0D5-F69A-18F25EEE8274}|FrmMain\\FrmMain.csproj|d:\\trongcv\\dev\\pos\\stakapos\\frmmain\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{E7EE7295-A665-B0D5-F69A-18F25EEE8274}|FrmMain\\FrmMain.csproj|solutionrelative:frmmain\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+      "AbsoluteMoniker": "D:0:0:{E7EE7295-A665-B0D5-F69A-18F25EEE8274}|FrmMain\\FrmMain.csproj|d:\\trongcv\\dev\\pos\\stakapos\\frmmain\\frmmainf.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E7EE7295-A665-B0D5-F69A-18F25EEE8274}|FrmMain\\FrmMain.csproj|solutionrelative:frmmain\\frmmainf.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{4E9B0E1F-B88A-ABB7-B856-F6F655E9423C}|Be.Services\\Be.Services.csproj|d:\\trongcv\\dev\\pos\\stakapos\\be.services\\catalog\\productserviceimp.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{4E9B0E1F-B88A-ABB7-B856-F6F655E9423C}|Be.Services\\Be.Services.csproj|solutionrelative:be.services\\catalog\\productserviceimp.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E7EE7295-A665-B0D5-F69A-18F25EEE8274}|FrmMain\\FrmMain.csproj|d:\\trongcv\\dev\\pos\\stakapos\\frmmain\\frmsystem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E7EE7295-A665-B0D5-F69A-18F25EEE8274}|FrmMain\\FrmMain.csproj|solutionrelative:frmmain\\frmsystem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E7EE7295-A665-B0D5-F69A-18F25EEE8274}|FrmMain\\FrmMain.csproj|d:\\trongcv\\dev\\pos\\stakapos\\frmmain\\frmlogin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E7EE7295-A665-B0D5-F69A-18F25EEE8274}|FrmMain\\FrmMain.csproj|solutionrelative:frmmain\\frmlogin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{4E9B0E1F-B88A-ABB7-B856-F6F655E9423C}|Be.Services\\Be.Services.csproj|d:\\trongcv\\dev\\pos\\stakapos\\be.services\\kiotviet\\kiotvietserviceimp.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{4E9B0E1F-B88A-ABB7-B856-F6F655E9423C}|Be.Services\\Be.Services.csproj|solutionrelative:be.services\\kiotviet\\kiotvietserviceimp.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E7EE7295-A665-B0D5-F69A-18F25EEE8274}|FrmMain\\FrmMain.csproj|D:\\TrongCV\\DEV\\Pos\\StakaPos\\frmmain\\frmsystem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{E7EE7295-A665-B0D5-F69A-18F25EEE8274}|FrmMain\\FrmMain.csproj|solutionrelative:frmmain\\frmsystem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E7EE7295-A665-B0D5-F69A-18F25EEE8274}|FrmMain\\FrmMain.csproj|d:\\trongcv\\dev\\pos\\stakapos\\frmmain\\frmorder.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E7EE7295-A665-B0D5-F69A-18F25EEE8274}|FrmMain\\FrmMain.csproj|solutionrelative:frmmain\\frmorder.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E7EE7295-A665-B0D5-F69A-18F25EEE8274}|FrmMain\\FrmMain.csproj|D:\\TrongCV\\DEV\\Pos\\StakaPos\\frmmain\\frmlogin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{E7EE7295-A665-B0D5-F69A-18F25EEE8274}|FrmMain\\FrmMain.csproj|solutionrelative:frmmain\\frmlogin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E7EE7295-A665-B0D5-F69A-18F25EEE8274}|FrmMain\\FrmMain.csproj|d:\\trongcv\\dev\\pos\\stakapos\\frmmain\\appsettings.production.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{E7EE7295-A665-B0D5-F69A-18F25EEE8274}|FrmMain\\FrmMain.csproj|solutionrelative:frmmain\\appsettings.production.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E7EE7295-A665-B0D5-F69A-18F25EEE8274}|FrmMain\\FrmMain.csproj|d:\\trongcv\\dev\\pos\\stakapos\\frmmain\\appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{E7EE7295-A665-B0D5-F69A-18F25EEE8274}|FrmMain\\FrmMain.csproj|solutionrelative:frmmain\\appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E7EE7295-A665-B0D5-F69A-18F25EEE8274}|FrmMain\\FrmMain.csproj|D:\\TrongCV\\DEV\\Pos\\StakaPos\\frmmain\\frmtransfer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{E7EE7295-A665-B0D5-F69A-18F25EEE8274}|FrmMain\\FrmMain.csproj|solutionrelative:frmmain\\frmtransfer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+      "AbsoluteMoniker": "D:0:0:{E7EE7295-A665-B0D5-F69A-18F25EEE8274}|FrmMain\\FrmMain.csproj|d:\\trongcv\\dev\\pos\\stakapos\\frmmain\\frmmainf.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{E7EE7295-A665-B0D5-F69A-18F25EEE8274}|FrmMain\\FrmMain.csproj|solutionrelative:frmmain\\frmmainf.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
       "AbsoluteMoniker": "D:0:0:{E7EE7295-A665-B0D5-F69A-18F25EEE8274}|FrmMain\\FrmMain.csproj|d:\\trongcv\\dev\\pos\\stakapos\\frmmain\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{E7EE7295-A665-B0D5-F69A-18F25EEE8274}|FrmMain\\FrmMain.csproj|solutionrelative:frmmain\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{E7EE7295-A665-B0D5-F69A-18F25EEE8274}|FrmMain\\FrmMain.csproj|d:\\trongcv\\dev\\pos\\stakapos\\frmmain\\app.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
-      "RelativeMoniker": "D:0:0:{E7EE7295-A665-B0D5-F69A-18F25EEE8274}|FrmMain\\FrmMain.csproj|solutionrelative:frmmain\\app.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
+      "AbsoluteMoniker": "D:0:0:{E7EE7295-A665-B0D5-F69A-18F25EEE8274}|FrmMain\\FrmMain.csproj|d:\\trongcv\\dev\\pos\\stakapos\\frmmain\\frmhoadondientu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E7EE7295-A665-B0D5-F69A-18F25EEE8274}|FrmMain\\FrmMain.csproj|solutionrelative:frmmain\\frmhoadondientu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{54B0B7DB-9FAE-629B-6AB5-DAAF907A82C2}|Be.Data\\Be.Data.csproj|d:\\trongcv\\dev\\pos\\stakapos\\be.data\\appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{54B0B7DB-9FAE-629B-6AB5-DAAF907A82C2}|Be.Data\\Be.Data.csproj|solutionrelative:be.data\\appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+      "AbsoluteMoniker": "D:0:0:{E7EE7295-A665-B0D5-F69A-18F25EEE8274}|FrmMain\\FrmMain.csproj|d:\\trongcv\\dev\\pos\\stakapos\\frmmain\\utils\\formhelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E7EE7295-A665-B0D5-F69A-18F25EEE8274}|FrmMain\\FrmMain.csproj|solutionrelative:frmmain\\utils\\formhelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{54B0B7DB-9FAE-629B-6AB5-DAAF907A82C2}|Be.Data\\Be.Data.csproj|d:\\trongcv\\dev\\pos\\stakapos\\be.data\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{54B0B7DB-9FAE-629B-6AB5-DAAF907A82C2}|Be.Data\\Be.Data.csproj|solutionrelative:be.data\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+      "AbsoluteMoniker": "D:0:0:{E7EE7295-A665-B0D5-F69A-18F25EEE8274}|FrmMain\\FrmMain.csproj|d:\\trongcv\\dev\\pos\\stakapos\\frmmain\\appglobals.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E7EE7295-A665-B0D5-F69A-18F25EEE8274}|FrmMain\\FrmMain.csproj|solutionrelative:frmmain\\appglobals.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E7EE7295-A665-B0D5-F69A-18F25EEE8274}|FrmMain\\FrmMain.csproj|d:\\trongcv\\dev\\pos\\stakapos\\frmmain\\frmpurchase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E7EE7295-A665-B0D5-F69A-18F25EEE8274}|FrmMain\\FrmMain.csproj|solutionrelative:frmmain\\frmpurchase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E7EE7295-A665-B0D5-F69A-18F25EEE8274}|FrmMain\\FrmMain.csproj|d:\\trongcv\\dev\\pos\\stakapos\\frmmain\\utils\\wusercontrol.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E7EE7295-A665-B0D5-F69A-18F25EEE8274}|FrmMain\\FrmMain.csproj|solutionrelative:frmmain\\utils\\wusercontrol.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E7EE7295-A665-B0D5-F69A-18F25EEE8274}|FrmMain\\FrmMain.csproj|d:\\trongcv\\dev\\pos\\stakapos\\frmmain\\product\\frmproduct.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E7EE7295-A665-B0D5-F69A-18F25EEE8274}|FrmMain\\FrmMain.csproj|solutionrelative:frmmain\\product\\frmproduct.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{E7EE7295-A665-B0D5-F69A-18F25EEE8274}|FrmMain\\FrmMain.csproj|d:\\trongcv\\dev\\pos\\stakapos\\frmmain\\frmpurchaseprocess.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{E7EE7295-A665-B0D5-F69A-18F25EEE8274}|FrmMain\\FrmMain.csproj|solutionrelative:frmmain\\frmpurchaseprocess.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{E7EE7295-A665-B0D5-F69A-18F25EEE8274}|FrmMain\\FrmMain.csproj|D:\\TrongCV\\DEV\\Pos\\StakaPos\\frmmain\\frmpurchaseprocess.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{E7EE7295-A665-B0D5-F69A-18F25EEE8274}|FrmMain\\FrmMain.csproj|solutionrelative:frmmain\\frmpurchaseprocess.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+      "AbsoluteMoniker": "D:0:0:{E7EE7295-A665-B0D5-F69A-18F25EEE8274}|FrmMain\\FrmMain.csproj|d:\\trongcv\\dev\\pos\\stakapos\\frmmain\\frmaddpurchase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E7EE7295-A665-B0D5-F69A-18F25EEE8274}|FrmMain\\FrmMain.csproj|solutionrelative:frmmain\\frmaddpurchase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4E9B0E1F-B88A-ABB7-B856-F6F655E9423C}|Be.Services\\Be.Services.csproj|d:\\trongcv\\dev\\pos\\stakapos\\be.services\\catalog\\productserviceimp.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4E9B0E1F-B88A-ABB7-B856-F6F655E9423C}|Be.Services\\Be.Services.csproj|solutionrelative:be.services\\catalog\\productserviceimp.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4E9B0E1F-B88A-ABB7-B856-F6F655E9423C}|Be.Services\\Be.Services.csproj|d:\\trongcv\\dev\\pos\\stakapos\\be.services\\catalog\\iproductservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4E9B0E1F-B88A-ABB7-B856-F6F655E9423C}|Be.Services\\Be.Services.csproj|solutionrelative:be.services\\catalog\\iproductservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E7EE7295-A665-B0D5-F69A-18F25EEE8274}|FrmMain\\FrmMain.csproj|d:\\trongcv\\dev\\pos\\stakapos\\frmmain\\product\\frmproduct.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{E7EE7295-A665-B0D5-F69A-18F25EEE8274}|FrmMain\\FrmMain.csproj|solutionrelative:frmmain\\product\\frmproduct.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     }
   ],
   "DocumentGroupContainers": [
@@ -82,225 +70,199 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "FrmOrderProcess.cs",
-              "DocumentMoniker": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\FrmMain\\FrmOrderProcess.cs",
-              "RelativeDocumentMoniker": "FrmMain\\FrmOrderProcess.cs",
-              "ToolTip": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\FrmMain\\FrmOrderProcess.cs",
-              "RelativeToolTip": "FrmMain\\FrmOrderProcess.cs",
-              "ViewState": "AgIAAEMAAAAAAAAAAIAzwFIAAAAQAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-06T09:48:25.794Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "appsettings.json",
-              "DocumentMoniker": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\FrmMain\\appsettings.json",
-              "RelativeDocumentMoniker": "FrmMain\\appsettings.json",
-              "ToolTip": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\FrmMain\\appsettings.json",
-              "RelativeToolTip": "FrmMain\\appsettings.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAA5AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-12-03T05:02:34.351Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "ProductServiceImp.cs",
-              "DocumentMoniker": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\Be.Services\\Catalog\\ProductServiceImp.cs",
-              "RelativeDocumentMoniker": "Be.Services\\Catalog\\ProductServiceImp.cs",
-              "ToolTip": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\Be.Services\\Catalog\\ProductServiceImp.cs",
-              "RelativeToolTip": "Be.Services\\Catalog\\ProductServiceImp.cs",
-              "ViewState": "AgIAAFoAAAAAAAAAAAAnwGYAAAAWAAAAAAAAAA==",
+              "Title": "FrmMainF.cs [Design]",
+              "DocumentMoniker": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\FrmMain\\FrmMainF.cs",
+              "RelativeDocumentMoniker": "FrmMain\\FrmMainF.cs",
+              "ToolTip": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\FrmMain\\FrmMainF.cs [Design]",
+              "RelativeToolTip": "FrmMain\\FrmMainF.cs [Design]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-03T04:58:04.733Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-12-16T01:09:25.395Z",
+              "EditorCaption": " [Design]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "FrmHoadondientu.cs [Design]",
+              "DocumentMoniker": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\FrmMain\\FrmHoadondientu.cs",
+              "RelativeDocumentMoniker": "FrmMain\\FrmHoadondientu.cs",
+              "ToolTip": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\FrmMain\\FrmHoadondientu.cs [Design]",
+              "RelativeToolTip": "FrmMain\\FrmHoadondientu.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-16T01:06:12.956Z",
+              "EditorCaption": " [Design]"
             },
             {
               "$type": "Document",
               "DocumentIndex": 4,
-              "Title": "FrmLogin.cs",
-              "DocumentMoniker": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\FrmMain\\FrmLogin.cs",
-              "RelativeDocumentMoniker": "FrmMain\\FrmLogin.cs",
-              "ToolTip": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\FrmMain\\FrmLogin.cs",
-              "RelativeToolTip": "FrmMain\\FrmLogin.cs",
-              "ViewState": "AgIAAEgAAAAAAAAAAAAmwE8AAABRAAAAAAAAAA==",
+              "Title": "FrmHoadondientu.cs",
+              "DocumentMoniker": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\FrmMain\\FrmHoadondientu.cs",
+              "RelativeDocumentMoniker": "FrmMain\\FrmHoadondientu.cs",
+              "ToolTip": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\FrmMain\\FrmHoadondientu.cs",
+              "RelativeToolTip": "FrmMain\\FrmHoadondientu.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAABMAAAAnAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-03T04:34:58.727Z",
+              "WhenOpened": "2025-12-16T01:05:04.388Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 3,
-              "Title": "FrmSystem.cs",
-              "DocumentMoniker": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\FrmMain\\FrmSystem.cs",
-              "RelativeDocumentMoniker": "FrmMain\\FrmSystem.cs",
-              "ToolTip": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\FrmMain\\FrmSystem.cs",
-              "RelativeToolTip": "FrmMain\\FrmSystem.cs",
-              "ViewState": "AgIAAIIAAAAAAAAAAIAwwKEAAAA4AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-03T04:00:46.044Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "FrmSystem.cs [Design]",
-              "DocumentMoniker": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\FrmMain\\FrmSystem.cs",
-              "RelativeDocumentMoniker": "FrmMain\\FrmSystem.cs",
-              "ToolTip": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\FrmMain\\FrmSystem.cs [Design]",
-              "RelativeToolTip": "FrmMain\\FrmSystem.cs [Design]",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-03T04:00:42.97Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 12,
               "Title": "Program.cs",
               "DocumentMoniker": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\FrmMain\\Program.cs",
               "RelativeDocumentMoniker": "FrmMain\\Program.cs",
               "ToolTip": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\FrmMain\\Program.cs",
               "RelativeToolTip": "FrmMain\\Program.cs",
-              "ViewState": "AgIAACgAAAAAAAAAAAAIwD8AAAAvAAAAAAAAAA==",
+              "ViewState": "AgIAACgAAAAAAAAAAAAIwEIAAAA4AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-03T02:02:40.39Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "appsettings.Production.json",
-              "DocumentMoniker": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\FrmMain\\appsettings.Production.json",
-              "RelativeDocumentMoniker": "FrmMain\\appsettings.Production.json",
-              "ToolTip": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\FrmMain\\appsettings.Production.json",
-              "RelativeToolTip": "FrmMain\\appsettings.Production.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-11-26T09:20:05.729Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "appsettings.Development.json",
-              "DocumentMoniker": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\FrmMain\\appsettings.Development.json",
-              "RelativeDocumentMoniker": "FrmMain\\appsettings.Development.json",
-              "ToolTip": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\FrmMain\\appsettings.Development.json",
-              "RelativeToolTip": "FrmMain\\appsettings.Development.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-11-26T09:20:02.307Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "KiotVietServiceImp.cs",
-              "DocumentMoniker": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\Be.Services\\KiotViet\\KiotVietServiceImp.cs",
-              "RelativeDocumentMoniker": "Be.Services\\KiotViet\\KiotVietServiceImp.cs",
-              "ToolTip": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\Be.Services\\KiotViet\\KiotVietServiceImp.cs",
-              "RelativeToolTip": "Be.Services\\KiotViet\\KiotVietServiceImp.cs",
-              "ViewState": "AgIAADIAAAAAAAAAAIAwwEYAAABkAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-13T14:20:36.587Z"
+              "WhenOpened": "2025-12-16T00:59:52.332Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 7,
-              "Title": "FrmOrder.cs",
-              "DocumentMoniker": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\FrmMain\\FrmOrder.cs",
-              "RelativeDocumentMoniker": "FrmMain\\FrmOrder.cs",
-              "ToolTip": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\FrmMain\\FrmOrder.cs",
-              "RelativeToolTip": "FrmMain\\FrmOrder.cs",
-              "ViewState": "AgIAACgAAAAAAAAAAAAIwDIAAAAIAAAAAAAAAA==",
+              "Title": "FrmPurchase.cs",
+              "DocumentMoniker": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\FrmMain\\FrmPurchase.cs",
+              "RelativeDocumentMoniker": "FrmMain\\FrmPurchase.cs",
+              "ToolTip": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\FrmMain\\FrmPurchase.cs",
+              "RelativeToolTip": "FrmMain\\FrmPurchase.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAFAAAAARAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-03T04:38:38.87Z"
+              "WhenOpened": "2025-12-16T00:57:28.718Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "FrmTransfer.cs [Design]",
-              "DocumentMoniker": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\FrmMain\\FrmTransfer.cs",
-              "RelativeDocumentMoniker": "FrmMain\\FrmTransfer.cs",
-              "ToolTip": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\FrmMain\\FrmTransfer.cs [Design]",
-              "RelativeToolTip": "FrmMain\\FrmTransfer.cs [Design]",
+              "DocumentIndex": 1,
+              "Title": "FrmMainF.cs",
+              "DocumentMoniker": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\FrmMain\\FrmMainF.cs",
+              "RelativeDocumentMoniker": "FrmMain\\FrmMainF.cs",
+              "ToolTip": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\FrmMain\\FrmMainF.cs",
+              "RelativeToolTip": "FrmMain\\FrmMainF.cs",
+              "ViewState": "AgIAAIkAAAAAAAAAAAAuwJ0AAABFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-03T02:02:51.743Z"
+              "WhenOpened": "2025-12-15T05:30:56.165Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "FrmLogin.cs [Design]",
-              "DocumentMoniker": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\FrmMain\\FrmLogin.cs",
-              "RelativeDocumentMoniker": "FrmMain\\FrmLogin.cs",
-              "ToolTip": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\FrmMain\\FrmLogin.cs [Design]",
-              "RelativeToolTip": "FrmMain\\FrmLogin.cs [Design]",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-03T04:34:57.042Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 15,
-              "Title": "appsettings.json",
-              "DocumentMoniker": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\Be.Data\\appsettings.json",
-              "RelativeDocumentMoniker": "Be.Data\\appsettings.json",
-              "ToolTip": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\Be.Data\\appsettings.json",
-              "RelativeToolTip": "Be.Data\\appsettings.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAiAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-11-13T14:21:27.871Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 14,
-              "Title": "appsettings.Development.json",
-              "DocumentMoniker": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\Be.Data\\appsettings.Development.json",
-              "RelativeDocumentMoniker": "Be.Data\\appsettings.Development.json",
-              "ToolTip": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\Be.Data\\appsettings.Development.json",
-              "RelativeToolTip": "Be.Data\\appsettings.Development.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAeAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-11-13T14:21:25.935Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 13,
-              "Title": "App.config",
-              "DocumentMoniker": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\FrmMain\\App.config",
-              "RelativeDocumentMoniker": "FrmMain\\App.config",
-              "ToolTip": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\FrmMain\\App.config",
-              "RelativeToolTip": "FrmMain\\App.config",
+              "DocumentIndex": 6,
+              "Title": "AppGlobals.cs",
+              "DocumentMoniker": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\FrmMain\\AppGlobals.cs",
+              "RelativeDocumentMoniker": "FrmMain\\AppGlobals.cs",
+              "ToolTip": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\FrmMain\\AppGlobals.cs",
+              "RelativeToolTip": "FrmMain\\AppGlobals.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000601|",
-              "WhenOpened": "2025-11-13T14:21:06.897Z"
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-16T00:59:43.521Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 16,
+              "DocumentIndex": 5,
+              "Title": "FormHelper.cs",
+              "DocumentMoniker": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\FrmMain\\Utils\\FormHelper.cs",
+              "RelativeDocumentMoniker": "FrmMain\\Utils\\FormHelper.cs",
+              "ToolTip": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\FrmMain\\Utils\\FormHelper.cs",
+              "RelativeToolTip": "FrmMain\\Utils\\FormHelper.cs",
+              "ViewState": "AgIAADUAAAAAAAAAAIAwwEoAAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-15T05:34:17.648Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
               "Title": "FrmPurchaseProcess.cs",
               "DocumentMoniker": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\FrmMain\\FrmPurchaseProcess.cs",
               "RelativeDocumentMoniker": "FrmMain\\FrmPurchaseProcess.cs",
               "ToolTip": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\FrmMain\\FrmPurchaseProcess.cs",
               "RelativeToolTip": "FrmMain\\FrmPurchaseProcess.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAPYBAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAGEAAAAAAAAAAAAMwHcAAAAQAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-16T08:07:30.209Z",
+              "WhenOpened": "2025-12-15T05:36:28.901Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 17,
-              "Title": "FrmPurchaseProcess.cs [Design]",
-              "DocumentMoniker": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\FrmMain\\FrmPurchaseProcess.cs",
-              "RelativeDocumentMoniker": "FrmMain\\FrmPurchaseProcess.cs",
-              "ToolTip": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\FrmMain\\FrmPurchaseProcess.cs [Design]",
-              "RelativeToolTip": "FrmMain\\FrmPurchaseProcess.cs [Design]",
+              "DocumentIndex": 11,
+              "Title": "FrmAddPurchase.cs",
+              "DocumentMoniker": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\FrmMain\\FrmAddPurchase.cs",
+              "RelativeDocumentMoniker": "FrmMain\\FrmAddPurchase.cs",
+              "ToolTip": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\FrmMain\\FrmAddPurchase.cs",
+              "RelativeToolTip": "FrmMain\\FrmAddPurchase.cs",
+              "ViewState": "AgIAAFMAAAAAAAAAAADwv2oAAABIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-16T08:06:39.756Z"
+              "WhenOpened": "2025-12-15T05:35:35.434Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "WuserControl.cs",
+              "DocumentMoniker": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\FrmMain\\Utils\\WuserControl.cs",
+              "RelativeDocumentMoniker": "FrmMain\\Utils\\WuserControl.cs",
+              "ToolTip": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\FrmMain\\Utils\\WuserControl.cs",
+              "RelativeToolTip": "FrmMain\\Utils\\WuserControl.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAqwAwAAAATAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-15T05:33:52.716Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "ProductServiceImp.cs",
+              "DocumentMoniker": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\Be.Services\\Catalog\\ProductServiceImp.cs",
+              "RelativeDocumentMoniker": "Be.Services\\Catalog\\ProductServiceImp.cs",
+              "ToolTip": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\Be.Services\\Catalog\\ProductServiceImp.cs",
+              "RelativeToolTip": "Be.Services\\Catalog\\ProductServiceImp.cs",
+              "ViewState": "AgIAAGYAAAAAAAAAAIAwwIMAAAASAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-15T02:26:44.589Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "IProductService.cs",
+              "DocumentMoniker": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\Be.Services\\Catalog\\IProductService.cs",
+              "RelativeDocumentMoniker": "Be.Services\\Catalog\\IProductService.cs",
+              "ToolTip": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\Be.Services\\Catalog\\IProductService.cs",
+              "RelativeToolTip": "Be.Services\\Catalog\\IProductService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAqwAoAAAAnAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-15T02:21:43.796Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "FrmProduct.cs",
+              "DocumentMoniker": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\FrmMain\\Product\\FrmProduct.cs",
+              "RelativeDocumentMoniker": "FrmMain\\Product\\FrmProduct.cs",
+              "ToolTip": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\FrmMain\\Product\\FrmProduct.cs",
+              "RelativeToolTip": "FrmMain\\Product\\FrmProduct.cs",
+              "ViewState": "AgIAACsAAAAAmpmZmdkmwEQAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-15T02:14:21.214Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "FrmProduct.cs [Design]",
+              "DocumentMoniker": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\FrmMain\\Product\\FrmProduct.cs",
+              "RelativeDocumentMoniker": "FrmMain\\Product\\FrmProduct.cs",
+              "ToolTip": "D:\\TrongCV\\DEV\\Pos\\StakaPos\\FrmMain\\Product\\FrmProduct.cs [Design]",
+              "RelativeToolTip": "FrmMain\\Product\\FrmProduct.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-15T02:08:37.186Z",
+              "EditorCaption": " [Design]"
             }
           ]
         }

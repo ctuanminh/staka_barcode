@@ -104,7 +104,7 @@ namespace FrmMain
             try
             {
                 _products = [];
-                _products = await _productService.GetProducts(_branchId);
+                _products = await _productService.GetProductsByBranchId(_branchId);
             }
             catch (Exception ex)
             {
@@ -474,8 +474,8 @@ namespace FrmMain
             finally
             {
                 SetControlEnable(true);
-                await FormHelper.OpenFormWithScope<FrmPurchase>(_mainForm, _mainForm.ServiceProvider, "", 0,
-                    nameof(FrmPurchase), WuserControl.FrmPurchase);
+                await FormHelper.OpenFormWithScope<FrmProduct>(_mainForm, _mainForm.ServiceProvider, "", 0,
+                    nameof(FrmProduct), WuserControl.FrmPurchase);
                Close();
             }
         }

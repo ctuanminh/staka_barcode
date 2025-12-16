@@ -277,7 +277,7 @@ namespace FrmMain
             try
             {
                 _products = [];
-                _products = await _productService.GetProducts(BranchId);
+                _products = await _productService.GetProductsByBranchId(BranchId);
             }
             catch (Exception ex)
             {
@@ -663,8 +663,8 @@ namespace FrmMain
                 MessageHelper.MsgBox(this, "Lưu phiếu nhập hàng thành công.", MsgType.Information);
                 // Cập nhật tình trạng đã quét nếu là phiếu sửa
                 await UpdateProductChecked(_purchaseOrder.Code, _purchaseOrder.Id, _purchaseOrder.PurchaseOrderDetails);
-                await FormHelper.OpenFormWithScope<FrmPurchase>(_mainForm, _mainForm.ServiceProvider, "", 0,
-                    nameof(FrmPurchase), WuserControl.FrmPurchase);
+                await FormHelper.OpenFormWithScope<FrmProduct>(_mainForm, _mainForm.ServiceProvider, "", 0,
+                    nameof(FrmProduct), WuserControl.FrmPurchase);
                 Close();
             }
             catch (Exception ex)

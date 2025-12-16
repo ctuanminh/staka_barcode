@@ -38,6 +38,9 @@
     <Compile Update="FrmAddPurchase.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="FrmHoadondientu.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="FrmReceiverList.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -51,6 +54,9 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="FrmPurchase.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Product\FrmProduct.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="Properties\Resources.Designer.cs">

@@ -37,7 +37,7 @@ namespace Be.Data.Data
 
             builder.Entity<IdentityRole<long>>(entity =>
             {
-                entity.ToTable("Roles", "Identity");                
+                entity.ToTable("Roles", "Identity");
                 entity.Property(e => e.Id).ValueGeneratedNever();
                 entity.Property(e => e.Name).HasMaxLength(300);
                 entity.Property(e => e.NormalizedName).HasMaxLength(300);

@@ -1,6 +1,6 @@
 ﻿namespace FrmMain
 {
-    partial class FrmPurchase
+    partial class FrmInvoiceList
     {
         /// <summary>
         /// Required designer variable.
@@ -28,14 +28,14 @@
         /// </summary>
         private void InitializeComponent()
         {
-            DevExpress.XtraEditors.Controls.EditorButtonImageOptions editorButtonImageOptions1 = new DevExpress.XtraEditors.Controls.EditorButtonImageOptions();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmProduct));
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject4 = new DevExpress.Utils.SerializableAppearanceObject();
-            grdControlOrders = new DevExpress.XtraGrid.GridControl();
-            grdViewOrders = new DevExpress.XtraGrid.Views.Grid.GridView();
+            DevExpress.XtraEditors.Controls.EditorButtonImageOptions editorButtonImageOptions2 = new DevExpress.XtraEditors.Controls.EditorButtonImageOptions();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmInvoiceList));
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject5 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject6 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject7 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject8 = new DevExpress.Utils.SerializableAppearanceObject();
+            grdControlInvoiceList = new DevExpress.XtraGrid.GridControl();
+            grdViewInvoiceList = new DevExpress.XtraGrid.Views.Grid.GridView();
             grdClmCode = new DevExpress.XtraGrid.Columns.GridColumn();
             purchaseDate = new DevExpress.XtraGrid.Columns.GridColumn();
             grdClmSupplierName = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -46,7 +46,7 @@
             clmStatus = new DevExpress.XtraGrid.Columns.GridColumn();
             clmAction = new DevExpress.XtraGrid.Columns.GridColumn();
             rpAction = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
-            groupControl1 = new DevExpress.XtraEditors.GroupControl();
+            gctl_filter = new DevExpress.XtraEditors.GroupControl();
             layoutControlTop = new DevExpress.XtraLayout.LayoutControl();
             btnAddPurchase = new DevExpress.XtraEditors.SimpleButton();
             txtBranchName = new DevExpress.XtraEditors.TextEdit();
@@ -67,12 +67,12 @@
             layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
             layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
             layoutControlItem8 = new DevExpress.XtraLayout.LayoutControlItem();
-            groupControl2 = new DevExpress.XtraEditors.GroupControl();
-            ((System.ComponentModel.ISupportInitialize)grdControlOrders).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)grdViewOrders).BeginInit();
+            gctl_invoice_list = new DevExpress.XtraEditors.GroupControl();
+            ((System.ComponentModel.ISupportInitialize)grdControlInvoiceList).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)grdViewInvoiceList).BeginInit();
             ((System.ComponentModel.ISupportInitialize)rpAction).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)groupControl1).BeginInit();
-            groupControl1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)gctl_filter).BeginInit();
+            gctl_filter.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)layoutControlTop).BeginInit();
             layoutControlTop.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)txtBranchName.Properties).BeginInit();
@@ -94,33 +94,33 @@
             ((System.ComponentModel.ISupportInitialize)layoutControlItem4).BeginInit();
             ((System.ComponentModel.ISupportInitialize)layoutControlItem2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)layoutControlItem8).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)groupControl2).BeginInit();
-            groupControl2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)gctl_invoice_list).BeginInit();
+            gctl_invoice_list.SuspendLayout();
             SuspendLayout();
             // 
-            // grdControlOrders
+            // grdControlInvoiceList
             // 
-            grdControlOrders.Dock = System.Windows.Forms.DockStyle.Fill;
-            grdControlOrders.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            grdControlOrders.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            grdControlOrders.Location = new System.Drawing.Point(2, 22);
-            grdControlOrders.MainView = grdViewOrders;
-            grdControlOrders.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            grdControlOrders.Name = "grdControlOrders";
-            grdControlOrders.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] { rpAction });
-            grdControlOrders.Size = new System.Drawing.Size(946, 584);
-            grdControlOrders.TabIndex = 1;
-            grdControlOrders.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] { grdViewOrders });
+            grdControlInvoiceList.Dock = System.Windows.Forms.DockStyle.Fill;
+            grdControlInvoiceList.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            grdControlInvoiceList.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            grdControlInvoiceList.Location = new System.Drawing.Point(2, 22);
+            grdControlInvoiceList.MainView = grdViewInvoiceList;
+            grdControlInvoiceList.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            grdControlInvoiceList.Name = "grdControlInvoiceList";
+            grdControlInvoiceList.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] { rpAction });
+            grdControlInvoiceList.Size = new System.Drawing.Size(946, 584);
+            grdControlInvoiceList.TabIndex = 1;
+            grdControlInvoiceList.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] { grdViewInvoiceList });
             // 
-            // grdViewOrders
+            // grdViewInvoiceList
             // 
-            grdViewOrders.Appearance.HeaderPanel.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold);
-            grdViewOrders.Appearance.HeaderPanel.Options.UseFont = true;
-            grdViewOrders.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] { grdClmCode, purchaseDate, grdClmSupplierName, grdClmTotal, grdClmStatusValue, clmQuantity, clmId, clmStatus, clmAction });
-            grdViewOrders.GridControl = grdControlOrders;
-            grdViewOrders.Name = "grdViewOrders";
-            grdViewOrders.OptionsView.ShowButtonMode = DevExpress.XtraGrid.Views.Base.ShowButtonModeEnum.ShowAlways;
-            grdViewOrders.OptionsView.ShowGroupPanel = false;
+            grdViewInvoiceList.Appearance.HeaderPanel.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold);
+            grdViewInvoiceList.Appearance.HeaderPanel.Options.UseFont = true;
+            grdViewInvoiceList.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] { grdClmCode, purchaseDate, grdClmSupplierName, grdClmTotal, grdClmStatusValue, clmQuantity, clmId, clmStatus, clmAction });
+            grdViewInvoiceList.GridControl = grdControlInvoiceList;
+            grdViewInvoiceList.Name = "grdViewInvoiceList";
+            grdViewInvoiceList.OptionsView.ShowButtonMode = DevExpress.XtraGrid.Views.Base.ShowButtonModeEnum.ShowAlways;
+            grdViewInvoiceList.OptionsView.ShowGroupPanel = false;
             // 
             // grdClmCode
             // 
@@ -211,24 +211,24 @@
             // rpAction
             // 
             rpAction.AutoHeight = false;
-            editorButtonImageOptions1.Image = (System.Drawing.Image)resources.GetObject("editorButtonImageOptions1.Image");
-            rpAction.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "Sửa", -1, true, true, false, editorButtonImageOptions1, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "Sửa phiếu nhận hàng", "Sửa", null, DevExpress.Utils.ToolTipAnchor.Default) });
+            editorButtonImageOptions2.Image = (System.Drawing.Image)resources.GetObject("editorButtonImageOptions2.Image");
+            rpAction.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "Sửa", -1, true, true, false, editorButtonImageOptions2, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "Sửa phiếu nhận hàng", "Sửa", null, DevExpress.Utils.ToolTipAnchor.Default) });
             rpAction.Name = "rpAction";
             rpAction.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             rpAction.ButtonClick += rpBtnAction_ButtonClick;
             // 
-            // groupControl1
+            // gctl_filter
             // 
-            groupControl1.AppearanceCaption.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold);
-            groupControl1.AppearanceCaption.Options.UseFont = true;
-            groupControl1.Controls.Add(layoutControlTop);
-            groupControl1.Dock = System.Windows.Forms.DockStyle.Left;
-            groupControl1.Location = new System.Drawing.Point(0, 0);
-            groupControl1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            groupControl1.Name = "groupControl1";
-            groupControl1.Size = new System.Drawing.Size(350, 608);
-            groupControl1.TabIndex = 2;
-            groupControl1.Text = "Lọc phiếu Nhập hàng";
+            gctl_filter.AppearanceCaption.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold);
+            gctl_filter.AppearanceCaption.Options.UseFont = true;
+            gctl_filter.Controls.Add(layoutControlTop);
+            gctl_filter.Dock = System.Windows.Forms.DockStyle.Left;
+            gctl_filter.Location = new System.Drawing.Point(0, 0);
+            gctl_filter.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            gctl_filter.Name = "gctl_filter";
+            gctl_filter.Size = new System.Drawing.Size(350, 608);
+            gctl_filter.TabIndex = 2;
+            gctl_filter.Text = "Lọc Hoá đơn";
             // 
             // layoutControlTop
             // 
@@ -452,38 +452,38 @@
             layoutControlItem8.Size = new System.Drawing.Size(163, 445);
             layoutControlItem8.TextVisible = false;
             // 
-            // groupControl2
+            // gctl_invoice_list
             // 
-            groupControl2.AppearanceCaption.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold);
-            groupControl2.AppearanceCaption.Options.UseFont = true;
-            groupControl2.Controls.Add(grdControlOrders);
-            groupControl2.Dock = System.Windows.Forms.DockStyle.Fill;
-            groupControl2.Location = new System.Drawing.Point(350, 0);
-            groupControl2.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            groupControl2.Name = "groupControl2";
-            groupControl2.Size = new System.Drawing.Size(950, 608);
-            groupControl2.TabIndex = 3;
-            groupControl2.Text = "Danh sách phiếu Nhập hàng";
+            gctl_invoice_list.AppearanceCaption.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold);
+            gctl_invoice_list.AppearanceCaption.Options.UseFont = true;
+            gctl_invoice_list.Controls.Add(grdControlInvoiceList);
+            gctl_invoice_list.Dock = System.Windows.Forms.DockStyle.Fill;
+            gctl_invoice_list.Location = new System.Drawing.Point(350, 0);
+            gctl_invoice_list.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            gctl_invoice_list.Name = "gctl_invoice_list";
+            gctl_invoice_list.Size = new System.Drawing.Size(950, 608);
+            gctl_invoice_list.TabIndex = 3;
+            gctl_invoice_list.Text = "Danh sách Hoá đơn";
             // 
-            // FrmPurchase
+            // FrmInvoiceList
             // 
             Appearance.Options.UseFont = true;
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             ClientSize = new System.Drawing.Size(1300, 608);
-            Controls.Add(groupControl2);
-            Controls.Add(groupControl1);
+            Controls.Add(gctl_invoice_list);
+            Controls.Add(gctl_filter);
             Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             MaximizeBox = false;
             MinimizeBox = false;
-            Name = "FrmPurchase";
-            Text = "Danh sách Phiếu Nhập hàng";
+            Name = "FrmInvoiceList";
+            Text = "Danh sách Hoá đơn";
             Load += FrmOrder_Load;
-            ((System.ComponentModel.ISupportInitialize)grdControlOrders).EndInit();
-            ((System.ComponentModel.ISupportInitialize)grdViewOrders).EndInit();
+            ((System.ComponentModel.ISupportInitialize)grdControlInvoiceList).EndInit();
+            ((System.ComponentModel.ISupportInitialize)grdViewInvoiceList).EndInit();
             ((System.ComponentModel.ISupportInitialize)rpAction).EndInit();
-            ((System.ComponentModel.ISupportInitialize)groupControl1).EndInit();
-            groupControl1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)gctl_filter).EndInit();
+            gctl_filter.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)layoutControlTop).EndInit();
             layoutControlTop.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)txtBranchName.Properties).EndInit();
@@ -505,15 +505,15 @@
             ((System.ComponentModel.ISupportInitialize)layoutControlItem4).EndInit();
             ((System.ComponentModel.ISupportInitialize)layoutControlItem2).EndInit();
             ((System.ComponentModel.ISupportInitialize)layoutControlItem8).EndInit();
-            ((System.ComponentModel.ISupportInitialize)groupControl2).EndInit();
-            groupControl2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)gctl_invoice_list).EndInit();
+            gctl_invoice_list.ResumeLayout(false);
             ResumeLayout(false);
         }
 
         #endregion
         private DevExpress.XtraEditors.LookUpEdit lkBranch;
-        private DevExpress.XtraGrid.GridControl grdControlOrders;
-        private DevExpress.XtraGrid.Views.Grid.GridView grdViewOrders;
+        private DevExpress.XtraGrid.GridControl grdControlInvoiceList;
+        private DevExpress.XtraGrid.Views.Grid.GridView grdViewInvoiceList;
         private DevExpress.XtraGrid.Columns.GridColumn grdClmCode;
         private DevExpress.XtraGrid.Columns.GridColumn purchaseDate;
         private DevExpress.XtraGrid.Columns.GridColumn grdClmSupplierName;
@@ -521,7 +521,7 @@
         private DevExpress.XtraGrid.Columns.GridColumn grdClmStatusValue;
         private DevExpress.XtraGrid.Columns.GridColumn clmQuantity;
         private DevExpress.XtraGrid.Columns.GridColumn clmId;
-        private DevExpress.XtraEditors.GroupControl groupControl1;
+        private DevExpress.XtraEditors.GroupControl gctl_filter;
         private DevExpress.XtraLayout.LayoutControl layoutControlTop;
         private DevExpress.XtraEditors.TextEdit txtBranchName;
         private DevExpress.XtraEditors.DateEdit toPurchaseDate;
@@ -540,7 +540,7 @@
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem6;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem7;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem8;
-        private DevExpress.XtraEditors.GroupControl groupControl2;
+        private DevExpress.XtraEditors.GroupControl gctl_invoice_list;
         private DevExpress.XtraEditors.SimpleButton btnAddPurchase;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit rpAction;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem2;

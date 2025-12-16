@@ -141,14 +141,25 @@ namespace FrmMain
                     await FormHelper.OpenFormWithScope<FrmTransfer>(
                         this, ServiceProvider,
                         "", 0,
-                        "OpenFrmPurchase", WuserControl.FrmPurchase);
+                        "OpenFrmTransfer", WuserControl.FrmTransfer);
                     break;
                 case nameof(mbtnReceiver):
                     await FormHelper.OpenFormWithScope<FrmReceiverList>(
                         this, ServiceProvider,
                         "", 0,
-                        "OpenFrmPurchase", WuserControl.FrmPurchase);
+                        "OpenFrmReceiverList", WuserControl.FrmReceiverList);
                     break;
+                case nameof(mbtnProduct):
+                    await FormHelper.OpenFormWithScope<FrmProduct>(
+                        this, ServiceProvider, "", 0, "OpenFrmProduct", WuserControl.FrmProduct);
+                    break;
+
+                case nameof(mbtnInvoiceList):
+                    await FormHelper.OpenFormWithScope<FrmInvoiceList>(
+                        this, ServiceProvider, "", 0, "OpenFrmInvoiceList", WuserControl.FrmReceiverList
+                        );
+                    break;
+
                 case nameof(mbtnLogout):
                     if (MessageHelper.MsgBox(this, "Bạn muốn thoát tài khoản?", MsgType.YesNo) == DialogResult.Yes)
                     {

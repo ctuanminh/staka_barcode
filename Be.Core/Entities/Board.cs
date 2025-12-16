@@ -3,7 +3,7 @@ using Be.Core.Entities.Crm;
 
 namespace Be.Core.Entities
 {
-    public class Board : AuditedEntity
+    public class Board : AuditedEntity 
     {
         public string Name { get; set; } = string.Empty;
 

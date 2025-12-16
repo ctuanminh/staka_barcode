@@ -12,5 +12,6 @@
         FrmTransferProcess = 6,
         FrmReceiverList = 7,
         FrmPurchaseAdd = 8,
+        FrmProduct= 9,
     }
 }
